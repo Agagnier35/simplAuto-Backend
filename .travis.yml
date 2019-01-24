@@ -9,3 +9,6 @@ script:
   - npm run build
 on:
   branch: develop
+notifications:
+  email: false
+  slack: simplauto-projet4:foNTuvnQQK9jRkASWg6Y4Htz
