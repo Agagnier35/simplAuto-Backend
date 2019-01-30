@@ -9,8 +9,8 @@ script:
 - npm run build
 branches:
   only:
-    -master
-    -develop
+  - master
+  - develop
 notifications:
   email: false
   slack:
