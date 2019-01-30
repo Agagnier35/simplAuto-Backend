@@ -14,9 +14,9 @@ branches:
 notifications:
   email: false
   slack:
-    on_pull_requests: false
     rooms:
     - secure: TEGz/mJyNNeglFwIHS5t6CdsJ7Dqi8HrvMcqbfJJVCQlDwIwlfLD4Bl6bdnVwyT2IPUl93h+GUod9YxsXxHmLxELHnyFKUGSGufHq+r9VLm3DMhsNbSL8CxyFvFJo5R2QkSsCR47QuDI4rlbAnQwpnBJ5UwJNyAE6vLPVR0Hp01XcYGqehGdF80u4O3DmoKQV51DFpWXeutDgqiZJupV9Mi/bl2Wyoww0rfRl0Gkh3ozJjlj2Wf/ajxIgXOFGKu7DadLh5R7o71IShYKOTQbZL57k80cHJqkwGMu0WM13t3a2ATsg81c7n8aNAc5sAeZ7hXLaE0oIlaoR7+oiD88zpCiXRaJpmtpmFoskfq17palgVeHrKPAGGwuZcudRqabPsNV3rsatU11oYxzfjz2/j0aoaqAR6ACmC/wwPbjbCEXxKZff/LRSZYf/qU4SI1qmZozxoPRQB2muDjGEQTZrk+M/DGEt6rURWi3uSC9ehQbsa7J0vSl1YxPm9AuuWkAkD+f2lfU39nevhwC7vk78IJDXbYqqf7Z3iAIKRDCVKWkkGh6zFYKZBqnJg0+B8AGa8DrgFlQ8hJ869EOhXr7R1INlyij3BIfZLmlw88+/LWQ70Bkw+xxrUXb0dUNncbgGvf+jRNJ+pZrsTiCSP0qMcMTvV4kilJOJJ0Vt6Y8UH0=
+    on_pull_requests: false
     template:
     - "`%{repository_name}` *%{result}* build (<%{build_url}|#%{build_number}>) for
       commit (<%{compare_url}|%{commit}>) by *%{author}*."
