@@ -1,6 +1,10 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { Context } from "../../utils";
+import {
+  InvalidPasswordError,
+  InvalidEmailError
+} from "../../errors/authErrors";
 
 export const auth = {
   async signup(parent, args, ctx: Context) {
@@ -33,12 +37,12 @@ export const auth = {
     const user = await ctx.prisma.user({ email: email.toLowerCase() });
 
     if (!user) {
-      throw new Error(`No such user found for email: ${email}`);
+      throw InvalidEmailError;
     }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error("Invalid password");
+      throw InvalidPasswordError;
     }
 
     // Same token flow as signup...
