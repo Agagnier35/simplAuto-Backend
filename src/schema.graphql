@@ -14,8 +14,8 @@ type Mutation {
     location: String!
     age: Int!
     gender: Gender!
-  ): AuthPayload!
-  login(email: String!, password: String!): AuthPayload!
+  ): User!
+  login(email: String!, password: String!): User!
   createDraft(title: String!, content: String!): Post!
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
@@ -23,11 +23,6 @@ type Mutation {
 
 type Subscription {
   feedSubscription: Post
-}
-
-type AuthPayload {
-  token: String!
-  user: User!
 }
 
 type User {

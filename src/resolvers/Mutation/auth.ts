@@ -17,10 +17,16 @@ export const auth = {
     // Finally create
     const user = await ctx.prisma.createUser({ ...args, password });
 
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
-    };
+    // Create the JWT token for the user
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+    // Set the JWT as a cookie on the response
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
+    });
+
+    return user;
   },
 
   async login(parent, { email, password }, ctx: Context) {
@@ -35,10 +41,14 @@ export const auth = {
       throw new Error("Invalid password");
     }
 
-    // Sign the token with the app secret
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
-    };
+    // Same token flow as signup...
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365
+    });
+
+    return user;
   }
 };
