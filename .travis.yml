@@ -7,10 +7,6 @@ cache:
 script:
 - npm test
 - npm run build
-branches:
-  only:
-  - master
-  - develop
 notifications:
   email: false
   slack:
