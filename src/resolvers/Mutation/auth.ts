@@ -1,6 +1,10 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
 import { Context } from "../../utils";
+import {
+  InvalidPasswordError,
+  InvalidEmailError
+} from "../../errors/authErrors";
 
 export const auth = {
   async signup(parent, args, ctx: Context) {
@@ -17,28 +21,38 @@ export const auth = {
     // Finally create
     const user = await ctx.prisma.createUser({ ...args, password });
 
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
-    };
+    // Create the JWT token for the user
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+    // Set the JWT as a cookie on the response
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
+    });
+
+    return user;
   },
 
   async login(parent, { email, password }, ctx: Context) {
     const user = await ctx.prisma.user({ email: email.toLowerCase() });
 
     if (!user) {
-      throw new Error(`No such user found for email: ${email}`);
+      throw InvalidEmailError;
     }
 
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) {
-      throw new Error("Invalid password");
+      throw InvalidPasswordError;
     }
 
-    // Sign the token with the app secret
-    return {
-      token: jwt.sign({ userId: user.id }, process.env.APP_SECRET),
-      user
-    };
+    // Same token flow as signup...
+    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+
+    ctx.response.cookie("token", token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 365
+    });
+
+    return user;
   }
 };

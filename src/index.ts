@@ -1,15 +1,47 @@
-import { GraphQLServer } from 'graphql-yoga'
-import { prisma } from './generated/prisma-client'
-import resolvers from './resolvers'
+import { GraphQLServer } from "graphql-yoga";
+import * as jwt from "jsonwebtoken";
+import { prisma } from "./generated/prisma-client";
+import resolvers from "./resolvers";
+import { Request } from "express";
+
+const cookieParser = require("cookie-parser");
 
 require("dotenv").config({ path: ".env" });
 
 const server = new GraphQLServer({
-  typeDefs: './src/schema.graphql',
+  typeDefs: "./src/schema.graphql",
   resolvers,
   context: request => ({
     ...request,
-    prisma,
-  }),
-})
-server.start(() => console.log(`Server is running on http://localhost:4000`))
+    prisma
+  })
+});
+
+// Use cookie-parser middleware to handle JWT
+server.express.use(cookieParser());
+
+// Decode the JWT token from the request
+server.express.use((req: Request & { userId: string }, res, next) => {
+  const { token } = req.cookies;
+  if (token) {
+    const { userId } = jwt.verify(token, process.env.APP_SECRET) as {
+      userId: string;
+    };
+    // Set the userId on the request
+    req.userId = userId;
+  }
+
+  next();
+});
+
+server.start(
+  {
+    cors: {
+      credentials: true,
+      origin: process.env.FRONTEND_URL
+    }
+  },
+  () => {
+    console.log("Server is now running on port http://localhost:4000");
+  }
+);
