@@ -12,6 +12,12 @@ type BatchPayload {
 
 scalar DateTime
 
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
 scalar Long
 
 type Mutation {
@@ -46,6 +52,12 @@ type PageInfo {
   endCursor: String
 }
 
+enum Permission {
+  USER
+  PREMIUM
+  ADMIN
+}
+
 type Post {
   id: ID!
   createdAt: DateTime!
@@ -66,18 +78,7 @@ input PostCreateInput {
   published: Boolean
   title: String!
   content: String!
-  author: UserCreateOneWithoutPostsInput!
-}
-
-input PostCreateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  connect: [PostWhereUniqueInput!]
-}
-
-input PostCreateWithoutAuthorInput {
-  published: Boolean
-  title: String!
-  content: String!
+  author: UserCreateOneInput!
 }
 
 type PostEdge {
@@ -109,72 +110,6 @@ type PostPreviousValues {
   content: String!
 }
 
-input PostScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  published: Boolean
-  published_not: Boolean
-  title: String
-  title_not: String
-  title_in: [String!]
-  title_not_in: [String!]
-  title_lt: String
-  title_lte: String
-  title_gt: String
-  title_gte: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  content: String
-  content_not: String
-  content_in: [String!]
-  content_not_in: [String!]
-  content_lt: String
-  content_lte: String
-  content_gt: String
-  content_gte: String
-  content_contains: String
-  content_not_contains: String
-  content_starts_with: String
-  content_not_starts_with: String
-  content_ends_with: String
-  content_not_ends_with: String
-  AND: [PostScalarWhereInput!]
-  OR: [PostScalarWhereInput!]
-  NOT: [PostScalarWhereInput!]
-}
-
 type PostSubscriptionPayload {
   mutation: MutationType!
   node: Post
@@ -197,52 +132,13 @@ input PostUpdateInput {
   published: Boolean
   title: String
   content: String
-  author: UserUpdateOneRequiredWithoutPostsInput
-}
-
-input PostUpdateManyDataInput {
-  published: Boolean
-  title: String
-  content: String
+  author: UserUpdateOneRequiredInput
 }
 
 input PostUpdateManyMutationInput {
   published: Boolean
   title: String
   content: String
-}
-
-input PostUpdateManyWithoutAuthorInput {
-  create: [PostCreateWithoutAuthorInput!]
-  delete: [PostWhereUniqueInput!]
-  connect: [PostWhereUniqueInput!]
-  disconnect: [PostWhereUniqueInput!]
-  update: [PostUpdateWithWhereUniqueWithoutAuthorInput!]
-  upsert: [PostUpsertWithWhereUniqueWithoutAuthorInput!]
-  deleteMany: [PostScalarWhereInput!]
-  updateMany: [PostUpdateManyWithWhereNestedInput!]
-}
-
-input PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput!
-  data: PostUpdateManyDataInput!
-}
-
-input PostUpdateWithoutAuthorDataInput {
-  published: Boolean
-  title: String
-  content: String
-}
-
-input PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  data: PostUpdateWithoutAuthorDataInput!
-}
-
-input PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput!
-  update: PostUpdateWithoutAuthorDataInput!
-  create: PostCreateWithoutAuthorInput!
 }
 
 input PostWhereInput {
@@ -334,9 +230,13 @@ type Subscription {
 type User {
   id: ID!
   email: String!
+  firstName: String!
+  lastName: String!
   password: String!
-  name: String!
-  posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  location: String!
+  age: Int!
+  gender: Gender!
+  permissions: [Permission!]!
 }
 
 type UserConnection {
@@ -347,20 +247,22 @@ type UserConnection {
 
 input UserCreateInput {
   email: String!
+  firstName: String!
+  lastName: String!
   password: String!
-  name: String!
-  posts: PostCreateManyWithoutAuthorInput
+  location: String!
+  age: Int!
+  gender: Gender!
+  permissions: UserCreatepermissionsInput
 }
 
-input UserCreateOneWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
+input UserCreateOneInput {
+  create: UserCreateInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutPostsInput {
-  email: String!
-  password: String!
-  name: String!
+input UserCreatepermissionsInput {
+  set: [Permission!]
 }
 
 type UserEdge {
@@ -373,10 +275,18 @@ enum UserOrderByInput {
   id_DESC
   email_ASC
   email_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
   password_ASC
   password_DESC
-  name_ASC
-  name_DESC
+  location_ASC
+  location_DESC
+  age_ASC
+  age_DESC
+  gender_ASC
+  gender_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -386,8 +296,13 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   email: String!
+  firstName: String!
+  lastName: String!
   password: String!
-  name: String!
+  location: String!
+  age: Int!
+  gender: Gender!
+  permissions: [Permission!]!
 }
 
 type UserSubscriptionPayload {
@@ -408,35 +323,53 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  location: String
+  age: Int
+  gender: Gender
+  permissions: UserUpdatepermissionsInput
+}
+
 input UserUpdateInput {
   email: String
+  firstName: String
+  lastName: String
   password: String
-  name: String
-  posts: PostUpdateManyWithoutAuthorInput
+  location: String
+  age: Int
+  gender: Gender
+  permissions: UserUpdatepermissionsInput
 }
 
 input UserUpdateManyMutationInput {
   email: String
+  firstName: String
+  lastName: String
   password: String
-  name: String
+  location: String
+  age: Int
+  gender: Gender
+  permissions: UserUpdatepermissionsInput
 }
 
-input UserUpdateOneRequiredWithoutPostsInput {
-  create: UserCreateWithoutPostsInput
-  update: UserUpdateWithoutPostsDataInput
-  upsert: UserUpsertWithoutPostsInput
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutPostsDataInput {
-  email: String
-  password: String
-  name: String
+input UserUpdatepermissionsInput {
+  set: [Permission!]
 }
 
-input UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput!
-  create: UserCreateWithoutPostsInput!
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -468,6 +401,34 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -482,23 +443,32 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  posts_every: PostWhereInput
-  posts_some: PostWhereInput
-  posts_none: PostWhereInput
+  location: String
+  location_not: String
+  location_in: [String!]
+  location_not_in: [String!]
+  location_lt: String
+  location_lte: String
+  location_gt: String
+  location_gte: String
+  location_contains: String
+  location_not_contains: String
+  location_starts_with: String
+  location_not_starts_with: String
+  location_ends_with: String
+  location_not_ends_with: String
+  age: Int
+  age_not: Int
+  age_in: [Int!]
+  age_not_in: [Int!]
+  age_lt: Int
+  age_lte: Int
+  age_gt: Int
+  age_gte: Int
+  gender: Gender
+  gender_not: Gender
+  gender_in: [Gender!]
+  gender_not_in: [Gender!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

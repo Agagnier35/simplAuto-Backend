@@ -6,7 +6,15 @@ type Query {
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): AuthPayload!
+  signup(
+    email: String!
+    firstName: String!
+    lastName: String!
+    password: String!
+    location: String!
+    age: Int!
+    gender: Gender!
+  ): AuthPayload!
   login(email: String!, password: String!): AuthPayload!
   createDraft(title: String!, content: String!): Post!
   publish(id: ID!): Post!
@@ -25,8 +33,13 @@ type AuthPayload {
 type User {
   id: ID!
   email: String!
-  name: String!
-  posts: [Post!]!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  age: Int!
+  gender: Gender!
+  permissions: [Permission!]!
 }
 
 type Post {
@@ -35,4 +48,16 @@ type Post {
   title: String!
   content: String!
   author: User!
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Permission {
+  USER
+  PREMIUM
+  ADMIN
 }
