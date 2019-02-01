@@ -25,6 +25,14 @@ type Subscription {
   feedSubscription: Post
 }
 
+type Post {
+  id: ID!
+  published: Boolean!
+  title: String!
+  content: String!
+  author: User!
+}
+
 type User {
   id: ID!
   email: String!
@@ -35,14 +43,9 @@ type User {
   age: Int!
   gender: Gender!
   permissions: [Permission!]!
-}
-
-type Post {
-  id: ID!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
+  offers: [Offer!]!
+  ads: [Ad!]!
+  cars: [Car!]!
 }
 
 enum Gender {
@@ -55,4 +58,90 @@ enum Permission {
   USER
   PREMIUM
   ADMIN
+}
+
+type Ad {
+  id: ID!
+  creator: User!
+  offers: [Offer!]!
+  features: [AdFeature!]!
+  priceLowerBound: Float!
+  priceHigherBound: Float!
+  isUrgent: Boolean!
+  isFirst: Boolean!
+  status: AdStatus!
+}
+
+enum AdStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+
+type AdFeature {
+  id: ID!
+  feature: CarFeature!
+  importance: AdFeatureImportance!
+}
+
+enum AdFeatureImportance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+type Offer {
+  id: ID!
+  creator: User!
+  ad: Ad!
+  car: Car!
+  price: Float!
+  status: OfferStatus!
+  finalRank: Int
+}
+
+enum OfferStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+
+type Car {
+  id: ID!
+  owner: User!
+  manufacturer: Manufacturer!
+  model: CarModel!
+  category: CarCategory!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  features: [CarFeature!]!
+}
+
+type CarCategory {
+  id: ID!
+  name: String!
+}
+
+type CarFeatureCategory {
+  id: ID!
+  name: String!
+  features: [CarFeature!]!
+}
+
+type CarFeature {
+  id: ID!
+  name: String!
+  category: CarFeatureCategory!
+}
+
+type Manufacturer {
+  id: ID!
+  name: String!
+  models: [CarModel!]!
+}
+
+type CarModel {
+  id: ID!
+  name: String!
 }

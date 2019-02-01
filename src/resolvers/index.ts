@@ -1,17 +1,11 @@
-import { Query } from './Query'
-import { Subscription } from './Subscription'
-import { auth } from './Mutation/auth'
-import { post } from './Mutation/post'
-import { User } from './User'
-import { Post } from './Post'
+import Query from "./Queries";
+import Mutation from "./Mutations";
+import Subscription from "./Subscriptions";
+import Nodes from "./Nodes";
 
 export default {
   Query,
-  Mutation: {
-    ...auth,
-    ...post,
-  },
+  Mutation,
   Subscription,
-  User,
-  Post,
-}
+  ...Nodes
+};
