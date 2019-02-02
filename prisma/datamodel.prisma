@@ -40,10 +40,17 @@ type Ad {
   creator: User!
   createdAt: DateTime!
   updatedAt: DateTime!
-  offers: [Offer!]!
-  features: [AdFeature!]!
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  offers: [Offer!]
+  features: [AdFeature!]
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: Manufacturer
+  model: CarModel
+  category: CarCategory
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean! @default(value: false)
   isFirst: Boolean! @default(value: false)
   status: AdStatus! @default(value: PUBLISHED)

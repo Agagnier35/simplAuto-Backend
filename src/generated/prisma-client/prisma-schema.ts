@@ -5,8 +5,15 @@ export const typeDefs = /* GraphQL */ `type Ad {
   updatedAt: DateTime!
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
   features(where: AdFeatureWhereInput, orderBy: AdFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AdFeature!]
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: Manufacturer
+  model: CarModel
+  category: CarCategory
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
@@ -22,8 +29,15 @@ input AdCreateInput {
   creator: UserCreateOneWithoutAdsInput!
   offers: OfferCreateManyWithoutAdInput
   features: AdFeatureCreateManyInput
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: ManufacturerCreateOneInput
+  model: CarModelCreateOneInput
+  category: CarCategoryCreateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -42,8 +56,15 @@ input AdCreateOneWithoutOffersInput {
 input AdCreateWithoutCreatorInput {
   offers: OfferCreateManyWithoutAdInput
   features: AdFeatureCreateManyInput
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: ManufacturerCreateOneInput
+  model: CarModelCreateOneInput
+  category: CarCategoryCreateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -52,8 +73,15 @@ input AdCreateWithoutCreatorInput {
 input AdCreateWithoutOffersInput {
   creator: UserCreateOneWithoutAdsInput!
   features: AdFeatureCreateManyInput
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: ManufacturerCreateOneInput
+  model: CarModelCreateOneInput
+  category: CarCategoryCreateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -240,6 +268,14 @@ enum AdOrderByInput {
   priceLowerBound_DESC
   priceHigherBound_ASC
   priceHigherBound_DESC
+  mileageLowerBound_ASC
+  mileageLowerBound_DESC
+  mileageHigherBound_ASC
+  mileageHigherBound_DESC
+  yearLowerBound_ASC
+  yearLowerBound_DESC
+  yearHigherBound_ASC
+  yearHigherBound_DESC
   isUrgent_ASC
   isUrgent_DESC
   isFirst_ASC
@@ -252,8 +288,12 @@ type AdPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  priceLowerBound: Float!
-  priceHigherBound: Float!
+  priceLowerBound: Float
+  priceHigherBound: Float
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
@@ -306,6 +346,38 @@ input AdScalarWhereInput {
   priceHigherBound_lte: Float
   priceHigherBound_gt: Float
   priceHigherBound_gte: Float
+  mileageLowerBound: Int
+  mileageLowerBound_not: Int
+  mileageLowerBound_in: [Int!]
+  mileageLowerBound_not_in: [Int!]
+  mileageLowerBound_lt: Int
+  mileageLowerBound_lte: Int
+  mileageLowerBound_gt: Int
+  mileageLowerBound_gte: Int
+  mileageHigherBound: Int
+  mileageHigherBound_not: Int
+  mileageHigherBound_in: [Int!]
+  mileageHigherBound_not_in: [Int!]
+  mileageHigherBound_lt: Int
+  mileageHigherBound_lte: Int
+  mileageHigherBound_gt: Int
+  mileageHigherBound_gte: Int
+  yearLowerBound: Int
+  yearLowerBound_not: Int
+  yearLowerBound_in: [Int!]
+  yearLowerBound_not_in: [Int!]
+  yearLowerBound_lt: Int
+  yearLowerBound_lte: Int
+  yearLowerBound_gt: Int
+  yearLowerBound_gte: Int
+  yearHigherBound: Int
+  yearHigherBound_not: Int
+  yearHigherBound_in: [Int!]
+  yearHigherBound_not_in: [Int!]
+  yearHigherBound_lt: Int
+  yearHigherBound_lte: Int
+  yearHigherBound_gt: Int
+  yearHigherBound_gte: Int
   isUrgent: Boolean
   isUrgent_not: Boolean
   isFirst: Boolean
@@ -349,6 +421,13 @@ input AdUpdateInput {
   features: AdFeatureUpdateManyInput
   priceLowerBound: Float
   priceHigherBound: Float
+  manufacturer: ManufacturerUpdateOneInput
+  model: CarModelUpdateOneInput
+  category: CarCategoryUpdateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -357,6 +436,10 @@ input AdUpdateInput {
 input AdUpdateManyDataInput {
   priceLowerBound: Float
   priceHigherBound: Float
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -365,6 +448,10 @@ input AdUpdateManyDataInput {
 input AdUpdateManyMutationInput {
   priceLowerBound: Float
   priceHigherBound: Float
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -398,6 +485,13 @@ input AdUpdateWithoutCreatorDataInput {
   features: AdFeatureUpdateManyInput
   priceLowerBound: Float
   priceHigherBound: Float
+  manufacturer: ManufacturerUpdateOneInput
+  model: CarModelUpdateOneInput
+  category: CarCategoryUpdateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -408,6 +502,13 @@ input AdUpdateWithoutOffersDataInput {
   features: AdFeatureUpdateManyInput
   priceLowerBound: Float
   priceHigherBound: Float
+  manufacturer: ManufacturerUpdateOneInput
+  model: CarModelUpdateOneInput
+  category: CarCategoryUpdateOneInput
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -483,6 +584,41 @@ input AdWhereInput {
   priceHigherBound_lte: Float
   priceHigherBound_gt: Float
   priceHigherBound_gte: Float
+  manufacturer: ManufacturerWhereInput
+  model: CarModelWhereInput
+  category: CarCategoryWhereInput
+  mileageLowerBound: Int
+  mileageLowerBound_not: Int
+  mileageLowerBound_in: [Int!]
+  mileageLowerBound_not_in: [Int!]
+  mileageLowerBound_lt: Int
+  mileageLowerBound_lte: Int
+  mileageLowerBound_gt: Int
+  mileageLowerBound_gte: Int
+  mileageHigherBound: Int
+  mileageHigherBound_not: Int
+  mileageHigherBound_in: [Int!]
+  mileageHigherBound_not_in: [Int!]
+  mileageHigherBound_lt: Int
+  mileageHigherBound_lte: Int
+  mileageHigherBound_gt: Int
+  mileageHigherBound_gte: Int
+  yearLowerBound: Int
+  yearLowerBound_not: Int
+  yearLowerBound_in: [Int!]
+  yearLowerBound_not_in: [Int!]
+  yearLowerBound_lt: Int
+  yearLowerBound_lte: Int
+  yearLowerBound_gt: Int
+  yearLowerBound_gte: Int
+  yearHigherBound: Int
+  yearHigherBound_not: Int
+  yearHigherBound_in: [Int!]
+  yearHigherBound_not_in: [Int!]
+  yearHigherBound_lt: Int
+  yearHigherBound_lte: Int
+  yearHigherBound_gt: Int
+  yearHigherBound_gte: Int
   isUrgent: Boolean
   isUrgent_not: Boolean
   isFirst: Boolean
@@ -629,6 +765,15 @@ input CarCategoryUpdateInput {
 
 input CarCategoryUpdateManyMutationInput {
   name: String
+}
+
+input CarCategoryUpdateOneInput {
+  create: CarCategoryCreateInput
+  update: CarCategoryUpdateDataInput
+  upsert: CarCategoryUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CarCategoryWhereUniqueInput
 }
 
 input CarCategoryUpdateOneRequiredInput {
@@ -1219,6 +1364,15 @@ input CarModelUpdateManyWithWhereNestedInput {
   data: CarModelUpdateManyDataInput!
 }
 
+input CarModelUpdateOneInput {
+  create: CarModelCreateInput
+  update: CarModelUpdateDataInput
+  upsert: CarModelUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CarModelWhereUniqueInput
+}
+
 input CarModelUpdateOneRequiredInput {
   create: CarModelCreateInput
   update: CarModelUpdateDataInput
@@ -1571,6 +1725,15 @@ input ManufacturerUpdateInput {
 
 input ManufacturerUpdateManyMutationInput {
   name: String
+}
+
+input ManufacturerUpdateOneInput {
+  create: ManufacturerCreateInput
+  update: ManufacturerUpdateDataInput
+  upsert: ManufacturerUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ManufacturerWhereUniqueInput
 }
 
 input ManufacturerUpdateOneRequiredInput {
