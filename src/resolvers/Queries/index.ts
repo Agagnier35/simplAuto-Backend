@@ -1,5 +1,5 @@
 import { Query } from "./Query";
-import { ads } from "./Ads";
+import { ads } from "./ads";
 
 // This is weird but temporary
 // Query will be in seperated folders
