@@ -20,15 +20,21 @@ const server = new GraphQLServer({
 // Use cookie-parser middleware to handle JWT
 server.express.use(cookieParser());
 
+interface JwtCookie {
+  userId: string;
+  permissions: string[];
+}
 // Decode the JWT token from the request
-server.express.use((req: Request & { userId: string }, res, next) => {
+server.express.use((req: Request & JwtCookie, res, next) => {
   const { token } = req.cookies;
   if (token) {
-    const { userId } = jwt.verify(token, process.env.APP_SECRET) as {
-      userId: string;
-    };
+    const { userId, permissions } = jwt.verify(
+      token,
+      process.env.APP_SECRET
+    ) as JwtCookie;
     // Set the userId on the request
     req.userId = userId;
+    req.permissions = permissions;
   }
 
   next();

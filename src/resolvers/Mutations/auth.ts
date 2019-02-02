@@ -13,8 +13,10 @@ export const auth = {
     // Set default permissions
     // We set USER as the default
     // role for a logged in user
+    const permissions = ["USER"];
+
     args.permissions = {
-      set: ["USER"]
+      set: permissions
     };
     // Hash passwords
     const password = await bcrypt.hash(args.password, 10);
@@ -22,7 +24,10 @@ export const auth = {
     const user = await ctx.prisma.createUser({ ...args, password });
 
     // Create the JWT token for the user
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign(
+      { userId: user.id, permissions },
+      process.env.APP_SECRET
+    );
 
     // Set the JWT as a cookie on the response
     ctx.response.cookie("token", token, {
@@ -46,7 +51,10 @@ export const auth = {
     }
 
     // Same token flow as signup...
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign(
+      { userId: user.id, permissions: user.permissions },
+      process.env.APP_SECRET
+    );
 
     ctx.response.cookie("token", token, {
       httpOnly: true,

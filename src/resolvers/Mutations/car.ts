@@ -1,10 +1,10 @@
-import { getUserId, Context } from "../../utils";
+import { getUserId, Context, getUserPermissions } from "../../utils";
+import { carLimitReachedError } from "../../errors/carErrors";
 
 const MAX_CARS = 2;
 
 export const car = {
   async createCar(parent, { data }, ctx: Context, info) {
-    const id = getUserId(ctx);
     const {
       manufacturerID,
       modelID,
@@ -14,11 +14,16 @@ export const car = {
       ...rest
     } = data;
 
+    const id = getUserId(ctx);
+    const permissions = getUserPermissions(ctx);
+
     // Only 2 cars by user
-    // TODO : Put user_role in token and allow premium
-    // TODO : Should return error when limit is reached...
     const currentCars = await ctx.prisma.cars();
-    if (currentCars.length > MAX_CARS) return;
+    const carlimitReached = currentCars.length >= MAX_CARS;
+    const isPremium = permissions && permissions.includes("PREMIUM");
+    if (carlimitReached && !isPremium) {
+      throw carLimitReachedError;
+    }
 
     return ctx.prisma.createCar({
       ...rest,
