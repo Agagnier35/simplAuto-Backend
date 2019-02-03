@@ -1,0 +1,9 @@
+overwrite: true
+schema: "./src/schema.graphql"
+documents: null
+generates:
+  src/generated/yoga-client/index.ts:
+    plugins:
+      - "typescript-common"
+      - "typescript-server"
+      - "typescript-resolvers"

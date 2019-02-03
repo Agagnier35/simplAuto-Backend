@@ -6,10 +6,13 @@
     "debug": "nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "deploy": "prisma deploy --env-file .env",
-    "seeds": "prisma seed --reset"
+    "seeds": "prisma seed --reset",
+    "init-codegen": "gql-gen init",
+    "generate": "gql-gen --config codegen.yml"
   },
   "dependencies": {
     "@types/bcryptjs": "2.4.2",
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/node": "10.12.18",
     "bcryptjs": "2.4.3",
     "cookie-parser": "^1.4.3",
@@ -26,5 +29,11 @@
     "tslint-config-prettier": "^1.17.0",
     "typescript": "3.2.2",
     "typescript-tslint-plugin": "^0.3.1"
+  },
+  "devDependencies": {
+    "graphql-code-generator": "^0.16.0",
+    "graphql-codegen-typescript-common": "0.16.0",
+    "graphql-codegen-typescript-resolvers": "^0.16.0",
+    "graphql-codegen-typescript-server": "0.16.0"
   }
 }
