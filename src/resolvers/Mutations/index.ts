@@ -5,7 +5,7 @@ import { car } from "./car";
 import { ad } from "./ad";
 import { MutationResolvers } from "../../generated/yoga-client";
 
-const Mutations = {
+const Mutations: MutationResolvers.Type = {
   ...auth,
   ...post,
   ...user,

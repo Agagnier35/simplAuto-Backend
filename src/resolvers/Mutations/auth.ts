@@ -5,27 +5,39 @@ import {
   InvalidPasswordError,
   InvalidEmailError
 } from "../../errors/authErrors";
+import { MutationResolvers as Types } from "../../generated/yoga-client";
+import { Permission } from "../../generated/prisma-client";
+import { UserCreateInput } from "../../generated/prisma-client/index";
 
-export const auth = {
-  async signup(parent, args, ctx: Context) {
+interface AuthResolvers {
+  signup: Types.SignupResolver;
+  login: Types.LoginResolver;
+}
+
+export const auth: AuthResolvers = {
+  async signup(parent, { data }, ctx: Context) {
     // Lowercase the emails
-    args.email = args.email.toLowerCase();
+    data.email = data.email.toLowerCase();
+
     // Set default permissions
     // We set USER as the default
     // role for a logged in user
-    const permissions = ["USER"];
+    const basePermissions: Permission[] = ["USER"];
 
-    args.permissions = {
-      set: permissions
+    const permissions = {
+      set: basePermissions
     };
+
     // Hash passwords
-    const password = await bcrypt.hash(args.password, 10);
+    const password = await bcrypt.hash(data.password, 10);
+
     // Finally create
-    const user = await ctx.prisma.createUser({ ...args, password });
+    const userInput: UserCreateInput = { ...data, password, permissions };
+    const user = await ctx.prisma.createUser(userInput);
 
     // Create the JWT token for the user
     const token = jwt.sign(
-      { userId: user.id, permissions },
+      { permissions: basePermissions, userId: user.id },
       process.env.APP_SECRET
     );
 

@@ -47,6 +47,7 @@ input UserSignupInput {
   location: String!
   age: Int!
   gender: Gender!
+  permissions: [Permission!]
 }
 
 input UserUpdateInput {

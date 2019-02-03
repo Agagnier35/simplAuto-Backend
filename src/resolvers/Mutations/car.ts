@@ -1,9 +1,14 @@
 import { getUserId, Context, getUserPermissions } from "../../utils";
 import { carLimitReachedError } from "../../errors/carErrors";
+import { MutationResolvers as Types } from "../../generated/yoga-client";
 
 const MAX_CARS = 2;
 
-export const car = {
+interface CarResolvers {
+  createCar: Types.CreateCarResolver;
+}
+
+export const car: CarResolvers = {
   async createCar(parent, { data }, ctx: Context, info) {
     const {
       manufacturerID,
@@ -18,7 +23,8 @@ export const car = {
     const permissions = getUserPermissions(ctx);
 
     // Only 2 cars by user
-    const currentCars = await ctx.prisma.cars();
+    const currentCars = await ctx.prisma.cars({ where: { owner: { id } } });
+
     const carlimitReached = currentCars.length >= MAX_CARS;
     const isPremium = permissions && permissions.includes("PREMIUM");
     if (carlimitReached && !isPremium) {

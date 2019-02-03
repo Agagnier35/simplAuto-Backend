@@ -1,6 +1,9 @@
 import { Context } from "../../utils";
+import { UserResolvers } from "../../generated/yoga-client";
 
-export const User = {
+export const User: UserResolvers.Type = {
+  ...UserResolvers.defaultResolvers,
+
   cars: ({ id }, args, ctx: Context) => {
     return ctx.prisma.user({ id }).cars();
   },

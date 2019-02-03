@@ -1,10 +1,16 @@
 import { getUserId, Context } from "../../utils";
 import { UserNotFoundError } from "../../errors/userErrors";
+import { MutationResolvers as Types } from "../../generated/yoga-client";
+import { UserUpdateInput } from "../../generated/prisma-client/index";
 
-export const user = {
+interface UserResolvers {
+  updateUser: Types.UpdateUserResolver;
+}
+
+export const user: UserResolvers = {
   async updateUser(parent, { data }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    const { id, ...updatedValues } = data;
+    const { id, permissions, ...updatedValues } = data;
 
     const userExists = await ctx.prisma.$exists.user({
       id: userId
@@ -13,9 +19,17 @@ export const user = {
       throw UserNotFoundError;
     }
 
+    const updatedData: UserUpdateInput = { ...updatedValues };
+
+    if (permissions) {
+      updatedData.permissions = {
+        set: permissions
+      };
+    }
+
     return ctx.prisma.updateUser({
       where: { id },
-      data: { ...updatedValues }
+      data: updatedData
     });
   }
 };

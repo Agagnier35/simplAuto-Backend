@@ -9,8 +9,8 @@ const cookieParser = require("cookie-parser");
 require("dotenv").config({ path: ".env" });
 
 const server = new GraphQLServer({
+  resolvers: resolvers as any,
   typeDefs: "./src/schema.graphql",
-  resolvers,
   context: request => ({
     ...request,
     prisma

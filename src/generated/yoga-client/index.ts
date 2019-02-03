@@ -1156,6 +1156,7 @@ export namespace MutationResolvers {
     location: string;
     age: number;
     gender: Gender;
+    permissions?: Permission[] | null;
   }
   export interface UserUpdateInput {
     id: string;
