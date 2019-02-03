@@ -3,11 +3,14 @@ import { post } from "./post";
 import { user } from "./user";
 import { car } from "./car";
 import { ad } from "./ad";
+import { MutationResolvers } from "../../generated/yoga-client";
 
-export default {
+const Mutations = {
   ...auth,
   ...post,
   ...user,
   ...car,
   ...ad
 };
+
+export default Mutations;

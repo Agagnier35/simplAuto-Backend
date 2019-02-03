@@ -5,23 +5,23 @@
     "module": "commonjs",
     "sourceMap": true,
     "rootDir": "src",
-    "outDir": "dist",
-    "allowSyntheticDefaultImports": true,
-    "noEmit": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "preserveConstEnums": true,
-    "removeComments": false,
-    "skipLibCheck": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "lib": ["esnext", "dom"],
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin",
-        "configFile": "./tslint.json"
-      }
-    ]
+    "outDir": "dist"
+    // "allowSyntheticDefaultImports": true,
+    // "noEmit": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    // "preserveConstEnums": true,
+    // "removeComments": false,
+    // "skipLibCheck": true,
+    // "resolveJsonModule": true,
+    // "esModuleInterop": true,
+    // "strict": true,
+    // "lib": ["esnext", "dom"],
+    // "plugins": [
+    //   {
+    //     "name": "typescript-tslint-plugin",
+    //     "configFile": "./tslint.json"
+    //   }
+    // ]
   }
 }

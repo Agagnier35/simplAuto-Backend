@@ -2,10 +2,13 @@ import Query from "./Queries";
 import Mutation from "./Mutations";
 import Subscription from "./Subscriptions";
 import Nodes from "./Nodes";
+import { MutationResolvers, Resolvers } from "../generated/yoga-client";
 
-export default {
+const resolvers: Resolvers = {
   Query,
-  Mutation,
   Subscription,
+  Mutation,
   ...Nodes
 };
+
+export default resolvers;

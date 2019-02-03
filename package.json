@@ -6,7 +6,8 @@
     "debug": "nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "deploy": "prisma deploy --env-file .env",
-    "seeds": "prisma seed --reset"
+    "seeds": "prisma seed --reset",
+    "generate": "graphqlgen"
   },
   "dependencies": {
     "@types/bcryptjs": "2.4.2",
@@ -26,5 +27,8 @@
     "tslint-config-prettier": "^1.17.0",
     "typescript": "3.2.2",
     "typescript-tslint-plugin": "^0.3.1"
+  },
+  "devDependencies": {
+    "graphqlgen": "^0.6.0-rc2"
   }
 }

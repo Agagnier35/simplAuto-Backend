@@ -1,13 +1,19 @@
-import { getUserId, Context } from "../../utils";
+import { getUserId } from "../../utils";
+import { MutationResolvers as Types } from "../../generated/yoga-client";
+import { AdCreateInput } from "../../generated/prisma-client/index";
 
-export const ad = {
-  async createAd(parent, { data }, ctx: Context, info) {
+interface AdResolvers {
+  createAd: Types.CreateAdResolver;
+}
+
+export const ad: AdResolvers = {
+  async createAd(parent, { data }, ctx, info) {
     const userId = getUserId(ctx);
     const { adFeatures, modelID, categoryID, manufacturerID, ...rest } = data;
 
     // TODO Maybe check if each relational object really exists in the db
     // TODO if not throw custom errors
-    const mutation = {
+    const mutation: AdCreateInput = {
       ...rest,
       creator: {
         connect: { id: userId }
