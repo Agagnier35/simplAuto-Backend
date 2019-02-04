@@ -1,25 +1,26 @@
 language: node_js
 node_js:
-- stable
+  - stable
 cache:
   directories:
-  - node_modules
+    - node_modules
 script:
-- npm test
-- npm run build
+  - npm run generate
+  - npm test
+  - npm run build
 notifications:
   email: false
   slack:
     rooms:
-    - secure: TEGz/mJyNNeglFwIHS5t6CdsJ7Dqi8HrvMcqbfJJVCQlDwIwlfLD4Bl6bdnVwyT2IPUl93h+GUod9YxsXxHmLxELHnyFKUGSGufHq+r9VLm3DMhsNbSL8CxyFvFJo5R2QkSsCR47QuDI4rlbAnQwpnBJ5UwJNyAE6vLPVR0Hp01XcYGqehGdF80u4O3DmoKQV51DFpWXeutDgqiZJupV9Mi/bl2Wyoww0rfRl0Gkh3ozJjlj2Wf/ajxIgXOFGKu7DadLh5R7o71IShYKOTQbZL57k80cHJqkwGMu0WM13t3a2ATsg81c7n8aNAc5sAeZ7hXLaE0oIlaoR7+oiD88zpCiXRaJpmtpmFoskfq17palgVeHrKPAGGwuZcudRqabPsNV3rsatU11oYxzfjz2/j0aoaqAR6ACmC/wwPbjbCEXxKZff/LRSZYf/qU4SI1qmZozxoPRQB2muDjGEQTZrk+M/DGEt6rURWi3uSC9ehQbsa7J0vSl1YxPm9AuuWkAkD+f2lfU39nevhwC7vk78IJDXbYqqf7Z3iAIKRDCVKWkkGh6zFYKZBqnJg0+B8AGa8DrgFlQ8hJ869EOhXr7R1INlyij3BIfZLmlw88+/LWQ70Bkw+xxrUXb0dUNncbgGvf+jRNJ+pZrsTiCSP0qMcMTvV4kilJOJJ0Vt6Y8UH0=
+      - secure: TEGz/mJyNNeglFwIHS5t6CdsJ7Dqi8HrvMcqbfJJVCQlDwIwlfLD4Bl6bdnVwyT2IPUl93h+GUod9YxsXxHmLxELHnyFKUGSGufHq+r9VLm3DMhsNbSL8CxyFvFJo5R2QkSsCR47QuDI4rlbAnQwpnBJ5UwJNyAE6vLPVR0Hp01XcYGqehGdF80u4O3DmoKQV51DFpWXeutDgqiZJupV9Mi/bl2Wyoww0rfRl0Gkh3ozJjlj2Wf/ajxIgXOFGKu7DadLh5R7o71IShYKOTQbZL57k80cHJqkwGMu0WM13t3a2ATsg81c7n8aNAc5sAeZ7hXLaE0oIlaoR7+oiD88zpCiXRaJpmtpmFoskfq17palgVeHrKPAGGwuZcudRqabPsNV3rsatU11oYxzfjz2/j0aoaqAR6ACmC/wwPbjbCEXxKZff/LRSZYf/qU4SI1qmZozxoPRQB2muDjGEQTZrk+M/DGEt6rURWi3uSC9ehQbsa7J0vSl1YxPm9AuuWkAkD+f2lfU39nevhwC7vk78IJDXbYqqf7Z3iAIKRDCVKWkkGh6zFYKZBqnJg0+B8AGa8DrgFlQ8hJ869EOhXr7R1INlyij3BIfZLmlw88+/LWQ70Bkw+xxrUXb0dUNncbgGvf+jRNJ+pZrsTiCSP0qMcMTvV4kilJOJJ0Vt6Y8UH0=
     template:
-    - "`%{repository_name}` *%{result}* build (<%{build_url}|#%{build_number}>) for
-      commit (<%{compare_url}|%{commit}>) by *%{author}*."
-    - 'Branch: `%{branch}`'
-    - 'Execution time: *%{duration}*'
+      - "`%{repository_name}` *%{result}* build (<%{build_url}|#%{build_number}>) for
+        commit (<%{compare_url}|%{commit}>) by *%{author}*."
+      - "Branch: `%{branch}`"
+      - "Execution time: *%{duration}*"
 deploy:
   provider: heroku
   app: simplauto-backend
   api_key:
-   secure: "HY188/R4fdjMUxjLjf3evn7rcvqTBi3n9sLKuBjsjbxGxxBMpeufNrK3bDF8SIrnY4yvRnhlS3x2SlEoBEEHm6x5wN8GpKq0WmdhR8vhnbxY/g/D2VOLUqh8KrpBjo/qSWRgLYtDJtQu0f3GkgF2491M1I58l7yQBrPi4cQbWXQTghs36zSetjxo1Gh60rYw11bdUMm1V66ZxIHYg4Z6QSUSZXBPc5e+x1VM01niJIVOFXyjmBrp1hZ0v13UAZlcj+FCP/N+hGS0zoIk8ucwF+isrQEt3iG9Nb65FMmAdYcoDdrUaBeByGgpEocLtZzJxtnJKd6qtYIM9KSQ8i/FCGFyHCcZZLD8HLmvLODQoq91yoQjCsE7YLb7Z9nK8yxWwyyjNe3tyib0j3Q8ich4IpoEoQjoW82qSJ26H0mOu+Vjgbwe02p95I4zn5tccppHMsAztrTF7+XAEoff7jx5A4FU7nYdb+ZGUvfQhgxYCqRMXzbPiaRqA9tv5vhDEgmpsK3vo12Orzit/J26bpaJkmUd8nFyku8a2tN0G4aScNeEXQ+8Ndbt7bT7i8mDC9lpBwAwRboG702I25/3WDFEWEnCoqmz/YQtpTxUvwKfK8wC/hGnksUj6pRDJ7RCJipPrbvI0IeFLbyj0fu77L4BNd2Q7/Y1+DTR2ZGs88KKyxc="
+    secure: "HY188/R4fdjMUxjLjf3evn7rcvqTBi3n9sLKuBjsjbxGxxBMpeufNrK3bDF8SIrnY4yvRnhlS3x2SlEoBEEHm6x5wN8GpKq0WmdhR8vhnbxY/g/D2VOLUqh8KrpBjo/qSWRgLYtDJtQu0f3GkgF2491M1I58l7yQBrPi4cQbWXQTghs36zSetjxo1Gh60rYw11bdUMm1V66ZxIHYg4Z6QSUSZXBPc5e+x1VM01niJIVOFXyjmBrp1hZ0v13UAZlcj+FCP/N+hGS0zoIk8ucwF+isrQEt3iG9Nb65FMmAdYcoDdrUaBeByGgpEocLtZzJxtnJKd6qtYIM9KSQ8i/FCGFyHCcZZLD8HLmvLODQoq91yoQjCsE7YLb7Z9nK8yxWwyyjNe3tyib0j3Q8ich4IpoEoQjoW82qSJ26H0mOu+Vjgbwe02p95I4zn5tccppHMsAztrTF7+XAEoff7jx5A4FU7nYdb+ZGUvfQhgxYCqRMXzbPiaRqA9tv5vhDEgmpsK3vo12Orzit/J26bpaJkmUd8nFyku8a2tN0G4aScNeEXQ+8Ndbt7bT7i8mDC9lpBwAwRboG702I25/3WDFEWEnCoqmz/YQtpTxUvwKfK8wC/hGnksUj6pRDJ7RCJipPrbvI0IeFLbyj0fu77L4BNd2Q7/Y1+DTR2ZGs88KKyxc="
   on: develop

@@ -7,7 +7,6 @@ interface CarQueries {
 
 export const car: CarQueries = {
   car(parent, { id }, ctx: Context) {
-    // TODO apply search criterias
     return ctx.prisma.car({ id });
   }
 };
