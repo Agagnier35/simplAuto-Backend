@@ -8,11 +8,22 @@ export interface Context {
   response: any;
 }
 
+// TODO Might be a good move to merge those two...
 export function getUserId(ctx: Context) {
   const userId = ctx.request.userId;
 
   if (userId) {
     return userId;
+  }
+
+  throw AuthError;
+}
+
+export function getUserPermissions(ctx: Context) {
+  const permissions = ctx.request.permissions;
+
+  if (permissions) {
+    return permissions;
   }
 
   throw AuthError;

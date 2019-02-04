@@ -5,24 +5,41 @@ import {
   InvalidPasswordError,
   InvalidEmailError
 } from "../../errors/authErrors";
+import { MutationResolvers as Types } from "../../generated/yoga-client";
+import { Permission } from "../../generated/prisma-client";
+import { UserCreateInput } from "../../generated/prisma-client/index";
 
-export const auth = {
-  async signup(parent, args, ctx: Context) {
+interface AuthResolvers {
+  signup: Types.SignupResolver;
+  login: Types.LoginResolver;
+}
+
+export const auth: AuthResolvers = {
+  async signup(parent, { data }, ctx: Context) {
     // Lowercase the emails
-    args.email = args.email.toLowerCase();
+    data.email = data.email.toLowerCase();
+
     // Set default permissions
     // We set USER as the default
     // role for a logged in user
-    args.permissions = {
-      set: ["USER"]
+    const basePermissions: Permission[] = ["USER"];
+
+    const permissions = {
+      set: basePermissions
     };
+
     // Hash passwords
-    const password = await bcrypt.hash(args.password, 10);
+    const password = await bcrypt.hash(data.password, 10);
+
     // Finally create
-    const user = await ctx.prisma.createUser({ ...args, password });
+    const userInput: UserCreateInput = { ...data, password, permissions };
+    const user = await ctx.prisma.createUser(userInput);
 
     // Create the JWT token for the user
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign(
+      { permissions: basePermissions, userId: user.id },
+      process.env.APP_SECRET
+    );
 
     // Set the JWT as a cookie on the response
     ctx.response.cookie("token", token, {
@@ -46,7 +63,10 @@ export const auth = {
     }
 
     // Same token flow as signup...
-    const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
+    const token = jwt.sign(
+      { userId: user.id, permissions: user.permissions },
+      process.env.APP_SECRET
+    );
 
     ctx.response.cookie("token", token, {
       httpOnly: true,

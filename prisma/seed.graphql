@@ -1,4 +1,6 @@
 mutation {
+  # Users
+  # -----------------------------------------------
   user1: createUser(
     data: {
       email: "dominic@yopmail.com"
@@ -26,6 +28,73 @@ mutation {
       permissions: { set: [USER] }
     }
   ) {
+    id
+  }
+
+  # King user
+  # -----------------------------------------------
+  ad1: createAd(
+    data: {
+      creator: {
+        create: {
+          email: "king@yopmail.com"
+          firstName: "King"
+          lastName: "User"
+          password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
+          location: "Montreal"
+          age: 22
+          gender: MALE
+          permissions: { set: [USER] }
+          cars: {
+            create: [
+              # CarCreateWithoutOwnerInput
+              {
+                manufacturer: {
+                  create: {
+                    name: "Volkswagen"
+                    models: { create: [{ name: "Golf" }] }
+                  }
+                }
+                #model
+                model: { create: { name: "Jetta" } }
+                #category
+                category: { create: { name: "sedan" } }
+                year: 2012
+                mileage: 100000
+              }
+            ]
+          }
+        }
+      }
+      priceLowerBound: 5.0
+      priceHigherBound: 5.0
+    }
+  ) {
+    id
+  }
+
+  # A Manufacturer and all his car models
+  # -------------------------------------------
+  Honda: createManufacturer(
+    data: { name: "Honda", models: { create: [{ name: "Civic" }] } }
+  ) {
+    id
+  }
+
+  # A car feature category and all possibilities
+  # -------------------------------------------
+  Motor: createCarFeatureCategory(
+    data: {
+      name: "motor"
+      features: { create: [{ name: "2.0L" }, { name: "2.5L" }] }
+    }
+  ) {
+    id
+  }
+
+  # A car category
+  # -------------------------------------------
+  Sedan: createCarCategory(data: { name: "sedan" }) {
     id
   }
 }

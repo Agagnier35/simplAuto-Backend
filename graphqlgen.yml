@@ -1,0 +1,6 @@
+language: typescript
+schema: ./src/schema.graphql
+models:
+  files:
+    - ./src/generated/prisma-client/index.ts
+output: ./src/generated/yoga-client/index.ts

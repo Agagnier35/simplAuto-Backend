@@ -3,26 +3,63 @@ type Query {
   drafts: [Post!]!
   post(id: ID!): Post
   me: User
+  ads(adFeaturesIDs: [String]): [Ad!]
 }
 
 type Mutation {
-  signup(
-    email: String!
-    firstName: String!
-    lastName: String!
-    password: String!
-    location: String!
-    age: Int!
-    gender: Gender!
-  ): User!
+  signup(data: UserSignupInput!): User!
   login(email: String!, password: String!): User!
+  updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
+  createCar(data: CarCreateInput!): Car
+  createAd(data: AdCreateInput!): Ad
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
 }
 
+input CarCreateInput {
+  manufacturerID: String!
+  modelID: String!
+  categoryID: String!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  featuresIDs: [String!]
+}
+
 type Subscription {
   feedSubscription: Post
+}
+
+type Post {
+  id: ID!
+  published: Boolean!
+  title: String!
+  content: String!
+  author: User!
+}
+
+input UserSignupInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  age: Int!
+  gender: Gender!
+  permissions: [Permission!]
+}
+
+input UserUpdateInput {
+  id: ID!
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  location: String
+  age: Int
+  gender: Gender
+  permissions: [Permission!]
 }
 
 type User {
@@ -35,14 +72,9 @@ type User {
   age: Int!
   gender: Gender!
   permissions: [Permission!]!
-}
-
-type Post {
-  id: ID!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
+  offers: [Offer!]!
+  ads: [Ad!]!
+  cars: [Car!]!
 }
 
 enum Gender {
@@ -55,4 +87,117 @@ enum Permission {
   USER
   PREMIUM
   ADMIN
+}
+
+type Ad {
+  id: ID!
+  creator: User!
+  offers: [Offer!]
+  features: [AdFeature!]
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: Manufacturer
+  model: CarModel
+  category: CarCategory
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
+  isUrgent: Boolean!
+  isFirst: Boolean!
+  status: AdStatus!
+}
+
+input AdCreateInput {
+  adFeatures: [adFeatureInput]
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturerID: ID
+  modelID: ID
+  categoryID: ID
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
+  isUrgent: Boolean
+  isFirst: Boolean
+}
+
+input adFeatureInput {
+  featureID: ID!
+  importance: AdFeatureImportance!
+}
+
+enum AdStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+
+type AdFeature {
+  id: ID!
+  feature: CarFeature!
+  importance: AdFeatureImportance!
+}
+
+enum AdFeatureImportance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+type Offer {
+  id: ID!
+  creator: User!
+  ad: Ad!
+  car: Car!
+  price: Float!
+  status: OfferStatus!
+  finalRank: Int
+}
+
+enum OfferStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+
+type Car {
+  id: ID!
+  owner: User!
+  manufacturer: Manufacturer!
+  model: CarModel!
+  category: CarCategory!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  features: [CarFeature!]!
+}
+
+type CarCategory {
+  id: ID!
+  name: String!
+}
+
+type CarFeatureCategory {
+  id: ID!
+  name: String!
+  features: [CarFeature!]!
+}
+
+type CarFeature {
+  id: ID!
+  name: String!
+  category: CarFeatureCategory!
+}
+
+type Manufacturer {
+  id: ID!
+  name: String!
+  models: [CarModel!]!
+}
+
+type CarModel {
+  id: ID!
+  name: String!
 }
