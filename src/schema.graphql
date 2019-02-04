@@ -4,6 +4,7 @@ type Query {
   post(id: ID!): Post
   me: User
   ads(adFeaturesIDs: [String]): [Ad!]
+  car(id: ID!): Car
 }
 
 type Mutation {
