@@ -14,7 +14,7 @@ import {
   CarModel,
   CarCategory,
   Car
-} from "../prisma-client";
+} from "../prisma-client/index";
 type Context = any;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
@@ -32,6 +32,10 @@ export namespace QueryResolvers {
 
   export interface ArgsAds {
     adFeaturesIDs?: Array<string | null> | null;
+  }
+
+  export interface ArgsCar {
+    id: string;
   }
 
   export type FeedResolver = (
@@ -68,6 +72,13 @@ export namespace QueryResolvers {
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Ad[] | null | Promise<Ad[] | null>;
+
+  export type CarResolver = (
+    parent: undefined,
+    args: ArgsCar,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Car | null | Promise<Car | null>;
 
   export type CarCategoriesResolver = (
     parent: undefined,
@@ -134,6 +145,13 @@ export namespace QueryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Ad[] | null | Promise<Ad[] | null>;
+
+    car: (
+      parent: undefined,
+      args: ArgsCar,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Car | null | Promise<Car | null>;
 
     carCategories: (
       parent: undefined,
@@ -1266,7 +1284,7 @@ export namespace MutationResolvers {
     lastName: string;
     password: string;
     location: string;
-    birthDate: Date;
+    birthDate: DateInput;
     gender: Gender;
     permissions?: Permission[] | null;
   }
@@ -1277,7 +1295,7 @@ export namespace MutationResolvers {
     lastName?: string | null;
     password?: string | null;
     location?: string | null;
-    birthDate?: Date | null;
+    birthDate?: DateInput | null;
     gender?: Gender | null;
     permissions?: Permission[] | null;
   }
@@ -1303,6 +1321,11 @@ export namespace MutationResolvers {
     yearHigherBound?: number | null;
     isUrgent?: boolean | null;
     isFirst?: boolean | null;
+  }
+  export interface DateInput {
+    day: number;
+    month: number;
+    year: number;
   }
   export interface adFeatureInput {
     featureID: string;

@@ -52,7 +52,7 @@ input UserSignupInput {
   lastName: String!
   password: String!
   location: String!
-  birthDate: Date!
+  birthDate: DateInput!
   gender: Gender!
   permissions: [Permission!]
 }
@@ -64,9 +64,15 @@ input UserUpdateInput {
   lastName: String
   password: String
   location: String
-  birthDate: Date
+  birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
+}
+
+input DateInput {
+  day: Int!
+  month: Int!
+  year: Int!
 }
 
 type User {

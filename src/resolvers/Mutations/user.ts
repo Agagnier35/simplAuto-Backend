@@ -20,7 +20,16 @@ export const user: UserResolvers = {
       throw UserNotFoundError;
     }
 
-    const updatedData: UserUpdateInput = { ...updatedValues };
+    const { day, month, year } = data.birthDate;
+    const birthDate = {
+      create: {
+        day,
+        month,
+        year
+      }
+    };
+
+    const updatedData: UserUpdateInput = { ...updatedValues, birthDate };
 
     if (updatedValues.email && !emailRegex.test(updatedValues.email)) {
       throw InvalidEmailFormatError;
