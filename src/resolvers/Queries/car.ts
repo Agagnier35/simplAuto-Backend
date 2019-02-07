@@ -11,7 +11,7 @@ interface CarQueries {
 export const car: CarQueries = {
   car(parent, { id }, ctx: Context) {
     return ctx.prisma.car({ id });
-  }
+  },
   carFeatureCategories(parent, args, ctx: Context) {
     return ctx.prisma.carFeatureCategories();
   },
