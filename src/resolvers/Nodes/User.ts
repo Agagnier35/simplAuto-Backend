@@ -4,6 +4,10 @@ import { UserResolvers } from "../../generated/yoga-client";
 export const User: UserResolvers.Type = {
   ...UserResolvers.defaultResolvers,
 
+  birthDate: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).birthDate();
+  },
+
   cars: ({ id }, args, ctx: Context) => {
     return ctx.prisma.user({ id }).cars();
   },
