@@ -15,7 +15,7 @@ type User {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: Date!
   gender: Gender!
   permissions: [Permission!]!
   offers: [Offer!]!
@@ -54,6 +54,12 @@ type Ad {
   isUrgent: Boolean! @default(value: false)
   isFirst: Boolean! @default(value: false)
   status: AdStatus! @default(value: PUBLISHED)
+}
+
+type Date {
+  day: Int!
+  month: Int!
+  year: Int!
 }
 
 enum AdStatus {

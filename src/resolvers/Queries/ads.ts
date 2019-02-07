@@ -7,7 +7,6 @@ interface AdsQueries {
 
 export const ads: AdsQueries = {
   ads(parent, args, ctx: Context) {
-    // TODO apply search criterias
     return ctx.prisma.ads();
   }
 };

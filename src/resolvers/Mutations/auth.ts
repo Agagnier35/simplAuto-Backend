@@ -1,9 +1,10 @@
 import * as bcrypt from "bcryptjs";
 import * as jwt from "jsonwebtoken";
-import { Context } from "../../utils";
+import { Context, emailRegex } from "../../utils";
 import {
   InvalidPasswordError,
-  InvalidEmailError
+  InvalidEmailError,
+  InvalidEmailFormatError
 } from "../../errors/authErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { Permission } from "../../generated/prisma-client";
@@ -12,6 +13,7 @@ import { UserCreateInput } from "../../generated/prisma-client/index";
 interface AuthResolvers {
   signup: Types.SignupResolver;
   login: Types.LoginResolver;
+  logout: Types.LogoutResolver;
 }
 
 export const auth: AuthResolvers = {
@@ -28,11 +30,30 @@ export const auth: AuthResolvers = {
       set: basePermissions
     };
 
+    const { day, month, year } = data.birthDate;
+    const birthDate = {
+      create: {
+        day,
+        month,
+        year
+      }
+    };
+
+    // Verify email format
+    if (!emailRegex.test(data.email)) {
+      throw InvalidEmailFormatError;
+    }
+
     // Hash passwords
     const password = await bcrypt.hash(data.password, 10);
 
     // Finally create
-    const userInput: UserCreateInput = { ...data, password, permissions };
+    const userInput: UserCreateInput = {
+      ...data,
+      password,
+      permissions,
+      birthDate
+    };
     const user = await ctx.prisma.createUser(userInput);
 
     // Create the JWT token for the user
@@ -74,5 +95,11 @@ export const auth: AuthResolvers = {
     });
 
     return user;
+  },
+
+  logout(parent, args, ctx: Context) {
+    ctx.response.clearCookie("token");
+
+    return "disconnected";
   }
 };

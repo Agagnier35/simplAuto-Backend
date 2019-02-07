@@ -4,6 +4,7 @@ import { GraphQLResolveInfo } from "graphql";
 import {
   Post,
   User,
+  Date,
   Offer,
   Ad,
   AdFeature,
@@ -68,6 +69,36 @@ export namespace QueryResolvers {
     info: GraphQLResolveInfo
   ) => Ad[] | null | Promise<Ad[] | null>;
 
+  export type CarCategoriesResolver = (
+    parent: undefined,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) =>
+    | Array<CarCategory | null>
+    | null
+    | Promise<Array<CarCategory | null> | null>;
+
+  export type CarFeatureCategoriesResolver = (
+    parent: undefined,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) =>
+    | Array<CarFeatureCategory | null>
+    | null
+    | Promise<Array<CarFeatureCategory | null> | null>;
+
+  export type ManufacturersResolver = (
+    parent: undefined,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) =>
+    | Array<Manufacturer | null>
+    | null
+    | Promise<Array<Manufacturer | null> | null>;
+
   export interface Type {
     feed: (
       parent: undefined,
@@ -103,6 +134,36 @@ export namespace QueryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Ad[] | null | Promise<Ad[] | null>;
+
+    carCategories: (
+      parent: undefined,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) =>
+      | Array<CarCategory | null>
+      | null
+      | Promise<Array<CarCategory | null> | null>;
+
+    carFeatureCategories: (
+      parent: undefined,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) =>
+      | Array<CarFeatureCategory | null>
+      | null
+      | Promise<Array<CarFeatureCategory | null> | null>;
+
+    manufacturers: (
+      parent: undefined,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) =>
+      | Array<Manufacturer | null>
+      | null
+      | Promise<Array<Manufacturer | null> | null>;
   }
 }
 
@@ -195,7 +256,6 @@ export namespace UserResolvers {
     lastName: (parent: User) => parent.lastName,
     password: (parent: User) => parent.password,
     location: (parent: User) => parent.location,
-    age: (parent: User) => parent.age,
     gender: (parent: User) => parent.gender,
     permissions: (parent: User) => parent.permissions
   };
@@ -242,12 +302,12 @@ export namespace UserResolvers {
     info: GraphQLResolveInfo
   ) => string | Promise<string>;
 
-  export type AgeResolver = (
+  export type BirthDateResolver = (
     parent: User,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => number | Promise<number>;
+  ) => Date | Promise<Date>;
 
   export type GenderResolver = (
     parent: User,
@@ -327,12 +387,12 @@ export namespace UserResolvers {
       info: GraphQLResolveInfo
     ) => string | Promise<string>;
 
-    age: (
+    birthDate: (
       parent: User,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => number | Promise<number>;
+    ) => Date | Promise<Date>;
 
     gender: (
       parent: User,
@@ -371,6 +431,58 @@ export namespace UserResolvers {
   }
 }
 
+export namespace DateResolvers {
+  export const defaultResolvers = {
+    day: (parent: Date) => parent.day,
+    month: (parent: Date) => parent.month,
+    year: (parent: Date) => parent.year
+  };
+
+  export type DayResolver = (
+    parent: Date,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export type MonthResolver = (
+    parent: Date,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export type YearResolver = (
+    parent: Date,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export interface Type {
+    day: (
+      parent: Date,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+
+    month: (
+      parent: Date,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+
+    year: (
+      parent: Date,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+  }
+}
+
 export namespace OfferResolvers {
   export const defaultResolvers = {
     id: (parent: Offer) => parent.id,
@@ -392,7 +504,7 @@ export namespace OfferResolvers {
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => User | Promise<User>;
+  ) => User | null | Promise<User | null>;
 
   export type AdResolver = (
     parent: Offer,
@@ -442,7 +554,7 @@ export namespace OfferResolvers {
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => User | Promise<User>;
+    ) => User | null | Promise<User | null>;
 
     ad: (
       parent: Offer,
@@ -515,7 +627,7 @@ export namespace AdResolvers {
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => User | Promise<User>;
+  ) => User | null | Promise<User | null>;
 
   export type OffersResolver = (
     parent: Ad,
@@ -628,7 +740,7 @@ export namespace AdResolvers {
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => User | Promise<User>;
+    ) => User | null | Promise<User | null>;
 
     offers: (
       parent: Ad,
@@ -1028,7 +1140,7 @@ export namespace CarResolvers {
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => User | Promise<User>;
+  ) => User | null | Promise<User | null>;
 
   export type ManufacturerResolver = (
     parent: Car,
@@ -1092,7 +1204,7 @@ export namespace CarResolvers {
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => User | Promise<User>;
+    ) => User | null | Promise<User | null>;
 
     manufacturer: (
       parent: Car,
@@ -1154,7 +1266,7 @@ export namespace MutationResolvers {
     lastName: string;
     password: string;
     location: string;
-    age: number;
+    birthDate: Date;
     gender: Gender;
     permissions?: Permission[] | null;
   }
@@ -1165,7 +1277,7 @@ export namespace MutationResolvers {
     lastName?: string | null;
     password?: string | null;
     location?: string | null;
-    age?: number | null;
+    birthDate?: Date | null;
     gender?: Gender | null;
     permissions?: Permission[] | null;
   }
@@ -1245,6 +1357,13 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo
   ) => User | Promise<User>;
 
+  export type LogoutResolver = (
+    parent: undefined,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
   export type UpdateUserResolver = (
     parent: undefined,
     args: ArgsUpdateUser,
@@ -1301,6 +1420,13 @@ export namespace MutationResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => User | Promise<User>;
+
+    logout: (
+      parent: undefined,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
 
     updateUser: (
       parent: undefined,
@@ -1386,6 +1512,7 @@ export interface Resolvers {
   Query: QueryResolvers.Type;
   Post: PostResolvers.Type;
   User: UserResolvers.Type;
+  Date: DateResolvers.Type;
   Offer: OfferResolvers.Type;
   Ad: AdResolvers.Type;
   AdFeature: AdFeatureResolvers.Type;

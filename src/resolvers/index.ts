@@ -13,6 +13,7 @@ import { Post } from "./Nodes/Post";
 import { AdFeature } from "./Nodes/AdFeature";
 import { CarCategory } from "./Nodes/CarCategory";
 import { CarModel } from "./Nodes/CarModel";
+import { Date } from "./Nodes/Date";
 
 const resolvers: Resolvers = {
   Query,
@@ -28,7 +29,8 @@ const resolvers: Resolvers = {
   CarFeatureCategory,
   CarModel,
   Post,
-  AdFeature
+  AdFeature,
+  Date
 };
 
 export default resolvers;

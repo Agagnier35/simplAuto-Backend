@@ -28,3 +28,5 @@ export function getUserPermissions(ctx: Context) {
 
   throw AuthError;
 }
+
+export const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
