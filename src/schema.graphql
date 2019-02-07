@@ -1,3 +1,5 @@
+directive @private(requires: Permission = ADMIN) on FIELD_DEFINITION
+
 type Query {
   feed: [Post!]!
   drafts: [Post!]!
@@ -5,11 +7,15 @@ type Query {
   me: User
   ads(adFeaturesIDs: [String]): [Ad!]
   car(id: ID!): Car
+  carCategories: [CarCategory]
+  carFeatureCategories: [CarFeatureCategory]
+  manufacturers: [Manufacturer]
 }
 
 type Mutation {
   signup(data: UserSignupInput!): User!
   login(email: String!, password: String!): User!
+  logout: String!
   updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
   createCar(data: CarCreateInput!): Car
@@ -46,7 +52,7 @@ input UserSignupInput {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: Date!
   gender: Gender!
   permissions: [Permission!]
 }
@@ -58,7 +64,7 @@ input UserUpdateInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: Date
   gender: Gender
   permissions: [Permission!]
 }
@@ -70,12 +76,18 @@ type User {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: Date!
   gender: Gender!
   permissions: [Permission!]!
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
+}
+
+type Date {
+  day: Int!
+  month: Int!
+  year: Int!
 }
 
 enum Gender {
@@ -92,7 +104,7 @@ enum Permission {
 
 type Ad {
   id: ID!
-  creator: User!
+  creator: User @private
   offers: [Offer!]
   features: [AdFeature!]
   priceLowerBound: Float
@@ -149,7 +161,7 @@ enum AdFeatureImportance {
 
 type Offer {
   id: ID!
-  creator: User!
+  creator: User @private
   ad: Ad!
   car: Car!
   price: Float!
@@ -165,7 +177,7 @@ enum OfferStatus {
 
 type Car {
   id: ID!
-  owner: User!
+  owner: User @private
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!

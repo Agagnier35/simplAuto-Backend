@@ -3,12 +3,14 @@ import * as jwt from "jsonwebtoken";
 import { prisma } from "./generated/prisma-client";
 import resolvers from "./resolvers";
 import { Request } from "express";
+import schemaDirectives from "./directives/index";
 
 const cookieParser = require("cookie-parser");
 
 require("dotenv").config({ path: ".env" });
 
 const server = new GraphQLServer({
+  schemaDirectives,
   resolvers: resolvers as any,
   typeDefs: "./src/schema.graphql",
   context: request => ({

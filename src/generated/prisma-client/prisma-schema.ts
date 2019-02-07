@@ -664,6 +664,10 @@ type AggregateCarModel {
   count: Int!
 }
 
+type AggregateDate {
+  count: Int!
+}
+
 type AggregateManufacturer {
   count: Int!
 }
@@ -1642,7 +1646,126 @@ input CarWhereUniqueInput {
   id: ID
 }
 
+type Date {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+type DateConnection {
+  pageInfo: PageInfo!
+  edges: [DateEdge]!
+  aggregate: AggregateDate!
+}
+
+input DateCreateInput {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+input DateCreateOneInput {
+  create: DateCreateInput
+}
+
+type DateEdge {
+  node: Date!
+  cursor: String!
+}
+
+enum DateOrderByInput {
+  day_ASC
+  day_DESC
+  month_ASC
+  month_DESC
+  year_ASC
+  year_DESC
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type DatePreviousValues {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+type DateSubscriptionPayload {
+  mutation: MutationType!
+  node: Date
+  updatedFields: [String!]
+  previousValues: DatePreviousValues
+}
+
+input DateSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DateWhereInput
+  AND: [DateSubscriptionWhereInput!]
+  OR: [DateSubscriptionWhereInput!]
+  NOT: [DateSubscriptionWhereInput!]
+}
+
 scalar DateTime
+
+input DateUpdateDataInput {
+  day: Int
+  month: Int
+  year: Int
+}
+
+input DateUpdateManyMutationInput {
+  day: Int
+  month: Int
+  year: Int
+}
+
+input DateUpdateOneRequiredInput {
+  create: DateCreateInput
+  update: DateUpdateDataInput
+  upsert: DateUpsertNestedInput
+}
+
+input DateUpsertNestedInput {
+  update: DateUpdateDataInput!
+  create: DateCreateInput!
+}
+
+input DateWhereInput {
+  day: Int
+  day_not: Int
+  day_in: [Int!]
+  day_not_in: [Int!]
+  day_lt: Int
+  day_lte: Int
+  day_gt: Int
+  day_gte: Int
+  month: Int
+  month_not: Int
+  month_in: [Int!]
+  month_not_in: [Int!]
+  month_lt: Int
+  month_lte: Int
+  month_gt: Int
+  month_gte: Int
+  year: Int
+  year_not: Int
+  year_in: [Int!]
+  year_not_in: [Int!]
+  year_lt: Int
+  year_lte: Int
+  year_gt: Int
+  year_gte: Int
+  AND: [DateWhereInput!]
+  OR: [DateWhereInput!]
+  NOT: [DateWhereInput!]
+}
 
 enum Gender {
   MALE
@@ -1832,6 +1955,9 @@ type Mutation {
   upsertCarModel(where: CarModelWhereUniqueInput!, create: CarModelCreateInput!, update: CarModelUpdateInput!): CarModel!
   deleteCarModel(where: CarModelWhereUniqueInput!): CarModel
   deleteManyCarModels(where: CarModelWhereInput): BatchPayload!
+  createDate(data: DateCreateInput!): Date!
+  updateManyDates(data: DateUpdateManyMutationInput!, where: DateWhereInput): BatchPayload!
+  deleteManyDates(where: DateWhereInput): BatchPayload!
   createManufacturer(data: ManufacturerCreateInput!): Manufacturer!
   updateManufacturer(data: ManufacturerUpdateInput!, where: ManufacturerWhereUniqueInput!): Manufacturer
   updateManyManufacturers(data: ManufacturerUpdateManyMutationInput!, where: ManufacturerWhereInput): BatchPayload!
@@ -2368,6 +2494,8 @@ type Query {
   carModel(where: CarModelWhereUniqueInput!): CarModel
   carModels(where: CarModelWhereInput, orderBy: CarModelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarModel]!
   carModelsConnection(where: CarModelWhereInput, orderBy: CarModelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarModelConnection!
+  dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date]!
+  datesConnection(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DateConnection!
   manufacturer(where: ManufacturerWhereUniqueInput!): Manufacturer
   manufacturers(where: ManufacturerWhereInput, orderBy: ManufacturerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Manufacturer]!
   manufacturersConnection(where: ManufacturerWhereInput, orderBy: ManufacturerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ManufacturerConnection!
@@ -2391,6 +2519,7 @@ type Subscription {
   carFeature(where: CarFeatureSubscriptionWhereInput): CarFeatureSubscriptionPayload
   carFeatureCategory(where: CarFeatureCategorySubscriptionWhereInput): CarFeatureCategorySubscriptionPayload
   carModel(where: CarModelSubscriptionWhereInput): CarModelSubscriptionPayload
+  date(where: DateSubscriptionWhereInput): DateSubscriptionPayload
   manufacturer(where: ManufacturerSubscriptionWhereInput): ManufacturerSubscriptionPayload
   offer(where: OfferSubscriptionWhereInput): OfferSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
@@ -2404,7 +2533,7 @@ type User {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: Date!
   gender: Gender!
   permissions: [Permission!]!
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
@@ -2424,7 +2553,7 @@ input UserCreateInput {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: DateCreateOneInput!
   gender: Gender!
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
@@ -2462,7 +2591,7 @@ input UserCreateWithoutAdsInput {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: DateCreateOneInput!
   gender: Gender!
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
@@ -2475,7 +2604,7 @@ input UserCreateWithoutCarsInput {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: DateCreateOneInput!
   gender: Gender!
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
@@ -2488,7 +2617,7 @@ input UserCreateWithoutOffersInput {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
+  birthDate: DateCreateOneInput!
   gender: Gender!
   permissions: UserCreatepermissionsInput
   ads: AdCreateManyWithoutCreatorInput
@@ -2513,8 +2642,6 @@ enum UserOrderByInput {
   password_DESC
   location_ASC
   location_DESC
-  age_ASC
-  age_DESC
   gender_ASC
   gender_DESC
   createdAt_ASC
@@ -2530,7 +2657,6 @@ type UserPreviousValues {
   lastName: String!
   password: String!
   location: String!
-  age: Int!
   gender: Gender!
   permissions: [Permission!]!
 }
@@ -2559,7 +2685,7 @@ input UserUpdateDataInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: DateUpdateOneRequiredInput
   gender: Gender
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
@@ -2573,7 +2699,7 @@ input UserUpdateInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: DateUpdateOneRequiredInput
   gender: Gender
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
@@ -2587,7 +2713,6 @@ input UserUpdateManyMutationInput {
   lastName: String
   password: String
   location: String
-  age: Int
   gender: Gender
   permissions: UserUpdatepermissionsInput
 }
@@ -2630,7 +2755,7 @@ input UserUpdateWithoutAdsDataInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: DateUpdateOneRequiredInput
   gender: Gender
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
@@ -2643,7 +2768,7 @@ input UserUpdateWithoutCarsDataInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: DateUpdateOneRequiredInput
   gender: Gender
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
@@ -2656,7 +2781,7 @@ input UserUpdateWithoutOffersDataInput {
   lastName: String
   password: String
   location: String
-  age: Int
+  birthDate: DateUpdateOneRequiredInput
   gender: Gender
   permissions: UserUpdatepermissionsInput
   ads: AdUpdateManyWithoutCreatorInput
@@ -2768,14 +2893,7 @@ input UserWhereInput {
   location_not_starts_with: String
   location_ends_with: String
   location_not_ends_with: String
-  age: Int
-  age_not: Int
-  age_in: [Int!]
-  age_not_in: [Int!]
-  age_lt: Int
-  age_lte: Int
-  age_gt: Int
-  age_gte: Int
+  birthDate: DateWhereInput
   gender: Gender
   gender_not: Gender
   gender_in: [Gender!]
