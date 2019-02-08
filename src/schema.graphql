@@ -8,6 +8,7 @@ type Query {
   ads(adFeaturesIDs: [String]): [Ad!]
   car(id: ID!): Car
   carCategories: [CarCategory]
+  carFeatureCategory(name: String!): CarFeatureCategory
   carFeatureCategories: [CarFeatureCategory]
   manufacturers: [Manufacturer]
 }
@@ -112,39 +113,92 @@ type Ad {
   id: ID!
   creator: User @private
   offers: [Offer!]
-  features: [AdFeature!]
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: Manufacturer
-  model: CarModel
-  category: CarCategory
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeature
+  priceHigherBoundFeature: PriceBoundFeature
+  manufacturerFeature: ManufacturerFeature
+  modelFeature: ModelFeature
+  categoryFeature: CategoryFeature
+  mileageLowerBoundFeature: MileageBoundFeature
+  mileageHigherBoundFeature: MileageBoundFeature
+  yearLowerBoundFeature: YearBoundFeature
+  yearHigherBoundFeature: YearBoundFeature
+  features: [AdCarFeature!]
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
 }
 
 input AdCreateInput {
-  adFeatures: [adFeatureInput]
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturerID: ID
-  modelID: ID
-  categoryID: ID
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
-  isUrgent: Boolean
-  isFirst: Boolean
+  priceLowerBoundFeature: PriceBoundFeatureInput
+  priceHigherBoundFeature: PriceBoundFeatureInput
+  manufacturerFeature: ManufacturerFeatureInput
+  modelFeature: ModelFeatureInput
+  categoryFeature: CategoryFeatureInput
+  mileageLowerBoundFeature: MileageBoundFeatureInput
+  mileageHigherBoundFeature: MileageBoundFeatureInput
+  yearLowerBoundFeature: YearBoundFeatureInput
+  yearHigherBoundFeature: YearBoundFeatureInput
+  features: [AdCarFeatureInput!]
 }
 
-input adFeatureInput {
-  featureID: ID!
-  importance: AdFeatureImportance!
+type PriceBoundFeature {
+  price: Float!
+  importance: AdFeatureImportance
+}
+
+input PriceBoundFeatureInput {
+  price: Float!
+  importance: AdFeatureImportance
+}
+
+type ManufacturerFeature {
+  manufacturer: Manufacturer!
+  importance: AdFeatureImportance
+}
+
+input ManufacturerFeatureInput {
+  manufacturerID: String!
+  importance: AdFeatureImportance
+}
+
+type ModelFeature {
+  model: CarModel!
+  importance: AdFeatureImportance
+}
+
+input ModelFeatureInput {
+  modelID: String!
+  importance: AdFeatureImportance
+}
+
+type CategoryFeature {
+  category: CarCategory!
+  importance: AdFeatureImportance
+}
+
+input CategoryFeatureInput {
+  categoryID: String!
+  importance: AdFeatureImportance
+}
+
+type MileageBoundFeature {
+  mileage: Int!
+  importance: AdFeatureImportance
+}
+
+input MileageBoundFeatureInput {
+  mileage: Int!
+  importance: AdFeatureImportance
+}
+
+type YearBoundFeature {
+  year: Int!
+  importance: AdFeatureImportance
+}
+
+input YearBoundFeatureInput {
+  year: Int!
+  importance: AdFeatureImportance
 }
 
 enum AdStatus {
@@ -153,10 +207,15 @@ enum AdStatus {
   DELETED
 }
 
-type AdFeature {
+type AdCarFeature {
   id: ID!
   feature: CarFeature!
-  importance: AdFeatureImportance!
+  importance: AdFeatureImportance
+}
+
+input AdCarFeatureInput {
+  featureID: String!
+  importance: AdFeatureImportance
 }
 
 enum AdFeatureImportance {

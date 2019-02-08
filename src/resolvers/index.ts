@@ -10,10 +10,18 @@ import { CarFeature } from "./Nodes/CarFeature";
 import { CarFeatureCategory } from "./Nodes/CarFeatureCategory";
 import { Resolvers } from "../generated/yoga-client";
 import { Post } from "./Nodes/Post";
-import { AdFeature } from "./Nodes/AdFeature";
 import { CarCategory } from "./Nodes/CarCategory";
 import { CarModel } from "./Nodes/CarModel";
 import { Date } from "./Nodes/Date";
+import {
+  AdCarFeature,
+  PriceBoundFeature,
+  ModelFeature,
+  ManufacturerFeature,
+  CategoryFeature,
+  MileageBoundFeature,
+  YearBoundFeature
+} from "./Nodes/AdCarFeature";
 
 const resolvers: Resolvers = {
   Query,
@@ -29,8 +37,14 @@ const resolvers: Resolvers = {
   CarFeatureCategory,
   CarModel,
   Post,
-  AdFeature,
-  Date
+  AdCarFeature,
+  Date,
+  PriceBoundFeature,
+  ModelFeature,
+  ManufacturerFeature,
+  CategoryFeature,
+  MileageBoundFeature,
+  YearBoundFeature
 };
 
 export default resolvers;

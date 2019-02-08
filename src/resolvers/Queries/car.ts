@@ -3,6 +3,7 @@ import { QueryResolvers } from "../../generated/yoga-client";
 
 interface CarQueries {
   carFeatureCategories: QueryResolvers.CarFeatureCategoriesResolver;
+  carFeatureCategory: QueryResolvers.CarFeatureCategoryResolver;
   manufacturers: QueryResolvers.ManufacturersResolver;
   carCategories: QueryResolvers.CarCategoriesResolver;
   car: QueryResolvers.CarResolver;
@@ -14,6 +15,9 @@ export const car: CarQueries = {
   },
   carFeatureCategories(parent, args, ctx: Context) {
     return ctx.prisma.carFeatureCategories();
+  },
+  carFeatureCategory(parent, { name }, ctx: Context) {
+    return ctx.prisma.carFeatureCategory({ name });
   },
   manufacturers(parent, args, ctx: Context) {
     return ctx.prisma.manufacturers();

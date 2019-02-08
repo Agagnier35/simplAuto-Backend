@@ -9,7 +9,19 @@ interface AdResolvers {
 export const ad: AdResolvers = {
   async createAd(parent, { data }, ctx, info) {
     const userId = getUserId(ctx);
-    const { adFeatures, modelID, categoryID, manufacturerID, ...rest } = data;
+    const {
+      priceLowerBoundFeature,
+      priceHigherBoundFeature,
+      manufacturerFeature,
+      modelFeature,
+      categoryFeature,
+      mileageLowerBoundFeature,
+      mileageHigherBoundFeature,
+      yearLowerBoundFeature,
+      yearHigherBoundFeature,
+      features,
+      ...rest
+    } = data;
 
     // TODO Maybe check if each relational object really exists in the db
     // TODO if not throw custom errors
@@ -20,27 +32,96 @@ export const ad: AdResolvers = {
       }
     };
 
-    if (manufacturerID) {
-      mutation.manufacturer = {
-        connect: { id: manufacturerID }
+    if (manufacturerFeature) {
+      mutation.manufacturerFeature = {
+        create: {
+          manufacturer: {
+            connect: { id: manufacturerFeature.manufacturerID }
+          },
+          importance: manufacturerFeature.importance
+        }
       };
     }
 
-    if (modelID) {
-      mutation.model = {
-        connect: { id: modelID }
+    if (modelFeature) {
+      mutation.modelFeature = {
+        create: {
+          model: {
+            connect: { id: modelFeature.modelID }
+          },
+          importance: modelFeature.importance
+        }
       };
     }
 
-    if (categoryID) {
-      mutation.category = {
-        connect: { id: categoryID }
+    if (categoryFeature) {
+      mutation.categoryFeature = {
+        create: {
+          category: {
+            connect: { id: categoryFeature.categoryID }
+          },
+          importance: categoryFeature.importance
+        }
       };
     }
 
-    if (adFeatures && adFeatures.length > 0) {
+    if (priceLowerBoundFeature) {
+      mutation.priceLowerBoundFeature = {
+        create: {
+          price: priceLowerBoundFeature.price,
+          importance: priceLowerBoundFeature.importance
+        }
+      };
+    }
+
+    if (priceHigherBoundFeature) {
+      mutation.priceHigherBoundFeature = {
+        create: {
+          price: priceHigherBoundFeature.price,
+          importance: priceHigherBoundFeature.importance
+        }
+      };
+    }
+
+    if (mileageHigherBoundFeature) {
+      mutation.mileageHigherBoundFeature = {
+        create: {
+          mileage: mileageHigherBoundFeature.mileage,
+          importance: mileageHigherBoundFeature.importance
+        }
+      };
+    }
+
+    if (mileageHigherBoundFeature) {
+      mutation.mileageHigherBoundFeature = {
+        create: {
+          mileage: mileageHigherBoundFeature.mileage,
+          importance: mileageHigherBoundFeature.importance
+        }
+      };
+    }
+
+    if (yearHigherBoundFeature) {
+      mutation.yearHigherBoundFeature = {
+        create: {
+          year: yearHigherBoundFeature.year,
+          importance: yearHigherBoundFeature.importance
+        }
+      };
+    }
+
+    if (yearHigherBoundFeature) {
+      mutation.yearHigherBoundFeature = {
+        create: {
+          year: yearHigherBoundFeature.year,
+          importance: yearHigherBoundFeature.importance
+        }
+      };
+    }
+
+    if (features && features.length > 0) {
       mutation.features = {
-        create: adFeatures.map(feature => ({
+        create: features.map(feature => ({
           feature: { connect: { id: feature.featureID } },
           importance: feature.importance
         }))

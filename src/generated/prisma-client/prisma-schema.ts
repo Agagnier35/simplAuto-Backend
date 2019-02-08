@@ -4,19 +4,184 @@ export const typeDefs = /* GraphQL */ `type Ad {
   createdAt: DateTime!
   updatedAt: DateTime!
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
-  features(where: AdFeatureWhereInput, orderBy: AdFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AdFeature!]
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: Manufacturer
-  model: CarModel
-  category: CarCategory
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeature
+  priceHigherBoundFeature: PriceBoundFeature
+  manufacturerFeature: ManufacturerFeature
+  modelFeature: ModelFeature
+  categoryFeature: CategoryFeature
+  mileageLowerBoundFeature: MileageBoundFeature
+  mileageHigherBoundFeature: MileageBoundFeature
+  yearLowerBoundFeature: YearBoundFeature
+  yearHigherBoundFeature: YearBoundFeature
+  features(where: AdCarFeatureWhereInput, orderBy: AdCarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AdCarFeature!]
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
+}
+
+type AdCarFeature {
+  id: ID!
+  feature: CarFeature!
+  importance: AdCarFeatureImportance
+}
+
+type AdCarFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [AdCarFeatureEdge]!
+  aggregate: AggregateAdCarFeature!
+}
+
+input AdCarFeatureCreateInput {
+  feature: CarFeatureCreateOneInput!
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureCreateManyInput {
+  create: [AdCarFeatureCreateInput!]
+  connect: [AdCarFeatureWhereUniqueInput!]
+}
+
+type AdCarFeatureEdge {
+  node: AdCarFeature!
+  cursor: String!
+}
+
+enum AdCarFeatureImportance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum AdCarFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type AdCarFeaturePreviousValues {
+  id: ID!
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [AdCarFeatureScalarWhereInput!]
+  OR: [AdCarFeatureScalarWhereInput!]
+  NOT: [AdCarFeatureScalarWhereInput!]
+}
+
+type AdCarFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: AdCarFeature
+  updatedFields: [String!]
+  previousValues: AdCarFeaturePreviousValues
+}
+
+input AdCarFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: AdCarFeatureWhereInput
+  AND: [AdCarFeatureSubscriptionWhereInput!]
+  OR: [AdCarFeatureSubscriptionWhereInput!]
+  NOT: [AdCarFeatureSubscriptionWhereInput!]
+}
+
+input AdCarFeatureUpdateDataInput {
+  feature: CarFeatureUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureUpdateInput {
+  feature: CarFeatureUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureUpdateManyDataInput {
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureUpdateManyInput {
+  create: [AdCarFeatureCreateInput!]
+  update: [AdCarFeatureUpdateWithWhereUniqueNestedInput!]
+  upsert: [AdCarFeatureUpsertWithWhereUniqueNestedInput!]
+  delete: [AdCarFeatureWhereUniqueInput!]
+  connect: [AdCarFeatureWhereUniqueInput!]
+  disconnect: [AdCarFeatureWhereUniqueInput!]
+  deleteMany: [AdCarFeatureScalarWhereInput!]
+  updateMany: [AdCarFeatureUpdateManyWithWhereNestedInput!]
+}
+
+input AdCarFeatureUpdateManyMutationInput {
+  importance: AdCarFeatureImportance
+}
+
+input AdCarFeatureUpdateManyWithWhereNestedInput {
+  where: AdCarFeatureScalarWhereInput!
+  data: AdCarFeatureUpdateManyDataInput!
+}
+
+input AdCarFeatureUpdateWithWhereUniqueNestedInput {
+  where: AdCarFeatureWhereUniqueInput!
+  data: AdCarFeatureUpdateDataInput!
+}
+
+input AdCarFeatureUpsertWithWhereUniqueNestedInput {
+  where: AdCarFeatureWhereUniqueInput!
+  update: AdCarFeatureUpdateDataInput!
+  create: AdCarFeatureCreateInput!
+}
+
+input AdCarFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  feature: CarFeatureWhereInput
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [AdCarFeatureWhereInput!]
+  OR: [AdCarFeatureWhereInput!]
+  NOT: [AdCarFeatureWhereInput!]
+}
+
+input AdCarFeatureWhereUniqueInput {
+  id: ID
 }
 
 type AdConnection {
@@ -28,16 +193,16 @@ type AdConnection {
 input AdCreateInput {
   creator: UserCreateOneWithoutAdsInput!
   offers: OfferCreateManyWithoutAdInput
-  features: AdFeatureCreateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerCreateOneInput
-  model: CarModelCreateOneInput
-  category: CarCategoryCreateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureCreateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureCreateOneInput
+  manufacturerFeature: ManufacturerFeatureCreateOneInput
+  modelFeature: ModelFeatureCreateOneInput
+  categoryFeature: CategoryFeatureCreateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureCreateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureCreateOneInput
+  yearLowerBoundFeature: YearBoundFeatureCreateOneInput
+  yearHigherBoundFeature: YearBoundFeatureCreateOneInput
+  features: AdCarFeatureCreateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -55,16 +220,16 @@ input AdCreateOneWithoutOffersInput {
 
 input AdCreateWithoutCreatorInput {
   offers: OfferCreateManyWithoutAdInput
-  features: AdFeatureCreateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerCreateOneInput
-  model: CarModelCreateOneInput
-  category: CarCategoryCreateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureCreateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureCreateOneInput
+  manufacturerFeature: ManufacturerFeatureCreateOneInput
+  modelFeature: ModelFeatureCreateOneInput
+  categoryFeature: CategoryFeatureCreateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureCreateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureCreateOneInput
+  yearLowerBoundFeature: YearBoundFeatureCreateOneInput
+  yearHigherBoundFeature: YearBoundFeatureCreateOneInput
+  features: AdCarFeatureCreateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -72,16 +237,16 @@ input AdCreateWithoutCreatorInput {
 
 input AdCreateWithoutOffersInput {
   creator: UserCreateOneWithoutAdsInput!
-  features: AdFeatureCreateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerCreateOneInput
-  model: CarModelCreateOneInput
-  category: CarCategoryCreateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureCreateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureCreateOneInput
+  manufacturerFeature: ManufacturerFeatureCreateOneInput
+  modelFeature: ModelFeatureCreateOneInput
+  categoryFeature: CategoryFeatureCreateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureCreateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureCreateOneInput
+  yearLowerBoundFeature: YearBoundFeatureCreateOneInput
+  yearHigherBoundFeature: YearBoundFeatureCreateOneInput
+  features: AdCarFeatureCreateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -92,171 +257,6 @@ type AdEdge {
   cursor: String!
 }
 
-type AdFeature {
-  id: ID!
-  feature: CarFeature!
-  importance: AdFeatureImportance!
-}
-
-type AdFeatureConnection {
-  pageInfo: PageInfo!
-  edges: [AdFeatureEdge]!
-  aggregate: AggregateAdFeature!
-}
-
-input AdFeatureCreateInput {
-  feature: CarFeatureCreateOneInput!
-  importance: AdFeatureImportance!
-}
-
-input AdFeatureCreateManyInput {
-  create: [AdFeatureCreateInput!]
-  connect: [AdFeatureWhereUniqueInput!]
-}
-
-type AdFeatureEdge {
-  node: AdFeature!
-  cursor: String!
-}
-
-enum AdFeatureImportance {
-  LOW
-  MEDIUM
-  HIGH
-}
-
-enum AdFeatureOrderByInput {
-  id_ASC
-  id_DESC
-  importance_ASC
-  importance_DESC
-  createdAt_ASC
-  createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
-}
-
-type AdFeaturePreviousValues {
-  id: ID!
-  importance: AdFeatureImportance!
-}
-
-input AdFeatureScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  importance: AdFeatureImportance
-  importance_not: AdFeatureImportance
-  importance_in: [AdFeatureImportance!]
-  importance_not_in: [AdFeatureImportance!]
-  AND: [AdFeatureScalarWhereInput!]
-  OR: [AdFeatureScalarWhereInput!]
-  NOT: [AdFeatureScalarWhereInput!]
-}
-
-type AdFeatureSubscriptionPayload {
-  mutation: MutationType!
-  node: AdFeature
-  updatedFields: [String!]
-  previousValues: AdFeaturePreviousValues
-}
-
-input AdFeatureSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: AdFeatureWhereInput
-  AND: [AdFeatureSubscriptionWhereInput!]
-  OR: [AdFeatureSubscriptionWhereInput!]
-  NOT: [AdFeatureSubscriptionWhereInput!]
-}
-
-input AdFeatureUpdateDataInput {
-  feature: CarFeatureUpdateOneRequiredInput
-  importance: AdFeatureImportance
-}
-
-input AdFeatureUpdateInput {
-  feature: CarFeatureUpdateOneRequiredInput
-  importance: AdFeatureImportance
-}
-
-input AdFeatureUpdateManyDataInput {
-  importance: AdFeatureImportance
-}
-
-input AdFeatureUpdateManyInput {
-  create: [AdFeatureCreateInput!]
-  update: [AdFeatureUpdateWithWhereUniqueNestedInput!]
-  upsert: [AdFeatureUpsertWithWhereUniqueNestedInput!]
-  delete: [AdFeatureWhereUniqueInput!]
-  connect: [AdFeatureWhereUniqueInput!]
-  disconnect: [AdFeatureWhereUniqueInput!]
-  deleteMany: [AdFeatureScalarWhereInput!]
-  updateMany: [AdFeatureUpdateManyWithWhereNestedInput!]
-}
-
-input AdFeatureUpdateManyMutationInput {
-  importance: AdFeatureImportance
-}
-
-input AdFeatureUpdateManyWithWhereNestedInput {
-  where: AdFeatureScalarWhereInput!
-  data: AdFeatureUpdateManyDataInput!
-}
-
-input AdFeatureUpdateWithWhereUniqueNestedInput {
-  where: AdFeatureWhereUniqueInput!
-  data: AdFeatureUpdateDataInput!
-}
-
-input AdFeatureUpsertWithWhereUniqueNestedInput {
-  where: AdFeatureWhereUniqueInput!
-  update: AdFeatureUpdateDataInput!
-  create: AdFeatureCreateInput!
-}
-
-input AdFeatureWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  feature: CarFeatureWhereInput
-  importance: AdFeatureImportance
-  importance_not: AdFeatureImportance
-  importance_in: [AdFeatureImportance!]
-  importance_not_in: [AdFeatureImportance!]
-  AND: [AdFeatureWhereInput!]
-  OR: [AdFeatureWhereInput!]
-  NOT: [AdFeatureWhereInput!]
-}
-
-input AdFeatureWhereUniqueInput {
-  id: ID
-}
-
 enum AdOrderByInput {
   id_ASC
   id_DESC
@@ -264,18 +264,6 @@ enum AdOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  priceLowerBound_ASC
-  priceLowerBound_DESC
-  priceHigherBound_ASC
-  priceHigherBound_DESC
-  mileageLowerBound_ASC
-  mileageLowerBound_DESC
-  mileageHigherBound_ASC
-  mileageHigherBound_DESC
-  yearLowerBound_ASC
-  yearLowerBound_DESC
-  yearHigherBound_ASC
-  yearHigherBound_DESC
   isUrgent_ASC
   isUrgent_DESC
   isFirst_ASC
@@ -288,12 +276,6 @@ type AdPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  priceLowerBound: Float
-  priceHigherBound: Float
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
@@ -330,54 +312,6 @@ input AdScalarWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  priceLowerBound: Float
-  priceLowerBound_not: Float
-  priceLowerBound_in: [Float!]
-  priceLowerBound_not_in: [Float!]
-  priceLowerBound_lt: Float
-  priceLowerBound_lte: Float
-  priceLowerBound_gt: Float
-  priceLowerBound_gte: Float
-  priceHigherBound: Float
-  priceHigherBound_not: Float
-  priceHigherBound_in: [Float!]
-  priceHigherBound_not_in: [Float!]
-  priceHigherBound_lt: Float
-  priceHigherBound_lte: Float
-  priceHigherBound_gt: Float
-  priceHigherBound_gte: Float
-  mileageLowerBound: Int
-  mileageLowerBound_not: Int
-  mileageLowerBound_in: [Int!]
-  mileageLowerBound_not_in: [Int!]
-  mileageLowerBound_lt: Int
-  mileageLowerBound_lte: Int
-  mileageLowerBound_gt: Int
-  mileageLowerBound_gte: Int
-  mileageHigherBound: Int
-  mileageHigherBound_not: Int
-  mileageHigherBound_in: [Int!]
-  mileageHigherBound_not_in: [Int!]
-  mileageHigherBound_lt: Int
-  mileageHigherBound_lte: Int
-  mileageHigherBound_gt: Int
-  mileageHigherBound_gte: Int
-  yearLowerBound: Int
-  yearLowerBound_not: Int
-  yearLowerBound_in: [Int!]
-  yearLowerBound_not_in: [Int!]
-  yearLowerBound_lt: Int
-  yearLowerBound_lte: Int
-  yearLowerBound_gt: Int
-  yearLowerBound_gte: Int
-  yearHigherBound: Int
-  yearHigherBound_not: Int
-  yearHigherBound_in: [Int!]
-  yearHigherBound_not_in: [Int!]
-  yearHigherBound_lt: Int
-  yearHigherBound_lte: Int
-  yearHigherBound_gt: Int
-  yearHigherBound_gte: Int
   isUrgent: Boolean
   isUrgent_not: Boolean
   isFirst: Boolean
@@ -418,40 +352,28 @@ input AdSubscriptionWhereInput {
 input AdUpdateInput {
   creator: UserUpdateOneRequiredWithoutAdsInput
   offers: OfferUpdateManyWithoutAdInput
-  features: AdFeatureUpdateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerUpdateOneInput
-  model: CarModelUpdateOneInput
-  category: CarCategoryUpdateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureUpdateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureUpdateOneInput
+  manufacturerFeature: ManufacturerFeatureUpdateOneInput
+  modelFeature: ModelFeatureUpdateOneInput
+  categoryFeature: CategoryFeatureUpdateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureUpdateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureUpdateOneInput
+  yearLowerBoundFeature: YearBoundFeatureUpdateOneInput
+  yearHigherBoundFeature: YearBoundFeatureUpdateOneInput
+  features: AdCarFeatureUpdateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
 }
 
 input AdUpdateManyDataInput {
-  priceLowerBound: Float
-  priceHigherBound: Float
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
 }
 
 input AdUpdateManyMutationInput {
-  priceLowerBound: Float
-  priceHigherBound: Float
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -482,16 +404,16 @@ input AdUpdateOneRequiredWithoutOffersInput {
 
 input AdUpdateWithoutCreatorDataInput {
   offers: OfferUpdateManyWithoutAdInput
-  features: AdFeatureUpdateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerUpdateOneInput
-  model: CarModelUpdateOneInput
-  category: CarCategoryUpdateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureUpdateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureUpdateOneInput
+  manufacturerFeature: ManufacturerFeatureUpdateOneInput
+  modelFeature: ModelFeatureUpdateOneInput
+  categoryFeature: CategoryFeatureUpdateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureUpdateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureUpdateOneInput
+  yearLowerBoundFeature: YearBoundFeatureUpdateOneInput
+  yearHigherBoundFeature: YearBoundFeatureUpdateOneInput
+  features: AdCarFeatureUpdateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -499,16 +421,16 @@ input AdUpdateWithoutCreatorDataInput {
 
 input AdUpdateWithoutOffersDataInput {
   creator: UserUpdateOneRequiredWithoutAdsInput
-  features: AdFeatureUpdateManyInput
-  priceLowerBound: Float
-  priceHigherBound: Float
-  manufacturer: ManufacturerUpdateOneInput
-  model: CarModelUpdateOneInput
-  category: CarCategoryUpdateOneInput
-  mileageLowerBound: Int
-  mileageHigherBound: Int
-  yearLowerBound: Int
-  yearHigherBound: Int
+  priceLowerBoundFeature: PriceBoundFeatureUpdateOneInput
+  priceHigherBoundFeature: PriceBoundFeatureUpdateOneInput
+  manufacturerFeature: ManufacturerFeatureUpdateOneInput
+  modelFeature: ModelFeatureUpdateOneInput
+  categoryFeature: CategoryFeatureUpdateOneInput
+  mileageLowerBoundFeature: MileageBoundFeatureUpdateOneInput
+  mileageHigherBoundFeature: MileageBoundFeatureUpdateOneInput
+  yearLowerBoundFeature: YearBoundFeatureUpdateOneInput
+  yearHigherBoundFeature: YearBoundFeatureUpdateOneInput
+  features: AdCarFeatureUpdateManyInput
   isUrgent: Boolean
   isFirst: Boolean
   status: AdStatus
@@ -565,60 +487,18 @@ input AdWhereInput {
   offers_every: OfferWhereInput
   offers_some: OfferWhereInput
   offers_none: OfferWhereInput
-  features_every: AdFeatureWhereInput
-  features_some: AdFeatureWhereInput
-  features_none: AdFeatureWhereInput
-  priceLowerBound: Float
-  priceLowerBound_not: Float
-  priceLowerBound_in: [Float!]
-  priceLowerBound_not_in: [Float!]
-  priceLowerBound_lt: Float
-  priceLowerBound_lte: Float
-  priceLowerBound_gt: Float
-  priceLowerBound_gte: Float
-  priceHigherBound: Float
-  priceHigherBound_not: Float
-  priceHigherBound_in: [Float!]
-  priceHigherBound_not_in: [Float!]
-  priceHigherBound_lt: Float
-  priceHigherBound_lte: Float
-  priceHigherBound_gt: Float
-  priceHigherBound_gte: Float
-  manufacturer: ManufacturerWhereInput
-  model: CarModelWhereInput
-  category: CarCategoryWhereInput
-  mileageLowerBound: Int
-  mileageLowerBound_not: Int
-  mileageLowerBound_in: [Int!]
-  mileageLowerBound_not_in: [Int!]
-  mileageLowerBound_lt: Int
-  mileageLowerBound_lte: Int
-  mileageLowerBound_gt: Int
-  mileageLowerBound_gte: Int
-  mileageHigherBound: Int
-  mileageHigherBound_not: Int
-  mileageHigherBound_in: [Int!]
-  mileageHigherBound_not_in: [Int!]
-  mileageHigherBound_lt: Int
-  mileageHigherBound_lte: Int
-  mileageHigherBound_gt: Int
-  mileageHigherBound_gte: Int
-  yearLowerBound: Int
-  yearLowerBound_not: Int
-  yearLowerBound_in: [Int!]
-  yearLowerBound_not_in: [Int!]
-  yearLowerBound_lt: Int
-  yearLowerBound_lte: Int
-  yearLowerBound_gt: Int
-  yearLowerBound_gte: Int
-  yearHigherBound: Int
-  yearHigherBound_not: Int
-  yearHigherBound_in: [Int!]
-  yearHigherBound_not_in: [Int!]
-  yearHigherBound_lt: Int
-  yearHigherBound_lte: Int
-  yearHigherBound_gt: Int
-  yearHigherBound_gte: Int
+  priceLowerBoundFeature: PriceBoundFeatureWhereInput
+  priceHigherBoundFeature: PriceBoundFeatureWhereInput
+  manufacturerFeature: ManufacturerFeatureWhereInput
+  modelFeature: ModelFeatureWhereInput
+  categoryFeature: CategoryFeatureWhereInput
+  mileageLowerBoundFeature: MileageBoundFeatureWhereInput
+  mileageHigherBoundFeature: MileageBoundFeatureWhereInput
+  yearLowerBoundFeature: YearBoundFeatureWhereInput
+  yearHigherBoundFeature: YearBoundFeatureWhereInput
+  features_every: AdCarFeatureWhereInput
+  features_some: AdCarFeatureWhereInput
+  features_none: AdCarFeatureWhereInput
   isUrgent: Boolean
   isUrgent_not: Boolean
   isFirst: Boolean
@@ -640,7 +520,7 @@ type AggregateAd {
   count: Int!
 }
 
-type AggregateAdFeature {
+type AggregateAdCarFeature {
   count: Int!
 }
 
@@ -664,11 +544,27 @@ type AggregateCarModel {
   count: Int!
 }
 
+type AggregateCategoryFeature {
+  count: Int!
+}
+
 type AggregateDate {
   count: Int!
 }
 
 type AggregateManufacturer {
+  count: Int!
+}
+
+type AggregateManufacturerFeature {
+  count: Int!
+}
+
+type AggregateMileageBoundFeature {
+  count: Int!
+}
+
+type AggregateModelFeature {
   count: Int!
 }
 
@@ -680,7 +576,15 @@ type AggregatePost {
   count: Int!
 }
 
+type AggregatePriceBoundFeature {
+  count: Int!
+}
+
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateYearBoundFeature {
   count: Int!
 }
 
@@ -769,15 +673,6 @@ input CarCategoryUpdateInput {
 
 input CarCategoryUpdateManyMutationInput {
   name: String
-}
-
-input CarCategoryUpdateOneInput {
-  create: CarCategoryCreateInput
-  update: CarCategoryUpdateDataInput
-  upsert: CarCategoryUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: CarCategoryWhereUniqueInput
 }
 
 input CarCategoryUpdateOneRequiredInput {
@@ -1011,6 +906,7 @@ input CarFeatureCategoryWhereInput {
 
 input CarFeatureCategoryWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type CarFeatureConnection {
@@ -1368,15 +1264,6 @@ input CarModelUpdateManyWithWhereNestedInput {
   data: CarModelUpdateManyDataInput!
 }
 
-input CarModelUpdateOneInput {
-  create: CarModelCreateInput
-  update: CarModelUpdateDataInput
-  upsert: CarModelUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: CarModelWhereUniqueInput
-}
-
 input CarModelUpdateOneRequiredInput {
   create: CarModelCreateInput
   update: CarModelUpdateDataInput
@@ -1646,6 +1533,124 @@ input CarWhereUniqueInput {
   id: ID
 }
 
+type CategoryFeature {
+  id: ID!
+  category: CarCategory!
+  importance: AdCarFeatureImportance
+}
+
+type CategoryFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [CategoryFeatureEdge]!
+  aggregate: AggregateCategoryFeature!
+}
+
+input CategoryFeatureCreateInput {
+  category: CarCategoryCreateOneInput!
+  importance: AdCarFeatureImportance
+}
+
+input CategoryFeatureCreateOneInput {
+  create: CategoryFeatureCreateInput
+  connect: CategoryFeatureWhereUniqueInput
+}
+
+type CategoryFeatureEdge {
+  node: CategoryFeature!
+  cursor: String!
+}
+
+enum CategoryFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type CategoryFeaturePreviousValues {
+  id: ID!
+  importance: AdCarFeatureImportance
+}
+
+type CategoryFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: CategoryFeature
+  updatedFields: [String!]
+  previousValues: CategoryFeaturePreviousValues
+}
+
+input CategoryFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: CategoryFeatureWhereInput
+  AND: [CategoryFeatureSubscriptionWhereInput!]
+  OR: [CategoryFeatureSubscriptionWhereInput!]
+  NOT: [CategoryFeatureSubscriptionWhereInput!]
+}
+
+input CategoryFeatureUpdateDataInput {
+  category: CarCategoryUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input CategoryFeatureUpdateInput {
+  category: CarCategoryUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input CategoryFeatureUpdateManyMutationInput {
+  importance: AdCarFeatureImportance
+}
+
+input CategoryFeatureUpdateOneInput {
+  create: CategoryFeatureCreateInput
+  update: CategoryFeatureUpdateDataInput
+  upsert: CategoryFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: CategoryFeatureWhereUniqueInput
+}
+
+input CategoryFeatureUpsertNestedInput {
+  update: CategoryFeatureUpdateDataInput!
+  create: CategoryFeatureCreateInput!
+}
+
+input CategoryFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  category: CarCategoryWhereInput
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [CategoryFeatureWhereInput!]
+  OR: [CategoryFeatureWhereInput!]
+  NOT: [CategoryFeatureWhereInput!]
+}
+
+input CategoryFeatureWhereUniqueInput {
+  id: ID
+}
+
 type Date {
   day: Int!
   month: Int!
@@ -1802,6 +1807,124 @@ type ManufacturerEdge {
   cursor: String!
 }
 
+type ManufacturerFeature {
+  id: ID!
+  manufacturer: Manufacturer!
+  importance: AdCarFeatureImportance
+}
+
+type ManufacturerFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [ManufacturerFeatureEdge]!
+  aggregate: AggregateManufacturerFeature!
+}
+
+input ManufacturerFeatureCreateInput {
+  manufacturer: ManufacturerCreateOneInput!
+  importance: AdCarFeatureImportance
+}
+
+input ManufacturerFeatureCreateOneInput {
+  create: ManufacturerFeatureCreateInput
+  connect: ManufacturerFeatureWhereUniqueInput
+}
+
+type ManufacturerFeatureEdge {
+  node: ManufacturerFeature!
+  cursor: String!
+}
+
+enum ManufacturerFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ManufacturerFeaturePreviousValues {
+  id: ID!
+  importance: AdCarFeatureImportance
+}
+
+type ManufacturerFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: ManufacturerFeature
+  updatedFields: [String!]
+  previousValues: ManufacturerFeaturePreviousValues
+}
+
+input ManufacturerFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ManufacturerFeatureWhereInput
+  AND: [ManufacturerFeatureSubscriptionWhereInput!]
+  OR: [ManufacturerFeatureSubscriptionWhereInput!]
+  NOT: [ManufacturerFeatureSubscriptionWhereInput!]
+}
+
+input ManufacturerFeatureUpdateDataInput {
+  manufacturer: ManufacturerUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input ManufacturerFeatureUpdateInput {
+  manufacturer: ManufacturerUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input ManufacturerFeatureUpdateManyMutationInput {
+  importance: AdCarFeatureImportance
+}
+
+input ManufacturerFeatureUpdateOneInput {
+  create: ManufacturerFeatureCreateInput
+  update: ManufacturerFeatureUpdateDataInput
+  upsert: ManufacturerFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ManufacturerFeatureWhereUniqueInput
+}
+
+input ManufacturerFeatureUpsertNestedInput {
+  update: ManufacturerFeatureUpdateDataInput!
+  create: ManufacturerFeatureCreateInput!
+}
+
+input ManufacturerFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  manufacturer: ManufacturerWhereInput
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [ManufacturerFeatureWhereInput!]
+  OR: [ManufacturerFeatureWhereInput!]
+  NOT: [ManufacturerFeatureWhereInput!]
+}
+
+input ManufacturerFeatureWhereUniqueInput {
+  id: ID
+}
+
 enum ManufacturerOrderByInput {
   id_ASC
   id_DESC
@@ -1848,15 +1971,6 @@ input ManufacturerUpdateInput {
 
 input ManufacturerUpdateManyMutationInput {
   name: String
-}
-
-input ManufacturerUpdateOneInput {
-  create: ManufacturerCreateInput
-  update: ManufacturerUpdateDataInput
-  upsert: ManufacturerUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: ManufacturerWhereUniqueInput
 }
 
 input ManufacturerUpdateOneRequiredInput {
@@ -1912,6 +2026,253 @@ input ManufacturerWhereUniqueInput {
   id: ID
 }
 
+type MileageBoundFeature {
+  id: ID!
+  mileage: Int!
+  importance: AdCarFeatureImportance
+}
+
+type MileageBoundFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [MileageBoundFeatureEdge]!
+  aggregate: AggregateMileageBoundFeature!
+}
+
+input MileageBoundFeatureCreateInput {
+  mileage: Int!
+  importance: AdCarFeatureImportance
+}
+
+input MileageBoundFeatureCreateOneInput {
+  create: MileageBoundFeatureCreateInput
+  connect: MileageBoundFeatureWhereUniqueInput
+}
+
+type MileageBoundFeatureEdge {
+  node: MileageBoundFeature!
+  cursor: String!
+}
+
+enum MileageBoundFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  mileage_ASC
+  mileage_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type MileageBoundFeaturePreviousValues {
+  id: ID!
+  mileage: Int!
+  importance: AdCarFeatureImportance
+}
+
+type MileageBoundFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: MileageBoundFeature
+  updatedFields: [String!]
+  previousValues: MileageBoundFeaturePreviousValues
+}
+
+input MileageBoundFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MileageBoundFeatureWhereInput
+  AND: [MileageBoundFeatureSubscriptionWhereInput!]
+  OR: [MileageBoundFeatureSubscriptionWhereInput!]
+  NOT: [MileageBoundFeatureSubscriptionWhereInput!]
+}
+
+input MileageBoundFeatureUpdateDataInput {
+  mileage: Int
+  importance: AdCarFeatureImportance
+}
+
+input MileageBoundFeatureUpdateInput {
+  mileage: Int
+  importance: AdCarFeatureImportance
+}
+
+input MileageBoundFeatureUpdateManyMutationInput {
+  mileage: Int
+  importance: AdCarFeatureImportance
+}
+
+input MileageBoundFeatureUpdateOneInput {
+  create: MileageBoundFeatureCreateInput
+  update: MileageBoundFeatureUpdateDataInput
+  upsert: MileageBoundFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: MileageBoundFeatureWhereUniqueInput
+}
+
+input MileageBoundFeatureUpsertNestedInput {
+  update: MileageBoundFeatureUpdateDataInput!
+  create: MileageBoundFeatureCreateInput!
+}
+
+input MileageBoundFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  mileage: Int
+  mileage_not: Int
+  mileage_in: [Int!]
+  mileage_not_in: [Int!]
+  mileage_lt: Int
+  mileage_lte: Int
+  mileage_gt: Int
+  mileage_gte: Int
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [MileageBoundFeatureWhereInput!]
+  OR: [MileageBoundFeatureWhereInput!]
+  NOT: [MileageBoundFeatureWhereInput!]
+}
+
+input MileageBoundFeatureWhereUniqueInput {
+  id: ID
+}
+
+type ModelFeature {
+  id: ID!
+  model: CarModel!
+  importance: AdCarFeatureImportance
+}
+
+type ModelFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [ModelFeatureEdge]!
+  aggregate: AggregateModelFeature!
+}
+
+input ModelFeatureCreateInput {
+  model: CarModelCreateOneInput!
+  importance: AdCarFeatureImportance
+}
+
+input ModelFeatureCreateOneInput {
+  create: ModelFeatureCreateInput
+  connect: ModelFeatureWhereUniqueInput
+}
+
+type ModelFeatureEdge {
+  node: ModelFeature!
+  cursor: String!
+}
+
+enum ModelFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ModelFeaturePreviousValues {
+  id: ID!
+  importance: AdCarFeatureImportance
+}
+
+type ModelFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: ModelFeature
+  updatedFields: [String!]
+  previousValues: ModelFeaturePreviousValues
+}
+
+input ModelFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ModelFeatureWhereInput
+  AND: [ModelFeatureSubscriptionWhereInput!]
+  OR: [ModelFeatureSubscriptionWhereInput!]
+  NOT: [ModelFeatureSubscriptionWhereInput!]
+}
+
+input ModelFeatureUpdateDataInput {
+  model: CarModelUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input ModelFeatureUpdateInput {
+  model: CarModelUpdateOneRequiredInput
+  importance: AdCarFeatureImportance
+}
+
+input ModelFeatureUpdateManyMutationInput {
+  importance: AdCarFeatureImportance
+}
+
+input ModelFeatureUpdateOneInput {
+  create: ModelFeatureCreateInput
+  update: ModelFeatureUpdateDataInput
+  upsert: ModelFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ModelFeatureWhereUniqueInput
+}
+
+input ModelFeatureUpsertNestedInput {
+  update: ModelFeatureUpdateDataInput!
+  create: ModelFeatureCreateInput!
+}
+
+input ModelFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  model: CarModelWhereInput
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [ModelFeatureWhereInput!]
+  OR: [ModelFeatureWhereInput!]
+  NOT: [ModelFeatureWhereInput!]
+}
+
+input ModelFeatureWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createAd(data: AdCreateInput!): Ad!
   updateAd(data: AdUpdateInput!, where: AdWhereUniqueInput!): Ad
@@ -1919,12 +2280,12 @@ type Mutation {
   upsertAd(where: AdWhereUniqueInput!, create: AdCreateInput!, update: AdUpdateInput!): Ad!
   deleteAd(where: AdWhereUniqueInput!): Ad
   deleteManyAds(where: AdWhereInput): BatchPayload!
-  createAdFeature(data: AdFeatureCreateInput!): AdFeature!
-  updateAdFeature(data: AdFeatureUpdateInput!, where: AdFeatureWhereUniqueInput!): AdFeature
-  updateManyAdFeatures(data: AdFeatureUpdateManyMutationInput!, where: AdFeatureWhereInput): BatchPayload!
-  upsertAdFeature(where: AdFeatureWhereUniqueInput!, create: AdFeatureCreateInput!, update: AdFeatureUpdateInput!): AdFeature!
-  deleteAdFeature(where: AdFeatureWhereUniqueInput!): AdFeature
-  deleteManyAdFeatures(where: AdFeatureWhereInput): BatchPayload!
+  createAdCarFeature(data: AdCarFeatureCreateInput!): AdCarFeature!
+  updateAdCarFeature(data: AdCarFeatureUpdateInput!, where: AdCarFeatureWhereUniqueInput!): AdCarFeature
+  updateManyAdCarFeatures(data: AdCarFeatureUpdateManyMutationInput!, where: AdCarFeatureWhereInput): BatchPayload!
+  upsertAdCarFeature(where: AdCarFeatureWhereUniqueInput!, create: AdCarFeatureCreateInput!, update: AdCarFeatureUpdateInput!): AdCarFeature!
+  deleteAdCarFeature(where: AdCarFeatureWhereUniqueInput!): AdCarFeature
+  deleteManyAdCarFeatures(where: AdCarFeatureWhereInput): BatchPayload!
   createCar(data: CarCreateInput!): Car!
   updateCar(data: CarUpdateInput!, where: CarWhereUniqueInput!): Car
   updateManyCars(data: CarUpdateManyMutationInput!, where: CarWhereInput): BatchPayload!
@@ -1955,6 +2316,12 @@ type Mutation {
   upsertCarModel(where: CarModelWhereUniqueInput!, create: CarModelCreateInput!, update: CarModelUpdateInput!): CarModel!
   deleteCarModel(where: CarModelWhereUniqueInput!): CarModel
   deleteManyCarModels(where: CarModelWhereInput): BatchPayload!
+  createCategoryFeature(data: CategoryFeatureCreateInput!): CategoryFeature!
+  updateCategoryFeature(data: CategoryFeatureUpdateInput!, where: CategoryFeatureWhereUniqueInput!): CategoryFeature
+  updateManyCategoryFeatures(data: CategoryFeatureUpdateManyMutationInput!, where: CategoryFeatureWhereInput): BatchPayload!
+  upsertCategoryFeature(where: CategoryFeatureWhereUniqueInput!, create: CategoryFeatureCreateInput!, update: CategoryFeatureUpdateInput!): CategoryFeature!
+  deleteCategoryFeature(where: CategoryFeatureWhereUniqueInput!): CategoryFeature
+  deleteManyCategoryFeatures(where: CategoryFeatureWhereInput): BatchPayload!
   createDate(data: DateCreateInput!): Date!
   updateManyDates(data: DateUpdateManyMutationInput!, where: DateWhereInput): BatchPayload!
   deleteManyDates(where: DateWhereInput): BatchPayload!
@@ -1964,6 +2331,24 @@ type Mutation {
   upsertManufacturer(where: ManufacturerWhereUniqueInput!, create: ManufacturerCreateInput!, update: ManufacturerUpdateInput!): Manufacturer!
   deleteManufacturer(where: ManufacturerWhereUniqueInput!): Manufacturer
   deleteManyManufacturers(where: ManufacturerWhereInput): BatchPayload!
+  createManufacturerFeature(data: ManufacturerFeatureCreateInput!): ManufacturerFeature!
+  updateManufacturerFeature(data: ManufacturerFeatureUpdateInput!, where: ManufacturerFeatureWhereUniqueInput!): ManufacturerFeature
+  updateManyManufacturerFeatures(data: ManufacturerFeatureUpdateManyMutationInput!, where: ManufacturerFeatureWhereInput): BatchPayload!
+  upsertManufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!, create: ManufacturerFeatureCreateInput!, update: ManufacturerFeatureUpdateInput!): ManufacturerFeature!
+  deleteManufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!): ManufacturerFeature
+  deleteManyManufacturerFeatures(where: ManufacturerFeatureWhereInput): BatchPayload!
+  createMileageBoundFeature(data: MileageBoundFeatureCreateInput!): MileageBoundFeature!
+  updateMileageBoundFeature(data: MileageBoundFeatureUpdateInput!, where: MileageBoundFeatureWhereUniqueInput!): MileageBoundFeature
+  updateManyMileageBoundFeatures(data: MileageBoundFeatureUpdateManyMutationInput!, where: MileageBoundFeatureWhereInput): BatchPayload!
+  upsertMileageBoundFeature(where: MileageBoundFeatureWhereUniqueInput!, create: MileageBoundFeatureCreateInput!, update: MileageBoundFeatureUpdateInput!): MileageBoundFeature!
+  deleteMileageBoundFeature(where: MileageBoundFeatureWhereUniqueInput!): MileageBoundFeature
+  deleteManyMileageBoundFeatures(where: MileageBoundFeatureWhereInput): BatchPayload!
+  createModelFeature(data: ModelFeatureCreateInput!): ModelFeature!
+  updateModelFeature(data: ModelFeatureUpdateInput!, where: ModelFeatureWhereUniqueInput!): ModelFeature
+  updateManyModelFeatures(data: ModelFeatureUpdateManyMutationInput!, where: ModelFeatureWhereInput): BatchPayload!
+  upsertModelFeature(where: ModelFeatureWhereUniqueInput!, create: ModelFeatureCreateInput!, update: ModelFeatureUpdateInput!): ModelFeature!
+  deleteModelFeature(where: ModelFeatureWhereUniqueInput!): ModelFeature
+  deleteManyModelFeatures(where: ModelFeatureWhereInput): BatchPayload!
   createOffer(data: OfferCreateInput!): Offer!
   updateOffer(data: OfferUpdateInput!, where: OfferWhereUniqueInput!): Offer
   updateManyOffers(data: OfferUpdateManyMutationInput!, where: OfferWhereInput): BatchPayload!
@@ -1976,12 +2361,24 @@ type Mutation {
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   deletePost(where: PostWhereUniqueInput!): Post
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  createPriceBoundFeature(data: PriceBoundFeatureCreateInput!): PriceBoundFeature!
+  updatePriceBoundFeature(data: PriceBoundFeatureUpdateInput!, where: PriceBoundFeatureWhereUniqueInput!): PriceBoundFeature
+  updateManyPriceBoundFeatures(data: PriceBoundFeatureUpdateManyMutationInput!, where: PriceBoundFeatureWhereInput): BatchPayload!
+  upsertPriceBoundFeature(where: PriceBoundFeatureWhereUniqueInput!, create: PriceBoundFeatureCreateInput!, update: PriceBoundFeatureUpdateInput!): PriceBoundFeature!
+  deletePriceBoundFeature(where: PriceBoundFeatureWhereUniqueInput!): PriceBoundFeature
+  deleteManyPriceBoundFeatures(where: PriceBoundFeatureWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createYearBoundFeature(data: YearBoundFeatureCreateInput!): YearBoundFeature!
+  updateYearBoundFeature(data: YearBoundFeatureUpdateInput!, where: YearBoundFeatureWhereUniqueInput!): YearBoundFeature
+  updateManyYearBoundFeatures(data: YearBoundFeatureUpdateManyMutationInput!, where: YearBoundFeatureWhereInput): BatchPayload!
+  upsertYearBoundFeature(where: YearBoundFeatureWhereUniqueInput!, create: YearBoundFeatureCreateInput!, update: YearBoundFeatureUpdateInput!): YearBoundFeature!
+  deleteYearBoundFeature(where: YearBoundFeatureWhereUniqueInput!): YearBoundFeature
+  deleteManyYearBoundFeatures(where: YearBoundFeatureWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -2472,13 +2869,142 @@ input PostWhereUniqueInput {
   id: ID
 }
 
+type PriceBoundFeature {
+  id: ID!
+  price: Float!
+  importance: AdCarFeatureImportance
+}
+
+type PriceBoundFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [PriceBoundFeatureEdge]!
+  aggregate: AggregatePriceBoundFeature!
+}
+
+input PriceBoundFeatureCreateInput {
+  price: Float!
+  importance: AdCarFeatureImportance
+}
+
+input PriceBoundFeatureCreateOneInput {
+  create: PriceBoundFeatureCreateInput
+  connect: PriceBoundFeatureWhereUniqueInput
+}
+
+type PriceBoundFeatureEdge {
+  node: PriceBoundFeature!
+  cursor: String!
+}
+
+enum PriceBoundFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  price_ASC
+  price_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type PriceBoundFeaturePreviousValues {
+  id: ID!
+  price: Float!
+  importance: AdCarFeatureImportance
+}
+
+type PriceBoundFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: PriceBoundFeature
+  updatedFields: [String!]
+  previousValues: PriceBoundFeaturePreviousValues
+}
+
+input PriceBoundFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PriceBoundFeatureWhereInput
+  AND: [PriceBoundFeatureSubscriptionWhereInput!]
+  OR: [PriceBoundFeatureSubscriptionWhereInput!]
+  NOT: [PriceBoundFeatureSubscriptionWhereInput!]
+}
+
+input PriceBoundFeatureUpdateDataInput {
+  price: Float
+  importance: AdCarFeatureImportance
+}
+
+input PriceBoundFeatureUpdateInput {
+  price: Float
+  importance: AdCarFeatureImportance
+}
+
+input PriceBoundFeatureUpdateManyMutationInput {
+  price: Float
+  importance: AdCarFeatureImportance
+}
+
+input PriceBoundFeatureUpdateOneInput {
+  create: PriceBoundFeatureCreateInput
+  update: PriceBoundFeatureUpdateDataInput
+  upsert: PriceBoundFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: PriceBoundFeatureWhereUniqueInput
+}
+
+input PriceBoundFeatureUpsertNestedInput {
+  update: PriceBoundFeatureUpdateDataInput!
+  create: PriceBoundFeatureCreateInput!
+}
+
+input PriceBoundFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  price: Float
+  price_not: Float
+  price_in: [Float!]
+  price_not_in: [Float!]
+  price_lt: Float
+  price_lte: Float
+  price_gt: Float
+  price_gte: Float
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [PriceBoundFeatureWhereInput!]
+  OR: [PriceBoundFeatureWhereInput!]
+  NOT: [PriceBoundFeatureWhereInput!]
+}
+
+input PriceBoundFeatureWhereUniqueInput {
+  id: ID
+}
+
 type Query {
   ad(where: AdWhereUniqueInput!): Ad
   ads(where: AdWhereInput, orderBy: AdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ad]!
   adsConnection(where: AdWhereInput, orderBy: AdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AdConnection!
-  adFeature(where: AdFeatureWhereUniqueInput!): AdFeature
-  adFeatures(where: AdFeatureWhereInput, orderBy: AdFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AdFeature]!
-  adFeaturesConnection(where: AdFeatureWhereInput, orderBy: AdFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AdFeatureConnection!
+  adCarFeature(where: AdCarFeatureWhereUniqueInput!): AdCarFeature
+  adCarFeatures(where: AdCarFeatureWhereInput, orderBy: AdCarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [AdCarFeature]!
+  adCarFeaturesConnection(where: AdCarFeatureWhereInput, orderBy: AdCarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AdCarFeatureConnection!
   car(where: CarWhereUniqueInput!): Car
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car]!
   carsConnection(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarConnection!
@@ -2494,36 +3020,60 @@ type Query {
   carModel(where: CarModelWhereUniqueInput!): CarModel
   carModels(where: CarModelWhereInput, orderBy: CarModelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarModel]!
   carModelsConnection(where: CarModelWhereInput, orderBy: CarModelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CarModelConnection!
+  categoryFeature(where: CategoryFeatureWhereUniqueInput!): CategoryFeature
+  categoryFeatures(where: CategoryFeatureWhereInput, orderBy: CategoryFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CategoryFeature]!
+  categoryFeaturesConnection(where: CategoryFeatureWhereInput, orderBy: CategoryFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryFeatureConnection!
   dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date]!
   datesConnection(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DateConnection!
   manufacturer(where: ManufacturerWhereUniqueInput!): Manufacturer
   manufacturers(where: ManufacturerWhereInput, orderBy: ManufacturerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Manufacturer]!
   manufacturersConnection(where: ManufacturerWhereInput, orderBy: ManufacturerOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ManufacturerConnection!
+  manufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!): ManufacturerFeature
+  manufacturerFeatures(where: ManufacturerFeatureWhereInput, orderBy: ManufacturerFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ManufacturerFeature]!
+  manufacturerFeaturesConnection(where: ManufacturerFeatureWhereInput, orderBy: ManufacturerFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ManufacturerFeatureConnection!
+  mileageBoundFeature(where: MileageBoundFeatureWhereUniqueInput!): MileageBoundFeature
+  mileageBoundFeatures(where: MileageBoundFeatureWhereInput, orderBy: MileageBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MileageBoundFeature]!
+  mileageBoundFeaturesConnection(where: MileageBoundFeatureWhereInput, orderBy: MileageBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MileageBoundFeatureConnection!
+  modelFeature(where: ModelFeatureWhereUniqueInput!): ModelFeature
+  modelFeatures(where: ModelFeatureWhereInput, orderBy: ModelFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ModelFeature]!
+  modelFeaturesConnection(where: ModelFeatureWhereInput, orderBy: ModelFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ModelFeatureConnection!
   offer(where: OfferWhereUniqueInput!): Offer
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer]!
   offersConnection(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfferConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  priceBoundFeature(where: PriceBoundFeatureWhereUniqueInput!): PriceBoundFeature
+  priceBoundFeatures(where: PriceBoundFeatureWhereInput, orderBy: PriceBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [PriceBoundFeature]!
+  priceBoundFeaturesConnection(where: PriceBoundFeatureWhereInput, orderBy: PriceBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceBoundFeatureConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  yearBoundFeature(where: YearBoundFeatureWhereUniqueInput!): YearBoundFeature
+  yearBoundFeatures(where: YearBoundFeatureWhereInput, orderBy: YearBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [YearBoundFeature]!
+  yearBoundFeaturesConnection(where: YearBoundFeatureWhereInput, orderBy: YearBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): YearBoundFeatureConnection!
   node(id: ID!): Node
 }
 
 type Subscription {
   ad(where: AdSubscriptionWhereInput): AdSubscriptionPayload
-  adFeature(where: AdFeatureSubscriptionWhereInput): AdFeatureSubscriptionPayload
+  adCarFeature(where: AdCarFeatureSubscriptionWhereInput): AdCarFeatureSubscriptionPayload
   car(where: CarSubscriptionWhereInput): CarSubscriptionPayload
   carCategory(where: CarCategorySubscriptionWhereInput): CarCategorySubscriptionPayload
   carFeature(where: CarFeatureSubscriptionWhereInput): CarFeatureSubscriptionPayload
   carFeatureCategory(where: CarFeatureCategorySubscriptionWhereInput): CarFeatureCategorySubscriptionPayload
   carModel(where: CarModelSubscriptionWhereInput): CarModelSubscriptionPayload
+  categoryFeature(where: CategoryFeatureSubscriptionWhereInput): CategoryFeatureSubscriptionPayload
   date(where: DateSubscriptionWhereInput): DateSubscriptionPayload
   manufacturer(where: ManufacturerSubscriptionWhereInput): ManufacturerSubscriptionPayload
+  manufacturerFeature(where: ManufacturerFeatureSubscriptionWhereInput): ManufacturerFeatureSubscriptionPayload
+  mileageBoundFeature(where: MileageBoundFeatureSubscriptionWhereInput): MileageBoundFeatureSubscriptionPayload
+  modelFeature(where: ModelFeatureSubscriptionWhereInput): ModelFeatureSubscriptionPayload
   offer(where: OfferSubscriptionWhereInput): OfferSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  priceBoundFeature(where: PriceBoundFeatureSubscriptionWhereInput): PriceBoundFeatureSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  yearBoundFeature(where: YearBoundFeatureSubscriptionWhereInput): YearBoundFeatureSubscriptionPayload
 }
 
 type User {
@@ -2915,5 +3465,134 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+}
+
+type YearBoundFeature {
+  id: ID!
+  year: Int!
+  importance: AdCarFeatureImportance
+}
+
+type YearBoundFeatureConnection {
+  pageInfo: PageInfo!
+  edges: [YearBoundFeatureEdge]!
+  aggregate: AggregateYearBoundFeature!
+}
+
+input YearBoundFeatureCreateInput {
+  year: Int!
+  importance: AdCarFeatureImportance
+}
+
+input YearBoundFeatureCreateOneInput {
+  create: YearBoundFeatureCreateInput
+  connect: YearBoundFeatureWhereUniqueInput
+}
+
+type YearBoundFeatureEdge {
+  node: YearBoundFeature!
+  cursor: String!
+}
+
+enum YearBoundFeatureOrderByInput {
+  id_ASC
+  id_DESC
+  year_ASC
+  year_DESC
+  importance_ASC
+  importance_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type YearBoundFeaturePreviousValues {
+  id: ID!
+  year: Int!
+  importance: AdCarFeatureImportance
+}
+
+type YearBoundFeatureSubscriptionPayload {
+  mutation: MutationType!
+  node: YearBoundFeature
+  updatedFields: [String!]
+  previousValues: YearBoundFeaturePreviousValues
+}
+
+input YearBoundFeatureSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: YearBoundFeatureWhereInput
+  AND: [YearBoundFeatureSubscriptionWhereInput!]
+  OR: [YearBoundFeatureSubscriptionWhereInput!]
+  NOT: [YearBoundFeatureSubscriptionWhereInput!]
+}
+
+input YearBoundFeatureUpdateDataInput {
+  year: Int
+  importance: AdCarFeatureImportance
+}
+
+input YearBoundFeatureUpdateInput {
+  year: Int
+  importance: AdCarFeatureImportance
+}
+
+input YearBoundFeatureUpdateManyMutationInput {
+  year: Int
+  importance: AdCarFeatureImportance
+}
+
+input YearBoundFeatureUpdateOneInput {
+  create: YearBoundFeatureCreateInput
+  update: YearBoundFeatureUpdateDataInput
+  upsert: YearBoundFeatureUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: YearBoundFeatureWhereUniqueInput
+}
+
+input YearBoundFeatureUpsertNestedInput {
+  update: YearBoundFeatureUpdateDataInput!
+  create: YearBoundFeatureCreateInput!
+}
+
+input YearBoundFeatureWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  year: Int
+  year_not: Int
+  year_in: [Int!]
+  year_not_in: [Int!]
+  year_lt: Int
+  year_lte: Int
+  year_gt: Int
+  year_gte: Int
+  importance: AdCarFeatureImportance
+  importance_not: AdCarFeatureImportance
+  importance_in: [AdCarFeatureImportance!]
+  importance_not_in: [AdCarFeatureImportance!]
+  AND: [YearBoundFeatureWhereInput!]
+  OR: [YearBoundFeatureWhereInput!]
+  NOT: [YearBoundFeatureWhereInput!]
+}
+
+input YearBoundFeatureWhereUniqueInput {
+  id: ID
 }
 `
