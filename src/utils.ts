@@ -30,3 +30,5 @@ export function getUserPermissions(ctx: Context) {
 }
 
 export const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+export const resetTokenExpiryTime = 1800000;

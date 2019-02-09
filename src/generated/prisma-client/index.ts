@@ -1016,6 +1016,10 @@ export type UserOrderByInput =
   | "location_DESC"
   | "gender_ASC"
   | "gender_DESC"
+  | "resetToken_ASC"
+  | "resetToken_DESC"
+  | "resetTokenExpiry_ASC"
+  | "resetTokenExpiry_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -1436,6 +1440,8 @@ export interface UserUpdateManyMutationInput {
   location?: String;
   gender?: Gender;
   permissions?: UserUpdatepermissionsInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface AdCarFeatureCreateInput {
@@ -1455,6 +1461,8 @@ export interface UserUpdateInput {
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface CarFeatureCreateOneInput {
@@ -1566,6 +1574,8 @@ export interface UserCreateWithoutCarsInput {
   permissions?: UserCreatepermissionsInput;
   offers?: OfferCreateManyWithoutCreatorInput;
   ads?: AdCreateManyWithoutCreatorInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface OfferUpdateInput {
@@ -1684,6 +1694,8 @@ export interface UserCreateWithoutOffersInput {
   permissions?: UserCreatepermissionsInput;
   ads?: AdCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface ManufacturerUpdateInput {
@@ -1801,6 +1813,8 @@ export interface UserUpdateWithoutAdsDataInput {
   permissions?: UserUpdatepermissionsInput;
   offers?: OfferUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface CarFeatureUpdateWithoutCategoryDataInput {
@@ -2812,6 +2826,28 @@ export interface UserWhereInput {
   cars_every?: CarWhereInput;
   cars_some?: CarWhereInput;
   cars_none?: CarWhereInput;
+  resetToken?: String;
+  resetToken_not?: String;
+  resetToken_in?: String[] | String;
+  resetToken_not_in?: String[] | String;
+  resetToken_lt?: String;
+  resetToken_lte?: String;
+  resetToken_gt?: String;
+  resetToken_gte?: String;
+  resetToken_contains?: String;
+  resetToken_not_contains?: String;
+  resetToken_starts_with?: String;
+  resetToken_not_starts_with?: String;
+  resetToken_ends_with?: String;
+  resetToken_not_ends_with?: String;
+  resetTokenExpiry?: Float;
+  resetTokenExpiry_not?: Float;
+  resetTokenExpiry_in?: Float[] | Float;
+  resetTokenExpiry_not_in?: Float[] | Float;
+  resetTokenExpiry_lt?: Float;
+  resetTokenExpiry_lte?: Float;
+  resetTokenExpiry_gt?: Float;
+  resetTokenExpiry_gte?: Float;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -3098,6 +3134,8 @@ export interface UserUpdateDataInput {
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface UserUpdateOneRequiredWithoutCarsInput {
@@ -3124,6 +3162,8 @@ export interface UserUpdateWithoutCarsDataInput {
   permissions?: UserUpdatepermissionsInput;
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface MileageBoundFeatureUpdateManyMutationInput {
@@ -3303,6 +3343,8 @@ export interface UserCreateWithoutAdsInput {
   permissions?: UserCreatepermissionsInput;
   offers?: OfferCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface UserUpdateWithoutOffersDataInput {
@@ -3316,6 +3358,8 @@ export interface UserUpdateWithoutOffersDataInput {
   permissions?: UserUpdatepermissionsInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface PriceBoundFeatureCreateOneInput {
@@ -3388,6 +3432,8 @@ export interface UserCreateInput {
   offers?: OfferCreateManyWithoutCreatorInput;
   ads?: AdCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface CarUpdatephotosInput {
@@ -5055,6 +5101,8 @@ export interface UserPreviousValues {
   location: String;
   gender: Gender;
   permissions: Permission[];
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface UserPreviousValuesPromise
@@ -5068,6 +5116,8 @@ export interface UserPreviousValuesPromise
   location: () => Promise<String>;
   gender: () => Promise<Gender>;
   permissions: () => Promise<Permission[]>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -5081,6 +5131,8 @@ export interface UserPreviousValuesSubscription
   location: () => Promise<AsyncIterator<String>>;
   gender: () => Promise<AsyncIterator<Gender>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface DatePreviousValues {
@@ -5787,6 +5839,8 @@ export interface User {
   location: String;
   gender: Gender;
   permissions: Permission[];
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -5826,6 +5880,8 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
 }
 
 export interface UserSubscription
@@ -5867,6 +5923,8 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
 }
 
 export interface CarModel {

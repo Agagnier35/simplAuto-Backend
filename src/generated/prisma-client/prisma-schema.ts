@@ -3089,6 +3089,8 @@ type User {
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
   ads(where: AdWhereInput, orderBy: AdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ad!]
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 type UserConnection {
@@ -3109,6 +3111,8 @@ input UserCreateInput {
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserCreateOneInput {
@@ -3146,6 +3150,8 @@ input UserCreateWithoutAdsInput {
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserCreateWithoutCarsInput {
@@ -3159,6 +3165,8 @@ input UserCreateWithoutCarsInput {
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserCreateWithoutOffersInput {
@@ -3172,6 +3180,8 @@ input UserCreateWithoutOffersInput {
   permissions: UserCreatepermissionsInput
   ads: AdCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 type UserEdge {
@@ -3194,6 +3204,10 @@ enum UserOrderByInput {
   location_DESC
   gender_ASC
   gender_DESC
+  resetToken_ASC
+  resetToken_DESC
+  resetTokenExpiry_ASC
+  resetTokenExpiry_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -3209,6 +3223,8 @@ type UserPreviousValues {
   location: String!
   gender: Gender!
   permissions: [Permission!]!
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 type UserSubscriptionPayload {
@@ -3241,6 +3257,8 @@ input UserUpdateDataInput {
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpdateInput {
@@ -3255,6 +3273,8 @@ input UserUpdateInput {
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpdateManyMutationInput {
@@ -3265,6 +3285,8 @@ input UserUpdateManyMutationInput {
   location: String
   gender: Gender
   permissions: UserUpdatepermissionsInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpdateOneRequiredInput {
@@ -3310,6 +3332,8 @@ input UserUpdateWithoutAdsDataInput {
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpdateWithoutCarsDataInput {
@@ -3323,6 +3347,8 @@ input UserUpdateWithoutCarsDataInput {
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpdateWithoutOffersDataInput {
@@ -3336,6 +3362,8 @@ input UserUpdateWithoutOffersDataInput {
   permissions: UserUpdatepermissionsInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 input UserUpsertNestedInput {
@@ -3457,6 +3485,28 @@ input UserWhereInput {
   cars_every: CarWhereInput
   cars_some: CarWhereInput
   cars_none: CarWhereInput
+  resetToken: String
+  resetToken_not: String
+  resetToken_in: [String!]
+  resetToken_not_in: [String!]
+  resetToken_lt: String
+  resetToken_lte: String
+  resetToken_gt: String
+  resetToken_gte: String
+  resetToken_contains: String
+  resetToken_not_contains: String
+  resetToken_starts_with: String
+  resetToken_not_starts_with: String
+  resetToken_ends_with: String
+  resetToken_not_ends_with: String
+  resetTokenExpiry: Float
+  resetTokenExpiry_not: Float
+  resetTokenExpiry_in: [Float!]
+  resetTokenExpiry_not_in: [Float!]
+  resetTokenExpiry_lt: Float
+  resetTokenExpiry_lte: Float
+  resetTokenExpiry_gt: Float
+  resetTokenExpiry_gte: Float
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

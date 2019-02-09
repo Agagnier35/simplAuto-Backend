@@ -6,4 +6,6 @@ export const InvalidEmailError = new Error("invalidEmail");
 
 export const InvalidEmailFormatError = new Error("invalidEmailFormat");
 
+export const TokenExpiredOrInvalidError = new Error("tokenExpiredOrInvalid");
+
 export const AuthError = new Error("authError");

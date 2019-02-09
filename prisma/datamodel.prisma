@@ -21,6 +21,8 @@ type User {
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
+  resetToken: String
+  resetTokenExpiry: Float
 }
 
 enum Gender {

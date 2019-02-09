@@ -23,6 +23,8 @@ type Mutation {
   createAd(data: AdCreateInput!): Ad
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
+  resetPasswordRequest(email: String!): String!
+  resetPassword(resetToken: String!, password: String!): User!
 }
 
 input CarCreateInput {
