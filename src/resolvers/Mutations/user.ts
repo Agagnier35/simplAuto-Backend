@@ -11,7 +11,7 @@ interface UserResolvers {
 export const user: UserResolvers = {
   async updateUser(parent, { data }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    const { id, permissions, ...updatedValues } = data;
+    const { id, permissions, birthDate, ...updatedValues } = data;
 
     const userExists = await ctx.prisma.$exists.user({
       id: userId
@@ -20,16 +20,19 @@ export const user: UserResolvers = {
       throw UserNotFoundError;
     }
 
-    const { day, month, year } = data.birthDate;
-    const birthDate = {
-      create: {
-        day,
-        month,
-        year
-      }
-    };
+    const updatedData: UserUpdateInput = updatedValues;
 
-    const updatedData: UserUpdateInput = { ...updatedValues, birthDate };
+    if (data.birthDate) {
+      const { day, month, year } = data.birthDate;
+      const newBirthDate = {
+        create: {
+          day,
+          month,
+          year
+        }
+      };
+      updatedData.birthDate = newBirthDate;
+    }
 
     if (updatedValues.email && !emailRegex.test(updatedValues.email)) {
       throw InvalidEmailFormatError;
