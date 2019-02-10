@@ -7,14 +7,20 @@ import {
   Date,
   Offer,
   Ad,
-  AdFeature,
-  CarFeature,
-  CarFeatureCategory,
+  PriceBoundFeature,
+  ManufacturerFeature,
   Manufacturer,
   CarModel,
+  ModelFeature,
+  CategoryFeature,
   CarCategory,
+  MileageBoundFeature,
+  YearBoundFeature,
+  AdCarFeature,
+  CarFeature,
+  CarFeatureCategory,
   Car
-} from "../prisma-client/index";
+} from "../prisma-client";
 type Context = any;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
@@ -36,6 +42,10 @@ export namespace QueryResolvers {
 
   export interface ArgsCar {
     id: string;
+  }
+
+  export interface ArgsCarFeatureCategory {
+    name: string;
   }
 
   export type FeedResolver = (
@@ -89,6 +99,13 @@ export namespace QueryResolvers {
     | Array<CarCategory | null>
     | null
     | Promise<Array<CarCategory | null> | null>;
+
+  export type CarFeatureCategoryResolver = (
+    parent: undefined,
+    args: ArgsCarFeatureCategory,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarFeatureCategory | null | Promise<CarFeatureCategory | null>;
 
   export type CarFeatureCategoriesResolver = (
     parent: undefined,
@@ -162,6 +179,13 @@ export namespace QueryResolvers {
       | Array<CarCategory | null>
       | null
       | Promise<Array<CarCategory | null> | null>;
+
+    carFeatureCategory: (
+      parent: undefined,
+      args: ArgsCarFeatureCategory,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarFeatureCategory | null | Promise<CarFeatureCategory | null>;
 
     carFeatureCategories: (
       parent: undefined,
@@ -614,20 +638,6 @@ export namespace OfferResolvers {
 export namespace AdResolvers {
   export const defaultResolvers = {
     id: (parent: Ad) => parent.id,
-    priceLowerBound: (parent: Ad) =>
-      parent.priceLowerBound === undefined ? null : parent.priceLowerBound,
-    priceHigherBound: (parent: Ad) =>
-      parent.priceHigherBound === undefined ? null : parent.priceHigherBound,
-    mileageLowerBound: (parent: Ad) =>
-      parent.mileageLowerBound === undefined ? null : parent.mileageLowerBound,
-    mileageHigherBound: (parent: Ad) =>
-      parent.mileageHigherBound === undefined
-        ? null
-        : parent.mileageHigherBound,
-    yearLowerBound: (parent: Ad) =>
-      parent.yearLowerBound === undefined ? null : parent.yearLowerBound,
-    yearHigherBound: (parent: Ad) =>
-      parent.yearHigherBound === undefined ? null : parent.yearHigherBound,
     isUrgent: (parent: Ad) => parent.isUrgent,
     isFirst: (parent: Ad) => parent.isFirst,
     status: (parent: Ad) => parent.status
@@ -654,75 +664,75 @@ export namespace AdResolvers {
     info: GraphQLResolveInfo
   ) => Offer[] | null | Promise<Offer[] | null>;
 
+  export type PriceLowerBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => PriceBoundFeature | null | Promise<PriceBoundFeature | null>;
+
+  export type PriceHigherBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => PriceBoundFeature | null | Promise<PriceBoundFeature | null>;
+
+  export type ManufacturerFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => ManufacturerFeature | null | Promise<ManufacturerFeature | null>;
+
+  export type ModelFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => ModelFeature | null | Promise<ModelFeature | null>;
+
+  export type CategoryFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CategoryFeature | null | Promise<CategoryFeature | null>;
+
+  export type MileageLowerBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => MileageBoundFeature | null | Promise<MileageBoundFeature | null>;
+
+  export type MileageHigherBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => MileageBoundFeature | null | Promise<MileageBoundFeature | null>;
+
+  export type YearLowerBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => YearBoundFeature | null | Promise<YearBoundFeature | null>;
+
+  export type YearHigherBoundFeatureResolver = (
+    parent: Ad,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => YearBoundFeature | null | Promise<YearBoundFeature | null>;
+
   export type FeaturesResolver = (
     parent: Ad,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => AdFeature[] | null | Promise<AdFeature[] | null>;
-
-  export type PriceLowerBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
-
-  export type PriceHigherBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
-
-  export type ManufacturerResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => Manufacturer | null | Promise<Manufacturer | null>;
-
-  export type ModelResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => CarModel | null | Promise<CarModel | null>;
-
-  export type CategoryResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => CarCategory | null | Promise<CarCategory | null>;
-
-  export type MileageLowerBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
-
-  export type MileageHigherBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
-
-  export type YearLowerBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
-
-  export type YearHigherBoundResolver = (
-    parent: Ad,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => number | null | Promise<number | null>;
+  ) => AdCarFeature[] | null | Promise<AdCarFeature[] | null>;
 
   export type IsUrgentResolver = (
     parent: Ad,
@@ -767,75 +777,75 @@ export namespace AdResolvers {
       info: GraphQLResolveInfo
     ) => Offer[] | null | Promise<Offer[] | null>;
 
+    priceLowerBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => PriceBoundFeature | null | Promise<PriceBoundFeature | null>;
+
+    priceHigherBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => PriceBoundFeature | null | Promise<PriceBoundFeature | null>;
+
+    manufacturerFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => ManufacturerFeature | null | Promise<ManufacturerFeature | null>;
+
+    modelFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => ModelFeature | null | Promise<ModelFeature | null>;
+
+    categoryFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CategoryFeature | null | Promise<CategoryFeature | null>;
+
+    mileageLowerBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => MileageBoundFeature | null | Promise<MileageBoundFeature | null>;
+
+    mileageHigherBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => MileageBoundFeature | null | Promise<MileageBoundFeature | null>;
+
+    yearLowerBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => YearBoundFeature | null | Promise<YearBoundFeature | null>;
+
+    yearHigherBoundFeature: (
+      parent: Ad,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => YearBoundFeature | null | Promise<YearBoundFeature | null>;
+
     features: (
       parent: Ad,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => AdFeature[] | null | Promise<AdFeature[] | null>;
-
-    priceLowerBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
-
-    priceHigherBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
-
-    manufacturer: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => Manufacturer | null | Promise<Manufacturer | null>;
-
-    model: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => CarModel | null | Promise<CarModel | null>;
-
-    category: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => CarCategory | null | Promise<CarCategory | null>;
-
-    mileageLowerBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
-
-    mileageHigherBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
-
-    yearLowerBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
-
-    yearHigherBound: (
-      parent: Ad,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => number | null | Promise<number | null>;
+    ) => AdCarFeature[] | null | Promise<AdCarFeature[] | null>;
 
     isUrgent: (
       parent: Ad,
@@ -860,54 +870,405 @@ export namespace AdResolvers {
   }
 }
 
-export namespace AdFeatureResolvers {
+export namespace PriceBoundFeatureResolvers {
   export const defaultResolvers = {
-    id: (parent: AdFeature) => parent.id,
-    importance: (parent: AdFeature) => parent.importance
+    price: (parent: PriceBoundFeature) => parent.price,
+    importance: (parent: PriceBoundFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type PriceResolver = (
+    parent: PriceBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export type ImportanceResolver = (
+    parent: PriceBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    price: (
+      parent: PriceBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+
+    importance: (
+      parent: PriceBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace ManufacturerFeatureResolvers {
+  export const defaultResolvers = {
+    importance: (parent: ManufacturerFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type ManufacturerResolver = (
+    parent: ManufacturerFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Manufacturer | Promise<Manufacturer>;
+
+  export type ImportanceResolver = (
+    parent: ManufacturerFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    manufacturer: (
+      parent: ManufacturerFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Manufacturer | Promise<Manufacturer>;
+
+    importance: (
+      parent: ManufacturerFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace ManufacturerResolvers {
+  export const defaultResolvers = {
+    id: (parent: Manufacturer) => parent.id,
+    name: (parent: Manufacturer) => parent.name
   };
 
   export type IdResolver = (
-    parent: AdFeature,
+    parent: Manufacturer,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export type NameResolver = (
+    parent: Manufacturer,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export type ModelsResolver = (
+    parent: Manufacturer,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarModel[] | Promise<CarModel[]>;
+
+  export interface Type {
+    id: (
+      parent: Manufacturer,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+
+    name: (
+      parent: Manufacturer,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+
+    models: (
+      parent: Manufacturer,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarModel[] | Promise<CarModel[]>;
+  }
+}
+
+export namespace CarModelResolvers {
+  export const defaultResolvers = {
+    id: (parent: CarModel) => parent.id,
+    name: (parent: CarModel) => parent.name
+  };
+
+  export type IdResolver = (
+    parent: CarModel,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export type NameResolver = (
+    parent: CarModel,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export interface Type {
+    id: (
+      parent: CarModel,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+
+    name: (
+      parent: CarModel,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+  }
+}
+
+export namespace ModelFeatureResolvers {
+  export const defaultResolvers = {
+    importance: (parent: ModelFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type ModelResolver = (
+    parent: ModelFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarModel | Promise<CarModel>;
+
+  export type ImportanceResolver = (
+    parent: ModelFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    model: (
+      parent: ModelFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarModel | Promise<CarModel>;
+
+    importance: (
+      parent: ModelFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace CategoryFeatureResolvers {
+  export const defaultResolvers = {
+    importance: (parent: CategoryFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type CategoryResolver = (
+    parent: CategoryFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarCategory | Promise<CarCategory>;
+
+  export type ImportanceResolver = (
+    parent: CategoryFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    category: (
+      parent: CategoryFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarCategory | Promise<CarCategory>;
+
+    importance: (
+      parent: CategoryFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace CarCategoryResolvers {
+  export const defaultResolvers = {
+    id: (parent: CarCategory) => parent.id,
+    name: (parent: CarCategory) => parent.name
+  };
+
+  export type IdResolver = (
+    parent: CarCategory,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export type NameResolver = (
+    parent: CarCategory,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export interface Type {
+    id: (
+      parent: CarCategory,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+
+    name: (
+      parent: CarCategory,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+  }
+}
+
+export namespace MileageBoundFeatureResolvers {
+  export const defaultResolvers = {
+    mileage: (parent: MileageBoundFeature) => parent.mileage,
+    importance: (parent: MileageBoundFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type MileageResolver = (
+    parent: MileageBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export type ImportanceResolver = (
+    parent: MileageBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    mileage: (
+      parent: MileageBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+
+    importance: (
+      parent: MileageBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace YearBoundFeatureResolvers {
+  export const defaultResolvers = {
+    year: (parent: YearBoundFeature) => parent.year,
+    importance: (parent: YearBoundFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type YearResolver = (
+    parent: YearBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => number | Promise<number>;
+
+  export type ImportanceResolver = (
+    parent: YearBoundFeature,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+
+  export interface Type {
+    year: (
+      parent: YearBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => number | Promise<number>;
+
+    importance: (
+      parent: YearBoundFeature,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
+  }
+}
+
+export namespace AdCarFeatureResolvers {
+  export const defaultResolvers = {
+    id: (parent: AdCarFeature) => parent.id,
+    importance: (parent: AdCarFeature) =>
+      parent.importance === undefined ? null : parent.importance
+  };
+
+  export type IdResolver = (
+    parent: AdCarFeature,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => string | Promise<string>;
 
   export type FeatureResolver = (
-    parent: AdFeature,
+    parent: AdCarFeature,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
   ) => CarFeature | Promise<CarFeature>;
 
   export type ImportanceResolver = (
-    parent: AdFeature,
+    parent: AdCarFeature,
     args: {},
     ctx: Context,
     info: GraphQLResolveInfo
-  ) => AdFeatureImportance | Promise<AdFeatureImportance>;
+  ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
 
   export interface Type {
     id: (
-      parent: AdFeature,
+      parent: AdCarFeature,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => string | Promise<string>;
 
     feature: (
-      parent: AdFeature,
+      parent: AdCarFeature,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
     ) => CarFeature | Promise<CarFeature>;
 
     importance: (
-      parent: AdFeature,
+      parent: AdCarFeature,
       args: {},
       ctx: Context,
       info: GraphQLResolveInfo
-    ) => AdFeatureImportance | Promise<AdFeatureImportance>;
+    ) => AdFeatureImportance | null | Promise<AdFeatureImportance | null>;
   }
 }
 
@@ -1010,131 +1371,6 @@ export namespace CarFeatureCategoryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => CarFeature[] | Promise<CarFeature[]>;
-  }
-}
-
-export namespace ManufacturerResolvers {
-  export const defaultResolvers = {
-    id: (parent: Manufacturer) => parent.id,
-    name: (parent: Manufacturer) => parent.name
-  };
-
-  export type IdResolver = (
-    parent: Manufacturer,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export type NameResolver = (
-    parent: Manufacturer,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export type ModelsResolver = (
-    parent: Manufacturer,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => CarModel[] | Promise<CarModel[]>;
-
-  export interface Type {
-    id: (
-      parent: Manufacturer,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
-
-    name: (
-      parent: Manufacturer,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
-
-    models: (
-      parent: Manufacturer,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => CarModel[] | Promise<CarModel[]>;
-  }
-}
-
-export namespace CarModelResolvers {
-  export const defaultResolvers = {
-    id: (parent: CarModel) => parent.id,
-    name: (parent: CarModel) => parent.name
-  };
-
-  export type IdResolver = (
-    parent: CarModel,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export type NameResolver = (
-    parent: CarModel,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export interface Type {
-    id: (
-      parent: CarModel,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
-
-    name: (
-      parent: CarModel,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
-  }
-}
-
-export namespace CarCategoryResolvers {
-  export const defaultResolvers = {
-    id: (parent: CarCategory) => parent.id,
-    name: (parent: CarCategory) => parent.name
-  };
-
-  export type IdResolver = (
-    parent: CarCategory,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export type NameResolver = (
-    parent: CarCategory,
-    args: {},
-    ctx: Context,
-    info: GraphQLResolveInfo
-  ) => string | Promise<string>;
-
-  export interface Type {
-    id: (
-      parent: CarCategory,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
-
-    name: (
-      parent: CarCategory,
-      args: {},
-      ctx: Context,
-      info: GraphQLResolveInfo
-    ) => string | Promise<string>;
   }
 }
 
@@ -1309,27 +1545,49 @@ export namespace MutationResolvers {
     featuresIDs?: string[] | null;
   }
   export interface AdCreateInput {
-    adFeatures?: Array<adFeatureInput | null> | null;
-    priceLowerBound?: number | null;
-    priceHigherBound?: number | null;
-    manufacturerID?: string | null;
-    modelID?: string | null;
-    categoryID?: string | null;
-    mileageLowerBound?: number | null;
-    mileageHigherBound?: number | null;
-    yearLowerBound?: number | null;
-    yearHigherBound?: number | null;
-    isUrgent?: boolean | null;
-    isFirst?: boolean | null;
+    priceLowerBoundFeature?: PriceBoundFeatureInput | null;
+    priceHigherBoundFeature?: PriceBoundFeatureInput | null;
+    manufacturerFeature?: ManufacturerFeatureInput | null;
+    modelFeature?: ModelFeatureInput | null;
+    categoryFeature?: CategoryFeatureInput | null;
+    mileageLowerBoundFeature?: MileageBoundFeatureInput | null;
+    mileageHigherBoundFeature?: MileageBoundFeatureInput | null;
+    yearLowerBoundFeature?: YearBoundFeatureInput | null;
+    yearHigherBoundFeature?: YearBoundFeatureInput | null;
+    features?: AdCarFeatureInput[] | null;
   }
   export interface DateInput {
     day: number;
     month: number;
     year: number;
   }
-  export interface adFeatureInput {
+  export interface PriceBoundFeatureInput {
+    price: number;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface ManufacturerFeatureInput {
+    manufacturerID: string;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface ModelFeatureInput {
+    modelID: string;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface CategoryFeatureInput {
+    categoryID: string;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface MileageBoundFeatureInput {
+    mileage: number;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface YearBoundFeatureInput {
+    year: number;
+    importance?: AdFeatureImportance | null;
+  }
+  export interface AdCarFeatureInput {
     featureID: string;
-    importance: AdFeatureImportance;
+    importance?: AdFeatureImportance | null;
   }
 
   export interface ArgsSignup {
@@ -1364,6 +1622,15 @@ export namespace MutationResolvers {
 
   export interface ArgsDeletePost {
     id: string;
+  }
+
+  export interface ArgsResetPasswordRequest {
+    email: string;
+  }
+
+  export interface ArgsResetPassword {
+    resetToken: string;
+    password: string;
   }
 
   export type SignupResolver = (
@@ -1429,6 +1696,20 @@ export namespace MutationResolvers {
     info: GraphQLResolveInfo
   ) => Post | Promise<Post>;
 
+  export type ResetPasswordRequestResolver = (
+    parent: undefined,
+    args: ArgsResetPasswordRequest,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => string | Promise<string>;
+
+  export type ResetPasswordResolver = (
+    parent: undefined,
+    args: ArgsResetPassword,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => User | Promise<User>;
+
   export interface Type {
     signup: (
       parent: undefined,
@@ -1492,6 +1773,20 @@ export namespace MutationResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Post | Promise<Post>;
+
+    resetPasswordRequest: (
+      parent: undefined,
+      args: ArgsResetPasswordRequest,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => string | Promise<string>;
+
+    resetPassword: (
+      parent: undefined,
+      args: ArgsResetPassword,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => User | Promise<User>;
   }
 }
 
@@ -1538,12 +1833,18 @@ export interface Resolvers {
   Date: DateResolvers.Type;
   Offer: OfferResolvers.Type;
   Ad: AdResolvers.Type;
-  AdFeature: AdFeatureResolvers.Type;
-  CarFeature: CarFeatureResolvers.Type;
-  CarFeatureCategory: CarFeatureCategoryResolvers.Type;
+  PriceBoundFeature: PriceBoundFeatureResolvers.Type;
+  ManufacturerFeature: ManufacturerFeatureResolvers.Type;
   Manufacturer: ManufacturerResolvers.Type;
   CarModel: CarModelResolvers.Type;
+  ModelFeature: ModelFeatureResolvers.Type;
+  CategoryFeature: CategoryFeatureResolvers.Type;
   CarCategory: CarCategoryResolvers.Type;
+  MileageBoundFeature: MileageBoundFeatureResolvers.Type;
+  YearBoundFeature: YearBoundFeatureResolvers.Type;
+  AdCarFeature: AdCarFeatureResolvers.Type;
+  CarFeature: CarFeatureResolvers.Type;
+  CarFeatureCategory: CarFeatureCategoryResolvers.Type;
   Car: CarResolvers.Type;
   Mutation: MutationResolvers.Type;
   Subscription: SubscriptionResolvers.Type;
