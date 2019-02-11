@@ -20,7 +20,7 @@ import {
   CarFeature,
   CarFeatureCategory,
   Car
-} from "../prisma-client";
+} from "../prisma-client/index";
 type Context = any;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
