@@ -262,6 +262,7 @@ type CarCategory {
 type CarFeatureCategory {
   id: ID!
   name: String!
+  type: CarFeatureType!
   features: [CarFeature!]!
 }
 
@@ -269,6 +270,11 @@ type CarFeature {
   id: ID!
   name: String!
   category: CarFeatureCategory!
+}
+
+enum CarFeatureType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
 }
 
 type Manufacturer {

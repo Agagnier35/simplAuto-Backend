@@ -20,12 +20,13 @@ import {
   CarFeature,
   CarFeatureCategory,
   Car
-} from "../prisma-client/index";
+} from "../prisma-client";
 type Context = any;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 export type Permission = "USER" | "PREMIUM" | "ADMIN";
 export type AdFeatureImportance = "LOW" | "MEDIUM" | "HIGH";
+export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
 export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 export type OfferStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
@@ -1326,7 +1327,8 @@ export namespace CarFeatureResolvers {
 export namespace CarFeatureCategoryResolvers {
   export const defaultResolvers = {
     id: (parent: CarFeatureCategory) => parent.id,
-    name: (parent: CarFeatureCategory) => parent.name
+    name: (parent: CarFeatureCategory) => parent.name,
+    type: (parent: CarFeatureCategory) => parent.type
   };
 
   export type IdResolver = (
@@ -1342,6 +1344,13 @@ export namespace CarFeatureCategoryResolvers {
     ctx: Context,
     info: GraphQLResolveInfo
   ) => string | Promise<string>;
+
+  export type TypeResolver = (
+    parent: CarFeatureCategory,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarFeatureType | Promise<CarFeatureType>;
 
   export type FeaturesResolver = (
     parent: CarFeatureCategory,
@@ -1364,6 +1373,13 @@ export namespace CarFeatureCategoryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => string | Promise<string>;
+
+    type: (
+      parent: CarFeatureCategory,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarFeatureType | Promise<CarFeatureType>;
 
     features: (
       parent: CarFeatureCategory,

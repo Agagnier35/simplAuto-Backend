@@ -148,6 +148,11 @@ type Car {
   features: [CarFeature!]!
 }
 
+enum CarFeatureType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
+}
+
 type CarCategory {
   id: ID! @unique
   name: String!
@@ -156,6 +161,7 @@ type CarCategory {
 type CarFeatureCategory {
   id: ID! @unique
   name: String! @unique
+  type: CarFeatureType!
   features: [CarFeature!]!
 }
 
