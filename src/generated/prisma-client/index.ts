@@ -817,27 +817,25 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type DateOrderByInput =
-  | "day_ASC"
-  | "day_DESC"
-  | "month_ASC"
-  | "month_DESC"
-  | "year_ASC"
-  | "year_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
-
 export type CategoryFeatureOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "importance_ASC"
   | "importance_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
+
+export type CarFeatureCategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "type_ASC"
+  | "type_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -855,15 +853,7 @@ export type YearBoundFeatureOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type CarFeatureCategoryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type AdCarFeatureImportance = "LOW" | "MEDIUM" | "HIGH";
 
 export type PriceBoundFeatureOrderByInput =
   | "id_ASC"
@@ -877,10 +867,6 @@ export type PriceBoundFeatureOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type AdCarFeatureImportance = "LOW" | "MEDIUM" | "HIGH";
-
-export type Gender = "MALE" | "FEMALE" | "OTHER";
-
 export type CarCategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -891,15 +877,7 @@ export type CarCategoryOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type ModelFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type Gender = "MALE" | "FEMALE" | "OTHER";
 
 export type AdCarFeatureOrderByInput =
   | "id_ASC"
@@ -911,7 +889,7 @@ export type AdCarFeatureOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type ManufacturerFeatureOrderByInput =
+export type ModelFeatureOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "importance_ASC"
@@ -933,7 +911,15 @@ export type CarOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+export type ManufacturerFeatureOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "importance_ASC"
+  | "importance_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type AdOrderByInput =
   | "id_ASC"
@@ -949,19 +935,55 @@ export type AdOrderByInput =
   | "status_ASC"
   | "status_DESC";
 
-export type PostOrderByInput =
+export type DateOrderByInput =
+  | "day_ASC"
+  | "day_DESC"
+  | "month_ASC"
+  | "month_DESC"
+  | "year_ASC"
+  | "year_DESC"
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "published_ASC"
-  | "published_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "content_ASC"
-  | "content_DESC";
+  | "updatedAt_DESC";
+
+export type CarFeatureOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "firstName_ASC"
+  | "firstName_DESC"
+  | "lastName_ASC"
+  | "lastName_DESC"
+  | "password_ASC"
+  | "password_DESC"
+  | "location_ASC"
+  | "location_DESC"
+  | "gender_ASC"
+  | "gender_DESC"
+  | "resetToken_ASC"
+  | "resetToken_DESC"
+  | "resetTokenExpiry_ASC"
+  | "resetTokenExpiry_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
 export type OfferStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
@@ -989,41 +1011,21 @@ export type CarModelOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type CarFeatureOrderByInput =
+export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "published_ASC"
+  | "published_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "content_ASC"
+  | "content_DESC";
 
-export type Permission = "USER" | "PREMIUM" | "ADMIN";
-
-export type UserOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "email_ASC"
-  | "email_DESC"
-  | "firstName_ASC"
-  | "firstName_DESC"
-  | "lastName_ASC"
-  | "lastName_DESC"
-  | "password_ASC"
-  | "password_DESC"
-  | "location_ASC"
-  | "location_DESC"
-  | "gender_ASC"
-  | "gender_DESC"
-  | "resetToken_ASC"
-  | "resetToken_DESC"
-  | "resetTokenExpiry_ASC"
-  | "resetTokenExpiry_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export type ManufacturerOrderByInput =
   | "id_ASC"
@@ -1047,9 +1049,23 @@ export type MileageBoundFeatureOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface OfferUpdateWithWhereUniqueWithoutCreatorInput {
-  where: OfferWhereUniqueInput;
-  data: OfferUpdateWithoutCreatorDataInput;
+export type Permission = "USER" | "PREMIUM" | "ADMIN";
+
+export interface OfferUpdateManyWithoutCreatorInput {
+  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
+  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  update?:
+    | OfferUpdateWithWhereUniqueWithoutCreatorInput[]
+    | OfferUpdateWithWhereUniqueWithoutCreatorInput;
+  upsert?:
+    | OfferUpsertWithWhereUniqueWithoutCreatorInput[]
+    | OfferUpsertWithWhereUniqueWithoutCreatorInput;
+  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+  updateMany?:
+    | OfferUpdateManyWithWhereNestedInput[]
+    | OfferUpdateManyWithWhereNestedInput;
 }
 
 export type AdWhereUniqueInput = AtLeastOne<{
@@ -1060,7 +1076,7 @@ export interface CarModelUpdateDataInput {
   name?: String;
 }
 
-export interface CarFeatureWhereInput {
+export interface CarFeatureCategoryWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1089,10 +1105,16 @@ export interface CarFeatureWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  category?: CarFeatureCategoryWhereInput;
-  AND?: CarFeatureWhereInput[] | CarFeatureWhereInput;
-  OR?: CarFeatureWhereInput[] | CarFeatureWhereInput;
-  NOT?: CarFeatureWhereInput[] | CarFeatureWhereInput;
+  type?: CarFeatureType;
+  type_not?: CarFeatureType;
+  type_in?: CarFeatureType[] | CarFeatureType;
+  type_not_in?: CarFeatureType[] | CarFeatureType;
+  features_every?: CarFeatureWhereInput;
+  features_some?: CarFeatureWhereInput;
+  features_none?: CarFeatureWhereInput;
+  AND?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  OR?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  NOT?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
 }
 
 export interface ManufacturerFeatureCreateInput {
@@ -1517,6 +1539,7 @@ export interface UserUpsertNestedInput {
 
 export interface CarFeatureCategoryCreateWithoutFeaturesInput {
   name: String;
+  type: CarFeatureType;
 }
 
 export type CarFeatureWhereUniqueInput = AtLeastOne<{
@@ -1789,6 +1812,7 @@ export interface AdUpdateInput {
 
 export interface CarFeatureCategoryUpdateManyMutationInput {
   name?: String;
+  type?: CarFeatureType;
 }
 
 export interface UserUpdateOneRequiredWithoutAdsInput {
@@ -1928,27 +1952,6 @@ export type OfferWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface OfferUpdateManyWithoutCreatorInput {
-  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
-  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  update?:
-    | OfferUpdateWithWhereUniqueWithoutCreatorInput[]
-    | OfferUpdateWithWhereUniqueWithoutCreatorInput;
-  upsert?:
-    | OfferUpsertWithWhereUniqueWithoutCreatorInput[]
-    | OfferUpsertWithWhereUniqueWithoutCreatorInput;
-  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
-  updateMany?:
-    | OfferUpdateManyWithWhereNestedInput[]
-    | OfferUpdateManyWithWhereNestedInput;
-}
-
-export interface CarFeatureUpdateManyMutationInput {
-  name?: String;
-}
-
 export interface OfferScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -2003,6 +2006,15 @@ export interface OfferScalarWhereInput {
   AND?: OfferScalarWhereInput[] | OfferScalarWhereInput;
   OR?: OfferScalarWhereInput[] | OfferScalarWhereInput;
   NOT?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+}
+
+export interface CarFeatureUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface OfferUpdateWithWhereUniqueWithoutCreatorInput {
+  where: OfferWhereUniqueInput;
+  data: OfferUpdateWithoutCreatorDataInput;
 }
 
 export type PostWhereUniqueInput = AtLeastOne<{
@@ -2269,7 +2281,7 @@ export interface DateCreateOneInput {
   create?: DateCreateInput;
 }
 
-export interface CarFeatureCategoryWhereInput {
+export interface CarFeatureWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -2298,12 +2310,10 @@ export interface CarFeatureCategoryWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  features_every?: CarFeatureWhereInput;
-  features_some?: CarFeatureWhereInput;
-  features_none?: CarFeatureWhereInput;
-  AND?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
-  OR?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
-  NOT?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  category?: CarFeatureCategoryWhereInput;
+  AND?: CarFeatureWhereInput[] | CarFeatureWhereInput;
+  OR?: CarFeatureWhereInput[] | CarFeatureWhereInput;
+  NOT?: CarFeatureWhereInput[] | CarFeatureWhereInput;
 }
 
 export interface UserCreatepermissionsInput {
@@ -2942,6 +2952,7 @@ export interface AdUpdateManyDataInput {
 
 export interface CarFeatureCategoryUpdateWithoutFeaturesDataInput {
   name?: String;
+  type?: CarFeatureType;
 }
 
 export interface AdUpsertWithWhereUniqueWithoutCreatorInput {
@@ -3278,6 +3289,7 @@ export interface AdUpdateWithoutCreatorDataInput {
 
 export interface CarFeatureCategoryUpdateInput {
   name?: String;
+  type?: CarFeatureType;
   features?: CarFeatureUpdateManyWithoutCategoryInput;
 }
 
@@ -3646,6 +3658,7 @@ export interface OfferCreateManyWithoutCreatorInput {
 
 export interface CarFeatureCategoryCreateInput {
   name: String;
+  type: CarFeatureType;
   features?: CarFeatureCreateManyWithoutCategoryInput;
 }
 
@@ -4745,6 +4758,7 @@ export interface AggregateCarFeatureCategorySubscription
 export interface CarFeatureCategoryPreviousValues {
   id: ID_Output;
   name: String;
+  type: CarFeatureType;
 }
 
 export interface CarFeatureCategoryPreviousValuesPromise
@@ -4752,6 +4766,7 @@ export interface CarFeatureCategoryPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  type: () => Promise<CarFeatureType>;
 }
 
 export interface CarFeatureCategoryPreviousValuesSubscription
@@ -4759,6 +4774,7 @@ export interface CarFeatureCategoryPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<CarFeatureType>>;
 }
 
 export interface CarFeatureCategoryConnection {
@@ -5428,6 +5444,7 @@ export interface CarFeatureCategoryEdgeSubscription
 export interface CarFeatureCategory {
   id: ID_Output;
   name: String;
+  type: CarFeatureType;
 }
 
 export interface CarFeatureCategoryPromise
@@ -5435,6 +5452,7 @@ export interface CarFeatureCategoryPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  type: () => Promise<CarFeatureType>;
   features: <T = FragmentableArray<CarFeature>>(args?: {
     where?: CarFeatureWhereInput;
     orderBy?: CarFeatureOrderByInput;
@@ -5451,6 +5469,7 @@ export interface CarFeatureCategorySubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  type: () => Promise<AsyncIterator<CarFeatureType>>;
   features: <T = Promise<AsyncIterator<CarFeatureSubscription>>>(args?: {
     where?: CarFeatureWhereInput;
     orderBy?: CarFeatureOrderByInput;
@@ -6244,6 +6263,10 @@ export const models: Model[] = [
   },
   {
     name: "CarFeatureCategory",
+    embedded: false
+  },
+  {
+    name: "CarFeatureType",
     embedded: false
   },
   {

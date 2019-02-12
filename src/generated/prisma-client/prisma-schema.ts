@@ -780,6 +780,7 @@ type CarFeature {
 type CarFeatureCategory {
   id: ID!
   name: String!
+  type: CarFeatureType!
   features(where: CarFeatureWhereInput, orderBy: CarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarFeature!]
 }
 
@@ -791,6 +792,7 @@ type CarFeatureCategoryConnection {
 
 input CarFeatureCategoryCreateInput {
   name: String!
+  type: CarFeatureType!
   features: CarFeatureCreateManyWithoutCategoryInput
 }
 
@@ -801,6 +803,7 @@ input CarFeatureCategoryCreateOneWithoutFeaturesInput {
 
 input CarFeatureCategoryCreateWithoutFeaturesInput {
   name: String!
+  type: CarFeatureType!
 }
 
 type CarFeatureCategoryEdge {
@@ -813,6 +816,8 @@ enum CarFeatureCategoryOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  type_ASC
+  type_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -822,6 +827,7 @@ enum CarFeatureCategoryOrderByInput {
 type CarFeatureCategoryPreviousValues {
   id: ID!
   name: String!
+  type: CarFeatureType!
 }
 
 type CarFeatureCategorySubscriptionPayload {
@@ -844,11 +850,13 @@ input CarFeatureCategorySubscriptionWhereInput {
 
 input CarFeatureCategoryUpdateInput {
   name: String
+  type: CarFeatureType
   features: CarFeatureUpdateManyWithoutCategoryInput
 }
 
 input CarFeatureCategoryUpdateManyMutationInput {
   name: String
+  type: CarFeatureType
 }
 
 input CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput {
@@ -860,6 +868,7 @@ input CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput {
 
 input CarFeatureCategoryUpdateWithoutFeaturesDataInput {
   name: String
+  type: CarFeatureType
 }
 
 input CarFeatureCategoryUpsertWithoutFeaturesInput {
@@ -896,6 +905,10 @@ input CarFeatureCategoryWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  type: CarFeatureType
+  type_not: CarFeatureType
+  type_in: [CarFeatureType!]
+  type_not_in: [CarFeatureType!]
   features_every: CarFeatureWhereInput
   features_some: CarFeatureWhereInput
   features_none: CarFeatureWhereInput
@@ -1010,6 +1023,11 @@ input CarFeatureSubscriptionWhereInput {
   AND: [CarFeatureSubscriptionWhereInput!]
   OR: [CarFeatureSubscriptionWhereInput!]
   NOT: [CarFeatureSubscriptionWhereInput!]
+}
+
+enum CarFeatureType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
 }
 
 input CarFeatureUpdateDataInput {
