@@ -27,26 +27,34 @@ type Mutation {
   resetPassword(resetToken: String!, password: String!): User!
 }
 
-input CarCreateInput {
-  manufacturerID: String!
-  modelID: String!
-  categoryID: String!
-  year: Int!
-  mileage: Int!
-  photos: [String!]!
-  featuresIDs: [String!]
-}
+# USER
+# ------------------------------------------------------
 
-type Subscription {
-  feedSubscription: Post
-}
-
-type Post {
+type User {
   id: ID!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  birthDate: Date!
+  gender: Gender!
+  permissions: [Permission!]!
+  offers: [Offer!]!
+  ads: [Ad!]!
+  cars: [Car!]!
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Permission {
+  USER
+  PREMIUM
+  ADMIN
 }
 
 input UserSignupInput {
@@ -72,44 +80,68 @@ input UserUpdateInput {
   permissions: [Permission!]
 }
 
-input DateInput {
-  day: Int!
-  month: Int!
-  year: Int!
-}
+# Cars
+# ------------------------------------------------------
 
-type User {
+type Car {
   id: ID!
-  email: String!
-  firstName: String!
-  lastName: String!
-  password: String!
-  location: String!
-  birthDate: Date!
-  gender: Gender!
-  permissions: [Permission!]!
-  offers: [Offer!]!
-  ads: [Ad!]!
-  cars: [Car!]!
-}
-
-type Date {
-  day: Int!
-  month: Int!
+  owner: User @private
+  manufacturer: Manufacturer!
+  model: CarModel!
+  category: CarCategory!
   year: Int!
+  mileage: Int!
+  photos: [String!]!
+  features: [CarFeature!]!
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  OTHER
+
+type CarCategory {
+  id: ID!
+  name: String!
 }
 
-enum Permission {
-  USER
-  PREMIUM
-  ADMIN
+type CarFeatureCategory {
+  id: ID!
+  name: String!
+  type: CarFeatureType!
+  features: [CarFeature!]!
 }
+
+type CarFeature {
+  id: ID!
+  name: String!
+  category: CarFeatureCategory!
+}
+
+enum CarFeatureType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
+}
+
+type Manufacturer {
+  id: ID!
+  name: String!
+  models: [CarModel!]!
+}
+
+type CarModel {
+  id: ID!
+  name: String!
+}
+
+input CarCreateInput {
+  manufacturerID: String!
+  modelID: String!
+  categoryID: String!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  featuresIDs: [String!]
+}
+
+# Ad
+# ------------------------------------------------------
 
 type Ad {
   id: ID!
@@ -226,6 +258,43 @@ enum AdFeatureImportance {
   HIGH
 }
 
+# Util
+# ------------------------------------------------------
+
+type Date {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+input DateInput {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+type Subscription {
+  feedSubscription: Post
+}
+
+type Post {
+  id: ID!
+  published: Boolean!
+  title: String!
+  content: String!
+  author: User!
+}
+
+
+
+
+
+
+
+
+
+
+
 type Offer {
   id: ID!
   creator: User @private
@@ -242,48 +311,3 @@ enum OfferStatus {
   DELETED
 }
 
-type Car {
-  id: ID!
-  owner: User @private
-  manufacturer: Manufacturer!
-  model: CarModel!
-  category: CarCategory!
-  year: Int!
-  mileage: Int!
-  photos: [String!]!
-  features: [CarFeature!]!
-}
-
-type CarCategory {
-  id: ID!
-  name: String!
-}
-
-type CarFeatureCategory {
-  id: ID!
-  name: String!
-  type: CarFeatureType!
-  features: [CarFeature!]!
-}
-
-type CarFeature {
-  id: ID!
-  name: String!
-  category: CarFeatureCategory!
-}
-
-enum CarFeatureType {
-  TRUE_FALSE
-  MULTIPLE_CHOICE
-}
-
-type Manufacturer {
-  id: ID!
-  name: String!
-  models: [CarModel!]!
-}
-
-type CarModel {
-  id: ID!
-  name: String!
-}
