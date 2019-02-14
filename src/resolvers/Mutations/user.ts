@@ -3,6 +3,7 @@ import { UserNotFoundError } from "../../errors/userErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { UserUpdateInput } from "../../generated/prisma-client/index";
 import { InvalidEmailFormatError } from "../../errors/authErrors";
+import * as bcrypt from "bcryptjs";
 
 interface UserResolvers {
   updateUser: Types.UpdateUserResolver;
@@ -11,7 +12,7 @@ interface UserResolvers {
 export const user: UserResolvers = {
   async updateUser(parent, { data }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    const { id, permissions, birthDate, ...updatedValues } = data;
+    const { id, permissions, birthDate, password, ...updatedValues } = data;
 
     const userExists = await ctx.prisma.$exists.user({
       id: userId
@@ -42,6 +43,11 @@ export const user: UserResolvers = {
       updatedData.permissions = {
         set: permissions
       };
+    }
+
+    if (password) {
+      const newPassword = await bcrypt.hash(data.password, 10);
+      updatedData.password = newPassword;
     }
 
     return ctx.prisma.updateUser({
