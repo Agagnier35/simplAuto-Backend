@@ -20,6 +20,7 @@ type Mutation {
   updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
   createCar(data: CarCreateInput!): Car
+  deleteCar(id: ID!): Car
   createAd(data: AdCreateInput!): Ad
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
@@ -93,8 +94,8 @@ type Car {
   mileage: Int!
   photos: [String!]!
   features: [CarFeature!]!
+  status: CarStatus!
 }
-
 
 type CarCategory {
   id: ID!
@@ -285,16 +286,6 @@ type Post {
   author: User!
 }
 
-
-
-
-
-
-
-
-
-
-
 type Offer {
   id: ID!
   creator: User @private
@@ -311,3 +302,8 @@ enum OfferStatus {
   DELETED
 }
 
+enum CarStatus {
+  PUBLISHED
+  SOLD
+  DELETED
+}

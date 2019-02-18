@@ -602,6 +602,7 @@ type Car {
   mileage: Int!
   photos: [String!]!
   features(where: CarFeatureWhereInput, orderBy: CarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarFeature!]
+  status: CarStatus!
 }
 
 type CarCategory {
@@ -740,6 +741,7 @@ input CarCreateInput {
   mileage: Int!
   photos: CarCreatephotosInput
   features: CarFeatureCreateManyInput
+  status: CarStatus
 }
 
 input CarCreateManyWithoutOwnerInput {
@@ -764,6 +766,7 @@ input CarCreateWithoutOwnerInput {
   mileage: Int!
   photos: CarCreatephotosInput
   features: CarFeatureCreateManyInput
+  status: CarStatus
 }
 
 type CarEdge {
@@ -1350,6 +1353,8 @@ enum CarOrderByInput {
   year_DESC
   mileage_ASC
   mileage_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1361,6 +1366,7 @@ type CarPreviousValues {
   year: Int!
   mileage: Int!
   photos: [String!]!
+  status: CarStatus!
 }
 
 input CarScalarWhereInput {
@@ -1394,9 +1400,19 @@ input CarScalarWhereInput {
   mileage_lte: Int
   mileage_gt: Int
   mileage_gte: Int
+  status: CarStatus
+  status_not: CarStatus
+  status_in: [CarStatus!]
+  status_not_in: [CarStatus!]
   AND: [CarScalarWhereInput!]
   OR: [CarScalarWhereInput!]
   NOT: [CarScalarWhereInput!]
+}
+
+enum CarStatus {
+  PUBLISHED
+  SOLD
+  DELETED
 }
 
 type CarSubscriptionPayload {
@@ -1426,6 +1442,7 @@ input CarUpdateDataInput {
   mileage: Int
   photos: CarUpdatephotosInput
   features: CarFeatureUpdateManyInput
+  status: CarStatus
 }
 
 input CarUpdateInput {
@@ -1437,18 +1454,21 @@ input CarUpdateInput {
   mileage: Int
   photos: CarUpdatephotosInput
   features: CarFeatureUpdateManyInput
+  status: CarStatus
 }
 
 input CarUpdateManyDataInput {
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
+  status: CarStatus
 }
 
 input CarUpdateManyMutationInput {
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
+  status: CarStatus
 }
 
 input CarUpdateManyWithoutOwnerInput {
@@ -1486,6 +1506,7 @@ input CarUpdateWithoutOwnerDataInput {
   mileage: Int
   photos: CarUpdatephotosInput
   features: CarFeatureUpdateManyInput
+  status: CarStatus
 }
 
 input CarUpdateWithWhereUniqueWithoutOwnerInput {
@@ -1542,6 +1563,10 @@ input CarWhereInput {
   features_every: CarFeatureWhereInput
   features_some: CarFeatureWhereInput
   features_none: CarFeatureWhereInput
+  status: CarStatus
+  status_not: CarStatus
+  status_in: [CarStatus!]
+  status_not_in: [CarStatus!]
   AND: [CarWhereInput!]
   OR: [CarWhereInput!]
   NOT: [CarWhereInput!]
