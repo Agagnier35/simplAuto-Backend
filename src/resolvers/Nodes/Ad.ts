@@ -45,7 +45,11 @@ export const Ad: AdResolvers.Type = {
   },
 
   offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.ad({ id }).offers();
+    return ctx.prisma.ad({ id }).offers({
+      where: {
+        status_not: "DELETED"
+      }
+    });
   },
 
   features: ({ id }, args, ctx: Context) => {
