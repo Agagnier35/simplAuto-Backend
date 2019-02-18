@@ -7,6 +7,10 @@ interface AdsQueries {
 
 export const ads: AdsQueries = {
   ads(parent, args, ctx: Context) {
-    return ctx.prisma.ads();
+    return ctx.prisma.ads({
+      where: {
+        status: "PUBLISHED"
+      }
+    });
   }
 };
