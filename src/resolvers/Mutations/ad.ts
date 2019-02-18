@@ -1,9 +1,16 @@
 import { getUserId } from "../../utils";
-import { MutationResolvers as Types } from "../../generated/yoga-client";
-import { AdCreateInput } from "../../generated/prisma-client/index";
+import {
+  MutationResolvers as Types,
+  AdStatus
+} from "../../generated/yoga-client";
+import {
+  AdCreateInput,
+  OfferStatus
+} from "../../generated/prisma-client/index";
 
 interface AdResolvers {
   createAd: Types.CreateAdResolver;
+  deleteAd: Types.DeleteAdResolver;
 }
 
 export const ad: AdResolvers = {
@@ -129,5 +136,18 @@ export const ad: AdResolvers = {
     }
 
     return ctx.prisma.createAd(mutation);
+  },
+  async deleteAd(parent, { id }, ctx) {
+    const statusOffer: OfferStatus = "DELETED";
+    await ctx.prisma.updateManyOffers({
+      data: { status: statusOffer },
+      where: { ad: { id } }
+    });
+
+    const deletedAdStatus: AdStatus = "DELETED";
+    return await ctx.prisma.updateAd({
+      data: { status: deletedAdStatus },
+      where: { id }
+    });
   }
 };
