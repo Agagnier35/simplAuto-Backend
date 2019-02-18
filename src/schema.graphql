@@ -1,32 +1,280 @@
+directive @private(requires: Permission = ADMIN) on FIELD_DEFINITION
+
 type Query {
   feed: [Post!]!
   drafts: [Post!]!
   post(id: ID!): Post
   me: User
+  ads(adFeaturesIDs: [String]): [Ad!]
+  car(id: ID!): Car
+  carCategories: [CarCategory]
+  carFeatureCategory(name: String!): CarFeatureCategory
+  carFeatureCategories: [CarFeatureCategory]
+  manufacturers: [Manufacturer]
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): AuthPayload!
-  login(email: String!, password: String!): AuthPayload!
+  signup(data: UserSignupInput!): User!
+  login(email: String!, password: String!): User!
+  logout: String!
+  updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
+  createCar(data: CarCreateInput!): Car
+  createAd(data: AdCreateInput!): Ad
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
+  resetPasswordRequest(email: String!): String!
+  resetPassword(resetToken: String!, password: String!): User!
 }
 
-type Subscription {
-  feedSubscription: Post
-}
-
-type AuthPayload {
-  token: String!
-  user: User!
-}
+# USER
+# ------------------------------------------------------
 
 type User {
   id: ID!
   email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  birthDate: Date!
+  gender: Gender!
+  permissions: [Permission!]!
+  offers: [Offer!]!
+  ads: [Ad!]!
+  cars: [Car!]!
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Permission {
+  USER
+  PREMIUM
+  ADMIN
+}
+
+input UserSignupInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  birthDate: DateInput!
+  gender: Gender!
+  permissions: [Permission!]
+}
+
+input UserUpdateInput {
+  id: ID!
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  location: String
+  birthDate: DateInput
+  gender: Gender
+  permissions: [Permission!]
+}
+
+# Cars
+# ------------------------------------------------------
+
+type Car {
+  id: ID!
+  owner: User @private
+  manufacturer: Manufacturer!
+  model: CarModel!
+  category: CarCategory!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  features: [CarFeature!]!
+}
+
+
+type CarCategory {
+  id: ID!
   name: String!
-  posts: [Post!]!
+}
+
+type CarFeatureCategory {
+  id: ID!
+  name: String!
+  type: CarFeatureType!
+  features: [CarFeature!]!
+}
+
+type CarFeature {
+  id: ID!
+  name: String!
+  category: CarFeatureCategory!
+}
+
+enum CarFeatureType {
+  TRUE_FALSE
+  MULTIPLE_CHOICE
+}
+
+type Manufacturer {
+  id: ID!
+  name: String!
+  models: [CarModel!]!
+}
+
+type CarModel {
+  id: ID!
+  name: String!
+}
+
+input CarCreateInput {
+  manufacturerID: String!
+  modelID: String!
+  categoryID: String!
+  year: Int!
+  mileage: Int!
+  photos: [String!]!
+  featuresIDs: [String!]
+}
+
+# Ad
+# ------------------------------------------------------
+
+type Ad {
+  id: ID!
+  creator: User @private
+  offers: [Offer!]
+  priceLowerBoundFeature: PriceBoundFeature
+  priceHigherBoundFeature: PriceBoundFeature
+  manufacturerFeature: ManufacturerFeature
+  modelFeature: ModelFeature
+  categoryFeature: CategoryFeature
+  mileageLowerBoundFeature: MileageBoundFeature
+  mileageHigherBoundFeature: MileageBoundFeature
+  yearLowerBoundFeature: YearBoundFeature
+  yearHigherBoundFeature: YearBoundFeature
+  features: [AdCarFeature!]
+  isUrgent: Boolean!
+  isFirst: Boolean!
+  status: AdStatus!
+}
+
+input AdCreateInput {
+  priceLowerBoundFeature: PriceBoundFeatureInput
+  priceHigherBoundFeature: PriceBoundFeatureInput
+  manufacturerFeature: ManufacturerFeatureInput
+  modelFeature: ModelFeatureInput
+  categoryFeature: CategoryFeatureInput
+  mileageLowerBoundFeature: MileageBoundFeatureInput
+  mileageHigherBoundFeature: MileageBoundFeatureInput
+  yearLowerBoundFeature: YearBoundFeatureInput
+  yearHigherBoundFeature: YearBoundFeatureInput
+  features: [AdCarFeatureInput!]
+}
+
+type PriceBoundFeature {
+  price: Float!
+  importance: AdFeatureImportance
+}
+
+input PriceBoundFeatureInput {
+  price: Float!
+  importance: AdFeatureImportance
+}
+
+type ManufacturerFeature {
+  manufacturer: Manufacturer!
+  importance: AdFeatureImportance
+}
+
+input ManufacturerFeatureInput {
+  manufacturerID: String!
+  importance: AdFeatureImportance
+}
+
+type ModelFeature {
+  model: CarModel!
+  importance: AdFeatureImportance
+}
+
+input ModelFeatureInput {
+  modelID: String!
+  importance: AdFeatureImportance
+}
+
+type CategoryFeature {
+  category: CarCategory!
+  importance: AdFeatureImportance
+}
+
+input CategoryFeatureInput {
+  categoryID: String!
+  importance: AdFeatureImportance
+}
+
+type MileageBoundFeature {
+  mileage: Int!
+  importance: AdFeatureImportance
+}
+
+input MileageBoundFeatureInput {
+  mileage: Int!
+  importance: AdFeatureImportance
+}
+
+type YearBoundFeature {
+  year: Int!
+  importance: AdFeatureImportance
+}
+
+input YearBoundFeatureInput {
+  year: Int!
+  importance: AdFeatureImportance
+}
+
+enum AdStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+
+type AdCarFeature {
+  id: ID!
+  feature: CarFeature!
+  importance: AdFeatureImportance
+}
+
+input AdCarFeatureInput {
+  featureID: String!
+  importance: AdFeatureImportance
+}
+
+enum AdFeatureImportance {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+# Util
+# ------------------------------------------------------
+
+type Date {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+input DateInput {
+  day: Int!
+  month: Int!
+  year: Int!
+}
+
+type Subscription {
+  feedSubscription: Post
 }
 
 type Post {
@@ -36,3 +284,30 @@ type Post {
   content: String!
   author: User!
 }
+
+
+
+
+
+
+
+
+
+
+
+type Offer {
+  id: ID!
+  creator: User @private
+  ad: Ad!
+  car: Car!
+  price: Float!
+  status: OfferStatus!
+  finalRank: Int
+}
+
+enum OfferStatus {
+  PUBLISHED
+  ACCEPTED
+  DELETED
+}
+

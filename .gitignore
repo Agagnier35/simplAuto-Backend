@@ -1,6 +1,9 @@
-#dependencies
+# dependencies
 /node_modules
-.env
+package-lock.json
 
-#build
+# generated
+/src/generated
+
+# build
 /dist

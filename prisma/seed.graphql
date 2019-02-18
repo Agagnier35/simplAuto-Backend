@@ -1,34 +1,295 @@
 mutation {
-  user1: createUser(data: {
-    email: "alice@prisma.io"
-    name: "Alice"
-    password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
-    posts: {
-      create: {
-        title: "Join us for GraphQL Conf 2019 in Berlin"
-        content: "https://www.graphqlconf.org/"
-        published: true
-      }
+  # Users
+  # -----------------------------------------------
+  user1: createUser(
+    data: {
+      email: "dominic@yopmail.com"
+      firstName: "Dominic"
+      lastName: "Bergeron"
+      password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
+      location: "Laval"
+      birthDate: { create: { day: 9, month: 5, year: 1990 } }
+      gender: MALE
+      permissions: { set: [USER, ADMIN] }
     }
-  }) {
+  ) {
     id
   }
 
-  user2: createUser(data: {
-    email: "bob@prisma.io"
-    name: "Bob"
-    password: "$2b$10$o6KioO.taArzboM44Ig85O3ZFZYZpR3XD7mI8T29eP4znU/.xyJbW"  # "secret43"
-    posts: {
-      create: [{
-        title: "Subscribe to GraphQL Weekly for community news"
-        content: "https://graphqlweekly.com/"
-        published: true
-      } {
-        title: "Follow Prisma on Twitter"
-        content: "https://twitter.com/prisma"
-      }]
+  user2: createUser(
+    data: {
+      email: "alexandre_clark@yopmail.com"
+      firstName: "Alexandre"
+      lastName: "Clark"
+      password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
+      location: "Montreal"
+      birthDate: { create: { day: 20, month: 2, year: 1992 } }
+      gender: MALE
+      permissions: { set: [USER] }
     }
-  }) {
+  ) {
+    id
+  }
+
+  # King user
+  # -----------------------------------------------
+  kingUser: createUser(
+    data: {
+      email: "king@yopmail.com"
+      firstName: "King"
+      lastName: "Dave"
+      password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m" # "secret42"
+      location: "Montreal"
+      birthDate: { create: { day: 9, month: 9, year: 1994 } }
+      gender: MALE
+      permissions: { set: [USER] }
+      cars: {
+        create: [
+          # CarCreateWithoutOwnerInput
+          {
+            manufacturer: {
+              create: {
+                name: "Jeep"
+                models: { create: [{ name: "Grand Cherokee" }] }
+              }
+            }
+            #model
+            model: { create: { name: "Wrangler" } }
+            #category
+            category: { create: { name: "vus" } }
+            year: 2018
+            mileage: 102000
+          }
+        ]
+      }
+      ads: {
+        create: [
+          {
+            priceLowerBoundFeature: { create: { price: 50, importance: HIGH } }
+            priceHigherBoundFeature: {
+              create: { price: 5000, importance: HIGH }
+            }
+            categoryFeature: {
+              create: { category: { create: { name: "sedan" } } }
+            }
+            manufacturerFeature: {
+              create: {
+                manufacturer: {
+                  create: {
+                    name: "Volkswagen"
+                    models: { create: [{ name: "Golf" }] }
+                  }
+                }
+              }
+            }
+            modelFeature: { create: { model: { create: { name: "Jetta" } } } }
+            mileageLowerBoundFeature: { create: { mileage: 0 } }
+            mileageHigherBoundFeature: { create: { mileage: 20000 } }
+            yearLowerBoundFeature: { create: { year: 2016 } }
+            yearHigherBoundFeature: { create: { year: 2018 } }
+            isUrgent: true
+            features: {
+              create: [
+                {
+                  feature: {
+                    create: {
+                      name: "aileron de feu"
+                      category: {
+                        create: { name: "aileron", type: MULTIPLE_CHOICE }
+                      }
+                    }
+                  }
+                  importance: MEDIUM
+                }
+              ]
+            }
+          }
+          {}
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  # A Manufacturer and all his car models
+  # -------------------------------------------
+  Honda: createManufacturer(
+    data: { name: "Honda", models: { create: [{ name: "Civic" }] } }
+  ) {
+    id
+  }
+
+  # A car feature category and all possibilities
+  # -------------------------------------------
+  Motor: createCarFeatureCategory(
+    data: {
+      name: "motor"
+      type: MULTIPLE_CHOICE
+      features: { create: [{ name: "2.0L" }, { name: "2.5L" }] }
+    }
+  ) {
+    id
+  }
+
+  Colors: createCarFeatureCategory(
+    data: {
+      name: "color"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [
+          { name: "black" }
+          { name: "blue" }
+          { name: "brown" }
+          { name: "gold" }
+          { name: "green" }
+          { name: "grey" }
+          { name: "orange" }
+          { name: "pink" }
+          { name: "purple" }
+          { name: "red" }
+          { name: "silver" }
+          { name: "tan" }
+          { name: "teal" }
+          { name: "white" }
+          { name: "yellow" }
+          { name: "other" }
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  FuelType: createCarFeatureCategory(
+    data: {
+      name: "fuelType"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [
+          { name: "diesel" }
+          { name: "electric" }
+          { name: "gasoline" }
+          { name: "hybrid" }
+          { name: "other" }
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  DoorNumber: createCarFeatureCategory(
+    data: {
+      name: "doorNumber"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [
+          { name: "2" }
+          { name: "3" }
+          { name: "4" }
+          { name: "5" }
+          { name: "other" }
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  SeatNumber: createCarFeatureCategory(
+    data: {
+      name: "seatNumber"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [
+          { name: "2" }
+          { name: "3" }
+          { name: "4" }
+          { name: "5" }
+          { name: "6" }
+          { name: "7" }
+          { name: "other" }
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  Drivetrain: createCarFeatureCategory(
+    data: {
+      name: "drivetrain"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [
+          { name: "4x4" }
+          { name: "awd" }
+          { name: "fwd" }
+          { name: "rwd" }
+          { name: "other" }
+        ]
+      }
+    }
+  ) {
+    id
+  }
+
+  Transmission: createCarFeatureCategory(
+    data: {
+      name: "transmission"
+      type: MULTIPLE_CHOICE
+      features: {
+        create: [{ name: "manual" }, { name: "automatic" }, { name: "other" }]
+      }
+    }
+  ) {
+    id
+  }
+
+  Sunroof: createCarFeatureCategory(
+    data: {
+      name: "sunroof"
+      type: TRUE_FALSE
+      features: { create: [{ name: "true" }, { name: "false" }] }
+    }
+  ) {
+    id
+  }
+
+  CruiseControl: createCarFeatureCategory(
+    data: {
+      name: "cruiseControl"
+      type: TRUE_FALSE
+      features: { create: [{ name: "true" }, { name: "false" }] }
+    }
+  ) {
+    id
+  }
+
+  TrailerHitch: createCarFeatureCategory(
+    data: {
+      name: "trailerHitch"
+      type: TRUE_FALSE
+      features: { create: [{ name: "true" }, { name: "false" }] }
+    }
+  ) {
+    id
+  }
+
+  AirConditioning: createCarFeatureCategory(
+    data: {
+      name: "airConditioning"
+      type: TRUE_FALSE
+      features: { create: [{ name: "true" }, { name: "false" }] }
+    }
+  ) {
+    id
+  }
+
+  # A car category
+  # -------------------------------------------
+  Sedan: createCarCategory(data: { name: "sedan" }) {
     id
   }
 }
