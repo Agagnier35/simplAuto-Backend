@@ -3,6 +3,7 @@ import { post } from "./post";
 import { user } from "./user";
 import { car } from "./car";
 import { ad } from "./ad";
+import { offer } from "./offer";
 import { MutationResolvers } from "../../generated/yoga-client";
 
 const Mutations: MutationResolvers.Type = {
@@ -10,7 +11,8 @@ const Mutations: MutationResolvers.Type = {
   ...post,
   ...user,
   ...car,
-  ...ad
+  ...ad,
+  ...offer
 };
 
 export default Mutations;
