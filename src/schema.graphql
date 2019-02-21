@@ -23,6 +23,7 @@ type Mutation {
   createCar(data: CarCreateInput!): Car
   deleteCar(id: ID!): Car
   createAd(data: AdCreateInput!): Ad
+  deleteAd(id: ID!): Ad
   publish(id: ID!): Post!
   deletePost(id: ID!): Post!
   resetPasswordRequest(email: String!): String!
