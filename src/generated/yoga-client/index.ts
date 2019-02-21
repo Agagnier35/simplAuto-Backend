@@ -28,6 +28,7 @@ export type Permission = "USER" | "PREMIUM" | "ADMIN";
 export type AdFeatureImportance = "LOW" | "MEDIUM" | "HIGH";
 export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
 export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
+export type CarStatus = "PUBLISHED" | "SOLD" | "DELETED";
 export type OfferStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
 export namespace QueryResolvers {
@@ -1413,7 +1414,8 @@ export namespace CarResolvers {
     id: (parent: Car) => parent.id,
     year: (parent: Car) => parent.year,
     mileage: (parent: Car) => parent.mileage,
-    photos: (parent: Car) => parent.photos
+    photos: (parent: Car) => parent.photos,
+    status: (parent: Car) => parent.status
   };
 
   export type IdResolver = (
@@ -1479,6 +1481,13 @@ export namespace CarResolvers {
     info: GraphQLResolveInfo
   ) => CarFeature[] | Promise<CarFeature[]>;
 
+  export type StatusResolver = (
+    parent: Car,
+    args: {},
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => CarStatus | Promise<CarStatus>;
+
   export interface Type {
     id: (
       parent: Car,
@@ -1542,6 +1551,13 @@ export namespace CarResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => CarFeature[] | Promise<CarFeature[]>;
+
+    status: (
+      parent: Car,
+      args: {},
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => CarStatus | Promise<CarStatus>;
   }
 }
 
@@ -1646,6 +1662,10 @@ export namespace MutationResolvers {
     data: CarCreateInput;
   }
 
+  export interface ArgsDeleteCar {
+    id: string;
+  }
+
   export interface ArgsCreateAd {
     data: AdCreateInput;
   }
@@ -1705,6 +1725,13 @@ export namespace MutationResolvers {
   export type CreateCarResolver = (
     parent: undefined,
     args: ArgsCreateCar,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Car | null | Promise<Car | null>;
+
+  export type DeleteCarResolver = (
+    parent: undefined,
+    args: ArgsDeleteCar,
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Car | null | Promise<Car | null>;
@@ -1783,6 +1810,13 @@ export namespace MutationResolvers {
     createCar: (
       parent: undefined,
       args: ArgsCreateCar,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Car | null | Promise<Car | null>;
+
+    deleteCar: (
+      parent: undefined,
+      args: ArgsDeleteCar,
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Car | null | Promise<Car | null>;

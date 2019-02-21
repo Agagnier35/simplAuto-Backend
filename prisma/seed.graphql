@@ -59,6 +59,7 @@ mutation {
             category: { create: { name: "vus" } }
             year: 2018
             mileage: 102000
+            status: PUBLISHED
           }
         ]
       }

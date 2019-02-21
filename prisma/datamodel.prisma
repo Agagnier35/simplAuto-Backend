@@ -43,15 +43,21 @@ type Ad {
   createdAt: DateTime!
   updatedAt: DateTime!
   offers: [Offer!]
-  priceLowerBoundFeature: PriceBoundFeature @relation(name: "PriceLowerBoundFeature")
-  priceHigherBoundFeature: PriceBoundFeature @relation(name: "PriceHigherBoundFeature")
+  priceLowerBoundFeature: PriceBoundFeature
+    @relation(name: "PriceLowerBoundFeature")
+  priceHigherBoundFeature: PriceBoundFeature
+    @relation(name: "PriceHigherBoundFeature")
   manufacturerFeature: ManufacturerFeature
   modelFeature: ModelFeature
   categoryFeature: CategoryFeature
-  mileageLowerBoundFeature: MileageBoundFeature @relation(name: "MileageLowerBoundFeature")
-  mileageHigherBoundFeature: MileageBoundFeature @relation(name: "MileageHigherBoundFeature")
-  yearLowerBoundFeature: YearBoundFeature @relation(name: "YearLowerBoundFeature")
-  yearHigherBoundFeature: YearBoundFeature @relation(name: "YearHigherBoundFeature")
+  mileageLowerBoundFeature: MileageBoundFeature
+    @relation(name: "MileageLowerBoundFeature")
+  mileageHigherBoundFeature: MileageBoundFeature
+    @relation(name: "MileageHigherBoundFeature")
+  yearLowerBoundFeature: YearBoundFeature
+    @relation(name: "YearLowerBoundFeature")
+  yearHigherBoundFeature: YearBoundFeature
+    @relation(name: "YearHigherBoundFeature")
   features: [AdCarFeature!]
   isUrgent: Boolean! @default(value: false)
   isFirst: Boolean! @default(value: false)
@@ -146,6 +152,13 @@ type Car {
   mileage: Int!
   photos: [String!]!
   features: [CarFeature!]!
+  status: CarStatus!  @default(value: PUBLISHED)
+}
+
+enum CarStatus {
+  PUBLISHED
+  SOLD
+  DELETED
 }
 
 enum CarFeatureType {
