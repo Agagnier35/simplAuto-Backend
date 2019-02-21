@@ -28,6 +28,8 @@ type Mutation {
   deletePost(id: ID!): Post!
   resetPasswordRequest(email: String!): String!
   resetPassword(resetToken: String!, password: String!): User!
+  createOffer(data: OfferCreateInput!): Offer
+  deleteOffer(id: ID!): Offer
 }
 
 # USER
@@ -149,7 +151,7 @@ input CarCreateInput {
 type Ad {
   id: ID!
   creator: User @private
-  offers: [Offer!]
+  offers: [Offer!]!
   priceLowerBoundFeature: PriceBoundFeature
   priceHigherBoundFeature: PriceBoundFeature
   manufacturerFeature: ManufacturerFeature
@@ -304,6 +306,12 @@ enum OfferStatus {
   DELETED
 }
 
+input OfferCreateInput {
+  creatorID: String!
+  adID: String!
+  carID: String
+  price: Float!
+}
 enum CarStatus {
   PUBLISHED
   SOLD
