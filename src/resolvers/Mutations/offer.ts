@@ -20,11 +20,9 @@ export const offer: OfferResolver = {
 
   async createOffer(parent, { data }, ctx: Context) {
     const { creatorID, adID, carID, price } = data;
-    const status: OfferStatus = "PUBLISHED";
 
     return ctx.prisma.createOffer({
       price,
-      status,
       creator: {
         connect: { id: creatorID }
       },
