@@ -20,7 +20,7 @@ import {
   CarFeature,
   CarFeatureCategory,
   Car
-} from "../prisma-client";
+} from "../prisma-client/index";
 type Context = any;
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
@@ -39,6 +39,10 @@ export namespace QueryResolvers {
 
   export interface ArgsAds {
     adFeaturesIDs?: Array<string | null> | null;
+  }
+
+  export interface ArgsAd {
+    id: string;
   }
 
   export interface ArgsCar {
@@ -83,6 +87,13 @@ export namespace QueryResolvers {
     ctx: Context,
     info: GraphQLResolveInfo
   ) => Ad[] | null | Promise<Ad[] | null>;
+
+  export type AdResolver = (
+    parent: undefined,
+    args: ArgsAd,
+    ctx: Context,
+    info: GraphQLResolveInfo
+  ) => Ad | null | Promise<Ad | null>;
 
   export type CarResolver = (
     parent: undefined,
@@ -163,6 +174,13 @@ export namespace QueryResolvers {
       ctx: Context,
       info: GraphQLResolveInfo
     ) => Ad[] | null | Promise<Ad[] | null>;
+
+    ad: (
+      parent: undefined,
+      args: ArgsAd,
+      ctx: Context,
+      info: GraphQLResolveInfo
+    ) => Ad | null | Promise<Ad | null>;
 
     car: (
       parent: undefined,
