@@ -282,7 +282,7 @@ input DateInput {
 }
 
 type Subscription {
-  feedSubscription: Post
+  messageSubscription: Message
 }
 
 type Post {
