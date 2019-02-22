@@ -2,7 +2,7 @@ import {
   MutationResolvers as Types,
   OfferStatus
 } from "../../generated/yoga-client";
-import { Context } from "graphql-yoga/dist/types";
+import { getUserId, Context } from "../../utils";
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
@@ -19,12 +19,14 @@ export const offer: OfferResolver = {
   },
 
   async createOffer(parent, { data }, ctx: Context) {
-    const { creatorID, adID, carID, price } = data;
+    const userID = getUserId(ctx);
+
+    const { adID, price, carID } = data;
 
     return ctx.prisma.createOffer({
       price,
       creator: {
-        connect: { id: creatorID }
+        connect: { id: userID }
       },
       ad: {
         connect: { id: adID }

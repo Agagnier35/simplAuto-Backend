@@ -13,6 +13,8 @@ import { Post } from "./Nodes/Post";
 import { CarCategory } from "./Nodes/CarCategory";
 import { CarModel } from "./Nodes/CarModel";
 import { Date } from "./Nodes/Date";
+import { Message } from "./Nodes/Message";
+import { Conversation } from "./Nodes/Conversation";
 import {
   AdCarFeature,
   PriceBoundFeature,
@@ -44,7 +46,9 @@ const resolvers: Resolvers = {
   ManufacturerFeature,
   CategoryFeature,
   MileageBoundFeature,
-  YearBoundFeature
+  YearBoundFeature,
+  Message,
+  Conversation
 };
 
 export default resolvers;

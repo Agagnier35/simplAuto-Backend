@@ -548,6 +548,10 @@ type AggregateCategoryFeature {
   count: Int!
 }
 
+type AggregateConversation {
+  count: Int!
+}
+
 type AggregateDate {
   count: Int!
 }
@@ -557,6 +561,10 @@ type AggregateManufacturer {
 }
 
 type AggregateManufacturerFeature {
+  count: Int!
+}
+
+type AggregateMessage {
   count: Int!
 }
 
@@ -1694,6 +1702,218 @@ input CategoryFeatureWhereUniqueInput {
   id: ID
 }
 
+type Conversation {
+  id: ID!
+  offer: Offer!
+  buyer: User!
+  seller: User!
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+}
+
+type ConversationConnection {
+  pageInfo: PageInfo!
+  edges: [ConversationEdge]!
+  aggregate: AggregateConversation!
+}
+
+input ConversationCreateInput {
+  offer: OfferCreateOneWithoutConversationInput!
+  buyer: UserCreateOneWithoutConversationsInput!
+  seller: UserCreateOneInput!
+  messages: MessageCreateManyWithoutConversationInput
+}
+
+input ConversationCreateManyWithoutBuyerInput {
+  create: [ConversationCreateWithoutBuyerInput!]
+  connect: [ConversationWhereUniqueInput!]
+}
+
+input ConversationCreateOneWithoutMessagesInput {
+  create: ConversationCreateWithoutMessagesInput
+  connect: ConversationWhereUniqueInput
+}
+
+input ConversationCreateOneWithoutOfferInput {
+  create: ConversationCreateWithoutOfferInput
+  connect: ConversationWhereUniqueInput
+}
+
+input ConversationCreateWithoutBuyerInput {
+  offer: OfferCreateOneWithoutConversationInput!
+  seller: UserCreateOneInput!
+  messages: MessageCreateManyWithoutConversationInput
+}
+
+input ConversationCreateWithoutMessagesInput {
+  offer: OfferCreateOneWithoutConversationInput!
+  buyer: UserCreateOneWithoutConversationsInput!
+  seller: UserCreateOneInput!
+}
+
+input ConversationCreateWithoutOfferInput {
+  buyer: UserCreateOneWithoutConversationsInput!
+  seller: UserCreateOneInput!
+  messages: MessageCreateManyWithoutConversationInput
+}
+
+type ConversationEdge {
+  node: Conversation!
+  cursor: String!
+}
+
+enum ConversationOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ConversationPreviousValues {
+  id: ID!
+}
+
+input ConversationScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  AND: [ConversationScalarWhereInput!]
+  OR: [ConversationScalarWhereInput!]
+  NOT: [ConversationScalarWhereInput!]
+}
+
+type ConversationSubscriptionPayload {
+  mutation: MutationType!
+  node: Conversation
+  updatedFields: [String!]
+  previousValues: ConversationPreviousValues
+}
+
+input ConversationSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ConversationWhereInput
+  AND: [ConversationSubscriptionWhereInput!]
+  OR: [ConversationSubscriptionWhereInput!]
+  NOT: [ConversationSubscriptionWhereInput!]
+}
+
+input ConversationUpdateInput {
+  offer: OfferUpdateOneRequiredWithoutConversationInput
+  buyer: UserUpdateOneRequiredWithoutConversationsInput
+  seller: UserUpdateOneRequiredInput
+  messages: MessageUpdateManyWithoutConversationInput
+}
+
+input ConversationUpdateManyWithoutBuyerInput {
+  create: [ConversationCreateWithoutBuyerInput!]
+  delete: [ConversationWhereUniqueInput!]
+  connect: [ConversationWhereUniqueInput!]
+  disconnect: [ConversationWhereUniqueInput!]
+  update: [ConversationUpdateWithWhereUniqueWithoutBuyerInput!]
+  upsert: [ConversationUpsertWithWhereUniqueWithoutBuyerInput!]
+  deleteMany: [ConversationScalarWhereInput!]
+}
+
+input ConversationUpdateOneRequiredWithoutMessagesInput {
+  create: ConversationCreateWithoutMessagesInput
+  update: ConversationUpdateWithoutMessagesDataInput
+  upsert: ConversationUpsertWithoutMessagesInput
+  connect: ConversationWhereUniqueInput
+}
+
+input ConversationUpdateOneWithoutOfferInput {
+  create: ConversationCreateWithoutOfferInput
+  update: ConversationUpdateWithoutOfferDataInput
+  upsert: ConversationUpsertWithoutOfferInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ConversationWhereUniqueInput
+}
+
+input ConversationUpdateWithoutBuyerDataInput {
+  offer: OfferUpdateOneRequiredWithoutConversationInput
+  seller: UserUpdateOneRequiredInput
+  messages: MessageUpdateManyWithoutConversationInput
+}
+
+input ConversationUpdateWithoutMessagesDataInput {
+  offer: OfferUpdateOneRequiredWithoutConversationInput
+  buyer: UserUpdateOneRequiredWithoutConversationsInput
+  seller: UserUpdateOneRequiredInput
+}
+
+input ConversationUpdateWithoutOfferDataInput {
+  buyer: UserUpdateOneRequiredWithoutConversationsInput
+  seller: UserUpdateOneRequiredInput
+  messages: MessageUpdateManyWithoutConversationInput
+}
+
+input ConversationUpdateWithWhereUniqueWithoutBuyerInput {
+  where: ConversationWhereUniqueInput!
+  data: ConversationUpdateWithoutBuyerDataInput!
+}
+
+input ConversationUpsertWithoutMessagesInput {
+  update: ConversationUpdateWithoutMessagesDataInput!
+  create: ConversationCreateWithoutMessagesInput!
+}
+
+input ConversationUpsertWithoutOfferInput {
+  update: ConversationUpdateWithoutOfferDataInput!
+  create: ConversationCreateWithoutOfferInput!
+}
+
+input ConversationUpsertWithWhereUniqueWithoutBuyerInput {
+  where: ConversationWhereUniqueInput!
+  update: ConversationUpdateWithoutBuyerDataInput!
+  create: ConversationCreateWithoutBuyerInput!
+}
+
+input ConversationWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  offer: OfferWhereInput
+  buyer: UserWhereInput
+  seller: UserWhereInput
+  messages_every: MessageWhereInput
+  messages_some: MessageWhereInput
+  messages_none: MessageWhereInput
+  AND: [ConversationWhereInput!]
+  OR: [ConversationWhereInput!]
+  NOT: [ConversationWhereInput!]
+}
+
+input ConversationWhereUniqueInput {
+  id: ID
+}
+
 type Date {
   day: Int!
   month: Int!
@@ -2069,6 +2289,232 @@ input ManufacturerWhereUniqueInput {
   id: ID
 }
 
+type Message {
+  id: ID!
+  sender: User!
+  text: String!
+  image: String
+  conversation: Conversation!
+}
+
+type MessageConnection {
+  pageInfo: PageInfo!
+  edges: [MessageEdge]!
+  aggregate: AggregateMessage!
+}
+
+input MessageCreateInput {
+  sender: UserCreateOneInput!
+  text: String!
+  image: String
+  conversation: ConversationCreateOneWithoutMessagesInput!
+}
+
+input MessageCreateManyWithoutConversationInput {
+  create: [MessageCreateWithoutConversationInput!]
+  connect: [MessageWhereUniqueInput!]
+}
+
+input MessageCreateWithoutConversationInput {
+  sender: UserCreateOneInput!
+  text: String!
+  image: String
+}
+
+type MessageEdge {
+  node: Message!
+  cursor: String!
+}
+
+enum MessageOrderByInput {
+  id_ASC
+  id_DESC
+  text_ASC
+  text_DESC
+  image_ASC
+  image_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type MessagePreviousValues {
+  id: ID!
+  text: String!
+  image: String
+}
+
+input MessageScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  AND: [MessageScalarWhereInput!]
+  OR: [MessageScalarWhereInput!]
+  NOT: [MessageScalarWhereInput!]
+}
+
+type MessageSubscriptionPayload {
+  mutation: MutationType!
+  node: Message
+  updatedFields: [String!]
+  previousValues: MessagePreviousValues
+}
+
+input MessageSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MessageWhereInput
+  AND: [MessageSubscriptionWhereInput!]
+  OR: [MessageSubscriptionWhereInput!]
+  NOT: [MessageSubscriptionWhereInput!]
+}
+
+input MessageUpdateInput {
+  sender: UserUpdateOneRequiredInput
+  text: String
+  image: String
+  conversation: ConversationUpdateOneRequiredWithoutMessagesInput
+}
+
+input MessageUpdateManyDataInput {
+  text: String
+  image: String
+}
+
+input MessageUpdateManyMutationInput {
+  text: String
+  image: String
+}
+
+input MessageUpdateManyWithoutConversationInput {
+  create: [MessageCreateWithoutConversationInput!]
+  delete: [MessageWhereUniqueInput!]
+  connect: [MessageWhereUniqueInput!]
+  disconnect: [MessageWhereUniqueInput!]
+  update: [MessageUpdateWithWhereUniqueWithoutConversationInput!]
+  upsert: [MessageUpsertWithWhereUniqueWithoutConversationInput!]
+  deleteMany: [MessageScalarWhereInput!]
+  updateMany: [MessageUpdateManyWithWhereNestedInput!]
+}
+
+input MessageUpdateManyWithWhereNestedInput {
+  where: MessageScalarWhereInput!
+  data: MessageUpdateManyDataInput!
+}
+
+input MessageUpdateWithoutConversationDataInput {
+  sender: UserUpdateOneRequiredInput
+  text: String
+  image: String
+}
+
+input MessageUpdateWithWhereUniqueWithoutConversationInput {
+  where: MessageWhereUniqueInput!
+  data: MessageUpdateWithoutConversationDataInput!
+}
+
+input MessageUpsertWithWhereUniqueWithoutConversationInput {
+  where: MessageWhereUniqueInput!
+  update: MessageUpdateWithoutConversationDataInput!
+  create: MessageCreateWithoutConversationInput!
+}
+
+input MessageWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  sender: UserWhereInput
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  conversation: ConversationWhereInput
+  AND: [MessageWhereInput!]
+  OR: [MessageWhereInput!]
+  NOT: [MessageWhereInput!]
+}
+
+input MessageWhereUniqueInput {
+  id: ID
+}
+
 type MileageBoundFeature {
   id: ID!
   mileage: Int!
@@ -2365,6 +2811,11 @@ type Mutation {
   upsertCategoryFeature(where: CategoryFeatureWhereUniqueInput!, create: CategoryFeatureCreateInput!, update: CategoryFeatureUpdateInput!): CategoryFeature!
   deleteCategoryFeature(where: CategoryFeatureWhereUniqueInput!): CategoryFeature
   deleteManyCategoryFeatures(where: CategoryFeatureWhereInput): BatchPayload!
+  createConversation(data: ConversationCreateInput!): Conversation!
+  updateConversation(data: ConversationUpdateInput!, where: ConversationWhereUniqueInput!): Conversation
+  upsertConversation(where: ConversationWhereUniqueInput!, create: ConversationCreateInput!, update: ConversationUpdateInput!): Conversation!
+  deleteConversation(where: ConversationWhereUniqueInput!): Conversation
+  deleteManyConversations(where: ConversationWhereInput): BatchPayload!
   createDate(data: DateCreateInput!): Date!
   updateManyDates(data: DateUpdateManyMutationInput!, where: DateWhereInput): BatchPayload!
   deleteManyDates(where: DateWhereInput): BatchPayload!
@@ -2380,6 +2831,12 @@ type Mutation {
   upsertManufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!, create: ManufacturerFeatureCreateInput!, update: ManufacturerFeatureUpdateInput!): ManufacturerFeature!
   deleteManufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!): ManufacturerFeature
   deleteManyManufacturerFeatures(where: ManufacturerFeatureWhereInput): BatchPayload!
+  createMessage(data: MessageCreateInput!): Message!
+  updateMessage(data: MessageUpdateInput!, where: MessageWhereUniqueInput!): Message
+  updateManyMessages(data: MessageUpdateManyMutationInput!, where: MessageWhereInput): BatchPayload!
+  upsertMessage(where: MessageWhereUniqueInput!, create: MessageCreateInput!, update: MessageUpdateInput!): Message!
+  deleteMessage(where: MessageWhereUniqueInput!): Message
+  deleteManyMessages(where: MessageWhereInput): BatchPayload!
   createMileageBoundFeature(data: MileageBoundFeatureCreateInput!): MileageBoundFeature!
   updateMileageBoundFeature(data: MileageBoundFeatureUpdateInput!, where: MileageBoundFeatureWhereUniqueInput!): MileageBoundFeature
   updateManyMileageBoundFeatures(data: MileageBoundFeatureUpdateManyMutationInput!, where: MileageBoundFeatureWhereInput): BatchPayload!
@@ -2444,6 +2901,7 @@ type Offer {
   price: Float!
   status: OfferStatus!
   finalRank: Int
+  conversation: Conversation
 }
 
 type OfferConnection {
@@ -2459,6 +2917,7 @@ input OfferCreateInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  conversation: ConversationCreateOneWithoutOfferInput
 }
 
 input OfferCreateManyWithoutAdInput {
@@ -2471,8 +2930,23 @@ input OfferCreateManyWithoutCreatorInput {
   connect: [OfferWhereUniqueInput!]
 }
 
+input OfferCreateOneWithoutConversationInput {
+  create: OfferCreateWithoutConversationInput
+  connect: OfferWhereUniqueInput
+}
+
 input OfferCreateWithoutAdInput {
   creator: UserCreateOneWithoutOffersInput!
+  car: CarCreateOneInput!
+  price: Float!
+  status: OfferStatus
+  finalRank: Int
+  conversation: ConversationCreateOneWithoutOfferInput
+}
+
+input OfferCreateWithoutConversationInput {
+  creator: UserCreateOneWithoutOffersInput!
+  ad: AdCreateOneWithoutOffersInput!
   car: CarCreateOneInput!
   price: Float!
   status: OfferStatus
@@ -2485,6 +2959,7 @@ input OfferCreateWithoutCreatorInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  conversation: ConversationCreateOneWithoutOfferInput
 }
 
 type OfferEdge {
@@ -2603,6 +3078,7 @@ input OfferUpdateInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  conversation: ConversationUpdateOneWithoutOfferInput
 }
 
 input OfferUpdateManyDataInput {
@@ -2644,8 +3120,25 @@ input OfferUpdateManyWithWhereNestedInput {
   data: OfferUpdateManyDataInput!
 }
 
+input OfferUpdateOneRequiredWithoutConversationInput {
+  create: OfferCreateWithoutConversationInput
+  update: OfferUpdateWithoutConversationDataInput
+  upsert: OfferUpsertWithoutConversationInput
+  connect: OfferWhereUniqueInput
+}
+
 input OfferUpdateWithoutAdDataInput {
   creator: UserUpdateOneRequiredWithoutOffersInput
+  car: CarUpdateOneRequiredInput
+  price: Float
+  status: OfferStatus
+  finalRank: Int
+  conversation: ConversationUpdateOneWithoutOfferInput
+}
+
+input OfferUpdateWithoutConversationDataInput {
+  creator: UserUpdateOneRequiredWithoutOffersInput
+  ad: AdUpdateOneRequiredWithoutOffersInput
   car: CarUpdateOneRequiredInput
   price: Float
   status: OfferStatus
@@ -2658,6 +3151,7 @@ input OfferUpdateWithoutCreatorDataInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  conversation: ConversationUpdateOneWithoutOfferInput
 }
 
 input OfferUpdateWithWhereUniqueWithoutAdInput {
@@ -2668,6 +3162,11 @@ input OfferUpdateWithWhereUniqueWithoutAdInput {
 input OfferUpdateWithWhereUniqueWithoutCreatorInput {
   where: OfferWhereUniqueInput!
   data: OfferUpdateWithoutCreatorDataInput!
+}
+
+input OfferUpsertWithoutConversationInput {
+  update: OfferUpdateWithoutConversationDataInput!
+  create: OfferCreateWithoutConversationInput!
 }
 
 input OfferUpsertWithWhereUniqueWithoutAdInput {
@@ -2736,6 +3235,7 @@ input OfferWhereInput {
   finalRank_lte: Int
   finalRank_gt: Int
   finalRank_gte: Int
+  conversation: ConversationWhereInput
   AND: [OfferWhereInput!]
   OR: [OfferWhereInput!]
   NOT: [OfferWhereInput!]
@@ -3066,6 +3566,9 @@ type Query {
   categoryFeature(where: CategoryFeatureWhereUniqueInput!): CategoryFeature
   categoryFeatures(where: CategoryFeatureWhereInput, orderBy: CategoryFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CategoryFeature]!
   categoryFeaturesConnection(where: CategoryFeatureWhereInput, orderBy: CategoryFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryFeatureConnection!
+  conversation(where: ConversationWhereUniqueInput!): Conversation
+  conversations(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Conversation]!
+  conversationsConnection(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConversationConnection!
   dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date]!
   datesConnection(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DateConnection!
   manufacturer(where: ManufacturerWhereUniqueInput!): Manufacturer
@@ -3074,6 +3577,9 @@ type Query {
   manufacturerFeature(where: ManufacturerFeatureWhereUniqueInput!): ManufacturerFeature
   manufacturerFeatures(where: ManufacturerFeatureWhereInput, orderBy: ManufacturerFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ManufacturerFeature]!
   manufacturerFeaturesConnection(where: ManufacturerFeatureWhereInput, orderBy: ManufacturerFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ManufacturerFeatureConnection!
+  message(where: MessageWhereUniqueInput!): Message
+  messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message]!
+  messagesConnection(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MessageConnection!
   mileageBoundFeature(where: MileageBoundFeatureWhereUniqueInput!): MileageBoundFeature
   mileageBoundFeatures(where: MileageBoundFeatureWhereInput, orderBy: MileageBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MileageBoundFeature]!
   mileageBoundFeaturesConnection(where: MileageBoundFeatureWhereInput, orderBy: MileageBoundFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MileageBoundFeatureConnection!
@@ -3107,9 +3613,11 @@ type Subscription {
   carFeatureCategory(where: CarFeatureCategorySubscriptionWhereInput): CarFeatureCategorySubscriptionPayload
   carModel(where: CarModelSubscriptionWhereInput): CarModelSubscriptionPayload
   categoryFeature(where: CategoryFeatureSubscriptionWhereInput): CategoryFeatureSubscriptionPayload
+  conversation(where: ConversationSubscriptionWhereInput): ConversationSubscriptionPayload
   date(where: DateSubscriptionWhereInput): DateSubscriptionPayload
   manufacturer(where: ManufacturerSubscriptionWhereInput): ManufacturerSubscriptionPayload
   manufacturerFeature(where: ManufacturerFeatureSubscriptionWhereInput): ManufacturerFeatureSubscriptionPayload
+  message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   mileageBoundFeature(where: MileageBoundFeatureSubscriptionWhereInput): MileageBoundFeatureSubscriptionPayload
   modelFeature(where: ModelFeatureSubscriptionWhereInput): ModelFeatureSubscriptionPayload
   offer(where: OfferSubscriptionWhereInput): OfferSubscriptionPayload
@@ -3134,6 +3642,7 @@ type User {
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
   resetToken: String
   resetTokenExpiry: Float
+  conversations(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Conversation!]
 }
 
 type UserConnection {
@@ -3156,6 +3665,7 @@ input UserCreateInput {
   cars: CarCreateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationCreateManyWithoutBuyerInput
 }
 
 input UserCreateOneInput {
@@ -3170,6 +3680,11 @@ input UserCreateOneWithoutAdsInput {
 
 input UserCreateOneWithoutCarsInput {
   create: UserCreateWithoutCarsInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateOneWithoutConversationsInput {
+  create: UserCreateWithoutConversationsInput
   connect: UserWhereUniqueInput
 }
 
@@ -3195,6 +3710,7 @@ input UserCreateWithoutAdsInput {
   cars: CarCreateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationCreateManyWithoutBuyerInput
 }
 
 input UserCreateWithoutCarsInput {
@@ -3208,6 +3724,23 @@ input UserCreateWithoutCarsInput {
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
+  resetToken: String
+  resetTokenExpiry: Float
+  conversations: ConversationCreateManyWithoutBuyerInput
+}
+
+input UserCreateWithoutConversationsInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  password: String!
+  location: String!
+  birthDate: DateCreateOneInput!
+  gender: Gender!
+  permissions: UserCreatepermissionsInput
+  offers: OfferCreateManyWithoutCreatorInput
+  ads: AdCreateManyWithoutCreatorInput
+  cars: CarCreateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3225,6 +3758,7 @@ input UserCreateWithoutOffersInput {
   cars: CarCreateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationCreateManyWithoutBuyerInput
 }
 
 type UserEdge {
@@ -3302,6 +3836,7 @@ input UserUpdateDataInput {
   cars: CarUpdateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationUpdateManyWithoutBuyerInput
 }
 
 input UserUpdateInput {
@@ -3318,6 +3853,7 @@ input UserUpdateInput {
   cars: CarUpdateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationUpdateManyWithoutBuyerInput
 }
 
 input UserUpdateManyMutationInput {
@@ -3353,6 +3889,13 @@ input UserUpdateOneRequiredWithoutCarsInput {
   connect: UserWhereUniqueInput
 }
 
+input UserUpdateOneRequiredWithoutConversationsInput {
+  create: UserCreateWithoutConversationsInput
+  update: UserUpdateWithoutConversationsDataInput
+  upsert: UserUpsertWithoutConversationsInput
+  connect: UserWhereUniqueInput
+}
+
 input UserUpdateOneRequiredWithoutOffersInput {
   create: UserCreateWithoutOffersInput
   update: UserUpdateWithoutOffersDataInput
@@ -3377,6 +3920,7 @@ input UserUpdateWithoutAdsDataInput {
   cars: CarUpdateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationUpdateManyWithoutBuyerInput
 }
 
 input UserUpdateWithoutCarsDataInput {
@@ -3390,6 +3934,23 @@ input UserUpdateWithoutCarsDataInput {
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
+  resetToken: String
+  resetTokenExpiry: Float
+  conversations: ConversationUpdateManyWithoutBuyerInput
+}
+
+input UserUpdateWithoutConversationsDataInput {
+  email: String
+  firstName: String
+  lastName: String
+  password: String
+  location: String
+  birthDate: DateUpdateOneRequiredInput
+  gender: Gender
+  permissions: UserUpdatepermissionsInput
+  offers: OfferUpdateManyWithoutCreatorInput
+  ads: AdUpdateManyWithoutCreatorInput
+  cars: CarUpdateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3407,6 +3968,7 @@ input UserUpdateWithoutOffersDataInput {
   cars: CarUpdateManyWithoutOwnerInput
   resetToken: String
   resetTokenExpiry: Float
+  conversations: ConversationUpdateManyWithoutBuyerInput
 }
 
 input UserUpsertNestedInput {
@@ -3422,6 +3984,11 @@ input UserUpsertWithoutAdsInput {
 input UserUpsertWithoutCarsInput {
   update: UserUpdateWithoutCarsDataInput!
   create: UserCreateWithoutCarsInput!
+}
+
+input UserUpsertWithoutConversationsInput {
+  update: UserUpdateWithoutConversationsDataInput!
+  create: UserCreateWithoutConversationsInput!
 }
 
 input UserUpsertWithoutOffersInput {
@@ -3550,6 +4117,9 @@ input UserWhereInput {
   resetTokenExpiry_lte: Float
   resetTokenExpiry_gt: Float
   resetTokenExpiry_gte: Float
+  conversations_every: ConversationWhereInput
+  conversations_some: ConversationWhereInput
+  conversations_none: ConversationWhereInput
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

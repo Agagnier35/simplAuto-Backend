@@ -30,6 +30,8 @@ type Mutation {
   resetPassword(resetToken: String!, password: String!): User!
   createOffer(data: OfferCreateInput!): Offer
   deleteOffer(id: ID!): Offer
+  createConversation(offerID: ID!): Conversation!
+  sendMessage(data: SendMessageInput): Message!
 }
 
 # USER
@@ -48,6 +50,7 @@ type User {
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
+  conversations: [Conversation!]
 }
 
 enum Gender {
@@ -298,6 +301,7 @@ type Offer {
   price: Float!
   status: OfferStatus!
   finalRank: Int
+  conversation: Conversation
 }
 
 enum OfferStatus {
@@ -307,13 +311,41 @@ enum OfferStatus {
 }
 
 input OfferCreateInput {
-  creatorID: String!
   adID: String!
-  carID: String
+  carID: String!
   price: Float!
 }
+
 enum CarStatus {
   PUBLISHED
   SOLD
   DELETED
+}
+
+# Conversation
+# ------------------------------------------------------
+
+type Conversation {
+  id: ID!
+  buyer: User @private
+  seller: User @private
+  offer: Offer!
+  messages: [Message!]!
+}
+
+# Message
+# ------------------------------------------------------
+
+type Message {
+  id: ID!
+  sender: User!
+  text: String!
+  image: String
+  conversation: Conversation!
+}
+
+input SendMessageInput {
+  conversationID: ID!
+  text: String!
+  image: String
 }
