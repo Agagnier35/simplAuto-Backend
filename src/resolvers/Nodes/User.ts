@@ -9,7 +9,11 @@ export const User: UserResolvers.Type = {
   },
 
   cars: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).cars();
+    return ctx.prisma.user({ id }).cars({
+      where: {
+        status: "PUBLISHED"
+      }
+    });
   },
 
   ads: ({ id }, args, ctx: Context) => {
