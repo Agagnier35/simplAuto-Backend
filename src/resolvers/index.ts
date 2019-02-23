@@ -15,15 +15,6 @@ import { CarModel } from "./Nodes/CarModel";
 import { Date } from "./Nodes/Date";
 import { Message } from "./Nodes/Message";
 import { Conversation } from "./Nodes/Conversation";
-import {
-  AdCarFeature,
-  PriceBoundFeature,
-  ModelFeature,
-  ManufacturerFeature,
-  CategoryFeature,
-  MileageBoundFeature,
-  YearBoundFeature
-} from "./Nodes/AdCarFeature";
 
 const resolvers: Resolvers = {
   Query,
@@ -39,14 +30,7 @@ const resolvers: Resolvers = {
   CarFeatureCategory,
   CarModel,
   Post,
-  AdCarFeature,
   Date,
-  PriceBoundFeature,
-  ModelFeature,
-  ManufacturerFeature,
-  CategoryFeature,
-  MileageBoundFeature,
-  YearBoundFeature,
   Message,
   Conversation
 };

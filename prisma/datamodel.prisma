@@ -44,22 +44,16 @@ type Ad {
   createdAt: DateTime!
   updatedAt: DateTime!
   offers: [Offer!]
-  priceLowerBoundFeature: PriceBoundFeature
-    @relation(name: "PriceLowerBoundFeature")
-  priceHigherBoundFeature: PriceBoundFeature
-    @relation(name: "PriceHigherBoundFeature")
-  manufacturerFeature: ManufacturerFeature
-  modelFeature: ModelFeature
-  categoryFeature: CategoryFeature
-  mileageLowerBoundFeature: MileageBoundFeature
-    @relation(name: "MileageLowerBoundFeature")
-  mileageHigherBoundFeature: MileageBoundFeature
-    @relation(name: "MileageHigherBoundFeature")
-  yearLowerBoundFeature: YearBoundFeature
-    @relation(name: "YearLowerBoundFeature")
-  yearHigherBoundFeature: YearBoundFeature
-    @relation(name: "YearHigherBoundFeature")
-  features: [AdCarFeature!]
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: Manufacturer
+  model: CarModel
+  category: CarCategory
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
+  features: [CarFeature!]
   isUrgent: Boolean! @default(value: false)
   isFirst: Boolean! @default(value: false)
   status: AdStatus! @default(value: PUBLISHED)
@@ -75,54 +69,6 @@ enum AdStatus {
   PUBLISHED
   ACCEPTED
   DELETED
-}
-
-type PriceBoundFeature {
-  id: ID! @unique
-  price: Float!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type ManufacturerFeature {
-  id: ID! @unique
-  manufacturer: Manufacturer!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type ModelFeature {
-  id: ID! @unique
-  model: CarModel!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type CategoryFeature {
-  id: ID! @unique
-  category: CarCategory!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type MileageBoundFeature {
-  id: ID! @unique
-  mileage: Int!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type YearBoundFeature {
-  id: ID! @unique
-  year: Int!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-type AdCarFeature {
-  id: ID! @unique
-  feature: CarFeature!
-  importance: AdCarFeatureImportance @default(value: MEDIUM)
-}
-
-enum AdCarFeatureImportance {
-  LOW
-  MEDIUM
-  HIGH
 }
 
 type Offer {

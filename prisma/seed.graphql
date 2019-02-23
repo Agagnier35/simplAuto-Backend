@@ -66,46 +66,32 @@ mutation {
       ads: {
         create: [
           {
-            priceLowerBoundFeature: { create: { price: 50, importance: HIGH } }
-            priceHigherBoundFeature: {
-              create: { price: 5000, importance: HIGH }
-            }
-            categoryFeature: {
-              create: { category: { create: { name: "sedan" } } }
-            }
-            manufacturerFeature: {
+            priceLowerBound: 50
+            priceHigherBound: 5000
+            category: { create: { name: "hot wheel" } }
+            manufacturer: {
               create: {
-                manufacturer: {
-                  create: {
-                    name: "Volkswagen"
-                    models: { create: [{ name: "Golf" }] }
-                  }
-                }
+                name: "Volkswagen"
+                models: { create: [{ name: "Golf" }] }
               }
             }
-            modelFeature: { create: { model: { create: { name: "Jetta" } } } }
-            mileageLowerBoundFeature: { create: { mileage: 0 } }
-            mileageHigherBoundFeature: { create: { mileage: 20000 } }
-            yearLowerBoundFeature: { create: { year: 2016 } }
-            yearHigherBoundFeature: { create: { year: 2018 } }
+            model: { create: { name: "Jetta" } }
+            mileageLowerBound: 0
+            mileageHigherBound: 20000
+            yearLowerBound: 2016
+            yearHigherBound: 2018
             isUrgent: true
             features: {
               create: [
                 {
-                  feature: {
-                    create: {
-                      name: "aileron de feu"
-                      category: {
-                        create: { name: "aileron", type: MULTIPLE_CHOICE }
-                      }
-                    }
+                  name: "aileron de feu"
+                  category: {
+                    create: { name: "aileron", type: MULTIPLE_CHOICE }
                   }
-                  importance: MEDIUM
                 }
               ]
             }
           }
-          {}
         ]
       }
     }

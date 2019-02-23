@@ -17,15 +17,15 @@ export const ad: AdResolvers = {
   async createAd(parent, { data }, ctx, info) {
     const userId = getUserId(ctx);
     const {
-      priceLowerBoundFeature,
-      priceHigherBoundFeature,
-      manufacturerFeature,
-      modelFeature,
-      categoryFeature,
-      mileageLowerBoundFeature,
-      mileageHigherBoundFeature,
-      yearLowerBoundFeature,
-      yearHigherBoundFeature,
+      priceLowerBound,
+      priceHigherBound,
+      manufacturerID,
+      modelID,
+      categoryID,
+      mileageLowerBound,
+      mileageHigherBound,
+      yearLowerBound,
+      yearHigherBound,
       features,
       ...rest
     } = data;
@@ -39,98 +39,28 @@ export const ad: AdResolvers = {
       }
     };
 
-    if (manufacturerFeature) {
-      mutation.manufacturerFeature = {
-        create: {
-          manufacturer: {
-            connect: { id: manufacturerFeature.manufacturerID }
-          },
-          importance: manufacturerFeature.importance
-        }
+    if (manufacturerID) {
+      mutation.manufacturer = {
+        connect: { id: manufacturerID }
       };
     }
 
-    if (modelFeature) {
-      mutation.modelFeature = {
-        create: {
-          model: {
-            connect: { id: modelFeature.modelID }
-          },
-          importance: modelFeature.importance
-        }
+    if (modelID) {
+      mutation.model = {
+        connect: { id: modelID }
       };
     }
 
-    if (categoryFeature) {
-      mutation.categoryFeature = {
-        create: {
-          category: {
-            connect: { id: categoryFeature.categoryID }
-          },
-          importance: categoryFeature.importance
-        }
-      };
-    }
-
-    if (priceLowerBoundFeature) {
-      mutation.priceLowerBoundFeature = {
-        create: {
-          price: priceLowerBoundFeature.price,
-          importance: priceLowerBoundFeature.importance
-        }
-      };
-    }
-
-    if (priceHigherBoundFeature) {
-      mutation.priceHigherBoundFeature = {
-        create: {
-          price: priceHigherBoundFeature.price,
-          importance: priceHigherBoundFeature.importance
-        }
-      };
-    }
-
-    if (mileageHigherBoundFeature) {
-      mutation.mileageHigherBoundFeature = {
-        create: {
-          mileage: mileageHigherBoundFeature.mileage,
-          importance: mileageHigherBoundFeature.importance
-        }
-      };
-    }
-
-    if (mileageHigherBoundFeature) {
-      mutation.mileageHigherBoundFeature = {
-        create: {
-          mileage: mileageHigherBoundFeature.mileage,
-          importance: mileageHigherBoundFeature.importance
-        }
-      };
-    }
-
-    if (yearHigherBoundFeature) {
-      mutation.yearHigherBoundFeature = {
-        create: {
-          year: yearHigherBoundFeature.year,
-          importance: yearHigherBoundFeature.importance
-        }
-      };
-    }
-
-    if (yearHigherBoundFeature) {
-      mutation.yearHigherBoundFeature = {
-        create: {
-          year: yearHigherBoundFeature.year,
-          importance: yearHigherBoundFeature.importance
-        }
+    if (categoryID) {
+      mutation.category = {
+        connect: { id: categoryID }
       };
     }
 
     if (features && features.length > 0) {
       mutation.features = {
-        create: features.map(feature => ({
-          feature: { connect: { id: feature.featureID } },
-          importance: feature.importance
+        connect: features.map(feature => ({
+          id: feature
         }))
       };
     }
