@@ -104,6 +104,7 @@ type Car {
   photos: [String!]!
   features: [CarFeature!]!
   status: CarStatus!
+  offers: [Offer!]
 }
 
 enum CarStatus {
