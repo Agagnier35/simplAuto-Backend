@@ -30,6 +30,8 @@ type Mutation {
   resetPassword(resetToken: String!, password: String!): User!
   createOffer(data: OfferCreateInput!): Offer
   deleteOffer(id: ID!): Offer
+  createConversation(offerID: ID!): Conversation!
+  sendMessage(data: SendMessageInput): Message!
 }
 
 # USER
@@ -48,6 +50,7 @@ type User {
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
+  conversations: [Conversation!]
 }
 
 enum Gender {
@@ -152,109 +155,38 @@ type Ad {
   id: ID!
   creator: User @private
   offers: [Offer!]!
-  priceLowerBoundFeature: PriceBoundFeature
-  priceHigherBoundFeature: PriceBoundFeature
-  manufacturerFeature: ManufacturerFeature
-  modelFeature: ModelFeature
-  categoryFeature: CategoryFeature
-  mileageLowerBoundFeature: MileageBoundFeature
-  mileageHigherBoundFeature: MileageBoundFeature
-  yearLowerBoundFeature: YearBoundFeature
-  yearHigherBoundFeature: YearBoundFeature
-  features: [AdCarFeature!]
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturer: Manufacturer
+  model: CarModel
+  category: CarCategory
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
+  features: [CarFeature!]
   isUrgent: Boolean!
   isFirst: Boolean!
   status: AdStatus!
 }
 
 input AdCreateInput {
-  priceLowerBoundFeature: PriceBoundFeatureInput
-  priceHigherBoundFeature: PriceBoundFeatureInput
-  manufacturerFeature: ManufacturerFeatureInput
-  modelFeature: ModelFeatureInput
-  categoryFeature: CategoryFeatureInput
-  mileageLowerBoundFeature: MileageBoundFeatureInput
-  mileageHigherBoundFeature: MileageBoundFeatureInput
-  yearLowerBoundFeature: YearBoundFeatureInput
-  yearHigherBoundFeature: YearBoundFeatureInput
-  features: [AdCarFeatureInput!]
-}
-
-type PriceBoundFeature {
-  price: Float!
-  importance: AdFeatureImportance
-}
-
-input PriceBoundFeatureInput {
-  price: Float!
-  importance: AdFeatureImportance
-}
-
-type ManufacturerFeature {
-  manufacturer: Manufacturer!
-  importance: AdFeatureImportance
-}
-
-input ManufacturerFeatureInput {
-  manufacturerID: String!
-  importance: AdFeatureImportance
-}
-
-type ModelFeature {
-  model: CarModel!
-  importance: AdFeatureImportance
-}
-
-input ModelFeatureInput {
-  modelID: String!
-  importance: AdFeatureImportance
-}
-
-type CategoryFeature {
-  category: CarCategory!
-  importance: AdFeatureImportance
-}
-
-input CategoryFeatureInput {
-  categoryID: String!
-  importance: AdFeatureImportance
-}
-
-type MileageBoundFeature {
-  mileage: Int!
-  importance: AdFeatureImportance
-}
-
-input MileageBoundFeatureInput {
-  mileage: Int!
-  importance: AdFeatureImportance
-}
-
-type YearBoundFeature {
-  year: Int!
-  importance: AdFeatureImportance
-}
-
-input YearBoundFeatureInput {
-  year: Int!
-  importance: AdFeatureImportance
+  priceLowerBound: Float
+  priceHigherBound: Float
+  manufacturerID: ID
+  modelID: ID
+  categoryID: ID
+  mileageLowerBound: Int
+  mileageHigherBound: Int
+  yearLowerBound: Int
+  yearHigherBound: Int
+  features: [ID!]
 }
 
 enum AdStatus {
   PUBLISHED
   ACCEPTED
   DELETED
-}
-
-type AdCarFeature {
-  id: ID!
-  feature: CarFeature!
-  importance: AdFeatureImportance
-}
-
-input AdCarFeatureInput {
-  featureID: String!
-  importance: AdFeatureImportance
 }
 
 enum AdFeatureImportance {
@@ -279,7 +211,7 @@ input DateInput {
 }
 
 type Subscription {
-  feedSubscription: Post
+  messageSubscription: Message
 }
 
 type Post {
@@ -298,6 +230,7 @@ type Offer {
   price: Float!
   status: OfferStatus!
   finalRank: Int
+  conversation: Conversation
 }
 
 enum OfferStatus {
@@ -307,13 +240,41 @@ enum OfferStatus {
 }
 
 input OfferCreateInput {
-  creatorID: String!
   adID: String!
-  carID: String
+  carID: String!
   price: Float!
 }
+
 enum CarStatus {
   PUBLISHED
   SOLD
   DELETED
+}
+
+# Conversation
+# ------------------------------------------------------
+
+type Conversation {
+  id: ID!
+  buyer: User @private
+  seller: User @private
+  offer: Offer!
+  messages: [Message!]!
+}
+
+# Message
+# ------------------------------------------------------
+
+type Message {
+  id: ID!
+  sender: User!
+  text: String!
+  image: String
+  conversation: Conversation!
+}
+
+input SendMessageInput {
+  conversationID: ID!
+  text: String!
+  image: String
 }

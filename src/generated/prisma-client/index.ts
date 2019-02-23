@@ -15,7 +15,6 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
 
 export interface Exists {
   ad: (where?: AdWhereInput) => Promise<boolean>;
-  adCarFeature: (where?: AdCarFeatureWhereInput) => Promise<boolean>;
   car: (where?: CarWhereInput) => Promise<boolean>;
   carCategory: (where?: CarCategoryWhereInput) => Promise<boolean>;
   carFeature: (where?: CarFeatureWhereInput) => Promise<boolean>;
@@ -23,21 +22,13 @@ export interface Exists {
     where?: CarFeatureCategoryWhereInput
   ) => Promise<boolean>;
   carModel: (where?: CarModelWhereInput) => Promise<boolean>;
-  categoryFeature: (where?: CategoryFeatureWhereInput) => Promise<boolean>;
+  conversation: (where?: ConversationWhereInput) => Promise<boolean>;
   date: (where?: DateWhereInput) => Promise<boolean>;
   manufacturer: (where?: ManufacturerWhereInput) => Promise<boolean>;
-  manufacturerFeature: (
-    where?: ManufacturerFeatureWhereInput
-  ) => Promise<boolean>;
-  mileageBoundFeature: (
-    where?: MileageBoundFeatureWhereInput
-  ) => Promise<boolean>;
-  modelFeature: (where?: ModelFeatureWhereInput) => Promise<boolean>;
+  message: (where?: MessageWhereInput) => Promise<boolean>;
   offer: (where?: OfferWhereInput) => Promise<boolean>;
   post: (where?: PostWhereInput) => Promise<boolean>;
-  priceBoundFeature: (where?: PriceBoundFeatureWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
-  yearBoundFeature: (where?: YearBoundFeatureWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -78,25 +69,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => AdConnectionPromise;
-  adCarFeature: (where: AdCarFeatureWhereUniqueInput) => AdCarFeaturePromise;
-  adCarFeatures: (args?: {
-    where?: AdCarFeatureWhereInput;
-    orderBy?: AdCarFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<AdCarFeature>;
-  adCarFeaturesConnection: (args?: {
-    where?: AdCarFeatureWhereInput;
-    orderBy?: AdCarFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => AdCarFeatureConnectionPromise;
   car: (where: CarWhereUniqueInput) => CarPromise;
   cars: (args?: {
     where?: CarWhereInput;
@@ -194,27 +166,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CarModelConnectionPromise;
-  categoryFeature: (
-    where: CategoryFeatureWhereUniqueInput
-  ) => CategoryFeaturePromise;
-  categoryFeatures: (args?: {
-    where?: CategoryFeatureWhereInput;
-    orderBy?: CategoryFeatureOrderByInput;
+  conversation: (where: ConversationWhereUniqueInput) => ConversationPromise;
+  conversations: (args?: {
+    where?: ConversationWhereInput;
+    orderBy?: ConversationOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<CategoryFeature>;
-  categoryFeaturesConnection: (args?: {
-    where?: CategoryFeatureWhereInput;
-    orderBy?: CategoryFeatureOrderByInput;
+  }) => FragmentableArray<Conversation>;
+  conversationsConnection: (args?: {
+    where?: ConversationWhereInput;
+    orderBy?: ConversationOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => CategoryFeatureConnectionPromise;
+  }) => ConversationConnectionPromise;
   dates: (args?: {
     where?: DateWhereInput;
     orderBy?: DateOrderByInput;
@@ -252,67 +222,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ManufacturerConnectionPromise;
-  manufacturerFeature: (
-    where: ManufacturerFeatureWhereUniqueInput
-  ) => ManufacturerFeaturePromise;
-  manufacturerFeatures: (args?: {
-    where?: ManufacturerFeatureWhereInput;
-    orderBy?: ManufacturerFeatureOrderByInput;
+  message: (where: MessageWhereUniqueInput) => MessagePromise;
+  messages: (args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => FragmentableArray<ManufacturerFeature>;
-  manufacturerFeaturesConnection: (args?: {
-    where?: ManufacturerFeatureWhereInput;
-    orderBy?: ManufacturerFeatureOrderByInput;
+  }) => FragmentableArray<Message>;
+  messagesConnection: (args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
     first?: Int;
     last?: Int;
-  }) => ManufacturerFeatureConnectionPromise;
-  mileageBoundFeature: (
-    where: MileageBoundFeatureWhereUniqueInput
-  ) => MileageBoundFeaturePromise;
-  mileageBoundFeatures: (args?: {
-    where?: MileageBoundFeatureWhereInput;
-    orderBy?: MileageBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<MileageBoundFeature>;
-  mileageBoundFeaturesConnection: (args?: {
-    where?: MileageBoundFeatureWhereInput;
-    orderBy?: MileageBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => MileageBoundFeatureConnectionPromise;
-  modelFeature: (where: ModelFeatureWhereUniqueInput) => ModelFeaturePromise;
-  modelFeatures: (args?: {
-    where?: ModelFeatureWhereInput;
-    orderBy?: ModelFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<ModelFeature>;
-  modelFeaturesConnection: (args?: {
-    where?: ModelFeatureWhereInput;
-    orderBy?: ModelFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => ModelFeatureConnectionPromise;
+  }) => MessageConnectionPromise;
   offer: (where: OfferWhereUniqueInput) => OfferPromise;
   offers: (args?: {
     where?: OfferWhereInput;
@@ -351,27 +279,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => PostConnectionPromise;
-  priceBoundFeature: (
-    where: PriceBoundFeatureWhereUniqueInput
-  ) => PriceBoundFeaturePromise;
-  priceBoundFeatures: (args?: {
-    where?: PriceBoundFeatureWhereInput;
-    orderBy?: PriceBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<PriceBoundFeature>;
-  priceBoundFeaturesConnection: (args?: {
-    where?: PriceBoundFeatureWhereInput;
-    orderBy?: PriceBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => PriceBoundFeatureConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (args?: {
     where?: UserWhereInput;
@@ -391,27 +298,6 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
-  yearBoundFeature: (
-    where: YearBoundFeatureWhereUniqueInput
-  ) => YearBoundFeaturePromise;
-  yearBoundFeatures: (args?: {
-    where?: YearBoundFeatureWhereInput;
-    orderBy?: YearBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => FragmentableArray<YearBoundFeature>;
-  yearBoundFeaturesConnection: (args?: {
-    where?: YearBoundFeatureWhereInput;
-    orderBy?: YearBoundFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => YearBoundFeatureConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -434,26 +320,6 @@ export interface Prisma {
   }) => AdPromise;
   deleteAd: (where: AdWhereUniqueInput) => AdPromise;
   deleteManyAds: (where?: AdWhereInput) => BatchPayloadPromise;
-  createAdCarFeature: (data: AdCarFeatureCreateInput) => AdCarFeaturePromise;
-  updateAdCarFeature: (args: {
-    data: AdCarFeatureUpdateInput;
-    where: AdCarFeatureWhereUniqueInput;
-  }) => AdCarFeaturePromise;
-  updateManyAdCarFeatures: (args: {
-    data: AdCarFeatureUpdateManyMutationInput;
-    where?: AdCarFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertAdCarFeature: (args: {
-    where: AdCarFeatureWhereUniqueInput;
-    create: AdCarFeatureCreateInput;
-    update: AdCarFeatureUpdateInput;
-  }) => AdCarFeaturePromise;
-  deleteAdCarFeature: (
-    where: AdCarFeatureWhereUniqueInput
-  ) => AdCarFeaturePromise;
-  deleteManyAdCarFeatures: (
-    where?: AdCarFeatureWhereInput
-  ) => BatchPayloadPromise;
   createCar: (data: CarCreateInput) => CarPromise;
   updateCar: (args: {
     data: CarUpdateInput;
@@ -542,27 +408,21 @@ export interface Prisma {
   }) => CarModelPromise;
   deleteCarModel: (where: CarModelWhereUniqueInput) => CarModelPromise;
   deleteManyCarModels: (where?: CarModelWhereInput) => BatchPayloadPromise;
-  createCategoryFeature: (
-    data: CategoryFeatureCreateInput
-  ) => CategoryFeaturePromise;
-  updateCategoryFeature: (args: {
-    data: CategoryFeatureUpdateInput;
-    where: CategoryFeatureWhereUniqueInput;
-  }) => CategoryFeaturePromise;
-  updateManyCategoryFeatures: (args: {
-    data: CategoryFeatureUpdateManyMutationInput;
-    where?: CategoryFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertCategoryFeature: (args: {
-    where: CategoryFeatureWhereUniqueInput;
-    create: CategoryFeatureCreateInput;
-    update: CategoryFeatureUpdateInput;
-  }) => CategoryFeaturePromise;
-  deleteCategoryFeature: (
-    where: CategoryFeatureWhereUniqueInput
-  ) => CategoryFeaturePromise;
-  deleteManyCategoryFeatures: (
-    where?: CategoryFeatureWhereInput
+  createConversation: (data: ConversationCreateInput) => ConversationPromise;
+  updateConversation: (args: {
+    data: ConversationUpdateInput;
+    where: ConversationWhereUniqueInput;
+  }) => ConversationPromise;
+  upsertConversation: (args: {
+    where: ConversationWhereUniqueInput;
+    create: ConversationCreateInput;
+    update: ConversationUpdateInput;
+  }) => ConversationPromise;
+  deleteConversation: (
+    where: ConversationWhereUniqueInput
+  ) => ConversationPromise;
+  deleteManyConversations: (
+    where?: ConversationWhereInput
   ) => BatchPayloadPromise;
   createDate: (data: DateCreateInput) => DatePromise;
   updateManyDates: (args: {
@@ -590,70 +450,22 @@ export interface Prisma {
   deleteManyManufacturers: (
     where?: ManufacturerWhereInput
   ) => BatchPayloadPromise;
-  createManufacturerFeature: (
-    data: ManufacturerFeatureCreateInput
-  ) => ManufacturerFeaturePromise;
-  updateManufacturerFeature: (args: {
-    data: ManufacturerFeatureUpdateInput;
-    where: ManufacturerFeatureWhereUniqueInput;
-  }) => ManufacturerFeaturePromise;
-  updateManyManufacturerFeatures: (args: {
-    data: ManufacturerFeatureUpdateManyMutationInput;
-    where?: ManufacturerFeatureWhereInput;
+  createMessage: (data: MessageCreateInput) => MessagePromise;
+  updateMessage: (args: {
+    data: MessageUpdateInput;
+    where: MessageWhereUniqueInput;
+  }) => MessagePromise;
+  updateManyMessages: (args: {
+    data: MessageUpdateManyMutationInput;
+    where?: MessageWhereInput;
   }) => BatchPayloadPromise;
-  upsertManufacturerFeature: (args: {
-    where: ManufacturerFeatureWhereUniqueInput;
-    create: ManufacturerFeatureCreateInput;
-    update: ManufacturerFeatureUpdateInput;
-  }) => ManufacturerFeaturePromise;
-  deleteManufacturerFeature: (
-    where: ManufacturerFeatureWhereUniqueInput
-  ) => ManufacturerFeaturePromise;
-  deleteManyManufacturerFeatures: (
-    where?: ManufacturerFeatureWhereInput
-  ) => BatchPayloadPromise;
-  createMileageBoundFeature: (
-    data: MileageBoundFeatureCreateInput
-  ) => MileageBoundFeaturePromise;
-  updateMileageBoundFeature: (args: {
-    data: MileageBoundFeatureUpdateInput;
-    where: MileageBoundFeatureWhereUniqueInput;
-  }) => MileageBoundFeaturePromise;
-  updateManyMileageBoundFeatures: (args: {
-    data: MileageBoundFeatureUpdateManyMutationInput;
-    where?: MileageBoundFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertMileageBoundFeature: (args: {
-    where: MileageBoundFeatureWhereUniqueInput;
-    create: MileageBoundFeatureCreateInput;
-    update: MileageBoundFeatureUpdateInput;
-  }) => MileageBoundFeaturePromise;
-  deleteMileageBoundFeature: (
-    where: MileageBoundFeatureWhereUniqueInput
-  ) => MileageBoundFeaturePromise;
-  deleteManyMileageBoundFeatures: (
-    where?: MileageBoundFeatureWhereInput
-  ) => BatchPayloadPromise;
-  createModelFeature: (data: ModelFeatureCreateInput) => ModelFeaturePromise;
-  updateModelFeature: (args: {
-    data: ModelFeatureUpdateInput;
-    where: ModelFeatureWhereUniqueInput;
-  }) => ModelFeaturePromise;
-  updateManyModelFeatures: (args: {
-    data: ModelFeatureUpdateManyMutationInput;
-    where?: ModelFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertModelFeature: (args: {
-    where: ModelFeatureWhereUniqueInput;
-    create: ModelFeatureCreateInput;
-    update: ModelFeatureUpdateInput;
-  }) => ModelFeaturePromise;
-  deleteModelFeature: (
-    where: ModelFeatureWhereUniqueInput
-  ) => ModelFeaturePromise;
-  deleteManyModelFeatures: (
-    where?: ModelFeatureWhereInput
-  ) => BatchPayloadPromise;
+  upsertMessage: (args: {
+    where: MessageWhereUniqueInput;
+    create: MessageCreateInput;
+    update: MessageUpdateInput;
+  }) => MessagePromise;
+  deleteMessage: (where: MessageWhereUniqueInput) => MessagePromise;
+  deleteManyMessages: (where?: MessageWhereInput) => BatchPayloadPromise;
   createOffer: (data: OfferCreateInput) => OfferPromise;
   updateOffer: (args: {
     data: OfferUpdateInput;
@@ -686,28 +498,6 @@ export interface Prisma {
   }) => PostPromise;
   deletePost: (where: PostWhereUniqueInput) => PostPromise;
   deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
-  createPriceBoundFeature: (
-    data: PriceBoundFeatureCreateInput
-  ) => PriceBoundFeaturePromise;
-  updatePriceBoundFeature: (args: {
-    data: PriceBoundFeatureUpdateInput;
-    where: PriceBoundFeatureWhereUniqueInput;
-  }) => PriceBoundFeaturePromise;
-  updateManyPriceBoundFeatures: (args: {
-    data: PriceBoundFeatureUpdateManyMutationInput;
-    where?: PriceBoundFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertPriceBoundFeature: (args: {
-    where: PriceBoundFeatureWhereUniqueInput;
-    create: PriceBoundFeatureCreateInput;
-    update: PriceBoundFeatureUpdateInput;
-  }) => PriceBoundFeaturePromise;
-  deletePriceBoundFeature: (
-    where: PriceBoundFeatureWhereUniqueInput
-  ) => PriceBoundFeaturePromise;
-  deleteManyPriceBoundFeatures: (
-    where?: PriceBoundFeatureWhereInput
-  ) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (args: {
     data: UserUpdateInput;
@@ -724,28 +514,6 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
-  createYearBoundFeature: (
-    data: YearBoundFeatureCreateInput
-  ) => YearBoundFeaturePromise;
-  updateYearBoundFeature: (args: {
-    data: YearBoundFeatureUpdateInput;
-    where: YearBoundFeatureWhereUniqueInput;
-  }) => YearBoundFeaturePromise;
-  updateManyYearBoundFeatures: (args: {
-    data: YearBoundFeatureUpdateManyMutationInput;
-    where?: YearBoundFeatureWhereInput;
-  }) => BatchPayloadPromise;
-  upsertYearBoundFeature: (args: {
-    where: YearBoundFeatureWhereUniqueInput;
-    create: YearBoundFeatureCreateInput;
-    update: YearBoundFeatureUpdateInput;
-  }) => YearBoundFeaturePromise;
-  deleteYearBoundFeature: (
-    where: YearBoundFeatureWhereUniqueInput
-  ) => YearBoundFeaturePromise;
-  deleteManyYearBoundFeatures: (
-    where?: YearBoundFeatureWhereInput
-  ) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -756,9 +524,6 @@ export interface Prisma {
 
 export interface Subscription {
   ad: (where?: AdSubscriptionWhereInput) => AdSubscriptionPayloadSubscription;
-  adCarFeature: (
-    where?: AdCarFeatureSubscriptionWhereInput
-  ) => AdCarFeatureSubscriptionPayloadSubscription;
   car: (
     where?: CarSubscriptionWhereInput
   ) => CarSubscriptionPayloadSubscription;
@@ -774,39 +539,27 @@ export interface Subscription {
   carModel: (
     where?: CarModelSubscriptionWhereInput
   ) => CarModelSubscriptionPayloadSubscription;
-  categoryFeature: (
-    where?: CategoryFeatureSubscriptionWhereInput
-  ) => CategoryFeatureSubscriptionPayloadSubscription;
+  conversation: (
+    where?: ConversationSubscriptionWhereInput
+  ) => ConversationSubscriptionPayloadSubscription;
   date: (
     where?: DateSubscriptionWhereInput
   ) => DateSubscriptionPayloadSubscription;
   manufacturer: (
     where?: ManufacturerSubscriptionWhereInput
   ) => ManufacturerSubscriptionPayloadSubscription;
-  manufacturerFeature: (
-    where?: ManufacturerFeatureSubscriptionWhereInput
-  ) => ManufacturerFeatureSubscriptionPayloadSubscription;
-  mileageBoundFeature: (
-    where?: MileageBoundFeatureSubscriptionWhereInput
-  ) => MileageBoundFeatureSubscriptionPayloadSubscription;
-  modelFeature: (
-    where?: ModelFeatureSubscriptionWhereInput
-  ) => ModelFeatureSubscriptionPayloadSubscription;
+  message: (
+    where?: MessageSubscriptionWhereInput
+  ) => MessageSubscriptionPayloadSubscription;
   offer: (
     where?: OfferSubscriptionWhereInput
   ) => OfferSubscriptionPayloadSubscription;
   post: (
     where?: PostSubscriptionWhereInput
   ) => PostSubscriptionPayloadSubscription;
-  priceBoundFeature: (
-    where?: PriceBoundFeatureSubscriptionWhereInput
-  ) => PriceBoundFeatureSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
-  yearBoundFeature: (
-    where?: YearBoundFeatureSubscriptionWhereInput
-  ) => YearBoundFeatureSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -817,87 +570,15 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type CategoryFeatureOrderByInput =
+export type ConversationOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
-
-export type CarFeatureCategoryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "type_ASC"
-  | "type_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type YearBoundFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "year_ASC"
-  | "year_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type AdCarFeatureImportance = "LOW" | "MEDIUM" | "HIGH";
-
-export type PriceBoundFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "price_ASC"
-  | "price_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type CarCategoryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type Gender = "MALE" | "FEMALE" | "OTHER";
-
-export type AdCarFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type ModelFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
 export type CarOrderByInput =
   | "id_ASC"
@@ -908,54 +589,6 @@ export type CarOrderByInput =
   | "mileage_DESC"
   | "status_ASC"
   | "status_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type ManufacturerFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type AdOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "isUrgent_ASC"
-  | "isUrgent_DESC"
-  | "isFirst_ASC"
-  | "isFirst_DESC"
-  | "status_ASC"
-  | "status_DESC";
-
-export type DateOrderByInput =
-  | "day_ASC"
-  | "day_DESC"
-  | "month_ASC"
-  | "month_DESC"
-  | "year_ASC"
-  | "year_DESC"
-  | "id_ASC"
-  | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
-export type CarFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -985,6 +618,78 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type AdOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC"
+  | "priceLowerBound_ASC"
+  | "priceLowerBound_DESC"
+  | "priceHigherBound_ASC"
+  | "priceHigherBound_DESC"
+  | "mileageLowerBound_ASC"
+  | "mileageLowerBound_DESC"
+  | "mileageHigherBound_ASC"
+  | "mileageHigherBound_DESC"
+  | "yearLowerBound_ASC"
+  | "yearLowerBound_DESC"
+  | "yearHigherBound_ASC"
+  | "yearHigherBound_DESC"
+  | "isUrgent_ASC"
+  | "isUrgent_DESC"
+  | "isFirst_ASC"
+  | "isFirst_DESC"
+  | "status_ASC"
+  | "status_DESC";
+
+export type ManufacturerOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type MessageOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "text_ASC"
+  | "text_DESC"
+  | "image_ASC"
+  | "image_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type Gender = "MALE" | "FEMALE" | "OTHER";
+
+export type CarFeatureOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type CarFeatureCategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "type_ASC"
+  | "type_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type CarModelOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -995,9 +700,9 @@ export type CarModelOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type Permission = "USER" | "PREMIUM" | "ADMIN";
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
+export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
 
 export type CarStatus = "PUBLISHED" | "SOLD" | "DELETED";
 
@@ -1017,18 +722,6 @@ export type OfferOrderByInput =
   | "finalRank_ASC"
   | "finalRank_DESC";
 
-export type MileageBoundFeatureOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "mileage_ASC"
-  | "mileage_DESC"
-  | "importance_ASC"
-  | "importance_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
-
 export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -1043,9 +736,7 @@ export type PostOrderByInput =
   | "content_ASC"
   | "content_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export type ManufacturerOrderByInput =
+export type CarCategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
@@ -1055,32 +746,79 @@ export type ManufacturerOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export interface OfferUpdateManyWithoutCreatorInput {
-  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
-  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+export type Permission = "USER" | "PREMIUM" | "ADMIN";
+
+export type DateOrderByInput =
+  | "day_ASC"
+  | "day_DESC"
+  | "month_ASC"
+  | "month_DESC"
+  | "year_ASC"
+  | "year_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export interface CarModelUpdateManyInput {
+  create?: CarModelCreateInput[] | CarModelCreateInput;
   update?:
-    | OfferUpdateWithWhereUniqueWithoutCreatorInput[]
-    | OfferUpdateWithWhereUniqueWithoutCreatorInput;
+    | CarModelUpdateWithWhereUniqueNestedInput[]
+    | CarModelUpdateWithWhereUniqueNestedInput;
   upsert?:
-    | OfferUpsertWithWhereUniqueWithoutCreatorInput[]
-    | OfferUpsertWithWhereUniqueWithoutCreatorInput;
-  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+    | CarModelUpsertWithWhereUniqueNestedInput[]
+    | CarModelUpsertWithWhereUniqueNestedInput;
+  delete?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  disconnect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+  deleteMany?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
   updateMany?:
-    | OfferUpdateManyWithWhereNestedInput[]
-    | OfferUpdateManyWithWhereNestedInput;
+    | CarModelUpdateManyWithWhereNestedInput[]
+    | CarModelUpdateManyWithWhereNestedInput;
 }
 
 export type AdWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface CarModelUpdateDataInput {
+export interface UserCreateOneWithoutOffersInput {
+  create?: UserCreateWithoutOffersInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface AdUpdateManyWithWhereNestedInput {
+  where: AdScalarWhereInput;
+  data: AdUpdateManyDataInput;
+}
+
+export interface UserCreateWithoutOffersInput {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  birthDate: DateCreateOneInput;
+  gender: Gender;
+  permissions?: UserCreatepermissionsInput;
+  ads?: AdCreateManyWithoutCreatorInput;
+  cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationCreateManyWithoutBuyerInput;
+}
+
+export interface CarCategoryUpdateDataInput {
   name?: String;
 }
 
-export interface CarFeatureCategoryWhereInput {
+export interface CarCreateManyWithoutOwnerInput {
+  create?: CarCreateWithoutOwnerInput[] | CarCreateWithoutOwnerInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+}
+
+export interface ConversationWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1095,36 +833,26 @@ export interface CarFeatureCategoryWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  type?: CarFeatureType;
-  type_not?: CarFeatureType;
-  type_in?: CarFeatureType[] | CarFeatureType;
-  type_not_in?: CarFeatureType[] | CarFeatureType;
-  features_every?: CarFeatureWhereInput;
-  features_some?: CarFeatureWhereInput;
-  features_none?: CarFeatureWhereInput;
-  AND?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
-  OR?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
-  NOT?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  offer?: OfferWhereInput;
+  buyer?: UserWhereInput;
+  seller?: UserWhereInput;
+  messages_every?: MessageWhereInput;
+  messages_some?: MessageWhereInput;
+  messages_none?: MessageWhereInput;
+  AND?: ConversationWhereInput[] | ConversationWhereInput;
+  OR?: ConversationWhereInput[] | ConversationWhereInput;
+  NOT?: ConversationWhereInput[] | ConversationWhereInput;
 }
 
-export interface CarModelUpsertWithWhereUniqueNestedInput {
-  where: CarModelWhereUniqueInput;
-  update: CarModelUpdateDataInput;
-  create: CarModelCreateInput;
+export interface CarCreateWithoutOwnerInput {
+  manufacturer: ManufacturerCreateOneInput;
+  model: CarModelCreateOneInput;
+  category: CarCategoryCreateOneInput;
+  year: Int;
+  mileage: Int;
+  photos?: CarCreatephotosInput;
+  features?: CarFeatureCreateManyInput;
+  status?: CarStatus;
 }
 
 export interface CarFeatureWhereInput {
@@ -1162,1284 +890,8 @@ export interface CarFeatureWhereInput {
   NOT?: CarFeatureWhereInput[] | CarFeatureWhereInput;
 }
 
-export interface CarModelScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-  OR?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-  NOT?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-}
-
-export interface AdCarFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  feature?: CarFeatureWhereInput;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: AdCarFeatureWhereInput[] | AdCarFeatureWhereInput;
-  OR?: AdCarFeatureWhereInput[] | AdCarFeatureWhereInput;
-  NOT?: AdCarFeatureWhereInput[] | AdCarFeatureWhereInput;
-}
-
-export interface CarModelUpdateManyWithWhereNestedInput {
-  where: CarModelScalarWhereInput;
-  data: CarModelUpdateManyDataInput;
-}
-
-export interface MileageBoundFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  mileage?: Int;
-  mileage_not?: Int;
-  mileage_in?: Int[] | Int;
-  mileage_not_in?: Int[] | Int;
-  mileage_lt?: Int;
-  mileage_lte?: Int;
-  mileage_gt?: Int;
-  mileage_gte?: Int;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: MileageBoundFeatureWhereInput[] | MileageBoundFeatureWhereInput;
-  OR?: MileageBoundFeatureWhereInput[] | MileageBoundFeatureWhereInput;
-  NOT?: MileageBoundFeatureWhereInput[] | MileageBoundFeatureWhereInput;
-}
-
-export interface CarModelCreateManyInput {
-  create?: CarModelCreateInput[] | CarModelCreateInput;
-  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-}
-
-export interface OfferUpsertWithWhereUniqueWithoutAdInput {
-  where: OfferWhereUniqueInput;
-  update: OfferUpdateWithoutAdDataInput;
-  create: OfferCreateWithoutAdInput;
-}
-
-export interface CarModelCreateInput {
-  name: String;
-}
-
-export interface CarModelUpdateManyDataInput {
-  name?: String;
-}
-
-export interface ModelFeatureCreateOneInput {
-  create?: ModelFeatureCreateInput;
-  connect?: ModelFeatureWhereUniqueInput;
-}
-
-export interface YearBoundFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: YearBoundFeatureWhereInput;
-  AND?:
-    | YearBoundFeatureSubscriptionWhereInput[]
-    | YearBoundFeatureSubscriptionWhereInput;
-  OR?:
-    | YearBoundFeatureSubscriptionWhereInput[]
-    | YearBoundFeatureSubscriptionWhereInput;
-  NOT?:
-    | YearBoundFeatureSubscriptionWhereInput[]
-    | YearBoundFeatureSubscriptionWhereInput;
-}
-
-export interface ModelFeatureCreateInput {
-  model: CarModelCreateOneInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CategoryFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  category?: CarCategoryWhereInput;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: CategoryFeatureWhereInput[] | CategoryFeatureWhereInput;
-  OR?: CategoryFeatureWhereInput[] | CategoryFeatureWhereInput;
-  NOT?: CategoryFeatureWhereInput[] | CategoryFeatureWhereInput;
-}
-
-export interface CarModelCreateOneInput {
-  create?: CarModelCreateInput;
-  connect?: CarModelWhereUniqueInput;
-}
-
-export interface PostSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PostWhereInput;
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-}
-
-export interface CategoryFeatureCreateOneInput {
-  create?: CategoryFeatureCreateInput;
-  connect?: CategoryFeatureWhereUniqueInput;
-}
-
-export interface CarModelWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: CarModelWhereInput[] | CarModelWhereInput;
-  OR?: CarModelWhereInput[] | CarModelWhereInput;
-  NOT?: CarModelWhereInput[] | CarModelWhereInput;
-}
-
-export interface CategoryFeatureCreateInput {
-  category: CarCategoryCreateOneInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ModelFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ModelFeatureWhereInput;
-  AND?:
-    | ModelFeatureSubscriptionWhereInput[]
-    | ModelFeatureSubscriptionWhereInput;
-  OR?:
-    | ModelFeatureSubscriptionWhereInput[]
-    | ModelFeatureSubscriptionWhereInput;
-  NOT?:
-    | ModelFeatureSubscriptionWhereInput[]
-    | ModelFeatureSubscriptionWhereInput;
-}
-
-export interface CarCategoryCreateOneInput {
-  create?: CarCategoryCreateInput;
-  connect?: CarCategoryWhereUniqueInput;
-}
-
-export interface ManufacturerFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: ManufacturerFeatureWhereInput;
-  AND?:
-    | ManufacturerFeatureSubscriptionWhereInput[]
-    | ManufacturerFeatureSubscriptionWhereInput;
-  OR?:
-    | ManufacturerFeatureSubscriptionWhereInput[]
-    | ManufacturerFeatureSubscriptionWhereInput;
-  NOT?:
-    | ManufacturerFeatureSubscriptionWhereInput[]
-    | ManufacturerFeatureSubscriptionWhereInput;
-}
-
-export interface CarCategoryCreateInput {
-  name: String;
-}
-
-export interface DateSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: DateWhereInput;
-  AND?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-  OR?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-  NOT?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
-}
-
-export interface MileageBoundFeatureCreateOneInput {
-  create?: MileageBoundFeatureCreateInput;
-  connect?: MileageBoundFeatureWhereUniqueInput;
-}
-
-export interface CategoryFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CategoryFeatureWhereInput;
-  AND?:
-    | CategoryFeatureSubscriptionWhereInput[]
-    | CategoryFeatureSubscriptionWhereInput;
-  OR?:
-    | CategoryFeatureSubscriptionWhereInput[]
-    | CategoryFeatureSubscriptionWhereInput;
-  NOT?:
-    | CategoryFeatureSubscriptionWhereInput[]
-    | CategoryFeatureSubscriptionWhereInput;
-}
-
-export interface MileageBoundFeatureCreateInput {
-  mileage: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarFeatureCategorySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarFeatureCategoryWhereInput;
-  AND?:
-    | CarFeatureCategorySubscriptionWhereInput[]
-    | CarFeatureCategorySubscriptionWhereInput;
-  OR?:
-    | CarFeatureCategorySubscriptionWhereInput[]
-    | CarFeatureCategorySubscriptionWhereInput;
-  NOT?:
-    | CarFeatureCategorySubscriptionWhereInput[]
-    | CarFeatureCategorySubscriptionWhereInput;
-}
-
-export interface YearBoundFeatureCreateOneInput {
-  create?: YearBoundFeatureCreateInput;
-  connect?: YearBoundFeatureWhereUniqueInput;
-}
-
-export interface CarCategorySubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarCategoryWhereInput;
-  AND?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
-  OR?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
-  NOT?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
-}
-
-export interface YearBoundFeatureCreateInput {
-  year: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarWhereInput;
-  AND?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-  OR?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-  NOT?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
-}
-
-export interface AdCarFeatureCreateManyInput {
-  create?: AdCarFeatureCreateInput[] | AdCarFeatureCreateInput;
-  connect?: AdCarFeatureWhereUniqueInput[] | AdCarFeatureWhereUniqueInput;
-}
-
-export interface AdSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: AdWhereInput;
-  AND?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
-  OR?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
-  NOT?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
-}
-
-export interface AdCarFeatureCreateInput {
-  feature: CarFeatureCreateOneInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface YearBoundFeatureUpdateManyMutationInput {
-  year?: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarFeatureCreateOneInput {
-  create?: CarFeatureCreateInput;
-  connect?: CarFeatureWhereUniqueInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  firstName?: String;
-  lastName?: String;
-  password?: String;
-  location?: String;
-  gender?: Gender;
-  permissions?: UserUpdatepermissionsInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface CarFeatureCreateInput {
-  name: String;
-  category: CarFeatureCategoryCreateOneWithoutFeaturesInput;
-}
-
-export interface ManufacturerFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  manufacturer?: ManufacturerWhereInput;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: ManufacturerFeatureWhereInput[] | ManufacturerFeatureWhereInput;
-  OR?: ManufacturerFeatureWhereInput[] | ManufacturerFeatureWhereInput;
-  NOT?: ManufacturerFeatureWhereInput[] | ManufacturerFeatureWhereInput;
-}
-
-export interface CarFeatureCategoryCreateOneWithoutFeaturesInput {
-  create?: CarFeatureCategoryCreateWithoutFeaturesInput;
-  connect?: CarFeatureCategoryWhereUniqueInput;
-}
-
-export interface PriceBoundFeatureUpdateManyMutationInput {
-  price?: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarFeatureCategoryCreateWithoutFeaturesInput {
-  name: String;
-  type: CarFeatureType;
-}
-
-export type CarFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarCreateOneInput {
-  create?: CarCreateInput;
-  connect?: CarWhereUniqueInput;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface CarCreateInput {
-  owner: UserCreateOneWithoutCarsInput;
-  manufacturer: ManufacturerCreateOneInput;
-  model: CarModelCreateOneInput;
-  category: CarCategoryCreateOneInput;
-  year: Int;
-  mileage: Int;
-  photos?: CarCreatephotosInput;
-  features?: CarFeatureCreateManyInput;
-  status?: CarStatus;
-}
-
-export type CarFeatureCategoryWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  name?: String;
-}>;
-
-export interface UserCreateOneWithoutCarsInput {
-  create?: UserCreateWithoutCarsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface PostUpdateInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-  author?: UserUpdateOneRequiredInput;
-}
-
-export interface UserCreateWithoutCarsInput {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  location: String;
-  birthDate: DateCreateOneInput;
-  gender: Gender;
-  permissions?: UserCreatepermissionsInput;
-  offers?: OfferCreateManyWithoutCreatorInput;
-  ads?: AdCreateManyWithoutCreatorInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface AdCreateManyWithoutCreatorInput {
-  create?: AdCreateWithoutCreatorInput[] | AdCreateWithoutCreatorInput;
-  connect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
-}
-
-export interface PostCreateInput {
-  published?: Boolean;
-  title: String;
-  content: String;
-  author: UserCreateOneInput;
-}
-
-export interface AdCreateWithoutCreatorInput {
-  offers?: OfferCreateManyWithoutAdInput;
-  priceLowerBoundFeature?: PriceBoundFeatureCreateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureCreateOneInput;
-  manufacturerFeature?: ManufacturerFeatureCreateOneInput;
-  modelFeature?: ModelFeatureCreateOneInput;
-  categoryFeature?: CategoryFeatureCreateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureCreateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureCreateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureCreateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureCreateOneInput;
-  features?: AdCarFeatureCreateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface OfferUpdateInput {
-  creator?: UserUpdateOneRequiredWithoutOffersInput;
-  ad?: AdUpdateOneRequiredWithoutOffersInput;
-  car?: CarUpdateOneRequiredInput;
-  price?: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface OfferCreateManyWithoutAdInput {
-  create?: OfferCreateWithoutAdInput[] | OfferCreateWithoutAdInput;
-  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-}
-
-export interface PriceBoundFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  price?: Float;
-  price_not?: Float;
-  price_in?: Float[] | Float;
-  price_not_in?: Float[] | Float;
-  price_lt?: Float;
-  price_lte?: Float;
-  price_gt?: Float;
-  price_gte?: Float;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: PriceBoundFeatureWhereInput[] | PriceBoundFeatureWhereInput;
-  OR?: PriceBoundFeatureWhereInput[] | PriceBoundFeatureWhereInput;
-  NOT?: PriceBoundFeatureWhereInput[] | PriceBoundFeatureWhereInput;
-}
-
-export interface OfferCreateWithoutAdInput {
-  creator: UserCreateOneWithoutOffersInput;
-  car: CarCreateOneInput;
-  price: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface ModelFeatureUpdateManyMutationInput {
-  importance?: AdCarFeatureImportance;
-}
-
-export interface UserCreateOneWithoutOffersInput {
-  create?: UserCreateWithoutOffersInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface MileageBoundFeatureUpdateManyMutationInput {
-  mileage?: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface UserCreateWithoutOffersInput {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  location: String;
-  birthDate: DateCreateOneInput;
-  gender: Gender;
-  permissions?: UserCreatepermissionsInput;
-  ads?: AdCreateManyWithoutCreatorInput;
-  cars?: CarCreateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface ManufacturerFeatureUpdateManyMutationInput {
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarCreateManyWithoutOwnerInput {
-  create?: CarCreateWithoutOwnerInput[] | CarCreateWithoutOwnerInput;
-  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-}
-
-export type ManufacturerWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarCreateWithoutOwnerInput {
-  manufacturer: ManufacturerCreateOneInput;
-  model: CarModelCreateOneInput;
-  category: CarCategoryCreateOneInput;
-  year: Int;
-  mileage: Int;
-  photos?: CarCreatephotosInput;
-  features?: CarFeatureCreateManyInput;
-  status?: CarStatus;
-}
-
-export interface ManufacturerUpdateManyMutationInput {
-  name?: String;
-}
-
 export interface CarCreatephotosInput {
   set?: String[] | String;
-}
-
-export interface DateUpdateManyMutationInput {
-  day?: Int;
-  month?: Int;
-  year?: Int;
-}
-
-export interface CarFeatureCreateManyInput {
-  create?: CarFeatureCreateInput[] | CarFeatureCreateInput;
-  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
-}
-
-export interface DateWhereInput {
-  day?: Int;
-  day_not?: Int;
-  day_in?: Int[] | Int;
-  day_not_in?: Int[] | Int;
-  day_lt?: Int;
-  day_lte?: Int;
-  day_gt?: Int;
-  day_gte?: Int;
-  month?: Int;
-  month_not?: Int;
-  month_in?: Int[] | Int;
-  month_not_in?: Int[] | Int;
-  month_lt?: Int;
-  month_lte?: Int;
-  month_gt?: Int;
-  month_gte?: Int;
-  year?: Int;
-  year_not?: Int;
-  year_in?: Int[] | Int;
-  year_not_in?: Int[] | Int;
-  year_lt?: Int;
-  year_lte?: Int;
-  year_gt?: Int;
-  year_gte?: Int;
-  AND?: DateWhereInput[] | DateWhereInput;
-  OR?: DateWhereInput[] | DateWhereInput;
-  NOT?: DateWhereInput[] | DateWhereInput;
-}
-
-export interface AdUpdateInput {
-  creator?: UserUpdateOneRequiredWithoutAdsInput;
-  offers?: OfferUpdateManyWithoutAdInput;
-  priceLowerBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  manufacturerFeature?: ManufacturerFeatureUpdateOneInput;
-  modelFeature?: ModelFeatureUpdateOneInput;
-  categoryFeature?: CategoryFeatureUpdateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureUpdateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureUpdateOneInput;
-  features?: AdCarFeatureUpdateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface CategoryFeatureUpdateInput {
-  category?: CarCategoryUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface UserUpdateOneRequiredWithoutAdsInput {
-  create?: UserCreateWithoutAdsInput;
-  update?: UserUpdateWithoutAdsDataInput;
-  upsert?: UserUpsertWithoutAdsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export type MileageBoundFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface UserUpdateWithoutAdsDataInput {
-  email?: String;
-  firstName?: String;
-  lastName?: String;
-  password?: String;
-  location?: String;
-  birthDate?: DateUpdateOneRequiredInput;
-  gender?: Gender;
-  permissions?: UserUpdatepermissionsInput;
-  offers?: OfferUpdateManyWithoutCreatorInput;
-  cars?: CarUpdateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface CarModelUpdateInput {
-  name?: String;
-}
-
-export interface DateUpdateOneRequiredInput {
-  create?: DateCreateInput;
-  update?: DateUpdateDataInput;
-  upsert?: DateUpsertNestedInput;
-}
-
-export interface CarFeatureUpsertWithWhereUniqueWithoutCategoryInput {
-  where: CarFeatureWhereUniqueInput;
-  update: CarFeatureUpdateWithoutCategoryDataInput;
-  create: CarFeatureCreateWithoutCategoryInput;
-}
-
-export interface DateUpdateDataInput {
-  day?: Int;
-  month?: Int;
-  year?: Int;
-}
-
-export interface OfferWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  creator?: UserWhereInput;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  ad?: AdWhereInput;
-  car?: CarWhereInput;
-  price?: Float;
-  price_not?: Float;
-  price_in?: Float[] | Float;
-  price_not_in?: Float[] | Float;
-  price_lt?: Float;
-  price_lte?: Float;
-  price_gt?: Float;
-  price_gte?: Float;
-  status?: OfferStatus;
-  status_not?: OfferStatus;
-  status_in?: OfferStatus[] | OfferStatus;
-  status_not_in?: OfferStatus[] | OfferStatus;
-  finalRank?: Int;
-  finalRank_not?: Int;
-  finalRank_in?: Int[] | Int;
-  finalRank_not_in?: Int[] | Int;
-  finalRank_lt?: Int;
-  finalRank_lte?: Int;
-  finalRank_gt?: Int;
-  finalRank_gte?: Int;
-  AND?: OfferWhereInput[] | OfferWhereInput;
-  OR?: OfferWhereInput[] | OfferWhereInput;
-  NOT?: OfferWhereInput[] | OfferWhereInput;
-}
-
-export interface DateUpsertNestedInput {
-  update: DateUpdateDataInput;
-  create: DateCreateInput;
-}
-
-export interface CarFeatureUpdateWithWhereUniqueWithoutCategoryInput {
-  where: CarFeatureWhereUniqueInput;
-  data: CarFeatureUpdateWithoutCategoryDataInput;
-}
-
-export interface UserUpdatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export type OfferWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface AdUpsertWithWhereUniqueWithoutCreatorInput {
-  where: AdWhereUniqueInput;
-  update: AdUpdateWithoutCreatorDataInput;
-  create: AdCreateWithoutCreatorInput;
-}
-
-export interface CarFeatureCreateWithoutCategoryInput {
-  name: String;
-}
-
-export interface OfferUpdateWithWhereUniqueWithoutCreatorInput {
-  where: OfferWhereUniqueInput;
-  data: OfferUpdateWithoutCreatorDataInput;
-}
-
-export type PostWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface OfferUpdateWithoutCreatorDataInput {
-  ad?: AdUpdateOneRequiredWithoutOffersInput;
-  car?: CarUpdateOneRequiredInput;
-  price?: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface PostWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  published?: Boolean;
-  published_not?: Boolean;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
-  author?: UserWhereInput;
-  AND?: PostWhereInput[] | PostWhereInput;
-  OR?: PostWhereInput[] | PostWhereInput;
-  NOT?: PostWhereInput[] | PostWhereInput;
-}
-
-export interface AdUpdateOneRequiredWithoutOffersInput {
-  create?: AdCreateWithoutOffersInput;
-  update?: AdUpdateWithoutOffersDataInput;
-  upsert?: AdUpsertWithoutOffersInput;
-  connect?: AdWhereUniqueInput;
-}
-
-export interface CarFeatureUpdateInput {
-  name?: String;
-  category?: CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput;
-}
-
-export interface AdUpdateWithoutOffersDataInput {
-  creator?: UserUpdateOneRequiredWithoutAdsInput;
-  priceLowerBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  manufacturerFeature?: ManufacturerFeatureUpdateOneInput;
-  modelFeature?: ModelFeatureUpdateOneInput;
-  categoryFeature?: CategoryFeatureUpdateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureUpdateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureUpdateOneInput;
-  features?: AdCarFeatureUpdateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface CarCategoryUpdateInput {
-  name?: String;
-}
-
-export interface PriceBoundFeatureUpdateOneInput {
-  create?: PriceBoundFeatureCreateInput;
-  update?: PriceBoundFeatureUpdateDataInput;
-  upsert?: PriceBoundFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: PriceBoundFeatureWhereUniqueInput;
-}
-
-export interface CarUpdateManyMutationInput {
-  year?: Int;
-  mileage?: Int;
-  photos?: CarUpdatephotosInput;
-  status?: CarStatus;
-}
-
-export interface PriceBoundFeatureUpdateDataInput {
-  price?: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface AdCarFeatureUpdateManyMutationInput {
-  importance?: AdCarFeatureImportance;
-}
-
-export interface PriceBoundFeatureUpsertNestedInput {
-  update: PriceBoundFeatureUpdateDataInput;
-  create: PriceBoundFeatureCreateInput;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
-export interface ManufacturerFeatureUpdateOneInput {
-  create?: ManufacturerFeatureCreateInput;
-  update?: ManufacturerFeatureUpdateDataInput;
-  upsert?: ManufacturerFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: ManufacturerFeatureWhereUniqueInput;
-}
-
-export interface UserUpsertWithoutAdsInput {
-  update: UserUpdateWithoutAdsDataInput;
-  create: UserCreateWithoutAdsInput;
-}
-
-export interface ManufacturerFeatureUpdateDataInput {
-  manufacturer?: ManufacturerUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarUpsertNestedInput {
-  update: CarUpdateDataInput;
-  create: CarCreateInput;
-}
-
-export interface ManufacturerUpdateOneRequiredInput {
-  create?: ManufacturerCreateInput;
-  update?: ManufacturerUpdateDataInput;
-  upsert?: ManufacturerUpsertNestedInput;
-  connect?: ManufacturerWhereUniqueInput;
-}
-
-export interface UserUpsertWithoutCarsInput {
-  update: UserUpdateWithoutCarsDataInput;
-  create: UserCreateWithoutCarsInput;
-}
-
-export interface ManufacturerUpdateDataInput {
-  name?: String;
-  models?: CarModelUpdateManyInput;
-}
-
-export interface AdUpdateManyWithWhereNestedInput {
-  where: AdScalarWhereInput;
-  data: AdUpdateManyDataInput;
-}
-
-export interface CarModelUpdateManyInput {
-  create?: CarModelCreateInput[] | CarModelCreateInput;
-  update?:
-    | CarModelUpdateWithWhereUniqueNestedInput[]
-    | CarModelUpdateWithWhereUniqueNestedInput;
-  upsert?:
-    | CarModelUpsertWithWhereUniqueNestedInput[]
-    | CarModelUpsertWithWhereUniqueNestedInput;
-  delete?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  disconnect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
-  deleteMany?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-  updateMany?:
-    | CarModelUpdateManyWithWhereNestedInput[]
-    | CarModelUpdateManyWithWhereNestedInput;
-}
-
-export interface UserCreateOneWithoutAdsInput {
-  create?: UserCreateWithoutAdsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface CarModelUpdateWithWhereUniqueNestedInput {
-  where: CarModelWhereUniqueInput;
-  data: CarModelUpdateDataInput;
-}
-
-export interface DateCreateOneInput {
-  create?: DateCreateInput;
-}
-
-export interface OfferUpdateManyDataInput {
-  price?: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface CarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  owner?: UserWhereInput;
-  manufacturer?: ManufacturerWhereInput;
-  model?: CarModelWhereInput;
-  category?: CarCategoryWhereInput;
-  year?: Int;
-  year_not?: Int;
-  year_in?: Int[] | Int;
-  year_not_in?: Int[] | Int;
-  year_lt?: Int;
-  year_lte?: Int;
-  year_gt?: Int;
-  year_gte?: Int;
-  mileage?: Int;
-  mileage_not?: Int;
-  mileage_in?: Int[] | Int;
-  mileage_not_in?: Int[] | Int;
-  mileage_lt?: Int;
-  mileage_lte?: Int;
-  mileage_gt?: Int;
-  mileage_gte?: Int;
-  features_every?: CarFeatureWhereInput;
-  features_some?: CarFeatureWhereInput;
-  features_none?: CarFeatureWhereInput;
-  status?: CarStatus;
-  status_not?: CarStatus;
-  status_in?: CarStatus[] | CarStatus;
-  status_not_in?: CarStatus[] | CarStatus;
-  AND?: CarWhereInput[] | CarWhereInput;
-  OR?: CarWhereInput[] | CarWhereInput;
-  NOT?: CarWhereInput[] | CarWhereInput;
-}
-
-export interface OfferCreateWithoutCreatorInput {
-  ad: AdCreateOneWithoutOffersInput;
-  car: CarCreateOneInput;
-  price: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface YearBoundFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  year?: Int;
-  year_not?: Int;
-  year_in?: Int[] | Int;
-  year_not_in?: Int[] | Int;
-  year_lt?: Int;
-  year_lte?: Int;
-  year_gt?: Int;
-  year_gte?: Int;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: YearBoundFeatureWhereInput[] | YearBoundFeatureWhereInput;
-  OR?: YearBoundFeatureWhereInput[] | YearBoundFeatureWhereInput;
-  NOT?: YearBoundFeatureWhereInput[] | YearBoundFeatureWhereInput;
-}
-
-export interface AdCreateWithoutOffersInput {
-  creator: UserCreateOneWithoutAdsInput;
-  priceLowerBoundFeature?: PriceBoundFeatureCreateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureCreateOneInput;
-  manufacturerFeature?: ManufacturerFeatureCreateOneInput;
-  modelFeature?: ModelFeatureCreateOneInput;
-  categoryFeature?: CategoryFeatureCreateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureCreateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureCreateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureCreateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureCreateOneInput;
-  features?: AdCarFeatureCreateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface OfferUpdateManyWithWhereNestedInput {
-  where: OfferScalarWhereInput;
-  data: OfferUpdateManyDataInput;
-}
-
-export interface PriceBoundFeatureCreateInput {
-  price: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface OfferScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  price?: Float;
-  price_not?: Float;
-  price_in?: Float[] | Float;
-  price_not_in?: Float[] | Float;
-  price_lt?: Float;
-  price_lte?: Float;
-  price_gt?: Float;
-  price_gte?: Float;
-  status?: OfferStatus;
-  status_not?: OfferStatus;
-  status_in?: OfferStatus[] | OfferStatus;
-  status_not_in?: OfferStatus[] | OfferStatus;
-  finalRank?: Int;
-  finalRank_not?: Int;
-  finalRank_in?: Int[] | Int;
-  finalRank_not_in?: Int[] | Int;
-  finalRank_lt?: Int;
-  finalRank_lte?: Int;
-  finalRank_gt?: Int;
-  finalRank_gte?: Int;
-  AND?: OfferScalarWhereInput[] | OfferScalarWhereInput;
-  OR?: OfferScalarWhereInput[] | OfferScalarWhereInput;
-  NOT?: OfferScalarWhereInput[] | OfferScalarWhereInput;
-}
-
-export interface ManufacturerFeatureCreateInput {
-  manufacturer: ManufacturerCreateOneInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ManufacturerUpsertNestedInput {
-  update: ManufacturerUpdateDataInput;
-  create: ManufacturerCreateInput;
-}
-
-export interface ManufacturerCreateInput {
-  name: String;
-  models?: CarModelCreateManyInput;
-}
-
-export interface ManufacturerFeatureUpsertNestedInput {
-  update: ManufacturerFeatureUpdateDataInput;
-  create: ManufacturerFeatureCreateInput;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -2453,67 +905,44 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export interface ModelFeatureUpdateOneInput {
-  create?: ModelFeatureCreateInput;
-  update?: ModelFeatureUpdateDataInput;
-  upsert?: ModelFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: ModelFeatureWhereUniqueInput;
+export interface ConversationCreateManyWithoutBuyerInput {
+  create?:
+    | ConversationCreateWithoutBuyerInput[]
+    | ConversationCreateWithoutBuyerInput;
+  connect?: ConversationWhereUniqueInput[] | ConversationWhereUniqueInput;
 }
 
-export interface ModelFeatureWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  model?: CarModelWhereInput;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: ModelFeatureWhereInput[] | ModelFeatureWhereInput;
-  OR?: ModelFeatureWhereInput[] | ModelFeatureWhereInput;
-  NOT?: ModelFeatureWhereInput[] | ModelFeatureWhereInput;
-}
-
-export interface ModelFeatureUpdateDataInput {
-  model?: CarModelUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface MileageBoundFeatureSubscriptionWhereInput {
+export interface OfferSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: MileageBoundFeatureWhereInput;
-  AND?:
-    | MileageBoundFeatureSubscriptionWhereInput[]
-    | MileageBoundFeatureSubscriptionWhereInput;
-  OR?:
-    | MileageBoundFeatureSubscriptionWhereInput[]
-    | MileageBoundFeatureSubscriptionWhereInput;
-  NOT?:
-    | MileageBoundFeatureSubscriptionWhereInput[]
-    | MileageBoundFeatureSubscriptionWhereInput;
+  node?: OfferWhereInput;
+  AND?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
+  OR?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
+  NOT?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
 }
 
-export interface CarModelUpdateOneRequiredInput {
-  create?: CarModelCreateInput;
-  update?: CarModelUpdateDataInput;
-  upsert?: CarModelUpsertNestedInput;
-  connect?: CarModelWhereUniqueInput;
+export interface ConversationCreateWithoutBuyerInput {
+  offer: OfferCreateOneWithoutConversationInput;
+  seller: UserCreateOneInput;
+  messages?: MessageCreateManyWithoutConversationInput;
+}
+
+export interface MessageSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MessageWhereInput;
+  AND?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+  OR?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+  NOT?: MessageSubscriptionWhereInput[] | MessageSubscriptionWhereInput;
+}
+
+export interface OfferCreateOneWithoutConversationInput {
+  create?: OfferCreateWithoutConversationInput;
+  connect?: OfferWhereUniqueInput;
 }
 
 export interface ManufacturerWhereInput {
@@ -2553,61 +982,139 @@ export interface ManufacturerWhereInput {
   NOT?: ManufacturerWhereInput[] | ManufacturerWhereInput;
 }
 
-export interface CarModelUpsertNestedInput {
-  update: CarModelUpdateDataInput;
-  create: CarModelCreateInput;
+export interface OfferCreateWithoutConversationInput {
+  creator: UserCreateOneWithoutOffersInput;
+  ad: AdCreateOneWithoutOffersInput;
+  car: CarCreateOneInput;
+  price: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
 }
 
-export interface CarFeatureSubscriptionWhereInput {
+export interface ConversationSubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: CarFeatureWhereInput;
-  AND?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
-  OR?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
-  NOT?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
-}
-
-export interface ModelFeatureUpsertNestedInput {
-  update: ModelFeatureUpdateDataInput;
-  create: ModelFeatureCreateInput;
-}
-
-export interface AdCarFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: AdCarFeatureWhereInput;
+  node?: ConversationWhereInput;
   AND?:
-    | AdCarFeatureSubscriptionWhereInput[]
-    | AdCarFeatureSubscriptionWhereInput;
+    | ConversationSubscriptionWhereInput[]
+    | ConversationSubscriptionWhereInput;
   OR?:
-    | AdCarFeatureSubscriptionWhereInput[]
-    | AdCarFeatureSubscriptionWhereInput;
+    | ConversationSubscriptionWhereInput[]
+    | ConversationSubscriptionWhereInput;
   NOT?:
-    | AdCarFeatureSubscriptionWhereInput[]
-    | AdCarFeatureSubscriptionWhereInput;
+    | ConversationSubscriptionWhereInput[]
+    | ConversationSubscriptionWhereInput;
 }
 
-export interface CategoryFeatureUpdateOneInput {
-  create?: CategoryFeatureCreateInput;
-  update?: CategoryFeatureUpdateDataInput;
-  upsert?: CategoryFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: CategoryFeatureWhereUniqueInput;
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
 }
 
-export interface YearBoundFeatureUpdateInput {
+export interface CarFeatureCategorySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarFeatureCategoryWhereInput;
+  AND?:
+    | CarFeatureCategorySubscriptionWhereInput[]
+    | CarFeatureCategorySubscriptionWhereInput;
+  OR?:
+    | CarFeatureCategorySubscriptionWhereInput[]
+    | CarFeatureCategorySubscriptionWhereInput;
+  NOT?:
+    | CarFeatureCategorySubscriptionWhereInput[]
+    | CarFeatureCategorySubscriptionWhereInput;
+}
+
+export interface UserCreateInput {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  birthDate: DateCreateOneInput;
+  gender: Gender;
+  permissions?: UserCreatepermissionsInput;
+  offers?: OfferCreateManyWithoutCreatorInput;
+  ads?: AdCreateManyWithoutCreatorInput;
+  cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationCreateManyWithoutBuyerInput;
+}
+
+export interface CarCategorySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarCategoryWhereInput;
+  AND?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+  OR?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+  NOT?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+}
+
+export interface MessageCreateManyWithoutConversationInput {
+  create?:
+    | MessageCreateWithoutConversationInput[]
+    | MessageCreateWithoutConversationInput;
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+}
+
+export interface DateWhereInput {
+  day?: Int;
+  day_not?: Int;
+  day_in?: Int[] | Int;
+  day_not_in?: Int[] | Int;
+  day_lt?: Int;
+  day_lte?: Int;
+  day_gt?: Int;
+  day_gte?: Int;
+  month?: Int;
+  month_not?: Int;
+  month_in?: Int[] | Int;
+  month_not_in?: Int[] | Int;
+  month_lt?: Int;
+  month_lte?: Int;
+  month_gt?: Int;
+  month_gte?: Int;
   year?: Int;
-  importance?: AdCarFeatureImportance;
+  year_not?: Int;
+  year_in?: Int[] | Int;
+  year_not_in?: Int[] | Int;
+  year_lt?: Int;
+  year_lte?: Int;
+  year_gt?: Int;
+  year_gte?: Int;
+  AND?: DateWhereInput[] | DateWhereInput;
+  OR?: DateWhereInput[] | DateWhereInput;
+  NOT?: DateWhereInput[] | DateWhereInput;
 }
 
-export interface CategoryFeatureUpdateDataInput {
-  category?: CarCategoryUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
+export interface MessageCreateWithoutConversationInput {
+  sender: UserCreateOneInput;
+  text: String;
+  image?: String;
+}
+
+export interface AdSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: AdWhereInput;
+  AND?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
+  OR?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
+  NOT?: AdSubscriptionWhereInput[] | AdSubscriptionWhereInput;
+}
+
+export interface ConversationCreateOneWithoutOfferInput {
+  create?: ConversationCreateWithoutOfferInput;
+  connect?: ConversationWhereUniqueInput;
 }
 
 export interface UserUpdateInput {
@@ -2624,13 +1131,13 @@ export interface UserUpdateInput {
   cars?: CarUpdateManyWithoutOwnerInput;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  conversations?: ConversationUpdateManyWithoutBuyerInput;
 }
 
-export interface CarCategoryUpdateOneRequiredInput {
-  create?: CarCategoryCreateInput;
-  update?: CarCategoryUpdateDataInput;
-  upsert?: CarCategoryUpsertNestedInput;
-  connect?: CarCategoryWhereUniqueInput;
+export interface ConversationCreateWithoutOfferInput {
+  buyer: UserCreateOneWithoutConversationsInput;
+  seller: UserCreateOneInput;
+  messages?: MessageCreateManyWithoutConversationInput;
 }
 
 export interface PostUpdateManyMutationInput {
@@ -2639,85 +1146,32 @@ export interface PostUpdateManyMutationInput {
   content?: String;
 }
 
-export interface CarCategoryUpdateDataInput {
-  name?: String;
-}
-
-export interface UserUpdateOneRequiredInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
+export interface UserCreateOneWithoutConversationsInput {
+  create?: UserCreateWithoutConversationsInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface CarCategoryUpsertNestedInput {
-  update: CarCategoryUpdateDataInput;
-  create: CarCategoryCreateInput;
+export interface PostCreateInput {
+  published?: Boolean;
+  title: String;
+  content: String;
+  author: UserCreateOneInput;
 }
 
-export type CarModelWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CategoryFeatureUpsertNestedInput {
-  update: CategoryFeatureUpdateDataInput;
-  create: CategoryFeatureCreateInput;
-}
-
-export type CategoryFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface MileageBoundFeatureUpdateOneInput {
-  create?: MileageBoundFeatureCreateInput;
-  update?: MileageBoundFeatureUpdateDataInput;
-  upsert?: MileageBoundFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: MileageBoundFeatureWhereUniqueInput;
-}
-
-export interface ModelFeatureUpdateInput {
-  model?: CarModelUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface MileageBoundFeatureUpdateDataInput {
-  mileage?: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ManufacturerFeatureUpdateInput {
-  manufacturer?: ManufacturerUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface MileageBoundFeatureUpsertNestedInput {
-  update: MileageBoundFeatureUpdateDataInput;
-  create: MileageBoundFeatureCreateInput;
-}
-
-export interface ManufacturerUpdateInput {
-  name?: String;
-  models?: CarModelUpdateManyInput;
-}
-
-export interface YearBoundFeatureUpdateOneInput {
-  create?: YearBoundFeatureCreateInput;
-  update?: YearBoundFeatureUpdateDataInput;
-  upsert?: YearBoundFeatureUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: YearBoundFeatureWhereUniqueInput;
-}
-
-export interface CategoryFeatureUpdateManyMutationInput {
-  importance?: AdCarFeatureImportance;
-}
-
-export interface YearBoundFeatureUpdateDataInput {
-  year?: Int;
-  importance?: AdCarFeatureImportance;
+export interface UserCreateWithoutConversationsInput {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  birthDate: DateCreateOneInput;
+  gender: Gender;
+  permissions?: UserCreatepermissionsInput;
+  offers?: OfferCreateManyWithoutCreatorInput;
+  ads?: AdCreateManyWithoutCreatorInput;
+  cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
 export interface UserWhereInput {
@@ -2841,202 +1295,267 @@ export interface UserWhereInput {
   resetTokenExpiry_lte?: Float;
   resetTokenExpiry_gt?: Float;
   resetTokenExpiry_gte?: Float;
+  conversations_every?: ConversationWhereInput;
+  conversations_some?: ConversationWhereInput;
+  conversations_none?: ConversationWhereInput;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface YearBoundFeatureUpsertNestedInput {
-  update: YearBoundFeatureUpdateDataInput;
-  create: YearBoundFeatureCreateInput;
+export interface AdUpdateInput {
+  creator?: UserUpdateOneRequiredWithoutAdsInput;
+  offers?: OfferUpdateManyWithoutAdInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerUpdateOneInput;
+  model?: CarModelUpdateOneInput;
+  category?: CarCategoryUpdateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureUpdateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
 }
 
-export type ModelFeatureWhereUniqueInput = AtLeastOne<{
+export interface OfferUpdateInput {
+  creator?: UserUpdateOneRequiredWithoutOffersInput;
+  ad?: AdUpdateOneRequiredWithoutOffersInput;
+  car?: CarUpdateOneRequiredInput;
+  price?: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationUpdateOneWithoutOfferInput;
+}
+
+export interface UserUpdateOneRequiredWithoutAdsInput {
+  create?: UserCreateWithoutAdsInput;
+  update?: UserUpdateWithoutAdsDataInput;
+  upsert?: UserUpsertWithoutAdsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export type CarFeatureWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface AdCarFeatureUpdateManyInput {
-  create?: AdCarFeatureCreateInput[] | AdCarFeatureCreateInput;
+export interface UserUpdateWithoutAdsDataInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  birthDate?: DateUpdateOneRequiredInput;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  offers?: OfferUpdateManyWithoutCreatorInput;
+  cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationUpdateManyWithoutBuyerInput;
+}
+
+export interface ConversationUpsertWithoutMessagesInput {
+  update: ConversationUpdateWithoutMessagesDataInput;
+  create: ConversationCreateWithoutMessagesInput;
+}
+
+export interface DateUpdateOneRequiredInput {
+  create?: DateCreateInput;
+  update?: DateUpdateDataInput;
+  upsert?: DateUpsertNestedInput;
+}
+
+export type CarFeatureCategoryWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  name?: String;
+}>;
+
+export interface DateUpdateDataInput {
+  day?: Int;
+  month?: Int;
+  year?: Int;
+}
+
+export interface ConversationUpdateOneRequiredWithoutMessagesInput {
+  create?: ConversationCreateWithoutMessagesInput;
+  update?: ConversationUpdateWithoutMessagesDataInput;
+  upsert?: ConversationUpsertWithoutMessagesInput;
+  connect?: ConversationWhereUniqueInput;
+}
+
+export interface DateUpsertNestedInput {
+  update: DateUpdateDataInput;
+  create: DateCreateInput;
+}
+
+export interface ConversationCreateWithoutMessagesInput {
+  offer: OfferCreateOneWithoutConversationInput;
+  buyer: UserCreateOneWithoutConversationsInput;
+  seller: UserCreateOneInput;
+}
+
+export interface UserUpdatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface ConversationCreateOneWithoutMessagesInput {
+  create?: ConversationCreateWithoutMessagesInput;
+  connect?: ConversationWhereUniqueInput;
+}
+
+export interface OfferUpdateManyWithoutCreatorInput {
+  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
+  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
   update?:
-    | AdCarFeatureUpdateWithWhereUniqueNestedInput[]
-    | AdCarFeatureUpdateWithWhereUniqueNestedInput;
+    | OfferUpdateWithWhereUniqueWithoutCreatorInput[]
+    | OfferUpdateWithWhereUniqueWithoutCreatorInput;
   upsert?:
-    | AdCarFeatureUpsertWithWhereUniqueNestedInput[]
-    | AdCarFeatureUpsertWithWhereUniqueNestedInput;
-  delete?: AdCarFeatureWhereUniqueInput[] | AdCarFeatureWhereUniqueInput;
-  connect?: AdCarFeatureWhereUniqueInput[] | AdCarFeatureWhereUniqueInput;
-  disconnect?: AdCarFeatureWhereUniqueInput[] | AdCarFeatureWhereUniqueInput;
-  deleteMany?: AdCarFeatureScalarWhereInput[] | AdCarFeatureScalarWhereInput;
+    | OfferUpsertWithWhereUniqueWithoutCreatorInput[]
+    | OfferUpsertWithWhereUniqueWithoutCreatorInput;
+  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
   updateMany?:
-    | AdCarFeatureUpdateManyWithWhereNestedInput[]
-    | AdCarFeatureUpdateManyWithWhereNestedInput;
+    | OfferUpdateManyWithWhereNestedInput[]
+    | OfferUpdateManyWithWhereNestedInput;
 }
 
-export interface CarFeatureUpdateManyWithoutCategoryInput {
-  create?:
-    | CarFeatureCreateWithoutCategoryInput[]
-    | CarFeatureCreateWithoutCategoryInput;
-  delete?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
-  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
-  disconnect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
-  update?:
-    | CarFeatureUpdateWithWhereUniqueWithoutCategoryInput[]
-    | CarFeatureUpdateWithWhereUniqueWithoutCategoryInput;
-  upsert?:
-    | CarFeatureUpsertWithWhereUniqueWithoutCategoryInput[]
-    | CarFeatureUpsertWithWhereUniqueWithoutCategoryInput;
-  deleteMany?: CarFeatureScalarWhereInput[] | CarFeatureScalarWhereInput;
-  updateMany?:
-    | CarFeatureUpdateManyWithWhereNestedInput[]
-    | CarFeatureUpdateManyWithWhereNestedInput;
+export interface ManufacturerUpdateManyMutationInput {
+  name?: String;
 }
 
-export interface AdCarFeatureUpdateWithWhereUniqueNestedInput {
-  where: AdCarFeatureWhereUniqueInput;
-  data: AdCarFeatureUpdateDataInput;
+export interface OfferUpdateWithWhereUniqueWithoutCreatorInput {
+  where: OfferWhereUniqueInput;
+  data: OfferUpdateWithoutCreatorDataInput;
 }
 
-export interface CarFeatureCreateManyWithoutCategoryInput {
-  create?:
-    | CarFeatureCreateWithoutCategoryInput[]
-    | CarFeatureCreateWithoutCategoryInput;
-  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
+export interface ManufacturerUpdateInput {
+  name?: String;
+  models?: CarModelUpdateManyInput;
 }
 
-export interface AdCarFeatureUpdateDataInput {
-  feature?: CarFeatureUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
+export interface OfferUpdateWithoutCreatorDataInput {
+  ad?: AdUpdateOneRequiredWithoutOffersInput;
+  car?: CarUpdateOneRequiredInput;
+  price?: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationUpdateOneWithoutOfferInput;
+}
+
+export interface ConversationUpdateInput {
+  offer?: OfferUpdateOneRequiredWithoutConversationInput;
+  buyer?: UserUpdateOneRequiredWithoutConversationsInput;
+  seller?: UserUpdateOneRequiredInput;
+  messages?: MessageUpdateManyWithoutConversationInput;
+}
+
+export interface AdUpdateOneRequiredWithoutOffersInput {
+  create?: AdCreateWithoutOffersInput;
+  update?: AdUpdateWithoutOffersDataInput;
+  upsert?: AdUpsertWithoutOffersInput;
+  connect?: AdWhereUniqueInput;
+}
+
+export interface CarModelUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface AdUpdateWithoutOffersDataInput {
+  creator?: UserUpdateOneRequiredWithoutAdsInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerUpdateOneInput;
+  model?: CarModelUpdateOneInput;
+  category?: CarCategoryUpdateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureUpdateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
+
+export interface CarFeatureCategoryUpdateManyMutationInput {
+  name?: String;
+  type?: CarFeatureType;
+}
+
+export interface ManufacturerUpdateOneInput {
+  create?: ManufacturerCreateInput;
+  update?: ManufacturerUpdateDataInput;
+  upsert?: ManufacturerUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ManufacturerWhereUniqueInput;
+}
+
+export interface CarFeatureUpsertWithWhereUniqueWithoutCategoryInput {
+  where: CarFeatureWhereUniqueInput;
+  update: CarFeatureUpdateWithoutCategoryDataInput;
+  create: CarFeatureCreateWithoutCategoryInput;
+}
+
+export interface ManufacturerUpdateDataInput {
+  name?: String;
+  models?: CarModelUpdateManyInput;
+}
+
+export interface CarFeatureUpdateWithWhereUniqueWithoutCategoryInput {
+  where: CarFeatureWhereUniqueInput;
+  data: CarFeatureUpdateWithoutCategoryDataInput;
+}
+
+export interface AdUpdateManyDataInput {
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
+
+export type MessageWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarModelUpdateWithWhereUniqueNestedInput {
+  where: CarModelWhereUniqueInput;
+  data: CarModelUpdateDataInput;
+}
+
+export interface CarFeatureCreateWithoutCategoryInput {
+  name: String;
+}
+
+export interface CarModelUpdateDataInput {
+  name?: String;
+}
+
+export type OfferWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface CarModelUpsertWithWhereUniqueNestedInput {
+  where: CarModelWhereUniqueInput;
+  update: CarModelUpdateDataInput;
+  create: CarModelCreateInput;
 }
 
 export interface CarFeatureUpdateManyMutationInput {
   name?: String;
 }
 
-export interface CarFeatureUpdateOneRequiredInput {
-  create?: CarFeatureCreateInput;
-  update?: CarFeatureUpdateDataInput;
-  upsert?: CarFeatureUpsertNestedInput;
-  connect?: CarFeatureWhereUniqueInput;
-}
-
-export type PriceBoundFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarFeatureUpdateDataInput {
-  name?: String;
-  category?: CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput;
-}
-
-export interface AdCarFeatureUpdateInput {
-  feature?: CarFeatureUpdateOneRequiredInput;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput {
-  create?: CarFeatureCategoryCreateWithoutFeaturesInput;
-  update?: CarFeatureCategoryUpdateWithoutFeaturesDataInput;
-  upsert?: CarFeatureCategoryUpsertWithoutFeaturesInput;
-  connect?: CarFeatureCategoryWhereUniqueInput;
-}
-
-export interface OfferUpsertWithWhereUniqueWithoutCreatorInput {
-  where: OfferWhereUniqueInput;
-  update: OfferUpdateWithoutCreatorDataInput;
-  create: OfferCreateWithoutCreatorInput;
-}
-
-export interface CarFeatureCategoryUpdateWithoutFeaturesDataInput {
-  name?: String;
-  type?: CarFeatureType;
-}
-
-export interface AdUpdateManyDataInput {
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface CarFeatureCategoryUpsertWithoutFeaturesInput {
-  update: CarFeatureCategoryUpdateWithoutFeaturesDataInput;
-  create: CarFeatureCategoryCreateWithoutFeaturesInput;
-}
-
-export interface AdCreateInput {
-  creator: UserCreateOneWithoutAdsInput;
-  offers?: OfferCreateManyWithoutAdInput;
-  priceLowerBoundFeature?: PriceBoundFeatureCreateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureCreateOneInput;
-  manufacturerFeature?: ManufacturerFeatureCreateOneInput;
-  modelFeature?: ModelFeatureCreateOneInput;
-  categoryFeature?: CategoryFeatureCreateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureCreateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureCreateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureCreateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureCreateOneInput;
-  features?: AdCarFeatureCreateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface CarFeatureUpsertNestedInput {
-  update: CarFeatureUpdateDataInput;
-  create: CarFeatureCreateInput;
-}
-
-export interface DateCreateInput {
-  day: Int;
-  month: Int;
-  year: Int;
-}
-
-export interface AdCarFeatureUpsertWithWhereUniqueNestedInput {
-  where: AdCarFeatureWhereUniqueInput;
-  update: AdCarFeatureUpdateDataInput;
-  create: AdCarFeatureCreateInput;
-}
-
-export interface AdCreateOneWithoutOffersInput {
-  create?: AdCreateWithoutOffersInput;
-  connect?: AdWhereUniqueInput;
-}
-
-export interface AdCarFeatureScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  importance?: AdCarFeatureImportance;
-  importance_not?: AdCarFeatureImportance;
-  importance_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  importance_not_in?: AdCarFeatureImportance[] | AdCarFeatureImportance;
-  AND?: AdCarFeatureScalarWhereInput[] | AdCarFeatureScalarWhereInput;
-  OR?: AdCarFeatureScalarWhereInput[] | AdCarFeatureScalarWhereInput;
-  NOT?: AdCarFeatureScalarWhereInput[] | AdCarFeatureScalarWhereInput;
-}
-
-export interface ManufacturerFeatureCreateOneInput {
-  create?: ManufacturerFeatureCreateInput;
-  connect?: ManufacturerFeatureWhereUniqueInput;
-}
-
-export interface AdCarFeatureUpdateManyWithWhereNestedInput {
-  where: AdCarFeatureScalarWhereInput;
-  data: AdCarFeatureUpdateManyDataInput;
-}
-
-export interface CarCategoryWhereInput {
+export interface CarModelScalarWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -3065,135 +1584,21 @@ export interface CarCategoryWhereInput {
   name_not_starts_with?: String;
   name_ends_with?: String;
   name_not_ends_with?: String;
-  AND?: CarCategoryWhereInput[] | CarCategoryWhereInput;
-  OR?: CarCategoryWhereInput[] | CarCategoryWhereInput;
-  NOT?: CarCategoryWhereInput[] | CarCategoryWhereInput;
+  AND?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
+  OR?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
+  NOT?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
 }
 
-export interface AdCarFeatureUpdateManyDataInput {
-  importance?: AdCarFeatureImportance;
-}
-
-export interface OfferSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: OfferWhereInput;
-  AND?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
-  OR?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
-  NOT?: OfferSubscriptionWhereInput[] | OfferSubscriptionWhereInput;
-}
-
-export interface AdUpsertWithoutOffersInput {
-  update: AdUpdateWithoutOffersDataInput;
-  create: AdCreateWithoutOffersInput;
-}
-
-export interface CarModelSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: CarModelWhereInput;
-  AND?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-  OR?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-  NOT?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
-}
-
-export interface CarUpdateOneRequiredInput {
-  create?: CarCreateInput;
-  update?: CarUpdateDataInput;
-  upsert?: CarUpsertNestedInput;
-  connect?: CarWhereUniqueInput;
-}
-
-export type CarWhereUniqueInput = AtLeastOne<{
+export type PostWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface CarUpdateDataInput {
-  owner?: UserUpdateOneRequiredWithoutCarsInput;
-  manufacturer?: ManufacturerUpdateOneRequiredInput;
-  model?: CarModelUpdateOneRequiredInput;
-  category?: CarCategoryUpdateOneRequiredInput;
-  year?: Int;
-  mileage?: Int;
-  photos?: CarUpdatephotosInput;
-  features?: CarFeatureUpdateManyInput;
-  status?: CarStatus;
+export interface CarModelUpdateManyWithWhereNestedInput {
+  where: CarModelScalarWhereInput;
+  data: CarModelUpdateManyDataInput;
 }
 
-export interface PriceBoundFeatureUpdateInput {
-  price?: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface UserUpdateOneRequiredWithoutCarsInput {
-  create?: UserCreateWithoutCarsInput;
-  update?: UserUpdateWithoutCarsDataInput;
-  upsert?: UserUpsertWithoutCarsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserCreateInput {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  location: String;
-  birthDate: DateCreateOneInput;
-  gender: Gender;
-  permissions?: UserCreatepermissionsInput;
-  offers?: OfferCreateManyWithoutCreatorInput;
-  ads?: AdCreateManyWithoutCreatorInput;
-  cars?: CarCreateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface UserUpdateWithoutCarsDataInput {
-  email?: String;
-  firstName?: String;
-  lastName?: String;
-  password?: String;
-  location?: String;
-  birthDate?: DateUpdateOneRequiredInput;
-  gender?: Gender;
-  permissions?: UserUpdatepermissionsInput;
-  offers?: OfferUpdateManyWithoutCreatorInput;
-  ads?: AdUpdateManyWithoutCreatorInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface OfferCreateInput {
-  creator: UserCreateOneWithoutOffersInput;
-  ad: AdCreateOneWithoutOffersInput;
-  car: CarCreateOneInput;
-  price: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface AdUpdateManyWithoutCreatorInput {
-  create?: AdCreateWithoutCreatorInput[] | AdCreateWithoutCreatorInput;
-  delete?: AdWhereUniqueInput[] | AdWhereUniqueInput;
-  connect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
-  disconnect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
-  update?:
-    | AdUpdateWithWhereUniqueWithoutCreatorInput[]
-    | AdUpdateWithWhereUniqueWithoutCreatorInput;
-  upsert?:
-    | AdUpsertWithWhereUniqueWithoutCreatorInput[]
-    | AdUpsertWithWhereUniqueWithoutCreatorInput;
-  deleteMany?: AdScalarWhereInput[] | AdScalarWhereInput;
-  updateMany?:
-    | AdUpdateManyWithWhereNestedInput[]
-    | AdUpdateManyWithWhereNestedInput;
-}
-
-export interface AdWhereInput {
+export interface PostWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -3208,7 +1613,6 @@ export interface AdWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  creator?: UserWhereInput;
   createdAt?: DateTimeInput;
   createdAt_not?: DateTimeInput;
   createdAt_in?: DateTimeInput[] | DateTimeInput;
@@ -3225,235 +1629,166 @@ export interface AdWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  offers_every?: OfferWhereInput;
-  offers_some?: OfferWhereInput;
-  offers_none?: OfferWhereInput;
-  priceLowerBoundFeature?: PriceBoundFeatureWhereInput;
-  priceHigherBoundFeature?: PriceBoundFeatureWhereInput;
-  manufacturerFeature?: ManufacturerFeatureWhereInput;
-  modelFeature?: ModelFeatureWhereInput;
-  categoryFeature?: CategoryFeatureWhereInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureWhereInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureWhereInput;
-  yearLowerBoundFeature?: YearBoundFeatureWhereInput;
-  yearHigherBoundFeature?: YearBoundFeatureWhereInput;
-  features_every?: AdCarFeatureWhereInput;
-  features_some?: AdCarFeatureWhereInput;
-  features_none?: AdCarFeatureWhereInput;
-  isUrgent?: Boolean;
-  isUrgent_not?: Boolean;
-  isFirst?: Boolean;
-  isFirst_not?: Boolean;
-  status?: AdStatus;
-  status_not?: AdStatus;
-  status_in?: AdStatus[] | AdStatus;
-  status_not_in?: AdStatus[] | AdStatus;
-  AND?: AdWhereInput[] | AdWhereInput;
-  OR?: AdWhereInput[] | AdWhereInput;
-  NOT?: AdWhereInput[] | AdWhereInput;
+  published?: Boolean;
+  published_not?: Boolean;
+  title?: String;
+  title_not?: String;
+  title_in?: String[] | String;
+  title_not_in?: String[] | String;
+  title_lt?: String;
+  title_lte?: String;
+  title_gt?: String;
+  title_gte?: String;
+  title_contains?: String;
+  title_not_contains?: String;
+  title_starts_with?: String;
+  title_not_starts_with?: String;
+  title_ends_with?: String;
+  title_not_ends_with?: String;
+  content?: String;
+  content_not?: String;
+  content_in?: String[] | String;
+  content_not_in?: String[] | String;
+  content_lt?: String;
+  content_lte?: String;
+  content_gt?: String;
+  content_gte?: String;
+  content_contains?: String;
+  content_not_contains?: String;
+  content_starts_with?: String;
+  content_not_starts_with?: String;
+  content_ends_with?: String;
+  content_not_ends_with?: String;
+  author?: UserWhereInput;
+  AND?: PostWhereInput[] | PostWhereInput;
+  OR?: PostWhereInput[] | PostWhereInput;
+  NOT?: PostWhereInput[] | PostWhereInput;
 }
 
-export interface AdUpdateWithWhereUniqueWithoutCreatorInput {
-  where: AdWhereUniqueInput;
-  data: AdUpdateWithoutCreatorDataInput;
-}
-
-export interface CarModelUpdateManyMutationInput {
+export interface CarModelUpdateManyDataInput {
   name?: String;
 }
 
-export interface AdUpdateWithoutCreatorDataInput {
-  offers?: OfferUpdateManyWithoutAdInput;
-  priceLowerBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  priceHigherBoundFeature?: PriceBoundFeatureUpdateOneInput;
-  manufacturerFeature?: ManufacturerFeatureUpdateOneInput;
-  modelFeature?: ModelFeatureUpdateOneInput;
-  categoryFeature?: CategoryFeatureUpdateOneInput;
-  mileageLowerBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  mileageHigherBoundFeature?: MileageBoundFeatureUpdateOneInput;
-  yearLowerBoundFeature?: YearBoundFeatureUpdateOneInput;
-  yearHigherBoundFeature?: YearBoundFeatureUpdateOneInput;
-  features?: AdCarFeatureUpdateManyInput;
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface CarFeatureUpdateWithoutCategoryDataInput {
-  name?: String;
-}
-
-export interface OfferUpdateManyWithoutAdInput {
-  create?: OfferCreateWithoutAdInput[] | OfferCreateWithoutAdInput;
-  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
-  update?:
-    | OfferUpdateWithWhereUniqueWithoutAdInput[]
-    | OfferUpdateWithWhereUniqueWithoutAdInput;
-  upsert?:
-    | OfferUpsertWithWhereUniqueWithoutAdInput[]
-    | OfferUpsertWithWhereUniqueWithoutAdInput;
-  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
-  updateMany?:
-    | OfferUpdateManyWithWhereNestedInput[]
-    | OfferUpdateManyWithWhereNestedInput;
-}
-
-export interface CarFeatureCategoryCreateInput {
-  name: String;
-  type: CarFeatureType;
-  features?: CarFeatureCreateManyWithoutCategoryInput;
-}
-
-export interface OfferUpdateWithWhereUniqueWithoutAdInput {
-  where: OfferWhereUniqueInput;
-  data: OfferUpdateWithoutAdDataInput;
-}
-
-export interface CarUpdateInput {
-  owner?: UserUpdateOneRequiredWithoutCarsInput;
-  manufacturer?: ManufacturerUpdateOneRequiredInput;
-  model?: CarModelUpdateOneRequiredInput;
-  category?: CarCategoryUpdateOneRequiredInput;
+export interface CarUpdateManyMutationInput {
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
-  features?: CarFeatureUpdateManyInput;
   status?: CarStatus;
 }
 
-export interface OfferUpdateWithoutAdDataInput {
-  creator?: UserUpdateOneRequiredWithoutOffersInput;
-  car?: CarUpdateOneRequiredInput;
-  price?: Float;
-  status?: OfferStatus;
-  finalRank?: Int;
+export interface ManufacturerUpsertNestedInput {
+  update: ManufacturerUpdateDataInput;
+  create: ManufacturerCreateInput;
 }
 
-export type YearBoundFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export interface AdUpdateManyMutationInput {
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
 
-export interface UserUpdateOneRequiredWithoutOffersInput {
-  create?: UserCreateWithoutOffersInput;
-  update?: UserUpdateWithoutOffersDataInput;
-  upsert?: UserUpsertWithoutOffersInput;
+export interface CarModelUpdateOneInput {
+  create?: CarModelCreateInput;
+  update?: CarModelUpdateDataInput;
+  upsert?: CarModelUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: CarModelWhereUniqueInput;
+}
+
+export interface UserUpsertWithoutAdsInput {
+  update: UserUpdateWithoutAdsDataInput;
+  create: UserCreateWithoutAdsInput;
+}
+
+export interface CarModelUpsertNestedInput {
+  update: CarModelUpdateDataInput;
+  create: CarModelCreateInput;
+}
+
+export interface CarUpsertNestedInput {
+  update: CarUpdateDataInput;
+  create: CarCreateInput;
+}
+
+export interface CarCategoryUpdateOneInput {
+  create?: CarCategoryCreateInput;
+  update?: CarCategoryUpdateDataInput;
+  upsert?: CarCategoryUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: CarCategoryWhereUniqueInput;
+}
+
+export interface UserCreateOneWithoutAdsInput {
+  create?: UserCreateWithoutAdsInput;
   connect?: UserWhereUniqueInput;
 }
 
-export interface UserCreateWithoutAdsInput {
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  location: String;
-  birthDate: DateCreateOneInput;
-  gender: Gender;
-  permissions?: UserCreatepermissionsInput;
-  offers?: OfferCreateManyWithoutCreatorInput;
-  cars?: CarCreateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface UserUpdateWithoutOffersDataInput {
-  email?: String;
-  firstName?: String;
-  lastName?: String;
-  password?: String;
-  location?: String;
-  birthDate?: DateUpdateOneRequiredInput;
-  gender?: Gender;
-  permissions?: UserUpdatepermissionsInput;
-  ads?: AdUpdateManyWithoutCreatorInput;
-  cars?: CarUpdateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface PriceBoundFeatureCreateOneInput {
-  create?: PriceBoundFeatureCreateInput;
-  connect?: PriceBoundFeatureWhereUniqueInput;
-}
-
-export interface CarUpdateManyWithoutOwnerInput {
-  create?: CarCreateWithoutOwnerInput[] | CarCreateWithoutOwnerInput;
-  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
-  update?:
-    | CarUpdateWithWhereUniqueWithoutOwnerInput[]
-    | CarUpdateWithWhereUniqueWithoutOwnerInput;
-  upsert?:
-    | CarUpsertWithWhereUniqueWithoutOwnerInput[]
-    | CarUpsertWithWhereUniqueWithoutOwnerInput;
-  deleteMany?: CarScalarWhereInput[] | CarScalarWhereInput;
-  updateMany?:
-    | CarUpdateManyWithWhereNestedInput[]
-    | CarUpdateManyWithWhereNestedInput;
-}
-
-export interface PriceBoundFeatureSubscriptionWhereInput {
-  mutation_in?: MutationType[] | MutationType;
-  updatedFields_contains?: String;
-  updatedFields_contains_every?: String[] | String;
-  updatedFields_contains_some?: String[] | String;
-  node?: PriceBoundFeatureWhereInput;
-  AND?:
-    | PriceBoundFeatureSubscriptionWhereInput[]
-    | PriceBoundFeatureSubscriptionWhereInput;
-  OR?:
-    | PriceBoundFeatureSubscriptionWhereInput[]
-    | PriceBoundFeatureSubscriptionWhereInput;
-  NOT?:
-    | PriceBoundFeatureSubscriptionWhereInput[]
-    | PriceBoundFeatureSubscriptionWhereInput;
-}
-
-export interface CarUpdateWithWhereUniqueWithoutOwnerInput {
-  where: CarWhereUniqueInput;
-  data: CarUpdateWithoutOwnerDataInput;
-}
-
-export type AdCarFeatureWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export interface CarUpdateWithoutOwnerDataInput {
-  manufacturer?: ManufacturerUpdateOneRequiredInput;
-  model?: CarModelUpdateOneRequiredInput;
-  category?: CarCategoryUpdateOneRequiredInput;
+export interface CarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  owner?: UserWhereInput;
+  manufacturer?: ManufacturerWhereInput;
+  model?: CarModelWhereInput;
+  category?: CarCategoryWhereInput;
   year?: Int;
+  year_not?: Int;
+  year_in?: Int[] | Int;
+  year_not_in?: Int[] | Int;
+  year_lt?: Int;
+  year_lte?: Int;
+  year_gt?: Int;
+  year_gte?: Int;
   mileage?: Int;
-  photos?: CarUpdatephotosInput;
-  features?: CarFeatureUpdateManyInput;
+  mileage_not?: Int;
+  mileage_in?: Int[] | Int;
+  mileage_not_in?: Int[] | Int;
+  mileage_lt?: Int;
+  mileage_lte?: Int;
+  mileage_gt?: Int;
+  mileage_gte?: Int;
+  features_every?: CarFeatureWhereInput;
+  features_some?: CarFeatureWhereInput;
+  features_none?: CarFeatureWhereInput;
   status?: CarStatus;
+  status_not?: CarStatus;
+  status_in?: CarStatus[] | CarStatus;
+  status_not_in?: CarStatus[] | CarStatus;
+  AND?: CarWhereInput[] | CarWhereInput;
+  OR?: CarWhereInput[] | CarWhereInput;
+  NOT?: CarWhereInput[] | CarWhereInput;
 }
 
-export interface UserUpdateDataInput {
-  email?: String;
-  firstName?: String;
-  lastName?: String;
-  password?: String;
-  location?: String;
-  birthDate?: DateUpdateOneRequiredInput;
-  gender?: Gender;
-  permissions?: UserUpdatepermissionsInput;
-  offers?: OfferUpdateManyWithoutCreatorInput;
-  ads?: AdUpdateManyWithoutCreatorInput;
-  cars?: CarUpdateManyWithoutOwnerInput;
-  resetToken?: String;
-  resetTokenExpiry?: Float;
+export interface DateCreateOneInput {
+  create?: DateCreateInput;
 }
 
-export interface CarUpdatephotosInput {
-  set?: String[] | String;
+export interface CarCategoryUpsertNestedInput {
+  update: CarCategoryUpdateDataInput;
+  create: CarCategoryCreateInput;
 }
 
-export interface MileageBoundFeatureUpdateInput {
-  mileage?: Int;
-  importance?: AdCarFeatureImportance;
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
 }
 
 export interface CarFeatureUpdateManyInput {
@@ -3473,9 +1808,13 @@ export interface CarFeatureUpdateManyInput {
     | CarFeatureUpdateManyWithWhereNestedInput;
 }
 
-export interface CarFeatureCategoryUpdateManyMutationInput {
-  name?: String;
-  type?: CarFeatureType;
+export interface OfferCreateWithoutCreatorInput {
+  ad: AdCreateOneWithoutOffersInput;
+  car: CarCreateOneInput;
+  price: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationCreateOneWithoutOfferInput;
 }
 
 export interface CarFeatureUpdateWithWhereUniqueNestedInput {
@@ -3483,8 +1822,62 @@ export interface CarFeatureUpdateWithWhereUniqueNestedInput {
   data: CarFeatureUpdateDataInput;
 }
 
-export interface CarCategoryUpdateManyMutationInput {
+export interface AdCreateWithoutOffersInput {
+  creator: UserCreateOneWithoutAdsInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerCreateOneInput;
+  model?: CarModelCreateOneInput;
+  category?: CarCategoryCreateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureCreateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
+
+export interface CarFeatureUpdateDataInput {
   name?: String;
+  category?: CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput;
+}
+
+export interface ManufacturerCreateInput {
+  name: String;
+  models?: CarModelCreateManyInput;
+}
+
+export interface CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput {
+  create?: CarFeatureCategoryCreateWithoutFeaturesInput;
+  update?: CarFeatureCategoryUpdateWithoutFeaturesDataInput;
+  upsert?: CarFeatureCategoryUpsertWithoutFeaturesInput;
+  connect?: CarFeatureCategoryWhereUniqueInput;
+}
+
+export interface CarModelCreateInput {
+  name: String;
+}
+
+export interface CarFeatureCategoryUpdateWithoutFeaturesDataInput {
+  name?: String;
+  type?: CarFeatureType;
+}
+
+export interface CarCategoryCreateOneInput {
+  create?: CarCategoryCreateInput;
+  connect?: CarCategoryWhereUniqueInput;
+}
+
+export interface CarFeatureCategoryUpsertWithoutFeaturesInput {
+  update: CarFeatureCategoryUpdateWithoutFeaturesDataInput;
+  create: CarFeatureCategoryCreateWithoutFeaturesInput;
+}
+
+export interface CarFeatureCreateManyInput {
+  create?: CarFeatureCreateInput[] | CarFeatureCreateInput;
+  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
 }
 
 export interface CarFeatureUpsertWithWhereUniqueNestedInput {
@@ -3493,48 +1886,9 @@ export interface CarFeatureUpsertWithWhereUniqueNestedInput {
   create: CarFeatureCreateInput;
 }
 
-export interface AdScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  isUrgent?: Boolean;
-  isUrgent_not?: Boolean;
-  isFirst?: Boolean;
-  isFirst_not?: Boolean;
-  status?: AdStatus;
-  status_not?: AdStatus;
-  status_in?: AdStatus[] | AdStatus;
-  status_not_in?: AdStatus[] | AdStatus;
-  AND?: AdScalarWhereInput[] | AdScalarWhereInput;
-  OR?: AdScalarWhereInput[] | AdScalarWhereInput;
-  NOT?: AdScalarWhereInput[] | AdScalarWhereInput;
+export interface CarFeatureCategoryCreateOneWithoutFeaturesInput {
+  create?: CarFeatureCategoryCreateWithoutFeaturesInput;
+  connect?: CarFeatureCategoryWhereUniqueInput;
 }
 
 export interface CarFeatureScalarWhereInput {
@@ -3571,9 +1925,9 @@ export interface CarFeatureScalarWhereInput {
   NOT?: CarFeatureScalarWhereInput[] | CarFeatureScalarWhereInput;
 }
 
-export interface ManufacturerCreateOneInput {
-  create?: ManufacturerCreateInput;
-  connect?: ManufacturerWhereUniqueInput;
+export interface CarCreateOneInput {
+  create?: CarCreateInput;
+  connect?: CarWhereUniqueInput;
 }
 
 export interface CarFeatureUpdateManyWithWhereNestedInput {
@@ -3581,17 +1935,444 @@ export interface CarFeatureUpdateManyWithWhereNestedInput {
   data: CarFeatureUpdateManyDataInput;
 }
 
-export type CarCategoryWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
+export interface UserCreateOneWithoutCarsInput {
+  create?: UserCreateWithoutCarsInput;
+  connect?: UserWhereUniqueInput;
+}
 
 export interface CarFeatureUpdateManyDataInput {
   name?: String;
 }
 
-export type ManufacturerFeatureWhereUniqueInput = AtLeastOne<{
+export interface AdCreateManyWithoutCreatorInput {
+  create?: AdCreateWithoutCreatorInput[] | AdCreateWithoutCreatorInput;
+  connect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
+}
+
+export interface AdUpsertWithoutOffersInput {
+  update: AdUpdateWithoutOffersDataInput;
+  create: AdCreateWithoutOffersInput;
+}
+
+export interface OfferCreateManyWithoutAdInput {
+  create?: OfferCreateWithoutAdInput[] | OfferCreateWithoutAdInput;
+  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+}
+
+export interface CarUpdateOneRequiredInput {
+  create?: CarCreateInput;
+  update?: CarUpdateDataInput;
+  upsert?: CarUpsertNestedInput;
+  connect?: CarWhereUniqueInput;
+}
+
+export interface CarFeatureCategoryWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  type?: CarFeatureType;
+  type_not?: CarFeatureType;
+  type_in?: CarFeatureType[] | CarFeatureType;
+  type_not_in?: CarFeatureType[] | CarFeatureType;
+  features_every?: CarFeatureWhereInput;
+  features_some?: CarFeatureWhereInput;
+  features_none?: CarFeatureWhereInput;
+  AND?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  OR?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+  NOT?: CarFeatureCategoryWhereInput[] | CarFeatureCategoryWhereInput;
+}
+
+export interface CarUpdateDataInput {
+  owner?: UserUpdateOneRequiredWithoutCarsInput;
+  manufacturer?: ManufacturerUpdateOneRequiredInput;
+  model?: CarModelUpdateOneRequiredInput;
+  category?: CarCategoryUpdateOneRequiredInput;
+  year?: Int;
+  mileage?: Int;
+  photos?: CarUpdatephotosInput;
+  features?: CarFeatureUpdateManyInput;
+  status?: CarStatus;
+}
+
+export interface CarCategoryWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: CarCategoryWhereInput[] | CarCategoryWhereInput;
+  OR?: CarCategoryWhereInput[] | CarCategoryWhereInput;
+  NOT?: CarCategoryWhereInput[] | CarCategoryWhereInput;
+}
+
+export interface UserUpdateOneRequiredWithoutCarsInput {
+  create?: UserCreateWithoutCarsInput;
+  update?: UserUpdateWithoutCarsDataInput;
+  upsert?: UserUpsertWithoutCarsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface CarModelWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  name?: String;
+  name_not?: String;
+  name_in?: String[] | String;
+  name_not_in?: String[] | String;
+  name_lt?: String;
+  name_lte?: String;
+  name_gt?: String;
+  name_gte?: String;
+  name_contains?: String;
+  name_not_contains?: String;
+  name_starts_with?: String;
+  name_not_starts_with?: String;
+  name_ends_with?: String;
+  name_not_ends_with?: String;
+  AND?: CarModelWhereInput[] | CarModelWhereInput;
+  OR?: CarModelWhereInput[] | CarModelWhereInput;
+  NOT?: CarModelWhereInput[] | CarModelWhereInput;
+}
+
+export interface UserUpdateWithoutCarsDataInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  birthDate?: DateUpdateOneRequiredInput;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  offers?: OfferUpdateManyWithoutCreatorInput;
+  ads?: AdUpdateManyWithoutCreatorInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationUpdateManyWithoutBuyerInput;
+}
+
+export interface DateSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: DateWhereInput;
+  AND?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+  OR?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+  NOT?: DateSubscriptionWhereInput[] | DateSubscriptionWhereInput;
+}
+
+export interface AdUpdateManyWithoutCreatorInput {
+  create?: AdCreateWithoutCreatorInput[] | AdCreateWithoutCreatorInput;
+  delete?: AdWhereUniqueInput[] | AdWhereUniqueInput;
+  connect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
+  disconnect?: AdWhereUniqueInput[] | AdWhereUniqueInput;
+  update?:
+    | AdUpdateWithWhereUniqueWithoutCreatorInput[]
+    | AdUpdateWithWhereUniqueWithoutCreatorInput;
+  upsert?:
+    | AdUpsertWithWhereUniqueWithoutCreatorInput[]
+    | AdUpsertWithWhereUniqueWithoutCreatorInput;
+  deleteMany?: AdScalarWhereInput[] | AdScalarWhereInput;
+  updateMany?:
+    | AdUpdateManyWithWhereNestedInput[]
+    | AdUpdateManyWithWhereNestedInput;
+}
+
+export interface CarFeatureSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarFeatureWhereInput;
+  AND?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
+  OR?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
+  NOT?: CarFeatureSubscriptionWhereInput[] | CarFeatureSubscriptionWhereInput;
+}
+
+export interface AdUpdateWithWhereUniqueWithoutCreatorInput {
+  where: AdWhereUniqueInput;
+  data: AdUpdateWithoutCreatorDataInput;
+}
+
+export interface CarSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarWhereInput;
+  AND?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+  OR?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+  NOT?: CarSubscriptionWhereInput[] | CarSubscriptionWhereInput;
+}
+
+export interface AdUpdateWithoutCreatorDataInput {
+  offers?: OfferUpdateManyWithoutAdInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerUpdateOneInput;
+  model?: CarModelUpdateOneInput;
+  category?: CarCategoryUpdateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureUpdateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
+
+export type CarWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
+
+export interface OfferUpdateManyWithoutAdInput {
+  create?: OfferCreateWithoutAdInput[] | OfferCreateWithoutAdInput;
+  delete?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  disconnect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+  update?:
+    | OfferUpdateWithWhereUniqueWithoutAdInput[]
+    | OfferUpdateWithWhereUniqueWithoutAdInput;
+  upsert?:
+    | OfferUpsertWithWhereUniqueWithoutAdInput[]
+    | OfferUpsertWithWhereUniqueWithoutAdInput;
+  deleteMany?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+  updateMany?:
+    | OfferUpdateManyWithWhereNestedInput[]
+    | OfferUpdateManyWithWhereNestedInput;
+}
+
+export type CarCategoryWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface OfferUpdateWithWhereUniqueWithoutAdInput {
+  where: OfferWhereUniqueInput;
+  data: OfferUpdateWithoutAdDataInput;
+}
+
+export interface OfferCreateInput {
+  creator: UserCreateOneWithoutOffersInput;
+  ad: AdCreateOneWithoutOffersInput;
+  car: CarCreateOneInput;
+  price: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationCreateOneWithoutOfferInput;
+}
+
+export interface OfferUpdateWithoutAdDataInput {
+  creator?: UserUpdateOneRequiredWithoutOffersInput;
+  car?: CarUpdateOneRequiredInput;
+  price?: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationUpdateOneWithoutOfferInput;
+}
+
+export interface ConversationUpdateWithoutMessagesDataInput {
+  offer?: OfferUpdateOneRequiredWithoutConversationInput;
+  buyer?: UserUpdateOneRequiredWithoutConversationsInput;
+  seller?: UserUpdateOneRequiredInput;
+}
+
+export interface UserUpdateOneRequiredWithoutOffersInput {
+  create?: UserCreateWithoutOffersInput;
+  update?: UserUpdateWithoutOffersDataInput;
+  upsert?: UserUpsertWithoutOffersInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface MessageUpdateInput {
+  sender?: UserUpdateOneRequiredInput;
+  text?: String;
+  image?: String;
+  conversation?: ConversationUpdateOneRequiredWithoutMessagesInput;
+}
+
+export interface UserUpdateWithoutOffersDataInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  birthDate?: DateUpdateOneRequiredInput;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  ads?: AdUpdateManyWithoutCreatorInput;
+  cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationUpdateManyWithoutBuyerInput;
+}
+
+export interface MessageCreateInput {
+  sender: UserCreateOneInput;
+  text: String;
+  image?: String;
+  conversation: ConversationCreateOneWithoutMessagesInput;
+}
+
+export interface CarUpdateManyWithoutOwnerInput {
+  create?: CarCreateWithoutOwnerInput[] | CarCreateWithoutOwnerInput;
+  delete?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  connect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  disconnect?: CarWhereUniqueInput[] | CarWhereUniqueInput;
+  update?:
+    | CarUpdateWithWhereUniqueWithoutOwnerInput[]
+    | CarUpdateWithWhereUniqueWithoutOwnerInput;
+  upsert?:
+    | CarUpsertWithWhereUniqueWithoutOwnerInput[]
+    | CarUpsertWithWhereUniqueWithoutOwnerInput;
+  deleteMany?: CarScalarWhereInput[] | CarScalarWhereInput;
+  updateMany?:
+    | CarUpdateManyWithWhereNestedInput[]
+    | CarUpdateManyWithWhereNestedInput;
+}
+
+export interface DateUpdateManyMutationInput {
+  day?: Int;
+  month?: Int;
+  year?: Int;
+}
+
+export interface CarUpdateWithWhereUniqueWithoutOwnerInput {
+  where: CarWhereUniqueInput;
+  data: CarUpdateWithoutOwnerDataInput;
+}
+
+export interface CarModelUpdateInput {
+  name?: String;
+}
+
+export interface CarUpdateWithoutOwnerDataInput {
+  manufacturer?: ManufacturerUpdateOneRequiredInput;
+  model?: CarModelUpdateOneRequiredInput;
+  category?: CarCategoryUpdateOneRequiredInput;
+  year?: Int;
+  mileage?: Int;
+  photos?: CarUpdatephotosInput;
+  features?: CarFeatureUpdateManyInput;
+  status?: CarStatus;
+}
+
+export interface CarFeatureUpdateWithoutCategoryDataInput {
+  name?: String;
+}
+
+export interface ManufacturerUpdateOneRequiredInput {
+  create?: ManufacturerCreateInput;
+  update?: ManufacturerUpdateDataInput;
+  upsert?: ManufacturerUpsertNestedInput;
+  connect?: ManufacturerWhereUniqueInput;
+}
+
+export interface CarFeatureCategoryUpdateInput {
+  name?: String;
+  type?: CarFeatureType;
+  features?: CarFeatureUpdateManyWithoutCategoryInput;
+}
+
+export interface CarModelUpdateOneRequiredInput {
+  create?: CarModelCreateInput;
+  update?: CarModelUpdateDataInput;
+  upsert?: CarModelUpsertNestedInput;
+  connect?: CarModelWhereUniqueInput;
+}
+
+export interface CarFeatureCategoryCreateInput {
+  name: String;
+  type: CarFeatureType;
+  features?: CarFeatureCreateManyWithoutCategoryInput;
+}
+
+export interface CarCategoryUpdateOneRequiredInput {
+  create?: CarCategoryCreateInput;
+  update?: CarCategoryUpdateDataInput;
+  upsert?: CarCategoryUpsertNestedInput;
+  connect?: CarCategoryWhereUniqueInput;
+}
+
+export interface CarCategoryUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface CarUpdatephotosInput {
+  set?: String[] | String;
+}
+
+export interface CarUpdateInput {
+  owner?: UserUpdateOneRequiredWithoutCarsInput;
+  manufacturer?: ManufacturerUpdateOneRequiredInput;
+  model?: CarModelUpdateOneRequiredInput;
+  category?: CarCategoryUpdateOneRequiredInput;
+  year?: Int;
+  mileage?: Int;
+  photos?: CarUpdatephotosInput;
+  features?: CarFeatureUpdateManyInput;
+  status?: CarStatus;
+}
 
 export interface CarUpsertWithWhereUniqueWithoutOwnerInput {
   where: CarWhereUniqueInput;
@@ -3599,27 +2380,10 @@ export interface CarUpsertWithWhereUniqueWithoutOwnerInput {
   create: CarCreateWithoutOwnerInput;
 }
 
-export interface AdUpdateManyMutationInput {
-  isUrgent?: Boolean;
-  isFirst?: Boolean;
-  status?: AdStatus;
-}
-
-export interface UserUpsertWithoutOffersInput {
-  update: UserUpdateWithoutOffersDataInput;
-  create: UserCreateWithoutOffersInput;
-}
-
-export interface CarUpdateManyDataInput {
-  year?: Int;
-  mileage?: Int;
-  photos?: CarUpdatephotosInput;
-  status?: CarStatus;
-}
-
-export interface CarUpdateManyWithWhereNestedInput {
-  where: CarScalarWhereInput;
-  data: CarUpdateManyDataInput;
+export interface OfferUpsertWithWhereUniqueWithoutCreatorInput {
+  where: OfferWhereUniqueInput;
+  update: OfferUpdateWithoutCreatorDataInput;
+  create: OfferCreateWithoutCreatorInput;
 }
 
 export interface CarScalarWhereInput {
@@ -3662,21 +2426,676 @@ export interface CarScalarWhereInput {
   NOT?: CarScalarWhereInput[] | CarScalarWhereInput;
 }
 
-export interface OfferCreateManyWithoutCreatorInput {
-  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
-  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+export interface AdCreateInput {
+  creator: UserCreateOneWithoutAdsInput;
+  offers?: OfferCreateManyWithoutAdInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerCreateOneInput;
+  model?: CarModelCreateOneInput;
+  category?: CarCategoryCreateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureCreateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
 }
 
-export interface CarFeatureCategoryUpdateInput {
-  name?: String;
-  type?: CarFeatureType;
-  features?: CarFeatureUpdateManyWithoutCategoryInput;
+export interface CarUpdateManyWithWhereNestedInput {
+  where: CarScalarWhereInput;
+  data: CarUpdateManyDataInput;
+}
+
+export interface DateCreateInput {
+  day: Int;
+  month: Int;
+  year: Int;
+}
+
+export interface CarUpdateManyDataInput {
+  year?: Int;
+  mileage?: Int;
+  photos?: CarUpdatephotosInput;
+  status?: CarStatus;
+}
+
+export interface AdCreateOneWithoutOffersInput {
+  create?: AdCreateWithoutOffersInput;
+  connect?: AdWhereUniqueInput;
+}
+
+export interface ConversationUpdateManyWithoutBuyerInput {
+  create?:
+    | ConversationCreateWithoutBuyerInput[]
+    | ConversationCreateWithoutBuyerInput;
+  delete?: ConversationWhereUniqueInput[] | ConversationWhereUniqueInput;
+  connect?: ConversationWhereUniqueInput[] | ConversationWhereUniqueInput;
+  disconnect?: ConversationWhereUniqueInput[] | ConversationWhereUniqueInput;
+  update?:
+    | ConversationUpdateWithWhereUniqueWithoutBuyerInput[]
+    | ConversationUpdateWithWhereUniqueWithoutBuyerInput;
+  upsert?:
+    | ConversationUpsertWithWhereUniqueWithoutBuyerInput[]
+    | ConversationUpsertWithWhereUniqueWithoutBuyerInput;
+  deleteMany?: ConversationScalarWhereInput[] | ConversationScalarWhereInput;
+}
+
+export interface CarModelCreateManyInput {
+  create?: CarModelCreateInput[] | CarModelCreateInput;
+  connect?: CarModelWhereUniqueInput[] | CarModelWhereUniqueInput;
+}
+
+export interface ConversationUpdateWithWhereUniqueWithoutBuyerInput {
+  where: ConversationWhereUniqueInput;
+  data: ConversationUpdateWithoutBuyerDataInput;
+}
+
+export interface CarCategoryCreateInput {
+  name: String;
+}
+
+export interface ConversationUpdateWithoutBuyerDataInput {
+  offer?: OfferUpdateOneRequiredWithoutConversationInput;
+  seller?: UserUpdateOneRequiredInput;
+  messages?: MessageUpdateManyWithoutConversationInput;
+}
+
+export interface CarFeatureCategoryCreateWithoutFeaturesInput {
+  name: String;
+  type: CarFeatureType;
+}
+
+export interface OfferUpdateOneRequiredWithoutConversationInput {
+  create?: OfferCreateWithoutConversationInput;
+  update?: OfferUpdateWithoutConversationDataInput;
+  upsert?: OfferUpsertWithoutConversationInput;
+  connect?: OfferWhereUniqueInput;
+}
+
+export interface UserCreateWithoutCarsInput {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  birthDate: DateCreateOneInput;
+  gender: Gender;
+  permissions?: UserCreatepermissionsInput;
+  offers?: OfferCreateManyWithoutCreatorInput;
+  ads?: AdCreateManyWithoutCreatorInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationCreateManyWithoutBuyerInput;
+}
+
+export interface OfferUpdateWithoutConversationDataInput {
+  creator?: UserUpdateOneRequiredWithoutOffersInput;
+  ad?: AdUpdateOneRequiredWithoutOffersInput;
+  car?: CarUpdateOneRequiredInput;
+  price?: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+}
+
+export interface OfferCreateWithoutAdInput {
+  creator: UserCreateOneWithoutOffersInput;
+  car: CarCreateOneInput;
+  price: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+  conversation?: ConversationCreateOneWithoutOfferInput;
+}
+
+export interface OfferUpsertWithoutConversationInput {
+  update: OfferUpdateWithoutConversationDataInput;
+  create: OfferCreateWithoutConversationInput;
+}
+
+export interface PostSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: PostWhereInput;
+  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface CarModelSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarModelWhereInput;
+  AND?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+  OR?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+  NOT?: CarModelSubscriptionWhereInput[] | CarModelSubscriptionWhereInput;
+}
+
+export interface UserUpdateDataInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  birthDate?: DateUpdateOneRequiredInput;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  offers?: OfferUpdateManyWithoutCreatorInput;
+  ads?: AdUpdateManyWithoutCreatorInput;
+  cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationUpdateManyWithoutBuyerInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
 }
 
 export interface OfferUpdateManyMutationInput {
   price?: Float;
   status?: OfferStatus;
   finalRank?: Int;
+}
+
+export interface MessageUpdateManyWithoutConversationInput {
+  create?:
+    | MessageCreateWithoutConversationInput[]
+    | MessageCreateWithoutConversationInput;
+  delete?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  connect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  disconnect?: MessageWhereUniqueInput[] | MessageWhereUniqueInput;
+  update?:
+    | MessageUpdateWithWhereUniqueWithoutConversationInput[]
+    | MessageUpdateWithWhereUniqueWithoutConversationInput;
+  upsert?:
+    | MessageUpsertWithWhereUniqueWithoutConversationInput[]
+    | MessageUpsertWithWhereUniqueWithoutConversationInput;
+  deleteMany?: MessageScalarWhereInput[] | MessageScalarWhereInput;
+  updateMany?:
+    | MessageUpdateManyWithWhereNestedInput[]
+    | MessageUpdateManyWithWhereNestedInput;
+}
+
+export interface OfferWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  creator?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  ad?: AdWhereInput;
+  car?: CarWhereInput;
+  price?: Float;
+  price_not?: Float;
+  price_in?: Float[] | Float;
+  price_not_in?: Float[] | Float;
+  price_lt?: Float;
+  price_lte?: Float;
+  price_gt?: Float;
+  price_gte?: Float;
+  status?: OfferStatus;
+  status_not?: OfferStatus;
+  status_in?: OfferStatus[] | OfferStatus;
+  status_not_in?: OfferStatus[] | OfferStatus;
+  finalRank?: Int;
+  finalRank_not?: Int;
+  finalRank_in?: Int[] | Int;
+  finalRank_not_in?: Int[] | Int;
+  finalRank_lt?: Int;
+  finalRank_lte?: Int;
+  finalRank_gt?: Int;
+  finalRank_gte?: Int;
+  conversation?: ConversationWhereInput;
+  AND?: OfferWhereInput[] | OfferWhereInput;
+  OR?: OfferWhereInput[] | OfferWhereInput;
+  NOT?: OfferWhereInput[] | OfferWhereInput;
+}
+
+export interface MessageUpdateWithWhereUniqueWithoutConversationInput {
+  where: MessageWhereUniqueInput;
+  data: MessageUpdateWithoutConversationDataInput;
+}
+
+export type ConversationWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MessageUpdateWithoutConversationDataInput {
+  sender?: UserUpdateOneRequiredInput;
+  text?: String;
+  image?: String;
+}
+
+export type ManufacturerWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface MessageUpsertWithWhereUniqueWithoutConversationInput {
+  where: MessageWhereUniqueInput;
+  update: MessageUpdateWithoutConversationDataInput;
+  create: MessageCreateWithoutConversationInput;
+}
+
+export interface CarFeatureCreateManyWithoutCategoryInput {
+  create?:
+    | CarFeatureCreateWithoutCategoryInput[]
+    | CarFeatureCreateWithoutCategoryInput;
+  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
+}
+
+export interface MessageScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  AND?: MessageScalarWhereInput[] | MessageScalarWhereInput;
+  OR?: MessageScalarWhereInput[] | MessageScalarWhereInput;
+  NOT?: MessageScalarWhereInput[] | MessageScalarWhereInput;
+}
+
+export interface CarCategoryUpdateInput {
+  name?: String;
+}
+
+export interface MessageUpdateManyWithWhereNestedInput {
+  where: MessageScalarWhereInput;
+  data: MessageUpdateManyDataInput;
+}
+
+export interface UserUpsertWithoutCarsInput {
+  update: UserUpdateWithoutCarsDataInput;
+  create: UserCreateWithoutCarsInput;
+}
+
+export interface MessageUpdateManyDataInput {
+  text?: String;
+  image?: String;
+}
+
+export interface OfferCreateManyWithoutCreatorInput {
+  create?: OfferCreateWithoutCreatorInput[] | OfferCreateWithoutCreatorInput;
+  connect?: OfferWhereUniqueInput[] | OfferWhereUniqueInput;
+}
+
+export interface ConversationUpsertWithWhereUniqueWithoutBuyerInput {
+  where: ConversationWhereUniqueInput;
+  update: ConversationUpdateWithoutBuyerDataInput;
+  create: ConversationCreateWithoutBuyerInput;
+}
+
+export interface CarModelCreateOneInput {
+  create?: CarModelCreateInput;
+  connect?: CarModelWhereUniqueInput;
+}
+
+export interface ConversationScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  AND?: ConversationScalarWhereInput[] | ConversationScalarWhereInput;
+  OR?: ConversationScalarWhereInput[] | ConversationScalarWhereInput;
+  NOT?: ConversationScalarWhereInput[] | ConversationScalarWhereInput;
+}
+
+export interface CarCreateInput {
+  owner: UserCreateOneWithoutCarsInput;
+  manufacturer: ManufacturerCreateOneInput;
+  model: CarModelCreateOneInput;
+  category: CarCategoryCreateOneInput;
+  year: Int;
+  mileage: Int;
+  photos?: CarCreatephotosInput;
+  features?: CarFeatureCreateManyInput;
+  status?: CarStatus;
+}
+
+export interface UserUpsertWithoutOffersInput {
+  update: UserUpdateWithoutOffersDataInput;
+  create: UserCreateWithoutOffersInput;
+}
+
+export interface MessageWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  sender?: UserWhereInput;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  conversation?: ConversationWhereInput;
+  AND?: MessageWhereInput[] | MessageWhereInput;
+  OR?: MessageWhereInput[] | MessageWhereInput;
+  NOT?: MessageWhereInput[] | MessageWhereInput;
+}
+
+export interface ConversationUpdateOneWithoutOfferInput {
+  create?: ConversationCreateWithoutOfferInput;
+  update?: ConversationUpdateWithoutOfferDataInput;
+  upsert?: ConversationUpsertWithoutOfferInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: ConversationWhereUniqueInput;
+}
+
+export interface AdWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  creator?: UserWhereInput;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  offers_every?: OfferWhereInput;
+  offers_some?: OfferWhereInput;
+  offers_none?: OfferWhereInput;
+  priceLowerBound?: Float;
+  priceLowerBound_not?: Float;
+  priceLowerBound_in?: Float[] | Float;
+  priceLowerBound_not_in?: Float[] | Float;
+  priceLowerBound_lt?: Float;
+  priceLowerBound_lte?: Float;
+  priceLowerBound_gt?: Float;
+  priceLowerBound_gte?: Float;
+  priceHigherBound?: Float;
+  priceHigherBound_not?: Float;
+  priceHigherBound_in?: Float[] | Float;
+  priceHigherBound_not_in?: Float[] | Float;
+  priceHigherBound_lt?: Float;
+  priceHigherBound_lte?: Float;
+  priceHigherBound_gt?: Float;
+  priceHigherBound_gte?: Float;
+  manufacturer?: ManufacturerWhereInput;
+  model?: CarModelWhereInput;
+  category?: CarCategoryWhereInput;
+  mileageLowerBound?: Int;
+  mileageLowerBound_not?: Int;
+  mileageLowerBound_in?: Int[] | Int;
+  mileageLowerBound_not_in?: Int[] | Int;
+  mileageLowerBound_lt?: Int;
+  mileageLowerBound_lte?: Int;
+  mileageLowerBound_gt?: Int;
+  mileageLowerBound_gte?: Int;
+  mileageHigherBound?: Int;
+  mileageHigherBound_not?: Int;
+  mileageHigherBound_in?: Int[] | Int;
+  mileageHigherBound_not_in?: Int[] | Int;
+  mileageHigherBound_lt?: Int;
+  mileageHigherBound_lte?: Int;
+  mileageHigherBound_gt?: Int;
+  mileageHigherBound_gte?: Int;
+  yearLowerBound?: Int;
+  yearLowerBound_not?: Int;
+  yearLowerBound_in?: Int[] | Int;
+  yearLowerBound_not_in?: Int[] | Int;
+  yearLowerBound_lt?: Int;
+  yearLowerBound_lte?: Int;
+  yearLowerBound_gt?: Int;
+  yearLowerBound_gte?: Int;
+  yearHigherBound?: Int;
+  yearHigherBound_not?: Int;
+  yearHigherBound_in?: Int[] | Int;
+  yearHigherBound_not_in?: Int[] | Int;
+  yearHigherBound_lt?: Int;
+  yearHigherBound_lte?: Int;
+  yearHigherBound_gt?: Int;
+  yearHigherBound_gte?: Int;
+  features_every?: CarFeatureWhereInput;
+  features_some?: CarFeatureWhereInput;
+  features_none?: CarFeatureWhereInput;
+  isUrgent?: Boolean;
+  isUrgent_not?: Boolean;
+  isFirst?: Boolean;
+  isFirst_not?: Boolean;
+  status?: AdStatus;
+  status_not?: AdStatus;
+  status_in?: AdStatus[] | AdStatus;
+  status_not_in?: AdStatus[] | AdStatus;
+  AND?: AdWhereInput[] | AdWhereInput;
+  OR?: AdWhereInput[] | AdWhereInput;
+  NOT?: AdWhereInput[] | AdWhereInput;
+}
+
+export interface ConversationUpdateWithoutOfferDataInput {
+  buyer?: UserUpdateOneRequiredWithoutConversationsInput;
+  seller?: UserUpdateOneRequiredInput;
+  messages?: MessageUpdateManyWithoutConversationInput;
+}
+
+export interface MessageUpdateManyMutationInput {
+  text?: String;
+  image?: String;
+}
+
+export interface UserUpdateOneRequiredWithoutConversationsInput {
+  create?: UserCreateWithoutConversationsInput;
+  update?: UserUpdateWithoutConversationsDataInput;
+  upsert?: UserUpsertWithoutConversationsInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface ConversationCreateInput {
+  offer: OfferCreateOneWithoutConversationInput;
+  buyer: UserCreateOneWithoutConversationsInput;
+  seller: UserCreateOneInput;
+  messages?: MessageCreateManyWithoutConversationInput;
+}
+
+export interface UserUpdateWithoutConversationsDataInput {
+  email?: String;
+  firstName?: String;
+  lastName?: String;
+  password?: String;
+  location?: String;
+  birthDate?: DateUpdateOneRequiredInput;
+  gender?: Gender;
+  permissions?: UserUpdatepermissionsInput;
+  offers?: OfferUpdateManyWithoutCreatorInput;
+  ads?: AdUpdateManyWithoutCreatorInput;
+  cars?: CarUpdateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+}
+
+export interface CarFeatureUpdateInput {
+  name?: String;
+  category?: CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput;
+}
+
+export interface UserUpsertWithoutConversationsInput {
+  update: UserUpdateWithoutConversationsDataInput;
+  create: UserCreateWithoutConversationsInput;
+}
+
+export interface UserCreateWithoutAdsInput {
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  birthDate: DateCreateOneInput;
+  gender: Gender;
+  permissions?: UserCreatepermissionsInput;
+  offers?: OfferCreateManyWithoutCreatorInput;
+  cars?: CarCreateManyWithoutOwnerInput;
+  resetToken?: String;
+  resetTokenExpiry?: Float;
+  conversations?: ConversationCreateManyWithoutBuyerInput;
+}
+
+export interface ConversationUpsertWithoutOfferInput {
+  update: ConversationUpdateWithoutOfferDataInput;
+  create: ConversationCreateWithoutOfferInput;
+}
+
+export interface CarFeatureCreateInput {
+  name: String;
+  category: CarFeatureCategoryCreateOneWithoutFeaturesInput;
+}
+
+export interface OfferUpsertWithWhereUniqueWithoutAdInput {
+  where: OfferWhereUniqueInput;
+  update: OfferUpdateWithoutAdDataInput;
+  create: OfferCreateWithoutAdInput;
 }
 
 export interface ManufacturerSubscriptionWhereInput {
@@ -3696,30 +3115,325 @@ export interface ManufacturerSubscriptionWhereInput {
     | ManufacturerSubscriptionWhereInput;
 }
 
+export interface OfferScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  price?: Float;
+  price_not?: Float;
+  price_in?: Float[] | Float;
+  price_not_in?: Float[] | Float;
+  price_lt?: Float;
+  price_lte?: Float;
+  price_gt?: Float;
+  price_gte?: Float;
+  status?: OfferStatus;
+  status_not?: OfferStatus;
+  status_in?: OfferStatus[] | OfferStatus;
+  status_not_in?: OfferStatus[] | OfferStatus;
+  finalRank?: Int;
+  finalRank_not?: Int;
+  finalRank_in?: Int[] | Int;
+  finalRank_not_in?: Int[] | Int;
+  finalRank_lt?: Int;
+  finalRank_lte?: Int;
+  finalRank_gt?: Int;
+  finalRank_gte?: Int;
+  AND?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+  OR?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+  NOT?: OfferScalarWhereInput[] | OfferScalarWhereInput;
+}
+
+export type CarModelWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface AdScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  priceLowerBound?: Float;
+  priceLowerBound_not?: Float;
+  priceLowerBound_in?: Float[] | Float;
+  priceLowerBound_not_in?: Float[] | Float;
+  priceLowerBound_lt?: Float;
+  priceLowerBound_lte?: Float;
+  priceLowerBound_gt?: Float;
+  priceLowerBound_gte?: Float;
+  priceHigherBound?: Float;
+  priceHigherBound_not?: Float;
+  priceHigherBound_in?: Float[] | Float;
+  priceHigherBound_not_in?: Float[] | Float;
+  priceHigherBound_lt?: Float;
+  priceHigherBound_lte?: Float;
+  priceHigherBound_gt?: Float;
+  priceHigherBound_gte?: Float;
+  mileageLowerBound?: Int;
+  mileageLowerBound_not?: Int;
+  mileageLowerBound_in?: Int[] | Int;
+  mileageLowerBound_not_in?: Int[] | Int;
+  mileageLowerBound_lt?: Int;
+  mileageLowerBound_lte?: Int;
+  mileageLowerBound_gt?: Int;
+  mileageLowerBound_gte?: Int;
+  mileageHigherBound?: Int;
+  mileageHigherBound_not?: Int;
+  mileageHigherBound_in?: Int[] | Int;
+  mileageHigherBound_not_in?: Int[] | Int;
+  mileageHigherBound_lt?: Int;
+  mileageHigherBound_lte?: Int;
+  mileageHigherBound_gt?: Int;
+  mileageHigherBound_gte?: Int;
+  yearLowerBound?: Int;
+  yearLowerBound_not?: Int;
+  yearLowerBound_in?: Int[] | Int;
+  yearLowerBound_not_in?: Int[] | Int;
+  yearLowerBound_lt?: Int;
+  yearLowerBound_lte?: Int;
+  yearLowerBound_gt?: Int;
+  yearLowerBound_gte?: Int;
+  yearHigherBound?: Int;
+  yearHigherBound_not?: Int;
+  yearHigherBound_in?: Int[] | Int;
+  yearHigherBound_not_in?: Int[] | Int;
+  yearHigherBound_lt?: Int;
+  yearHigherBound_lte?: Int;
+  yearHigherBound_gt?: Int;
+  yearHigherBound_gte?: Int;
+  isUrgent?: Boolean;
+  isUrgent_not?: Boolean;
+  isFirst?: Boolean;
+  isFirst_not?: Boolean;
+  status?: AdStatus;
+  status_not?: AdStatus;
+  status_in?: AdStatus[] | AdStatus;
+  status_not_in?: AdStatus[] | AdStatus;
+  AND?: AdScalarWhereInput[] | AdScalarWhereInput;
+  OR?: AdScalarWhereInput[] | AdScalarWhereInput;
+  NOT?: AdScalarWhereInput[] | AdScalarWhereInput;
+}
+
+export interface AdUpsertWithWhereUniqueWithoutCreatorInput {
+  where: AdWhereUniqueInput;
+  update: AdUpdateWithoutCreatorDataInput;
+  create: AdCreateWithoutCreatorInput;
+}
+
+export interface OfferUpdateManyDataInput {
+  price?: Float;
+  status?: OfferStatus;
+  finalRank?: Int;
+}
+
+export interface OfferUpdateManyWithWhereNestedInput {
+  where: OfferScalarWhereInput;
+  data: OfferUpdateManyDataInput;
+}
+
+export interface CarFeatureUpdateManyWithoutCategoryInput {
+  create?:
+    | CarFeatureCreateWithoutCategoryInput[]
+    | CarFeatureCreateWithoutCategoryInput;
+  delete?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
+  connect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
+  disconnect?: CarFeatureWhereUniqueInput[] | CarFeatureWhereUniqueInput;
+  update?:
+    | CarFeatureUpdateWithWhereUniqueWithoutCategoryInput[]
+    | CarFeatureUpdateWithWhereUniqueWithoutCategoryInput;
+  upsert?:
+    | CarFeatureUpsertWithWhereUniqueWithoutCategoryInput[]
+    | CarFeatureUpsertWithWhereUniqueWithoutCategoryInput;
+  deleteMany?: CarFeatureScalarWhereInput[] | CarFeatureScalarWhereInput;
+  updateMany?:
+    | CarFeatureUpdateManyWithWhereNestedInput[]
+    | CarFeatureUpdateManyWithWhereNestedInput;
+}
+
+export interface PostUpdateInput {
+  published?: Boolean;
+  title?: String;
+  content?: String;
+  author?: UserUpdateOneRequiredInput;
+}
+
+export interface AdCreateWithoutCreatorInput {
+  offers?: OfferCreateManyWithoutAdInput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  manufacturer?: ManufacturerCreateOneInput;
+  model?: CarModelCreateOneInput;
+  category?: CarCategoryCreateOneInput;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  features?: CarFeatureCreateManyInput;
+  isUrgent?: Boolean;
+  isFirst?: Boolean;
+  status?: AdStatus;
+}
+
+export interface ManufacturerCreateOneInput {
+  create?: ManufacturerCreateInput;
+  connect?: ManufacturerWhereUniqueInput;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+  email?: String;
+}>;
+
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface YearBoundFeaturePreviousValues {
+export interface UserPreviousValues {
   id: ID_Output;
-  year: Int;
-  importance?: AdCarFeatureImportance;
+  email: String;
+  firstName: String;
+  lastName: String;
+  password: String;
+  location: String;
+  gender: Gender;
+  permissions: Permission[];
+  resetToken?: String;
+  resetTokenExpiry?: Float;
 }
 
-export interface YearBoundFeaturePreviousValuesPromise
-  extends Promise<YearBoundFeaturePreviousValues>,
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  year: () => Promise<Int>;
-  importance: () => Promise<AdCarFeatureImportance>;
+  email: () => Promise<String>;
+  firstName: () => Promise<String>;
+  lastName: () => Promise<String>;
+  password: () => Promise<String>;
+  location: () => Promise<String>;
+  gender: () => Promise<Gender>;
+  permissions: () => Promise<Permission[]>;
+  resetToken: () => Promise<String>;
+  resetTokenExpiry: () => Promise<Float>;
 }
 
-export interface YearBoundFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<YearBoundFeaturePreviousValues>>,
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  year: () => Promise<AsyncIterator<Int>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
+  email: () => Promise<AsyncIterator<String>>;
+  firstName: () => Promise<AsyncIterator<String>>;
+  lastName: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  location: () => Promise<AsyncIterator<String>>;
+  gender: () => Promise<AsyncIterator<Gender>>;
+  permissions: () => Promise<AsyncIterator<Permission[]>>;
+  resetToken: () => Promise<AsyncIterator<String>>;
+  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface CarCategoryConnection {
+  pageInfo: PageInfo;
+  edges: CarCategoryEdge[];
+}
+
+export interface CarCategoryConnectionPromise
+  extends Promise<CarCategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarCategoryEdge>>() => T;
+  aggregate: <T = AggregateCarCategoryPromise>() => T;
+}
+
+export interface CarCategoryConnectionSubscription
+  extends Promise<AsyncIterator<CarCategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarCategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarCategorySubscription>() => T;
+}
+
+export interface OfferPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  price: Float;
+  status: OfferStatus;
+  finalRank?: Int;
+}
+
+export interface OfferPreviousValuesPromise
+  extends Promise<OfferPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  price: () => Promise<Float>;
+  status: () => Promise<OfferStatus>;
+  finalRank: () => Promise<Int>;
+}
+
+export interface OfferPreviousValuesSubscription
+  extends Promise<AsyncIterator<OfferPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  price: () => Promise<AsyncIterator<Float>>;
+  status: () => Promise<AsyncIterator<OfferStatus>>;
+  finalRank: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface AggregateCar {
@@ -3734,6 +3448,836 @@ export interface AggregateCarPromise
 
 export interface AggregateCarSubscription
   extends Promise<AsyncIterator<AggregateCar>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarConnection {
+  pageInfo: PageInfo;
+  edges: CarEdge[];
+}
+
+export interface CarConnectionPromise
+  extends Promise<CarConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarEdge>>() => T;
+  aggregate: <T = AggregateCarPromise>() => T;
+}
+
+export interface CarConnectionSubscription
+  extends Promise<AsyncIterator<CarConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarSubscription>() => T;
+}
+
+export interface CarEdge {
+  node: Car;
+  cursor: String;
+}
+
+export interface CarEdgePromise extends Promise<CarEdge>, Fragmentable {
+  node: <T = CarPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarEdgeSubscription
+  extends Promise<AsyncIterator<CarEdge>>,
+    Fragmentable {
+  node: <T = CarSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregatePost {
+  count: Int;
+}
+
+export interface AggregatePostPromise
+  extends Promise<AggregatePost>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregatePostSubscription
+  extends Promise<AsyncIterator<AggregatePost>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateAd {
+  count: Int;
+}
+
+export interface AggregateAdPromise extends Promise<AggregateAd>, Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateAdSubscription
+  extends Promise<AsyncIterator<AggregateAd>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface AdEdge {
+  node: Ad;
+  cursor: String;
+}
+
+export interface AdEdgePromise extends Promise<AdEdge>, Fragmentable {
+  node: <T = AdPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface AdEdgeSubscription
+  extends Promise<AsyncIterator<AdEdge>>,
+    Fragmentable {
+  node: <T = AdSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PostConnection {
+  pageInfo: PageInfo;
+  edges: PostEdge[];
+}
+
+export interface PostConnectionPromise
+  extends Promise<PostConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<PostEdge>>() => T;
+  aggregate: <T = AggregatePostPromise>() => T;
+}
+
+export interface PostConnectionSubscription
+  extends Promise<AsyncIterator<PostConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
+  aggregate: <T = AggregatePostSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Post {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  published: Boolean;
+  title: String;
+  content: String;
+}
+
+export interface PostPromise extends Promise<Post>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  published: () => Promise<Boolean>;
+  title: () => Promise<String>;
+  content: () => Promise<String>;
+  author: <T = UserPromise>() => T;
+}
+
+export interface PostSubscription
+  extends Promise<AsyncIterator<Post>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  title: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+  author: <T = UserSubscription>() => T;
+}
+
+export interface Ad {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  isUrgent: Boolean;
+  isFirst: Boolean;
+  status: AdStatus;
+}
+
+export interface AdPromise extends Promise<Ad>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  creator: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  offers: <T = FragmentableArray<Offer>>(args?: {
+    where?: OfferWhereInput;
+    orderBy?: OfferOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  priceLowerBound: () => Promise<Float>;
+  priceHigherBound: () => Promise<Float>;
+  manufacturer: <T = ManufacturerPromise>() => T;
+  model: <T = CarModelPromise>() => T;
+  category: <T = CarCategoryPromise>() => T;
+  mileageLowerBound: () => Promise<Int>;
+  mileageHigherBound: () => Promise<Int>;
+  yearLowerBound: () => Promise<Int>;
+  yearHigherBound: () => Promise<Int>;
+  features: <T = FragmentableArray<CarFeature>>(args?: {
+    where?: CarFeatureWhereInput;
+    orderBy?: CarFeatureOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  isUrgent: () => Promise<Boolean>;
+  isFirst: () => Promise<Boolean>;
+  status: () => Promise<AdStatus>;
+}
+
+export interface AdSubscription
+  extends Promise<AsyncIterator<Ad>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  creator: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  offers: <T = Promise<AsyncIterator<OfferSubscription>>>(args?: {
+    where?: OfferWhereInput;
+    orderBy?: OfferOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  priceLowerBound: () => Promise<AsyncIterator<Float>>;
+  priceHigherBound: () => Promise<AsyncIterator<Float>>;
+  manufacturer: <T = ManufacturerSubscription>() => T;
+  model: <T = CarModelSubscription>() => T;
+  category: <T = CarCategorySubscription>() => T;
+  mileageLowerBound: () => Promise<AsyncIterator<Int>>;
+  mileageHigherBound: () => Promise<AsyncIterator<Int>>;
+  yearLowerBound: () => Promise<AsyncIterator<Int>>;
+  yearHigherBound: () => Promise<AsyncIterator<Int>>;
+  features: <T = Promise<AsyncIterator<CarFeatureSubscription>>>(args?: {
+    where?: CarFeatureWhereInput;
+    orderBy?: CarFeatureOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  isUrgent: () => Promise<AsyncIterator<Boolean>>;
+  isFirst: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<AdStatus>>;
+}
+
+export interface OfferEdge {
+  node: Offer;
+  cursor: String;
+}
+
+export interface OfferEdgePromise extends Promise<OfferEdge>, Fragmentable {
+  node: <T = OfferPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface OfferEdgeSubscription
+  extends Promise<AsyncIterator<OfferEdge>>,
+    Fragmentable {
+  node: <T = OfferSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AdSubscriptionPayload {
+  mutation: MutationType;
+  node: Ad;
+  updatedFields: String[];
+  previousValues: AdPreviousValues;
+}
+
+export interface AdSubscriptionPayloadPromise
+  extends Promise<AdSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = AdPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = AdPreviousValuesPromise>() => T;
+}
+
+export interface AdSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<AdSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = AdSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = AdPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateMessage {
+  count: Int;
+}
+
+export interface AggregateMessagePromise
+  extends Promise<AggregateMessage>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMessageSubscription
+  extends Promise<AsyncIterator<AggregateMessage>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AdPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  priceLowerBound?: Float;
+  priceHigherBound?: Float;
+  mileageLowerBound?: Int;
+  mileageHigherBound?: Int;
+  yearLowerBound?: Int;
+  yearHigherBound?: Int;
+  isUrgent: Boolean;
+  isFirst: Boolean;
+  status: AdStatus;
+}
+
+export interface AdPreviousValuesPromise
+  extends Promise<AdPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  priceLowerBound: () => Promise<Float>;
+  priceHigherBound: () => Promise<Float>;
+  mileageLowerBound: () => Promise<Int>;
+  mileageHigherBound: () => Promise<Int>;
+  yearLowerBound: () => Promise<Int>;
+  yearHigherBound: () => Promise<Int>;
+  isUrgent: () => Promise<Boolean>;
+  isFirst: () => Promise<Boolean>;
+  status: () => Promise<AdStatus>;
+}
+
+export interface AdPreviousValuesSubscription
+  extends Promise<AsyncIterator<AdPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  priceLowerBound: () => Promise<AsyncIterator<Float>>;
+  priceHigherBound: () => Promise<AsyncIterator<Float>>;
+  mileageLowerBound: () => Promise<AsyncIterator<Int>>;
+  mileageHigherBound: () => Promise<AsyncIterator<Int>>;
+  yearLowerBound: () => Promise<AsyncIterator<Int>>;
+  yearHigherBound: () => Promise<AsyncIterator<Int>>;
+  isUrgent: () => Promise<AsyncIterator<Boolean>>;
+  isFirst: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<AdStatus>>;
+}
+
+export interface MessageConnection {
+  pageInfo: PageInfo;
+  edges: MessageEdge[];
+}
+
+export interface MessageConnectionPromise
+  extends Promise<MessageConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MessageEdge>>() => T;
+  aggregate: <T = AggregateMessagePromise>() => T;
+}
+
+export interface MessageConnectionSubscription
+  extends Promise<AsyncIterator<MessageConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MessageEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMessageSubscription>() => T;
+}
+
+export interface AdConnection {
+  pageInfo: PageInfo;
+  edges: AdEdge[];
+}
+
+export interface AdConnectionPromise
+  extends Promise<AdConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<AdEdge>>() => T;
+  aggregate: <T = AggregateAdPromise>() => T;
+}
+
+export interface AdConnectionSubscription
+  extends Promise<AsyncIterator<AdConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<AdEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateAdSubscription>() => T;
+}
+
+export interface ManufacturerEdge {
+  node: Manufacturer;
+  cursor: String;
+}
+
+export interface ManufacturerEdgePromise
+  extends Promise<ManufacturerEdge>,
+    Fragmentable {
+  node: <T = ManufacturerPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ManufacturerEdgeSubscription
+  extends Promise<AsyncIterator<ManufacturerEdge>>,
+    Fragmentable {
+  node: <T = ManufacturerSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarSubscriptionPayload {
+  mutation: MutationType;
+  node: Car;
+  updatedFields: String[];
+  previousValues: CarPreviousValues;
+}
+
+export interface CarSubscriptionPayloadPromise
+  extends Promise<CarSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarPreviousValuesPromise>() => T;
+}
+
+export interface CarSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarPreviousValuesSubscription>() => T;
+}
+
+export interface Date {
+  day: Int;
+  month: Int;
+  year: Int;
+}
+
+export interface DatePromise extends Promise<Date>, Fragmentable {
+  day: () => Promise<Int>;
+  month: () => Promise<Int>;
+  year: () => Promise<Int>;
+}
+
+export interface DateSubscription
+  extends Promise<AsyncIterator<Date>>,
+    Fragmentable {
+  day: () => Promise<AsyncIterator<Int>>;
+  month: () => Promise<AsyncIterator<Int>>;
+  year: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarPreviousValues {
+  id: ID_Output;
+  year: Int;
+  mileage: Int;
+  photos: String[];
+  status: CarStatus;
+}
+
+export interface CarPreviousValuesPromise
+  extends Promise<CarPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  year: () => Promise<Int>;
+  mileage: () => Promise<Int>;
+  photos: () => Promise<String[]>;
+  status: () => Promise<CarStatus>;
+}
+
+export interface CarPreviousValuesSubscription
+  extends Promise<AsyncIterator<CarPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  year: () => Promise<AsyncIterator<Int>>;
+  mileage: () => Promise<AsyncIterator<Int>>;
+  photos: () => Promise<AsyncIterator<String[]>>;
+  status: () => Promise<AsyncIterator<CarStatus>>;
+}
+
+export interface DateEdge {
+  node: Date;
+  cursor: String;
+}
+
+export interface DateEdgePromise extends Promise<DateEdge>, Fragmentable {
+  node: <T = DatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface DateEdgeSubscription
+  extends Promise<AsyncIterator<DateEdge>>,
+    Fragmentable {
+  node: <T = DateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface PostSubscriptionPayload {
+  mutation: MutationType;
+  node: Post;
+  updatedFields: String[];
+  previousValues: PostPreviousValues;
+}
+
+export interface PostSubscriptionPayloadPromise
+  extends Promise<PostSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = PostPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = PostPreviousValuesPromise>() => T;
+}
+
+export interface PostSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = PostSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = PostPreviousValuesSubscription>() => T;
+}
+
+export interface PostPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  published: Boolean;
+  title: String;
+  content: String;
+}
+
+export interface PostPreviousValuesPromise
+  extends Promise<PostPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  published: () => Promise<Boolean>;
+  title: () => Promise<String>;
+  content: () => Promise<String>;
+}
+
+export interface PostPreviousValuesSubscription
+  extends Promise<AsyncIterator<PostPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  published: () => Promise<AsyncIterator<Boolean>>;
+  title: () => Promise<AsyncIterator<String>>;
+  content: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarCategorySubscriptionPayload {
+  mutation: MutationType;
+  node: CarCategory;
+  updatedFields: String[];
+  previousValues: CarCategoryPreviousValues;
+}
+
+export interface CarCategorySubscriptionPayloadPromise
+  extends Promise<CarCategorySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarCategoryPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarCategoryPreviousValuesPromise>() => T;
+}
+
+export interface CarCategorySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarCategorySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarCategorySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarCategoryPreviousValuesSubscription>() => T;
+}
+
+export interface ConversationEdge {
+  node: Conversation;
+  cursor: String;
+}
+
+export interface ConversationEdgePromise
+  extends Promise<ConversationEdge>,
+    Fragmentable {
+  node: <T = ConversationPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ConversationEdgeSubscription
+  extends Promise<AsyncIterator<ConversationEdge>>,
+    Fragmentable {
+  node: <T = ConversationSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarCategoryPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface CarCategoryPreviousValuesPromise
+  extends Promise<CarCategoryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface CarCategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<CarCategoryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCarModel {
+  count: Int;
+}
+
+export interface AggregateCarModelPromise
+  extends Promise<AggregateCarModel>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarModelSubscription
+  extends Promise<AsyncIterator<AggregateCarModel>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface Message {
+  id: ID_Output;
+  text: String;
+  image?: String;
+}
+
+export interface MessagePromise extends Promise<Message>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  sender: <T = UserPromise>() => T;
+  text: () => Promise<String>;
+  image: () => Promise<String>;
+  conversation: <T = ConversationPromise>() => T;
+}
+
+export interface MessageSubscription
+  extends Promise<AsyncIterator<Message>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  sender: <T = UserSubscription>() => T;
+  text: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+  conversation: <T = ConversationSubscription>() => T;
+}
+
+export interface CarModelConnection {
+  pageInfo: PageInfo;
+  edges: CarModelEdge[];
+}
+
+export interface CarModelConnectionPromise
+  extends Promise<CarModelConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarModelEdge>>() => T;
+  aggregate: <T = AggregateCarModelPromise>() => T;
+}
+
+export interface CarModelConnectionSubscription
+  extends Promise<AsyncIterator<CarModelConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarModelEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarModelSubscription>() => T;
+}
+
+export interface CarFeatureSubscriptionPayload {
+  mutation: MutationType;
+  node: CarFeature;
+  updatedFields: String[];
+  previousValues: CarFeaturePreviousValues;
+}
+
+export interface CarFeatureSubscriptionPayloadPromise
+  extends Promise<CarFeatureSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = CarFeaturePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarFeaturePreviousValuesPromise>() => T;
+}
+
+export interface CarFeatureSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarFeatureSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarFeatureSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarFeaturePreviousValuesSubscription>() => T;
+}
+
+export interface CarFeatureCategoryEdge {
+  node: CarFeatureCategory;
+  cursor: String;
+}
+
+export interface CarFeatureCategoryEdgePromise
+  extends Promise<CarFeatureCategoryEdge>,
+    Fragmentable {
+  node: <T = CarFeatureCategoryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarFeatureCategoryEdgeSubscription
+  extends Promise<AsyncIterator<CarFeatureCategoryEdge>>,
+    Fragmentable {
+  node: <T = CarFeatureCategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarFeaturePreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface CarFeaturePreviousValuesPromise
+  extends Promise<CarFeaturePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface CarFeaturePreviousValuesSubscription
+  extends Promise<AsyncIterator<CarFeaturePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateCarFeature {
+  count: Int;
+}
+
+export interface AggregateCarFeaturePromise
+  extends Promise<AggregateCarFeature>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarFeatureSubscription
+  extends Promise<AsyncIterator<AggregateCarFeature>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -3790,857 +4334,25 @@ export interface CarSubscription
   status: () => Promise<AsyncIterator<CarStatus>>;
 }
 
-export interface CarEdge {
-  node: Car;
-  cursor: String;
-}
-
-export interface CarEdgePromise extends Promise<CarEdge>, Fragmentable {
-  node: <T = CarPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarEdgeSubscription
-  extends Promise<AsyncIterator<CarEdge>>,
-    Fragmentable {
-  node: <T = CarSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface Manufacturer {
-  id: ID_Output;
-  name: String;
-}
-
-export interface ManufacturerPromise
-  extends Promise<Manufacturer>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  models: <T = FragmentableArray<CarModel>>(args?: {
-    where?: CarModelWhereInput;
-    orderBy?: CarModelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface ManufacturerSubscription
-  extends Promise<AsyncIterator<Manufacturer>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  models: <T = Promise<AsyncIterator<CarModelSubscription>>>(args?: {
-    where?: CarModelWhereInput;
-    orderBy?: CarModelOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface CarConnection {
+export interface CarFeatureConnection {
   pageInfo: PageInfo;
-  edges: CarEdge[];
+  edges: CarFeatureEdge[];
 }
 
-export interface CarConnectionPromise
-  extends Promise<CarConnection>,
+export interface CarFeatureConnectionPromise
+  extends Promise<CarFeatureConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarEdge>>() => T;
-  aggregate: <T = AggregateCarPromise>() => T;
+  edges: <T = FragmentableArray<CarFeatureEdge>>() => T;
+  aggregate: <T = AggregateCarFeaturePromise>() => T;
 }
 
-export interface CarConnectionSubscription
-  extends Promise<AsyncIterator<CarConnection>>,
+export interface CarFeatureConnectionSubscription
+  extends Promise<AsyncIterator<CarFeatureConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarSubscription>() => T;
-}
-
-export interface AggregateYearBoundFeature {
-  count: Int;
-}
-
-export interface AggregateYearBoundFeaturePromise
-  extends Promise<AggregateYearBoundFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateYearBoundFeatureSubscription
-  extends Promise<AsyncIterator<AggregateYearBoundFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateAdCarFeature {
-  count: Int;
-}
-
-export interface AggregateAdCarFeaturePromise
-  extends Promise<AggregateAdCarFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateAdCarFeatureSubscription
-  extends Promise<AsyncIterator<AggregateAdCarFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface YearBoundFeatureConnection {
-  pageInfo: PageInfo;
-  edges: YearBoundFeatureEdge[];
-}
-
-export interface YearBoundFeatureConnectionPromise
-  extends Promise<YearBoundFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<YearBoundFeatureEdge>>() => T;
-  aggregate: <T = AggregateYearBoundFeaturePromise>() => T;
-}
-
-export interface YearBoundFeatureConnectionSubscription
-  extends Promise<AsyncIterator<YearBoundFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<YearBoundFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateYearBoundFeatureSubscription>() => T;
-}
-
-export interface Ad {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  isUrgent: Boolean;
-  isFirst: Boolean;
-  status: AdStatus;
-}
-
-export interface AdPromise extends Promise<Ad>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  creator: <T = UserPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  offers: <T = FragmentableArray<Offer>>(args?: {
-    where?: OfferWhereInput;
-    orderBy?: OfferOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  priceLowerBoundFeature: <T = PriceBoundFeaturePromise>() => T;
-  priceHigherBoundFeature: <T = PriceBoundFeaturePromise>() => T;
-  manufacturerFeature: <T = ManufacturerFeaturePromise>() => T;
-  modelFeature: <T = ModelFeaturePromise>() => T;
-  categoryFeature: <T = CategoryFeaturePromise>() => T;
-  mileageLowerBoundFeature: <T = MileageBoundFeaturePromise>() => T;
-  mileageHigherBoundFeature: <T = MileageBoundFeaturePromise>() => T;
-  yearLowerBoundFeature: <T = YearBoundFeaturePromise>() => T;
-  yearHigherBoundFeature: <T = YearBoundFeaturePromise>() => T;
-  features: <T = FragmentableArray<AdCarFeature>>(args?: {
-    where?: AdCarFeatureWhereInput;
-    orderBy?: AdCarFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  isUrgent: () => Promise<Boolean>;
-  isFirst: () => Promise<Boolean>;
-  status: () => Promise<AdStatus>;
-}
-
-export interface AdSubscription
-  extends Promise<AsyncIterator<Ad>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  creator: <T = UserSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  offers: <T = Promise<AsyncIterator<OfferSubscription>>>(args?: {
-    where?: OfferWhereInput;
-    orderBy?: OfferOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  priceLowerBoundFeature: <T = PriceBoundFeatureSubscription>() => T;
-  priceHigherBoundFeature: <T = PriceBoundFeatureSubscription>() => T;
-  manufacturerFeature: <T = ManufacturerFeatureSubscription>() => T;
-  modelFeature: <T = ModelFeatureSubscription>() => T;
-  categoryFeature: <T = CategoryFeatureSubscription>() => T;
-  mileageLowerBoundFeature: <T = MileageBoundFeatureSubscription>() => T;
-  mileageHigherBoundFeature: <T = MileageBoundFeatureSubscription>() => T;
-  yearLowerBoundFeature: <T = YearBoundFeatureSubscription>() => T;
-  yearHigherBoundFeature: <T = YearBoundFeatureSubscription>() => T;
-  features: <T = Promise<AsyncIterator<AdCarFeatureSubscription>>>(args?: {
-    where?: AdCarFeatureWhereInput;
-    orderBy?: AdCarFeatureOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  isUrgent: () => Promise<AsyncIterator<Boolean>>;
-  isFirst: () => Promise<AsyncIterator<Boolean>>;
-  status: () => Promise<AsyncIterator<AdStatus>>;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdSubscriptionPayload {
-  mutation: MutationType;
-  node: Ad;
-  updatedFields: String[];
-  previousValues: AdPreviousValues;
-}
-
-export interface AdSubscriptionPayloadPromise
-  extends Promise<AdSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = AdPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = AdPreviousValuesPromise>() => T;
-}
-
-export interface AdSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AdSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AdSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AdPreviousValuesSubscription>() => T;
-}
-
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface AdPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  isUrgent: Boolean;
-  isFirst: Boolean;
-  status: AdStatus;
-}
-
-export interface AdPreviousValuesPromise
-  extends Promise<AdPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  isUrgent: () => Promise<Boolean>;
-  isFirst: () => Promise<Boolean>;
-  status: () => Promise<AdStatus>;
-}
-
-export interface AdPreviousValuesSubscription
-  extends Promise<AsyncIterator<AdPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  isUrgent: () => Promise<AsyncIterator<Boolean>>;
-  isFirst: () => Promise<AsyncIterator<Boolean>>;
-  status: () => Promise<AsyncIterator<AdStatus>>;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AdCarFeatureEdge {
-  node: AdCarFeature;
-  cursor: String;
-}
-
-export interface AdCarFeatureEdgePromise
-  extends Promise<AdCarFeatureEdge>,
-    Fragmentable {
-  node: <T = AdCarFeaturePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface AdCarFeatureEdgeSubscription
-  extends Promise<AsyncIterator<AdCarFeatureEdge>>,
-    Fragmentable {
-  node: <T = AdCarFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregatePriceBoundFeature {
-  count: Int;
-}
-
-export interface AggregatePriceBoundFeaturePromise
-  extends Promise<AggregatePriceBoundFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePriceBoundFeatureSubscription
-  extends Promise<AsyncIterator<AggregatePriceBoundFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdCarFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: AdCarFeature;
-  updatedFields: String[];
-  previousValues: AdCarFeaturePreviousValues;
-}
-
-export interface AdCarFeatureSubscriptionPayloadPromise
-  extends Promise<AdCarFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = AdCarFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = AdCarFeaturePreviousValuesPromise>() => T;
-}
-
-export interface AdCarFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<AdCarFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = AdCarFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = AdCarFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface PriceBoundFeatureConnection {
-  pageInfo: PageInfo;
-  edges: PriceBoundFeatureEdge[];
-}
-
-export interface PriceBoundFeatureConnectionPromise
-  extends Promise<PriceBoundFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PriceBoundFeatureEdge>>() => T;
-  aggregate: <T = AggregatePriceBoundFeaturePromise>() => T;
-}
-
-export interface PriceBoundFeatureConnectionSubscription
-  extends Promise<AsyncIterator<PriceBoundFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PriceBoundFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePriceBoundFeatureSubscription>() => T;
-}
-
-export interface AdCarFeaturePreviousValues {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface AdCarFeaturePreviousValuesPromise
-  extends Promise<AdCarFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface AdCarFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<AdCarFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface AggregatePost {
-  count: Int;
-}
-
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdCarFeatureConnection {
-  pageInfo: PageInfo;
-  edges: AdCarFeatureEdge[];
-}
-
-export interface AdCarFeatureConnectionPromise
-  extends Promise<AdCarFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AdCarFeatureEdge>>() => T;
-  aggregate: <T = AggregateAdCarFeaturePromise>() => T;
-}
-
-export interface AdCarFeatureConnectionSubscription
-  extends Promise<AsyncIterator<AdCarFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AdCarFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAdCarFeatureSubscription>() => T;
-}
-
-export interface PostConnection {
-  pageInfo: PageInfo;
-  edges: PostEdge[];
-}
-
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
-}
-
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
-}
-
-export interface CarSubscriptionPayload {
-  mutation: MutationType;
-  node: Car;
-  updatedFields: String[];
-  previousValues: CarPreviousValues;
-}
-
-export interface CarSubscriptionPayloadPromise
-  extends Promise<CarSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CarPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CarPreviousValuesPromise>() => T;
-}
-
-export interface CarSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CarSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CarSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CarPreviousValuesSubscription>() => T;
-}
-
-export interface Post {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface PostPromise extends Promise<Post>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
-  author: <T = UserPromise>() => T;
-}
-
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-  author: <T = UserSubscription>() => T;
-}
-
-export interface CarPreviousValues {
-  id: ID_Output;
-  year: Int;
-  mileage: Int;
-  photos: String[];
-  status: CarStatus;
-}
-
-export interface CarPreviousValuesPromise
-  extends Promise<CarPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  year: () => Promise<Int>;
-  mileage: () => Promise<Int>;
-  photos: () => Promise<String[]>;
-  status: () => Promise<CarStatus>;
-}
-
-export interface CarPreviousValuesSubscription
-  extends Promise<AsyncIterator<CarPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  year: () => Promise<AsyncIterator<Int>>;
-  mileage: () => Promise<AsyncIterator<Int>>;
-  photos: () => Promise<AsyncIterator<String[]>>;
-  status: () => Promise<AsyncIterator<CarStatus>>;
-}
-
-export interface OfferEdge {
-  node: Offer;
-  cursor: String;
-}
-
-export interface OfferEdgePromise extends Promise<OfferEdge>, Fragmentable {
-  node: <T = OfferPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface OfferEdgeSubscription
-  extends Promise<AsyncIterator<OfferEdge>>,
-    Fragmentable {
-  node: <T = OfferSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateAd {
-  count: Int;
-}
-
-export interface AggregateAdPromise extends Promise<AggregateAd>, Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateAdSubscription
-  extends Promise<AsyncIterator<AggregateAd>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AggregateModelFeature {
-  count: Int;
-}
-
-export interface AggregateModelFeaturePromise
-  extends Promise<AggregateModelFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateModelFeatureSubscription
-  extends Promise<AsyncIterator<AggregateModelFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CarCategorySubscriptionPayload {
-  mutation: MutationType;
-  node: CarCategory;
-  updatedFields: String[];
-  previousValues: CarCategoryPreviousValues;
-}
-
-export interface CarCategorySubscriptionPayloadPromise
-  extends Promise<CarCategorySubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CarCategoryPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CarCategoryPreviousValuesPromise>() => T;
-}
-
-export interface CarCategorySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CarCategorySubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CarCategorySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CarCategoryPreviousValuesSubscription>() => T;
-}
-
-export interface ModelFeatureConnection {
-  pageInfo: PageInfo;
-  edges: ModelFeatureEdge[];
-}
-
-export interface ModelFeatureConnectionPromise
-  extends Promise<ModelFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ModelFeatureEdge>>() => T;
-  aggregate: <T = AggregateModelFeaturePromise>() => T;
-}
-
-export interface ModelFeatureConnectionSubscription
-  extends Promise<AsyncIterator<ModelFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ModelFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateModelFeatureSubscription>() => T;
-}
-
-export interface CarCategoryPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarCategoryPreviousValuesPromise
-  extends Promise<CarCategoryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface CarCategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<CarCategoryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface MileageBoundFeatureEdge {
-  node: MileageBoundFeature;
-  cursor: String;
-}
-
-export interface MileageBoundFeatureEdgePromise
-  extends Promise<MileageBoundFeatureEdge>,
-    Fragmentable {
-  node: <T = MileageBoundFeaturePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MileageBoundFeatureEdgeSubscription
-  extends Promise<AsyncIterator<MileageBoundFeatureEdge>>,
-    Fragmentable {
-  node: <T = MileageBoundFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AdEdge {
-  node: Ad;
-  cursor: String;
-}
-
-export interface AdEdgePromise extends Promise<AdEdge>, Fragmentable {
-  node: <T = AdPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface AdEdgeSubscription
-  extends Promise<AsyncIterator<AdEdge>>,
-    Fragmentable {
-  node: <T = AdSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateManufacturerFeature {
-  count: Int;
-}
-
-export interface AggregateManufacturerFeaturePromise
-  extends Promise<AggregateManufacturerFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateManufacturerFeatureSubscription
-  extends Promise<AsyncIterator<AggregateManufacturerFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CarFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: CarFeature;
-  updatedFields: String[];
-  previousValues: CarFeaturePreviousValues;
-}
-
-export interface CarFeatureSubscriptionPayloadPromise
-  extends Promise<CarFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CarFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CarFeaturePreviousValuesPromise>() => T;
-}
-
-export interface CarFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CarFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CarFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CarFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface ManufacturerFeatureConnection {
-  pageInfo: PageInfo;
-  edges: ManufacturerFeatureEdge[];
-}
-
-export interface ManufacturerFeatureConnectionPromise
-  extends Promise<ManufacturerFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ManufacturerFeatureEdge>>() => T;
-  aggregate: <T = AggregateManufacturerFeaturePromise>() => T;
-}
-
-export interface ManufacturerFeatureConnectionSubscription
-  extends Promise<AsyncIterator<ManufacturerFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<ManufacturerFeatureEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateManufacturerFeatureSubscription>() => T;
-}
-
-export interface CarFeaturePreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarFeaturePreviousValuesPromise
-  extends Promise<CarFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface CarFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<CarFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ManufacturerEdge {
-  node: Manufacturer;
-  cursor: String;
-}
-
-export interface ManufacturerEdgePromise
-  extends Promise<ManufacturerEdge>,
-    Fragmentable {
-  node: <T = ManufacturerPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ManufacturerEdgeSubscription
-  extends Promise<AsyncIterator<ManufacturerEdge>>,
-    Fragmentable {
-  node: <T = ManufacturerSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateDate {
-  count: Int;
-}
-
-export interface AggregateDatePromise
-  extends Promise<AggregateDate>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateDateSubscription
-  extends Promise<AsyncIterator<AggregateDate>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  edges: <T = Promise<AsyncIterator<CarFeatureEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarFeatureSubscription>() => T;
 }
 
 export interface CarFeatureCategorySubscriptionPayload {
@@ -4668,25 +4380,23 @@ export interface CarFeatureCategorySubscriptionPayloadSubscription
   previousValues: <T = CarFeatureCategoryPreviousValuesSubscription>() => T;
 }
 
-export interface DateConnection {
-  pageInfo: PageInfo;
-  edges: DateEdge[];
+export interface CarCategoryEdge {
+  node: CarCategory;
+  cursor: String;
 }
 
-export interface DateConnectionPromise
-  extends Promise<DateConnection>,
+export interface CarCategoryEdgePromise
+  extends Promise<CarCategoryEdge>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<DateEdge>>() => T;
-  aggregate: <T = AggregateDatePromise>() => T;
+  node: <T = CarCategoryPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface DateConnectionSubscription
-  extends Promise<AsyncIterator<DateConnection>>,
+export interface CarCategoryEdgeSubscription
+  extends Promise<AsyncIterator<CarCategoryEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<DateEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateDateSubscription>() => T;
+  node: <T = CarCategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface CarFeatureCategoryPreviousValues {
@@ -4709,496 +4419,6 @@ export interface CarFeatureCategoryPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   type: () => Promise<AsyncIterator<CarFeatureType>>;
-}
-
-export interface AggregateCategoryFeature {
-  count: Int;
-}
-
-export interface AggregateCategoryFeaturePromise
-  extends Promise<AggregateCategoryFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCategoryFeatureSubscription
-  extends Promise<AsyncIterator<AggregateCategoryFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdConnection {
-  pageInfo: PageInfo;
-  edges: AdEdge[];
-}
-
-export interface AdConnectionPromise
-  extends Promise<AdConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<AdEdge>>() => T;
-  aggregate: <T = AggregateAdPromise>() => T;
-}
-
-export interface AdConnectionSubscription
-  extends Promise<AsyncIterator<AdConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<AdEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateAdSubscription>() => T;
-}
-
-export interface CategoryFeatureConnection {
-  pageInfo: PageInfo;
-  edges: CategoryFeatureEdge[];
-}
-
-export interface CategoryFeatureConnectionPromise
-  extends Promise<CategoryFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CategoryFeatureEdge>>() => T;
-  aggregate: <T = AggregateCategoryFeaturePromise>() => T;
-}
-
-export interface CategoryFeatureConnectionSubscription
-  extends Promise<AsyncIterator<CategoryFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CategoryFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCategoryFeatureSubscription>() => T;
-}
-
-export interface CarModelSubscriptionPayload {
-  mutation: MutationType;
-  node: CarModel;
-  updatedFields: String[];
-  previousValues: CarModelPreviousValues;
-}
-
-export interface CarModelSubscriptionPayloadPromise
-  extends Promise<CarModelSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CarModelPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CarModelPreviousValuesPromise>() => T;
-}
-
-export interface CarModelSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CarModelSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CarModelSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CarModelPreviousValuesSubscription>() => T;
-}
-
-export interface CarModelEdge {
-  node: CarModel;
-  cursor: String;
-}
-
-export interface CarModelEdgePromise
-  extends Promise<CarModelEdge>,
-    Fragmentable {
-  node: <T = CarModelPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarModelEdgeSubscription
-  extends Promise<AsyncIterator<CarModelEdge>>,
-    Fragmentable {
-  node: <T = CarModelSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CarModelPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarModelPreviousValuesPromise
-  extends Promise<CarModelPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface CarModelPreviousValuesSubscription
-  extends Promise<AsyncIterator<CarModelPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateCarFeatureCategory {
-  count: Int;
-}
-
-export interface AggregateCarFeatureCategoryPromise
-  extends Promise<AggregateCarFeatureCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCarFeatureCategorySubscription
-  extends Promise<AsyncIterator<AggregateCarFeatureCategory>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface AdCarFeature {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface AdCarFeaturePromise
-  extends Promise<AdCarFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  feature: <T = CarFeaturePromise>() => T;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface AdCarFeatureSubscription
-  extends Promise<AsyncIterator<AdCarFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  feature: <T = CarFeatureSubscription>() => T;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface CarFeatureCategoryConnection {
-  pageInfo: PageInfo;
-  edges: CarFeatureCategoryEdge[];
-}
-
-export interface CarFeatureCategoryConnectionPromise
-  extends Promise<CarFeatureCategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarFeatureCategoryEdge>>() => T;
-  aggregate: <T = AggregateCarFeatureCategoryPromise>() => T;
-}
-
-export interface CarFeatureCategoryConnectionSubscription
-  extends Promise<AsyncIterator<CarFeatureCategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<CarFeatureCategoryEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateCarFeatureCategorySubscription>() => T;
-}
-
-export interface CategoryFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: CategoryFeature;
-  updatedFields: String[];
-  previousValues: CategoryFeaturePreviousValues;
-}
-
-export interface CategoryFeatureSubscriptionPayloadPromise
-  extends Promise<CategoryFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = CategoryFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = CategoryFeaturePreviousValuesPromise>() => T;
-}
-
-export interface CategoryFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<CategoryFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = CategoryFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = CategoryFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface AggregateCarFeature {
-  count: Int;
-}
-
-export interface AggregateCarFeaturePromise
-  extends Promise<AggregateCarFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCarFeatureSubscription
-  extends Promise<AsyncIterator<AggregateCarFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CategoryFeaturePreviousValues {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CategoryFeaturePreviousValuesPromise
-  extends Promise<CategoryFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface CategoryFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<CategoryFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface CarFeatureConnection {
-  pageInfo: PageInfo;
-  edges: CarFeatureEdge[];
-}
-
-export interface CarFeatureConnectionPromise
-  extends Promise<CarFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarFeatureEdge>>() => T;
-  aggregate: <T = AggregateCarFeaturePromise>() => T;
-}
-
-export interface CarFeatureConnectionSubscription
-  extends Promise<AsyncIterator<CarFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarFeatureEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarFeatureSubscription>() => T;
-}
-
-export interface YearBoundFeature {
-  id: ID_Output;
-  year: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface YearBoundFeaturePromise
-  extends Promise<YearBoundFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  year: () => Promise<Int>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface YearBoundFeatureSubscription
-  extends Promise<AsyncIterator<YearBoundFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  year: () => Promise<AsyncIterator<Int>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface CarCategoryEdge {
-  node: CarCategory;
-  cursor: String;
-}
-
-export interface CarCategoryEdgePromise
-  extends Promise<CarCategoryEdge>,
-    Fragmentable {
-  node: <T = CarCategoryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarCategoryEdgeSubscription
-  extends Promise<AsyncIterator<CarCategoryEdge>>,
-    Fragmentable {
-  node: <T = CarCategorySubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface DateSubscriptionPayload {
-  mutation: MutationType;
-  node: Date;
-  updatedFields: String[];
-  previousValues: DatePreviousValues;
-}
-
-export interface DateSubscriptionPayloadPromise
-  extends Promise<DateSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = DatePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = DatePreviousValuesPromise>() => T;
-}
-
-export interface DateSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<DateSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = DateSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = DatePreviousValuesSubscription>() => T;
-}
-
-export interface Offer {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  price: Float;
-  status: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface OfferPromise extends Promise<Offer>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  creator: <T = UserPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  ad: <T = AdPromise>() => T;
-  car: <T = CarPromise>() => T;
-  price: () => Promise<Float>;
-  status: () => Promise<OfferStatus>;
-  finalRank: () => Promise<Int>;
-}
-
-export interface OfferSubscription
-  extends Promise<AsyncIterator<Offer>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  creator: <T = UserSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  ad: <T = AdSubscription>() => T;
-  car: <T = CarSubscription>() => T;
-  price: () => Promise<AsyncIterator<Float>>;
-  status: () => Promise<AsyncIterator<OfferStatus>>;
-  finalRank: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface DatePreviousValues {
-  day: Int;
-  month: Int;
-  year: Int;
-}
-
-export interface DatePreviousValuesPromise
-  extends Promise<DatePreviousValues>,
-    Fragmentable {
-  day: () => Promise<Int>;
-  month: () => Promise<Int>;
-  year: () => Promise<Int>;
-}
-
-export interface DatePreviousValuesSubscription
-  extends Promise<AsyncIterator<DatePreviousValues>>,
-    Fragmentable {
-  day: () => Promise<AsyncIterator<Int>>;
-  month: () => Promise<AsyncIterator<Int>>;
-  year: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface YearBoundFeatureEdge {
-  node: YearBoundFeature;
-  cursor: String;
-}
-
-export interface YearBoundFeatureEdgePromise
-  extends Promise<YearBoundFeatureEdge>,
-    Fragmentable {
-  node: <T = YearBoundFeaturePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface YearBoundFeatureEdgeSubscription
-  extends Promise<AsyncIterator<YearBoundFeatureEdge>>,
-    Fragmentable {
-  node: <T = YearBoundFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface MileageBoundFeature {
-  id: ID_Output;
-  mileage: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface MileageBoundFeaturePromise
-  extends Promise<MileageBoundFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  mileage: () => Promise<Int>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface MileageBoundFeatureSubscription
-  extends Promise<AsyncIterator<MileageBoundFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  mileage: () => Promise<AsyncIterator<Int>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface PriceBoundFeaturePreviousValues {
-  id: ID_Output;
-  price: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface PriceBoundFeaturePreviousValuesPromise
-  extends Promise<PriceBoundFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  price: () => Promise<Float>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface PriceBoundFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<PriceBoundFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
 }
 
 export interface User {
@@ -5253,6 +4473,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   }) => T;
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<Float>;
+  conversations: <T = FragmentableArray<Conversation>>(args?: {
+    where?: ConversationWhereInput;
+    orderBy?: ConversationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface UserSubscription
@@ -5296,48 +4525,55 @@ export interface UserSubscription
   }) => T;
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  conversations: <T = Promise<AsyncIterator<ConversationSubscription>>>(args?: {
+    where?: ConversationWhereInput;
+    orderBy?: ConversationOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface ManufacturerSubscriptionPayload {
-  mutation: MutationType;
-  node: Manufacturer;
-  updatedFields: String[];
-  previousValues: ManufacturerPreviousValues;
-}
-
-export interface ManufacturerSubscriptionPayloadPromise
-  extends Promise<ManufacturerSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ManufacturerPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ManufacturerPreviousValuesPromise>() => T;
-}
-
-export interface ManufacturerSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ManufacturerSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ManufacturerSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ManufacturerPreviousValuesSubscription>() => T;
-}
-
-export interface CarCategory {
+export interface Conversation {
   id: ID_Output;
-  name: String;
 }
 
-export interface CarCategoryPromise extends Promise<CarCategory>, Fragmentable {
+export interface ConversationPromise
+  extends Promise<Conversation>,
+    Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  offer: <T = OfferPromise>() => T;
+  buyer: <T = UserPromise>() => T;
+  seller: <T = UserPromise>() => T;
+  messages: <T = FragmentableArray<Message>>(args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface CarCategorySubscription
-  extends Promise<AsyncIterator<CarCategory>>,
+export interface ConversationSubscription
+  extends Promise<AsyncIterator<Conversation>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  offer: <T = OfferSubscription>() => T;
+  buyer: <T = UserSubscription>() => T;
+  seller: <T = UserSubscription>() => T;
+  messages: <T = Promise<AsyncIterator<MessageSubscription>>>(args?: {
+    where?: MessageWhereInput;
+    orderBy?: MessageOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface PostEdge {
@@ -5357,23 +4593,29 @@ export interface PostEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface PriceBoundFeatureEdge {
-  node: PriceBoundFeature;
-  cursor: String;
+export interface CarModelSubscriptionPayload {
+  mutation: MutationType;
+  node: CarModel;
+  updatedFields: String[];
+  previousValues: CarModelPreviousValues;
 }
 
-export interface PriceBoundFeatureEdgePromise
-  extends Promise<PriceBoundFeatureEdge>,
+export interface CarModelSubscriptionPayloadPromise
+  extends Promise<CarModelSubscriptionPayload>,
     Fragmentable {
-  node: <T = PriceBoundFeaturePromise>() => T;
-  cursor: () => Promise<String>;
+  mutation: () => Promise<MutationType>;
+  node: <T = CarModelPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = CarModelPreviousValuesPromise>() => T;
 }
 
-export interface PriceBoundFeatureEdgeSubscription
-  extends Promise<AsyncIterator<PriceBoundFeatureEdge>>,
+export interface CarModelSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<CarModelSubscriptionPayload>>,
     Fragmentable {
-  node: <T = PriceBoundFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = CarModelSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = CarModelPreviousValuesSubscription>() => T;
 }
 
 export interface AggregateOffer {
@@ -5392,568 +4634,39 @@ export interface AggregateOfferSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface ManufacturerPreviousValues {
+export interface CarModelPreviousValues {
   id: ID_Output;
   name: String;
 }
 
-export interface ManufacturerPreviousValuesPromise
-  extends Promise<ManufacturerPreviousValues>,
+export interface CarModelPreviousValuesPromise
+  extends Promise<CarModelPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface ManufacturerPreviousValuesSubscription
-  extends Promise<AsyncIterator<ManufacturerPreviousValues>>,
+export interface CarModelPreviousValuesSubscription
+  extends Promise<AsyncIterator<CarModelPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface ModelFeatureEdge {
-  node: ModelFeature;
+export interface MessageEdge {
+  node: Message;
   cursor: String;
 }
 
-export interface ModelFeatureEdgePromise
-  extends Promise<ModelFeatureEdge>,
-    Fragmentable {
-  node: <T = ModelFeaturePromise>() => T;
+export interface MessageEdgePromise extends Promise<MessageEdge>, Fragmentable {
+  node: <T = MessagePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface ModelFeatureEdgeSubscription
-  extends Promise<AsyncIterator<ModelFeatureEdge>>,
+export interface MessageEdgeSubscription
+  extends Promise<AsyncIterator<MessageEdge>>,
     Fragmentable {
-  node: <T = ModelFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface CategoryFeature {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface CategoryFeaturePromise
-  extends Promise<CategoryFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  category: <T = CarCategoryPromise>() => T;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface CategoryFeatureSubscription
-  extends Promise<AsyncIterator<CategoryFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  category: <T = CarCategorySubscription>() => T;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface MileageBoundFeatureConnection {
-  pageInfo: PageInfo;
-  edges: MileageBoundFeatureEdge[];
-}
-
-export interface MileageBoundFeatureConnectionPromise
-  extends Promise<MileageBoundFeatureConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MileageBoundFeatureEdge>>() => T;
-  aggregate: <T = AggregateMileageBoundFeaturePromise>() => T;
-}
-
-export interface MileageBoundFeatureConnectionSubscription
-  extends Promise<AsyncIterator<MileageBoundFeatureConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <
-    T = Promise<AsyncIterator<MileageBoundFeatureEdgeSubscription>>
-  >() => T;
-  aggregate: <T = AggregateMileageBoundFeatureSubscription>() => T;
-}
-
-export interface ManufacturerFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: ManufacturerFeature;
-  updatedFields: String[];
-  previousValues: ManufacturerFeaturePreviousValues;
-}
-
-export interface ManufacturerFeatureSubscriptionPayloadPromise
-  extends Promise<ManufacturerFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ManufacturerFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ManufacturerFeaturePreviousValuesPromise>() => T;
-}
-
-export interface ManufacturerFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ManufacturerFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ManufacturerFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ManufacturerFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface AggregateManufacturer {
-  count: Int;
-}
-
-export interface AggregateManufacturerPromise
-  extends Promise<AggregateManufacturer>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateManufacturerSubscription
-  extends Promise<AsyncIterator<AggregateManufacturer>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ManufacturerFeaturePreviousValues {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ManufacturerFeaturePreviousValuesPromise
-  extends Promise<ManufacturerFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface ManufacturerFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<ManufacturerFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface DateEdge {
-  node: Date;
-  cursor: String;
-}
-
-export interface DateEdgePromise extends Promise<DateEdge>, Fragmentable {
-  node: <T = DatePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface DateEdgeSubscription
-  extends Promise<AsyncIterator<DateEdge>>,
-    Fragmentable {
-  node: <T = DateSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ModelFeature {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ModelFeaturePromise
-  extends Promise<ModelFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  model: <T = CarModelPromise>() => T;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface ModelFeatureSubscription
-  extends Promise<AsyncIterator<ModelFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  model: <T = CarModelSubscription>() => T;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface CategoryFeatureEdge {
-  node: CategoryFeature;
-  cursor: String;
-}
-
-export interface CategoryFeatureEdgePromise
-  extends Promise<CategoryFeatureEdge>,
-    Fragmentable {
-  node: <T = CategoryFeaturePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CategoryFeatureEdgeSubscription
-  extends Promise<AsyncIterator<CategoryFeatureEdge>>,
-    Fragmentable {
-  node: <T = CategoryFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface MileageBoundFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: MileageBoundFeature;
-  updatedFields: String[];
-  previousValues: MileageBoundFeaturePreviousValues;
-}
-
-export interface MileageBoundFeatureSubscriptionPayloadPromise
-  extends Promise<MileageBoundFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MileageBoundFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MileageBoundFeaturePreviousValuesPromise>() => T;
-}
-
-export interface MileageBoundFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MileageBoundFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MileageBoundFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MileageBoundFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface CarModelConnection {
-  pageInfo: PageInfo;
-  edges: CarModelEdge[];
-}
-
-export interface CarModelConnectionPromise
-  extends Promise<CarModelConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarModelEdge>>() => T;
-  aggregate: <T = AggregateCarModelPromise>() => T;
-}
-
-export interface CarModelConnectionSubscription
-  extends Promise<AsyncIterator<CarModelConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarModelEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarModelSubscription>() => T;
-}
-
-export interface MileageBoundFeaturePreviousValues {
-  id: ID_Output;
-  mileage: Int;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface MileageBoundFeaturePreviousValuesPromise
-  extends Promise<MileageBoundFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  mileage: () => Promise<Int>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface MileageBoundFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<MileageBoundFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  mileage: () => Promise<AsyncIterator<Int>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface UserPreviousValues {
-  id: ID_Output;
-  email: String;
-  firstName: String;
-  lastName: String;
-  password: String;
-  location: String;
-  gender: Gender;
-  permissions: Permission[];
-  resetToken?: String;
-  resetTokenExpiry?: Float;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  firstName: () => Promise<String>;
-  lastName: () => Promise<String>;
-  password: () => Promise<String>;
-  location: () => Promise<String>;
-  gender: () => Promise<Gender>;
-  permissions: () => Promise<Permission[]>;
-  resetToken: () => Promise<String>;
-  resetTokenExpiry: () => Promise<Float>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  firstName: () => Promise<AsyncIterator<String>>;
-  lastName: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  location: () => Promise<AsyncIterator<String>>;
-  gender: () => Promise<AsyncIterator<Gender>>;
-  permissions: () => Promise<AsyncIterator<Permission[]>>;
-  resetToken: () => Promise<AsyncIterator<String>>;
-  resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
-}
-
-export interface ManufacturerFeature {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ManufacturerFeaturePromise
-  extends Promise<ManufacturerFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  manufacturer: <T = ManufacturerPromise>() => T;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface ManufacturerFeatureSubscription
-  extends Promise<AsyncIterator<ManufacturerFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  manufacturer: <T = ManufacturerSubscription>() => T;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface AggregateCarCategory {
-  count: Int;
-}
-
-export interface AggregateCarCategoryPromise
-  extends Promise<AggregateCarCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateCarCategorySubscription
-  extends Promise<AsyncIterator<AggregateCarCategory>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ModelFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: ModelFeature;
-  updatedFields: String[];
-  previousValues: ModelFeaturePreviousValues;
-}
-
-export interface ModelFeatureSubscriptionPayloadPromise
-  extends Promise<ModelFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = ModelFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = ModelFeaturePreviousValuesPromise>() => T;
-}
-
-export interface ModelFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<ModelFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = ModelFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = ModelFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface Date {
-  day: Int;
-  month: Int;
-  year: Int;
-}
-
-export interface DatePromise extends Promise<Date>, Fragmentable {
-  day: () => Promise<Int>;
-  month: () => Promise<Int>;
-  year: () => Promise<Int>;
-}
-
-export interface DateSubscription
-  extends Promise<AsyncIterator<Date>>,
-    Fragmentable {
-  day: () => Promise<AsyncIterator<Int>>;
-  month: () => Promise<AsyncIterator<Int>>;
-  year: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface ModelFeaturePreviousValues {
-  id: ID_Output;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface ModelFeaturePreviousValuesPromise
-  extends Promise<ModelFeaturePreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface ModelFeaturePreviousValuesSubscription
-  extends Promise<AsyncIterator<ModelFeaturePreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface OfferConnection {
-  pageInfo: PageInfo;
-  edges: OfferEdge[];
-}
-
-export interface OfferConnectionPromise
-  extends Promise<OfferConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<OfferEdge>>() => T;
-  aggregate: <T = AggregateOfferPromise>() => T;
-}
-
-export interface OfferConnectionSubscription
-  extends Promise<AsyncIterator<OfferConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<OfferEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateOfferSubscription>() => T;
-}
-
-export interface PriceBoundFeature {
-  id: ID_Output;
-  price: Float;
-  importance?: AdCarFeatureImportance;
-}
-
-export interface PriceBoundFeaturePromise
-  extends Promise<PriceBoundFeature>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  price: () => Promise<Float>;
-  importance: () => Promise<AdCarFeatureImportance>;
-}
-
-export interface PriceBoundFeatureSubscription
-  extends Promise<AsyncIterator<PriceBoundFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  importance: () => Promise<AsyncIterator<AdCarFeatureImportance>>;
-}
-
-export interface ManufacturerFeatureEdge {
-  node: ManufacturerFeature;
-  cursor: String;
-}
-
-export interface ManufacturerFeatureEdgePromise
-  extends Promise<ManufacturerFeatureEdge>,
-    Fragmentable {
-  node: <T = ManufacturerFeaturePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ManufacturerFeatureEdgeSubscription
-  extends Promise<AsyncIterator<ManufacturerFeatureEdge>>,
-    Fragmentable {
-  node: <T = ManufacturerFeatureSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface OfferSubscriptionPayload {
-  mutation: MutationType;
-  node: Offer;
-  updatedFields: String[];
-  previousValues: OfferPreviousValues;
-}
-
-export interface OfferSubscriptionPayloadPromise
-  extends Promise<OfferSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = OfferPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = OfferPreviousValuesPromise>() => T;
-}
-
-export interface OfferSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<OfferSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = OfferSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = OfferPreviousValuesSubscription>() => T;
-}
-
-export interface CarModel {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarModelPromise extends Promise<CarModel>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface CarModelSubscription
-  extends Promise<AsyncIterator<CarModel>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface OfferPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  price: Float;
-  status: OfferStatus;
-  finalRank?: Int;
-}
-
-export interface OfferPreviousValuesPromise
-  extends Promise<OfferPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  price: () => Promise<Float>;
-  status: () => Promise<OfferStatus>;
-  finalRank: () => Promise<Int>;
-}
-
-export interface OfferPreviousValuesSubscription
-  extends Promise<AsyncIterator<OfferPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  price: () => Promise<AsyncIterator<Float>>;
-  status: () => Promise<AsyncIterator<OfferStatus>>;
-  finalRank: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface CarFeatureCategoryEdge {
-  node: CarFeatureCategory;
-  cursor: String;
-}
-
-export interface CarFeatureCategoryEdgePromise
-  extends Promise<CarFeatureCategoryEdge>,
-    Fragmentable {
-  node: <T = CarFeatureCategoryPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarFeatureCategoryEdgeSubscription
-  extends Promise<AsyncIterator<CarFeatureCategoryEdge>>,
-    Fragmentable {
-  node: <T = CarFeatureCategorySubscription>() => T;
+  node: <T = MessageSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -5997,143 +4710,6 @@ export interface CarFeatureCategorySubscription
   }) => T;
 }
 
-export interface CarCategoryConnection {
-  pageInfo: PageInfo;
-  edges: CarCategoryEdge[];
-}
-
-export interface CarCategoryConnectionPromise
-  extends Promise<CarCategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<CarCategoryEdge>>() => T;
-  aggregate: <T = AggregateCarCategoryPromise>() => T;
-}
-
-export interface CarCategoryConnectionSubscription
-  extends Promise<AsyncIterator<CarCategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<CarCategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateCarCategorySubscription>() => T;
-}
-
-export interface AggregateMileageBoundFeature {
-  count: Int;
-}
-
-export interface AggregateMileageBoundFeaturePromise
-  extends Promise<AggregateMileageBoundFeature>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMileageBoundFeatureSubscription
-  extends Promise<AsyncIterator<AggregateMileageBoundFeature>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PriceBoundFeatureSubscriptionPayload {
-  mutation: MutationType;
-  node: PriceBoundFeature;
-  updatedFields: String[];
-  previousValues: PriceBoundFeaturePreviousValues;
-}
-
-export interface PriceBoundFeatureSubscriptionPayloadPromise
-  extends Promise<PriceBoundFeatureSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PriceBoundFeaturePromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PriceBoundFeaturePreviousValuesPromise>() => T;
-}
-
-export interface PriceBoundFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PriceBoundFeatureSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PriceBoundFeatureSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PriceBoundFeaturePreviousValuesSubscription>() => T;
-}
-
-export interface CarFeature {
-  id: ID_Output;
-  name: String;
-}
-
-export interface CarFeaturePromise extends Promise<CarFeature>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  category: <T = CarFeatureCategoryPromise>() => T;
-}
-
-export interface CarFeatureSubscription
-  extends Promise<AsyncIterator<CarFeature>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  category: <T = CarFeatureCategorySubscription>() => T;
-}
-
-export interface PostPreviousValues {
-  id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
-}
-
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  node: Post;
-  updatedFields: String[];
-  previousValues: PostPreviousValues;
-}
-
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
-}
-
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
-}
-
 export interface ManufacturerConnection {
   pageInfo: PageInfo;
   edges: ManufacturerEdge[];
@@ -6155,29 +4731,147 @@ export interface ManufacturerConnectionSubscription
   aggregate: <T = AggregateManufacturerSubscription>() => T;
 }
 
-export interface YearBoundFeatureSubscriptionPayload {
+export interface ConversationSubscriptionPayload {
   mutation: MutationType;
-  node: YearBoundFeature;
+  node: Conversation;
   updatedFields: String[];
-  previousValues: YearBoundFeaturePreviousValues;
+  previousValues: ConversationPreviousValues;
 }
 
-export interface YearBoundFeatureSubscriptionPayloadPromise
-  extends Promise<YearBoundFeatureSubscriptionPayload>,
+export interface ConversationSubscriptionPayloadPromise
+  extends Promise<ConversationSubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = YearBoundFeaturePromise>() => T;
+  node: <T = ConversationPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = YearBoundFeaturePreviousValuesPromise>() => T;
+  previousValues: <T = ConversationPreviousValuesPromise>() => T;
 }
 
-export interface YearBoundFeatureSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<YearBoundFeatureSubscriptionPayload>>,
+export interface ConversationSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ConversationSubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = YearBoundFeatureSubscription>() => T;
+  node: <T = ConversationSubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = YearBoundFeaturePreviousValuesSubscription>() => T;
+  previousValues: <T = ConversationPreviousValuesSubscription>() => T;
+}
+
+export interface DateConnection {
+  pageInfo: PageInfo;
+  edges: DateEdge[];
+}
+
+export interface DateConnectionPromise
+  extends Promise<DateConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<DateEdge>>() => T;
+  aggregate: <T = AggregateDatePromise>() => T;
+}
+
+export interface DateConnectionSubscription
+  extends Promise<AsyncIterator<DateConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<DateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateDateSubscription>() => T;
+}
+
+export interface ConversationPreviousValues {
+  id: ID_Output;
+}
+
+export interface ConversationPreviousValuesPromise
+  extends Promise<ConversationPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+}
+
+export interface ConversationPreviousValuesSubscription
+  extends Promise<AsyncIterator<ConversationPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+}
+
+export interface ConversationConnection {
+  pageInfo: PageInfo;
+  edges: ConversationEdge[];
+}
+
+export interface ConversationConnectionPromise
+  extends Promise<ConversationConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ConversationEdge>>() => T;
+  aggregate: <T = AggregateConversationPromise>() => T;
+}
+
+export interface ConversationConnectionSubscription
+  extends Promise<AsyncIterator<ConversationConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ConversationEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateConversationSubscription>() => T;
+}
+
+export interface CarFeature {
+  id: ID_Output;
+  name: String;
+}
+
+export interface CarFeaturePromise extends Promise<CarFeature>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  category: <T = CarFeatureCategoryPromise>() => T;
+}
+
+export interface CarFeatureSubscription
+  extends Promise<AsyncIterator<CarFeature>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  category: <T = CarFeatureCategorySubscription>() => T;
+}
+
+export interface AggregateCarFeatureCategory {
+  count: Int;
+}
+
+export interface AggregateCarFeatureCategoryPromise
+  extends Promise<AggregateCarFeatureCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarFeatureCategorySubscription
+  extends Promise<AsyncIterator<AggregateCarFeatureCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface DateSubscriptionPayload {
+  mutation: MutationType;
+  node: Date;
+  updatedFields: String[];
+  previousValues: DatePreviousValues;
+}
+
+export interface DateSubscriptionPayloadPromise
+  extends Promise<DateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = DatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = DatePreviousValuesPromise>() => T;
+}
+
+export interface DateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<DateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = DateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = DatePreviousValuesSubscription>() => T;
 }
 
 export interface CarFeatureEdge {
@@ -6199,18 +4893,408 @@ export interface CarFeatureEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateCarModel {
+export interface DatePreviousValues {
+  day: Int;
+  month: Int;
+  year: Int;
+}
+
+export interface DatePreviousValuesPromise
+  extends Promise<DatePreviousValues>,
+    Fragmentable {
+  day: () => Promise<Int>;
+  month: () => Promise<Int>;
+  year: () => Promise<Int>;
+}
+
+export interface DatePreviousValuesSubscription
+  extends Promise<AsyncIterator<DatePreviousValues>>,
+    Fragmentable {
+  day: () => Promise<AsyncIterator<Int>>;
+  month: () => Promise<AsyncIterator<Int>>;
+  year: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarCategory {
+  id: ID_Output;
+  name: String;
+}
+
+export interface CarCategoryPromise extends Promise<CarCategory>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface CarCategorySubscription
+  extends Promise<AsyncIterator<CarCategory>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Offer {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  price: Float;
+  status: OfferStatus;
+  finalRank?: Int;
+}
+
+export interface OfferPromise extends Promise<Offer>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  creator: <T = UserPromise>() => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  ad: <T = AdPromise>() => T;
+  car: <T = CarPromise>() => T;
+  price: () => Promise<Float>;
+  status: () => Promise<OfferStatus>;
+  finalRank: () => Promise<Int>;
+  conversation: <T = ConversationPromise>() => T;
+}
+
+export interface OfferSubscription
+  extends Promise<AsyncIterator<Offer>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  creator: <T = UserSubscription>() => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  ad: <T = AdSubscription>() => T;
+  car: <T = CarSubscription>() => T;
+  price: () => Promise<AsyncIterator<Float>>;
+  status: () => Promise<AsyncIterator<OfferStatus>>;
+  finalRank: () => Promise<AsyncIterator<Int>>;
+  conversation: <T = ConversationSubscription>() => T;
+}
+
+export interface ManufacturerSubscriptionPayload {
+  mutation: MutationType;
+  node: Manufacturer;
+  updatedFields: String[];
+  previousValues: ManufacturerPreviousValues;
+}
+
+export interface ManufacturerSubscriptionPayloadPromise
+  extends Promise<ManufacturerSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ManufacturerPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ManufacturerPreviousValuesPromise>() => T;
+}
+
+export interface ManufacturerSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ManufacturerSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ManufacturerSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ManufacturerPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateManufacturer {
   count: Int;
 }
 
-export interface AggregateCarModelPromise
-  extends Promise<AggregateCarModel>,
+export interface AggregateManufacturerPromise
+  extends Promise<AggregateManufacturer>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateCarModelSubscription
-  extends Promise<AsyncIterator<AggregateCarModel>>,
+export interface AggregateManufacturerSubscription
+  extends Promise<AsyncIterator<AggregateManufacturer>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ManufacturerPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface ManufacturerPreviousValuesPromise
+  extends Promise<ManufacturerPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface ManufacturerPreviousValuesSubscription
+  extends Promise<AsyncIterator<ManufacturerPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateConversation {
+  count: Int;
+}
+
+export interface AggregateConversationPromise
+  extends Promise<AggregateConversation>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateConversationSubscription
+  extends Promise<AsyncIterator<AggregateConversation>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarModel {
+  id: ID_Output;
+  name: String;
+}
+
+export interface CarModelPromise extends Promise<CarModel>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface CarModelSubscription
+  extends Promise<AsyncIterator<CarModel>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface CarFeatureCategoryConnection {
+  pageInfo: PageInfo;
+  edges: CarFeatureCategoryEdge[];
+}
+
+export interface CarFeatureCategoryConnectionPromise
+  extends Promise<CarFeatureCategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarFeatureCategoryEdge>>() => T;
+  aggregate: <T = AggregateCarFeatureCategoryPromise>() => T;
+}
+
+export interface CarFeatureCategoryConnectionSubscription
+  extends Promise<AsyncIterator<CarFeatureCategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <
+    T = Promise<AsyncIterator<CarFeatureCategoryEdgeSubscription>>
+  >() => T;
+  aggregate: <T = AggregateCarFeatureCategorySubscription>() => T;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface OfferSubscriptionPayload {
+  mutation: MutationType;
+  node: Offer;
+  updatedFields: String[];
+  previousValues: OfferPreviousValues;
+}
+
+export interface OfferSubscriptionPayloadPromise
+  extends Promise<OfferSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = OfferPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = OfferPreviousValuesPromise>() => T;
+}
+
+export interface OfferSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<OfferSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = OfferSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = OfferPreviousValuesSubscription>() => T;
+}
+
+export interface Manufacturer {
+  id: ID_Output;
+  name: String;
+}
+
+export interface ManufacturerPromise
+  extends Promise<Manufacturer>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  models: <T = FragmentableArray<CarModel>>(args?: {
+    where?: CarModelWhereInput;
+    orderBy?: CarModelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ManufacturerSubscription
+  extends Promise<AsyncIterator<Manufacturer>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  models: <T = Promise<AsyncIterator<CarModelSubscription>>>(args?: {
+    where?: CarModelWhereInput;
+    orderBy?: CarModelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface MessagePreviousValues {
+  id: ID_Output;
+  text: String;
+  image?: String;
+}
+
+export interface MessagePreviousValuesPromise
+  extends Promise<MessagePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  text: () => Promise<String>;
+  image: () => Promise<String>;
+}
+
+export interface MessagePreviousValuesSubscription
+  extends Promise<AsyncIterator<MessagePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  text: () => Promise<AsyncIterator<String>>;
+  image: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MessageSubscriptionPayload {
+  mutation: MutationType;
+  node: Message;
+  updatedFields: String[];
+  previousValues: MessagePreviousValues;
+}
+
+export interface MessageSubscriptionPayloadPromise
+  extends Promise<MessageSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MessagePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MessagePreviousValuesPromise>() => T;
+}
+
+export interface MessageSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MessageSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MessageSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MessagePreviousValuesSubscription>() => T;
+}
+
+export interface OfferConnection {
+  pageInfo: PageInfo;
+  edges: OfferEdge[];
+}
+
+export interface OfferConnectionPromise
+  extends Promise<OfferConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<OfferEdge>>() => T;
+  aggregate: <T = AggregateOfferPromise>() => T;
+}
+
+export interface OfferConnectionSubscription
+  extends Promise<AsyncIterator<OfferConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<OfferEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateOfferSubscription>() => T;
+}
+
+export interface AggregateCarCategory {
+  count: Int;
+}
+
+export interface AggregateCarCategoryPromise
+  extends Promise<AggregateCarCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateCarCategorySubscription
+  extends Promise<AsyncIterator<AggregateCarCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface CarModelEdge {
+  node: CarModel;
+  cursor: String;
+}
+
+export interface CarModelEdgePromise
+  extends Promise<CarModelEdge>,
+    Fragmentable {
+  node: <T = CarModelPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarModelEdgeSubscription
+  extends Promise<AsyncIterator<CarModelEdge>>,
+    Fragmentable {
+  node: <T = CarModelSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateDate {
+  count: Int;
+}
+
+export interface AggregateDatePromise
+  extends Promise<AggregateDate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateDateSubscription
+  extends Promise<AsyncIterator<AggregateDate>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -6220,7 +5304,18 @@ The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
 
+/*
+The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
+*/
+export type ID_Input = string | number;
+export type ID_Output = string;
+
 export type Long = string;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -6242,17 +5337,6 @@ The `Float` scalar type represents signed double-precision fractional values as 
 */
 export type Float = number;
 
-/*
-The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
-*/
-export type ID_Input = string | number;
-export type ID_Output = string;
-
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
 /**
  * Model Metadata
  */
@@ -6260,14 +5344,6 @@ export type String = string;
 export const models: Model[] = [
   {
     name: "Ad",
-    embedded: false
-  },
-  {
-    name: "AdCarFeature",
-    embedded: false
-  },
-  {
-    name: "AdCarFeatureImportance",
     embedded: false
   },
   {
@@ -6303,7 +5379,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "CategoryFeature",
+    name: "Conversation",
     embedded: false
   },
   {
@@ -6319,15 +5395,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "ManufacturerFeature",
-    embedded: false
-  },
-  {
-    name: "MileageBoundFeature",
-    embedded: false
-  },
-  {
-    name: "ModelFeature",
+    name: "Message",
     embedded: false
   },
   {
@@ -6347,15 +5415,7 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "PriceBoundFeature",
-    embedded: false
-  },
-  {
     name: "User",
-    embedded: false
-  },
-  {
-    name: "YearBoundFeature",
     embedded: false
   }
 ];

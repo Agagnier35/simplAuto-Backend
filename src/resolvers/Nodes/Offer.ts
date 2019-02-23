@@ -14,5 +14,9 @@ export const Offer: OfferResolvers.Type = {
 
   car: ({ id }, args, ctx: Context) => {
     return ctx.prisma.offer({ id }).car();
+  },
+
+  conversation: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.offer({ id }).conversation();
   }
 };

@@ -22,5 +22,9 @@ export const User: UserResolvers.Type = {
 
   offers: ({ id }, args, ctx: Context) => {
     return ctx.prisma.user({ id }).offers();
+  },
+
+  conversations: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).conversations();
   }
 };
