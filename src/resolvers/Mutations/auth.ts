@@ -103,6 +103,14 @@ export const auth: AuthResolvers = {
     return user;
   },
 
+  async facebookLogin(parent, {data}, ctx: Context) {
+    console.log("Logging in with Facebook.");
+  },
+
+  async googleLogin(parent, {data}, ctx: Context) {
+    console.log("Logging in with Google.");
+  },
+  
   logout(parent, args, ctx: Context) {
     ctx.response.clearCookie("token");
 

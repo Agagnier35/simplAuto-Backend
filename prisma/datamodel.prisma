@@ -21,6 +21,8 @@ type User {
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
+  facebookID: ID @unique
+  googleID: ID @unique
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")

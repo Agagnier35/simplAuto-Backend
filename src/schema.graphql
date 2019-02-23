@@ -17,6 +17,8 @@ type Query {
 type Mutation {
   signup(data: UserSignupInput!): User!
   login(email: String!, password: String!): User!
+  facebookLogin(data: UserSignupInput!): User!
+  googleLogin(data: UserSignupInput!): User!
   logout: String!
   updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
