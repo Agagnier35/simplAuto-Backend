@@ -515,6 +515,10 @@ type AggregateOffer {
   count: Int!
 }
 
+type AggregateOfferAddon {
+  count: Int!
+}
+
 type AggregatePost {
   count: Int!
 }
@@ -2279,6 +2283,12 @@ type Mutation {
   upsertOffer(where: OfferWhereUniqueInput!, create: OfferCreateInput!, update: OfferUpdateInput!): Offer!
   deleteOffer(where: OfferWhereUniqueInput!): Offer
   deleteManyOffers(where: OfferWhereInput): BatchPayload!
+  createOfferAddon(data: OfferAddonCreateInput!): OfferAddon!
+  updateOfferAddon(data: OfferAddonUpdateInput!, where: OfferAddonWhereUniqueInput!): OfferAddon
+  updateManyOfferAddons(data: OfferAddonUpdateManyMutationInput!, where: OfferAddonWhereInput): BatchPayload!
+  upsertOfferAddon(where: OfferAddonWhereUniqueInput!, create: OfferAddonCreateInput!, update: OfferAddonUpdateInput!): OfferAddon!
+  deleteOfferAddon(where: OfferAddonWhereUniqueInput!): OfferAddon
+  deleteManyOfferAddons(where: OfferAddonWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -2313,7 +2323,207 @@ type Offer {
   price: Float!
   status: OfferStatus!
   finalRank: Int
+  addons(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OfferAddon!]
   conversation: Conversation
+}
+
+type OfferAddon {
+  id: ID!
+  name: String!
+  rankValue: Int!
+}
+
+type OfferAddonConnection {
+  pageInfo: PageInfo!
+  edges: [OfferAddonEdge]!
+  aggregate: AggregateOfferAddon!
+}
+
+input OfferAddonCreateInput {
+  name: String!
+  rankValue: Int
+}
+
+input OfferAddonCreateManyInput {
+  create: [OfferAddonCreateInput!]
+  connect: [OfferAddonWhereUniqueInput!]
+}
+
+type OfferAddonEdge {
+  node: OfferAddon!
+  cursor: String!
+}
+
+enum OfferAddonOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  rankValue_ASC
+  rankValue_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type OfferAddonPreviousValues {
+  id: ID!
+  name: String!
+  rankValue: Int!
+}
+
+input OfferAddonScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  rankValue: Int
+  rankValue_not: Int
+  rankValue_in: [Int!]
+  rankValue_not_in: [Int!]
+  rankValue_lt: Int
+  rankValue_lte: Int
+  rankValue_gt: Int
+  rankValue_gte: Int
+  AND: [OfferAddonScalarWhereInput!]
+  OR: [OfferAddonScalarWhereInput!]
+  NOT: [OfferAddonScalarWhereInput!]
+}
+
+type OfferAddonSubscriptionPayload {
+  mutation: MutationType!
+  node: OfferAddon
+  updatedFields: [String!]
+  previousValues: OfferAddonPreviousValues
+}
+
+input OfferAddonSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: OfferAddonWhereInput
+  AND: [OfferAddonSubscriptionWhereInput!]
+  OR: [OfferAddonSubscriptionWhereInput!]
+  NOT: [OfferAddonSubscriptionWhereInput!]
+}
+
+input OfferAddonUpdateDataInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyDataInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyInput {
+  create: [OfferAddonCreateInput!]
+  update: [OfferAddonUpdateWithWhereUniqueNestedInput!]
+  upsert: [OfferAddonUpsertWithWhereUniqueNestedInput!]
+  delete: [OfferAddonWhereUniqueInput!]
+  connect: [OfferAddonWhereUniqueInput!]
+  disconnect: [OfferAddonWhereUniqueInput!]
+  deleteMany: [OfferAddonScalarWhereInput!]
+  updateMany: [OfferAddonUpdateManyWithWhereNestedInput!]
+}
+
+input OfferAddonUpdateManyMutationInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyWithWhereNestedInput {
+  where: OfferAddonScalarWhereInput!
+  data: OfferAddonUpdateManyDataInput!
+}
+
+input OfferAddonUpdateWithWhereUniqueNestedInput {
+  where: OfferAddonWhereUniqueInput!
+  data: OfferAddonUpdateDataInput!
+}
+
+input OfferAddonUpsertWithWhereUniqueNestedInput {
+  where: OfferAddonWhereUniqueInput!
+  update: OfferAddonUpdateDataInput!
+  create: OfferAddonCreateInput!
+}
+
+input OfferAddonWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  rankValue: Int
+  rankValue_not: Int
+  rankValue_in: [Int!]
+  rankValue_not_in: [Int!]
+  rankValue_lt: Int
+  rankValue_lte: Int
+  rankValue_gt: Int
+  rankValue_gte: Int
+  AND: [OfferAddonWhereInput!]
+  OR: [OfferAddonWhereInput!]
+  NOT: [OfferAddonWhereInput!]
+}
+
+input OfferAddonWhereUniqueInput {
+  id: ID
 }
 
 type OfferConnection {
@@ -2329,6 +2539,7 @@ input OfferCreateInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
@@ -2353,6 +2564,7 @@ input OfferCreateWithoutAdInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
@@ -2363,6 +2575,7 @@ input OfferCreateWithoutConversationInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
 }
 
 input OfferCreateWithoutCreatorInput {
@@ -2371,6 +2584,7 @@ input OfferCreateWithoutCreatorInput {
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
@@ -2490,6 +2704,7 @@ input OfferUpdateInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
@@ -2545,6 +2760,7 @@ input OfferUpdateWithoutAdDataInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
@@ -2555,6 +2771,7 @@ input OfferUpdateWithoutConversationDataInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
 }
 
 input OfferUpdateWithoutCreatorDataInput {
@@ -2563,6 +2780,7 @@ input OfferUpdateWithoutCreatorDataInput {
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
@@ -2647,6 +2865,9 @@ input OfferWhereInput {
   finalRank_lte: Int
   finalRank_gt: Int
   finalRank_gte: Int
+  addons_every: OfferAddonWhereInput
+  addons_some: OfferAddonWhereInput
+  addons_none: OfferAddonWhereInput
   conversation: ConversationWhereInput
   AND: [OfferWhereInput!]
   OR: [OfferWhereInput!]
@@ -2857,6 +3078,9 @@ type Query {
   offer(where: OfferWhereUniqueInput!): Offer
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer]!
   offersConnection(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfferConnection!
+  offerAddon(where: OfferAddonWhereUniqueInput!): OfferAddon
+  offerAddons(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OfferAddon]!
+  offerAddonsConnection(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfferAddonConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -2878,6 +3102,7 @@ type Subscription {
   manufacturer(where: ManufacturerSubscriptionWhereInput): ManufacturerSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   offer(where: OfferSubscriptionWhereInput): OfferSubscriptionPayload
+  offerAddon(where: OfferAddonSubscriptionWhereInput): OfferAddonSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

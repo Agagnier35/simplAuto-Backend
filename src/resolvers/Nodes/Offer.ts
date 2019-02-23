@@ -18,5 +18,8 @@ export const Offer: OfferResolvers.Type = {
 
   conversation: ({ id }, args, ctx: Context) => {
     return ctx.prisma.offer({ id }).conversation();
+  },
+  addons: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.offer({ id }).addons();
   }
 };

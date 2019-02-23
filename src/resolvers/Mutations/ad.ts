@@ -5,11 +5,13 @@ import {
 } from "../../generated/yoga-client";
 import {
   AdCreateInput,
-  OfferStatus
+  OfferStatus,
+  AdUpdateInput
 } from "../../generated/prisma-client/index";
 
 interface AdResolvers {
   createAd: Types.CreateAdResolver;
+  updateAd: Types.UpdateAdResolver;
   deleteAd: Types.DeleteAdResolver;
 }
 
@@ -66,6 +68,55 @@ export const ad: AdResolvers = {
     }
 
     return ctx.prisma.createAd(mutation);
+  },
+  async updateAd(parent, { data }, ctx) {
+    const {
+      id,
+      priceLowerBound,
+      priceHigherBound,
+      manufacturerID,
+      modelID,
+      categoryID,
+      mileageLowerBound,
+      mileageHigherBound,
+      yearLowerBound,
+      yearHigherBound,
+      features,
+      ...rest
+    } = data;
+
+    // TODO Maybe check if each relational object really exists in the db
+    // TODO if not throw custom errors
+    const updatedData: AdUpdateInput = {
+      ...rest
+    };
+
+    updatedData.manufacturer = manufacturerID
+      ? { connect: { id: manufacturerID } }
+      : null;
+
+    updatedData.model = modelID ? { connect: { id: modelID } } : null;
+
+    updatedData.category = categoryID ? { connect: { id: categoryID } } : null;
+
+    // disconnect every feature, to handle removing features
+    await ctx.prisma.updateAd({
+      data: { features: { disconnect: features.map(f => ({ id: f })) } },
+      where: { id }
+    });
+
+    if (features && features.length > 0) {
+      updatedData.features = {
+        connect: features.map(feature => ({
+          id: feature
+        }))
+      };
+    }
+
+    return await ctx.prisma.updateAd({
+      data: updatedData,
+      where: { id }
+    });
   },
   async deleteAd(parent, { id }, ctx) {
     const statusOffer: OfferStatus = "DELETED";

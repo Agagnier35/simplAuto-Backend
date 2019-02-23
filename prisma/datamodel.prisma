@@ -81,7 +81,14 @@ type Offer {
   price: Float!
   status: OfferStatus! @default(value: PUBLISHED)
   finalRank: Int
+  addons: [OfferAddon!]
   conversation: Conversation
+}
+
+type OfferAddon{
+  id: ID! @unique
+  name: String!
+  rankValue: Int! @default(value: 0)
 }
 
 enum OfferStatus {
