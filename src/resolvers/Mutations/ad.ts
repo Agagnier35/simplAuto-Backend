@@ -1,4 +1,4 @@
-import { getUserId } from "../../utils";
+import { getUserId, Context } from "../../utils";
 import {
   MutationResolvers as Types,
   AdStatus
@@ -16,22 +16,9 @@ interface AdResolvers {
 }
 
 export const ad: AdResolvers = {
-  async createAd(parent, { data }, ctx, info) {
+  async createAd(parent, { data }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    const {
-      priceLowerBound,
-      priceHigherBound,
-      manufacturerID,
-      modelID,
-      categoryID,
-      mileageLowerBound,
-      mileageHigherBound,
-      yearLowerBound,
-      yearHigherBound,
-      features,
-      ...rest
-    } = data;
-
+    const { manufacturerID, modelID, categoryID, features, ...rest } = data;
     // TODO Maybe check if each relational object really exists in the db
     // TODO if not throw custom errors
     const mutation: AdCreateInput = {
@@ -69,24 +56,10 @@ export const ad: AdResolvers = {
 
     return ctx.prisma.createAd(mutation);
   },
-  async updateAd(parent, { data }, ctx) {
-    const {
-      id,
-      priceLowerBound,
-      priceHigherBound,
-      manufacturerID,
-      modelID,
-      categoryID,
-      mileageLowerBound,
-      mileageHigherBound,
-      yearLowerBound,
-      yearHigherBound,
-      features,
-      ...rest
-    } = data;
 
-    // TODO Maybe check if each relational object really exists in the db
-    // TODO if not throw custom errors
+  async updateAd(parent, { data }, ctx: Context) {
+    const { id, manufacturerID, modelID, categoryID, features, ...rest } = data;
+
     const updatedData: AdUpdateInput = {
       ...rest
     };
@@ -99,12 +72,6 @@ export const ad: AdResolvers = {
 
     updatedData.category = categoryID ? { connect: { id: categoryID } } : null;
 
-    // disconnect every feature, to handle removing features
-    await ctx.prisma.updateAd({
-      data: { features: { disconnect: features.map(f => ({ id: f })) } },
-      where: { id }
-    });
-
     if (features && features.length > 0) {
       updatedData.features = {
         connect: features.map(feature => ({
@@ -112,6 +79,17 @@ export const ad: AdResolvers = {
         }))
       };
     }
+
+    // disconnect every feature, to handle removing features
+    const previousFeatures = await ctx.prisma.ad({ id }).features();
+    await ctx.prisma.updateAd({
+      data: {
+        features: {
+          disconnect: previousFeatures.map(feature => ({ id: feature.id }))
+        }
+      },
+      where: { id }
+    });
 
     return await ctx.prisma.updateAd({
       data: updatedData,

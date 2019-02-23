@@ -4,6 +4,7 @@ import {
 } from "../../generated/yoga-client";
 import { getUserId, Context } from "../../utils";
 import { OfferUpdateInput } from "../../generated/prisma-client";
+import { OfferCreateInput } from "../../generated/prisma-client/index";
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
@@ -24,7 +25,7 @@ export const offer: OfferResolver = {
     const id = getUserId(ctx);
     const { adID, price, carID, addons } = data;
 
-    return ctx.prisma.createOffer({
+    const offerInput: OfferCreateInput = {
       price,
       creator: {
         connect: { id }
@@ -34,35 +35,42 @@ export const offer: OfferResolver = {
       },
       car: {
         connect: { id: carID }
-      },
-      addons: {
-        connect: addons.filter(a => a.id).map(a => ({ id: a.id })),
-        create: addons.filter(a => !a.id).map(a => ({ name: a.name }))
       }
-    });
+    };
+
+    if (addons) {
+      offerInput.addons = {
+        // Presets
+        connect: addons.filter(a => a.id).map(a => ({ id: a.id })),
+        // User created
+        create: addons.filter(a => !a.id).map(a => ({ name: a.name }))
+      };
+    }
+
+    return ctx.prisma.createOffer(offerInput);
   },
   async updateOffer(parent, { data }, ctx: Context) {
-    const updatedData: OfferUpdateInput = {};
-    const { price, addons } = data;
+    const { addons, id, ...rest } = data;
+
+    const updatedData: OfferUpdateInput = { ...rest };
 
     // disconnect all addons, to handle removing addons
+    const previousAddons = await ctx.prisma.offer({ id }).addons();
     await ctx.prisma.updateOffer({
       data: {
         addons: {
-          disconnect: addons.map(a => ({ id: a.id }))
+          disconnect: previousAddons.map(a => ({ id: a.id }))
         }
       },
       where: { id: data.id }
     });
+
     // delete "custom" addons, to remove DB bloat
     await ctx.prisma.deleteManyOfferAddons({
       rankValue_not: 0,
-      id_in: addons.map(a => a.id)
+      id_in: previousAddons.map(a => a.id)
     });
 
-    if (price) {
-      updatedData.price = price;
-    }
     if (addons) {
       updatedData.addons = {
         connect: addons.filter(a => a.id).map(a => ({ id: a.id })),
