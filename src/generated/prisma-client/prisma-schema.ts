@@ -515,6 +515,10 @@ type AggregateOffer {
   count: Int!
 }
 
+type AggregateOfferAddon {
+  count: Int!
+}
+
 type AggregatePost {
   count: Int!
 }
@@ -538,6 +542,7 @@ type Car {
   photos: [String!]!
   features(where: CarFeatureWhereInput, orderBy: CarFeatureOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [CarFeature!]
   status: CarStatus!
+  offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
 }
 
 type CarCategory {
@@ -686,6 +691,7 @@ input CarCreateInput {
   photos: CarCreatephotosInput
   features: CarFeatureCreateManyInput
   status: CarStatus
+  offers: OfferCreateManyWithoutCarInput
 }
 
 input CarCreateManyWithoutOwnerInput {
@@ -693,13 +699,25 @@ input CarCreateManyWithoutOwnerInput {
   connect: [CarWhereUniqueInput!]
 }
 
-input CarCreateOneInput {
-  create: CarCreateInput
+input CarCreateOneWithoutOffersInput {
+  create: CarCreateWithoutOffersInput
   connect: CarWhereUniqueInput
 }
 
 input CarCreatephotosInput {
   set: [String!]
+}
+
+input CarCreateWithoutOffersInput {
+  owner: UserCreateOneWithoutCarsInput!
+  manufacturer: ManufacturerCreateOneInput!
+  model: CarModelCreateOneInput!
+  category: CarCategoryCreateOneInput!
+  year: Int!
+  mileage: Int!
+  photos: CarCreatephotosInput
+  features: CarFeatureCreateManyInput
+  status: CarStatus
 }
 
 input CarCreateWithoutOwnerInput {
@@ -711,6 +729,7 @@ input CarCreateWithoutOwnerInput {
   photos: CarCreatephotosInput
   features: CarFeatureCreateManyInput
   status: CarStatus
+  offers: OfferCreateManyWithoutCarInput
 }
 
 type CarEdge {
@@ -1369,18 +1388,6 @@ input CarSubscriptionWhereInput {
   NOT: [CarSubscriptionWhereInput!]
 }
 
-input CarUpdateDataInput {
-  owner: UserUpdateOneRequiredWithoutCarsInput
-  manufacturer: ManufacturerUpdateOneRequiredInput
-  model: CarModelUpdateOneRequiredInput
-  category: CarCategoryUpdateOneRequiredInput
-  year: Int
-  mileage: Int
-  photos: CarUpdatephotosInput
-  features: CarFeatureUpdateManyInput
-  status: CarStatus
-}
-
 input CarUpdateInput {
   owner: UserUpdateOneRequiredWithoutCarsInput
   manufacturer: ManufacturerUpdateOneRequiredInput
@@ -1391,6 +1398,7 @@ input CarUpdateInput {
   photos: CarUpdatephotosInput
   features: CarFeatureUpdateManyInput
   status: CarStatus
+  offers: OfferUpdateManyWithoutCarInput
 }
 
 input CarUpdateManyDataInput {
@@ -1423,15 +1431,27 @@ input CarUpdateManyWithWhereNestedInput {
   data: CarUpdateManyDataInput!
 }
 
-input CarUpdateOneRequiredInput {
-  create: CarCreateInput
-  update: CarUpdateDataInput
-  upsert: CarUpsertNestedInput
+input CarUpdateOneRequiredWithoutOffersInput {
+  create: CarCreateWithoutOffersInput
+  update: CarUpdateWithoutOffersDataInput
+  upsert: CarUpsertWithoutOffersInput
   connect: CarWhereUniqueInput
 }
 
 input CarUpdatephotosInput {
   set: [String!]
+}
+
+input CarUpdateWithoutOffersDataInput {
+  owner: UserUpdateOneRequiredWithoutCarsInput
+  manufacturer: ManufacturerUpdateOneRequiredInput
+  model: CarModelUpdateOneRequiredInput
+  category: CarCategoryUpdateOneRequiredInput
+  year: Int
+  mileage: Int
+  photos: CarUpdatephotosInput
+  features: CarFeatureUpdateManyInput
+  status: CarStatus
 }
 
 input CarUpdateWithoutOwnerDataInput {
@@ -1443,6 +1463,7 @@ input CarUpdateWithoutOwnerDataInput {
   photos: CarUpdatephotosInput
   features: CarFeatureUpdateManyInput
   status: CarStatus
+  offers: OfferUpdateManyWithoutCarInput
 }
 
 input CarUpdateWithWhereUniqueWithoutOwnerInput {
@@ -1450,9 +1471,9 @@ input CarUpdateWithWhereUniqueWithoutOwnerInput {
   data: CarUpdateWithoutOwnerDataInput!
 }
 
-input CarUpsertNestedInput {
-  update: CarUpdateDataInput!
-  create: CarCreateInput!
+input CarUpsertWithoutOffersInput {
+  update: CarUpdateWithoutOffersDataInput!
+  create: CarCreateWithoutOffersInput!
 }
 
 input CarUpsertWithWhereUniqueWithoutOwnerInput {
@@ -1503,6 +1524,9 @@ input CarWhereInput {
   status_not: CarStatus
   status_in: [CarStatus!]
   status_not_in: [CarStatus!]
+  offers_every: OfferWhereInput
+  offers_some: OfferWhereInput
+  offers_none: OfferWhereInput
   AND: [CarWhereInput!]
   OR: [CarWhereInput!]
   NOT: [CarWhereInput!]
@@ -2279,6 +2303,12 @@ type Mutation {
   upsertOffer(where: OfferWhereUniqueInput!, create: OfferCreateInput!, update: OfferUpdateInput!): Offer!
   deleteOffer(where: OfferWhereUniqueInput!): Offer
   deleteManyOffers(where: OfferWhereInput): BatchPayload!
+  createOfferAddon(data: OfferAddonCreateInput!): OfferAddon!
+  updateOfferAddon(data: OfferAddonUpdateInput!, where: OfferAddonWhereUniqueInput!): OfferAddon
+  updateManyOfferAddons(data: OfferAddonUpdateManyMutationInput!, where: OfferAddonWhereInput): BatchPayload!
+  upsertOfferAddon(where: OfferAddonWhereUniqueInput!, create: OfferAddonCreateInput!, update: OfferAddonUpdateInput!): OfferAddon!
+  deleteOfferAddon(where: OfferAddonWhereUniqueInput!): OfferAddon
+  deleteManyOfferAddons(where: OfferAddonWhereInput): BatchPayload!
   createPost(data: PostCreateInput!): Post!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateManyPosts(data: PostUpdateManyMutationInput!, where: PostWhereInput): BatchPayload!
@@ -2313,7 +2343,207 @@ type Offer {
   price: Float!
   status: OfferStatus!
   finalRank: Int
+  addons(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OfferAddon!]
   conversation: Conversation
+}
+
+type OfferAddon {
+  id: ID!
+  name: String!
+  rankValue: Int!
+}
+
+type OfferAddonConnection {
+  pageInfo: PageInfo!
+  edges: [OfferAddonEdge]!
+  aggregate: AggregateOfferAddon!
+}
+
+input OfferAddonCreateInput {
+  name: String!
+  rankValue: Int
+}
+
+input OfferAddonCreateManyInput {
+  create: [OfferAddonCreateInput!]
+  connect: [OfferAddonWhereUniqueInput!]
+}
+
+type OfferAddonEdge {
+  node: OfferAddon!
+  cursor: String!
+}
+
+enum OfferAddonOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  rankValue_ASC
+  rankValue_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type OfferAddonPreviousValues {
+  id: ID!
+  name: String!
+  rankValue: Int!
+}
+
+input OfferAddonScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  rankValue: Int
+  rankValue_not: Int
+  rankValue_in: [Int!]
+  rankValue_not_in: [Int!]
+  rankValue_lt: Int
+  rankValue_lte: Int
+  rankValue_gt: Int
+  rankValue_gte: Int
+  AND: [OfferAddonScalarWhereInput!]
+  OR: [OfferAddonScalarWhereInput!]
+  NOT: [OfferAddonScalarWhereInput!]
+}
+
+type OfferAddonSubscriptionPayload {
+  mutation: MutationType!
+  node: OfferAddon
+  updatedFields: [String!]
+  previousValues: OfferAddonPreviousValues
+}
+
+input OfferAddonSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: OfferAddonWhereInput
+  AND: [OfferAddonSubscriptionWhereInput!]
+  OR: [OfferAddonSubscriptionWhereInput!]
+  NOT: [OfferAddonSubscriptionWhereInput!]
+}
+
+input OfferAddonUpdateDataInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyDataInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyInput {
+  create: [OfferAddonCreateInput!]
+  update: [OfferAddonUpdateWithWhereUniqueNestedInput!]
+  upsert: [OfferAddonUpsertWithWhereUniqueNestedInput!]
+  delete: [OfferAddonWhereUniqueInput!]
+  connect: [OfferAddonWhereUniqueInput!]
+  disconnect: [OfferAddonWhereUniqueInput!]
+  deleteMany: [OfferAddonScalarWhereInput!]
+  updateMany: [OfferAddonUpdateManyWithWhereNestedInput!]
+}
+
+input OfferAddonUpdateManyMutationInput {
+  name: String
+  rankValue: Int
+}
+
+input OfferAddonUpdateManyWithWhereNestedInput {
+  where: OfferAddonScalarWhereInput!
+  data: OfferAddonUpdateManyDataInput!
+}
+
+input OfferAddonUpdateWithWhereUniqueNestedInput {
+  where: OfferAddonWhereUniqueInput!
+  data: OfferAddonUpdateDataInput!
+}
+
+input OfferAddonUpsertWithWhereUniqueNestedInput {
+  where: OfferAddonWhereUniqueInput!
+  update: OfferAddonUpdateDataInput!
+  create: OfferAddonCreateInput!
+}
+
+input OfferAddonWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  rankValue: Int
+  rankValue_not: Int
+  rankValue_in: [Int!]
+  rankValue_not_in: [Int!]
+  rankValue_lt: Int
+  rankValue_lte: Int
+  rankValue_gt: Int
+  rankValue_gte: Int
+  AND: [OfferAddonWhereInput!]
+  OR: [OfferAddonWhereInput!]
+  NOT: [OfferAddonWhereInput!]
+}
+
+input OfferAddonWhereUniqueInput {
+  id: ID
 }
 
 type OfferConnection {
@@ -2325,15 +2555,21 @@ type OfferConnection {
 input OfferCreateInput {
   creator: UserCreateOneWithoutOffersInput!
   ad: AdCreateOneWithoutOffersInput!
-  car: CarCreateOneInput!
+  car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
 input OfferCreateManyWithoutAdInput {
   create: [OfferCreateWithoutAdInput!]
+  connect: [OfferWhereUniqueInput!]
+}
+
+input OfferCreateManyWithoutCarInput {
+  create: [OfferCreateWithoutCarInput!]
   connect: [OfferWhereUniqueInput!]
 }
 
@@ -2349,28 +2585,41 @@ input OfferCreateOneWithoutConversationInput {
 
 input OfferCreateWithoutAdInput {
   creator: UserCreateOneWithoutOffersInput!
-  car: CarCreateOneInput!
+  car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
+  conversation: ConversationCreateOneWithoutOfferInput
+}
+
+input OfferCreateWithoutCarInput {
+  creator: UserCreateOneWithoutOffersInput!
+  ad: AdCreateOneWithoutOffersInput!
+  price: Float!
+  status: OfferStatus
+  finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
 input OfferCreateWithoutConversationInput {
   creator: UserCreateOneWithoutOffersInput!
   ad: AdCreateOneWithoutOffersInput!
-  car: CarCreateOneInput!
+  car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
 }
 
 input OfferCreateWithoutCreatorInput {
   ad: AdCreateOneWithoutOffersInput!
-  car: CarCreateOneInput!
+  car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonCreateManyInput
   conversation: ConversationCreateOneWithoutOfferInput
 }
 
@@ -2486,10 +2735,11 @@ input OfferSubscriptionWhereInput {
 input OfferUpdateInput {
   creator: UserUpdateOneRequiredWithoutOffersInput
   ad: AdUpdateOneRequiredWithoutOffersInput
-  car: CarUpdateOneRequiredInput
+  car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
@@ -2512,6 +2762,17 @@ input OfferUpdateManyWithoutAdInput {
   disconnect: [OfferWhereUniqueInput!]
   update: [OfferUpdateWithWhereUniqueWithoutAdInput!]
   upsert: [OfferUpsertWithWhereUniqueWithoutAdInput!]
+  deleteMany: [OfferScalarWhereInput!]
+  updateMany: [OfferUpdateManyWithWhereNestedInput!]
+}
+
+input OfferUpdateManyWithoutCarInput {
+  create: [OfferCreateWithoutCarInput!]
+  delete: [OfferWhereUniqueInput!]
+  connect: [OfferWhereUniqueInput!]
+  disconnect: [OfferWhereUniqueInput!]
+  update: [OfferUpdateWithWhereUniqueWithoutCarInput!]
+  upsert: [OfferUpsertWithWhereUniqueWithoutCarInput!]
   deleteMany: [OfferScalarWhereInput!]
   updateMany: [OfferUpdateManyWithWhereNestedInput!]
 }
@@ -2541,34 +2802,52 @@ input OfferUpdateOneRequiredWithoutConversationInput {
 
 input OfferUpdateWithoutAdDataInput {
   creator: UserUpdateOneRequiredWithoutOffersInput
-  car: CarUpdateOneRequiredInput
+  car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
+  conversation: ConversationUpdateOneWithoutOfferInput
+}
+
+input OfferUpdateWithoutCarDataInput {
+  creator: UserUpdateOneRequiredWithoutOffersInput
+  ad: AdUpdateOneRequiredWithoutOffersInput
+  price: Float
+  status: OfferStatus
+  finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
 input OfferUpdateWithoutConversationDataInput {
   creator: UserUpdateOneRequiredWithoutOffersInput
   ad: AdUpdateOneRequiredWithoutOffersInput
-  car: CarUpdateOneRequiredInput
+  car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
 }
 
 input OfferUpdateWithoutCreatorDataInput {
   ad: AdUpdateOneRequiredWithoutOffersInput
-  car: CarUpdateOneRequiredInput
+  car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
   finalRank: Int
+  addons: OfferAddonUpdateManyInput
   conversation: ConversationUpdateOneWithoutOfferInput
 }
 
 input OfferUpdateWithWhereUniqueWithoutAdInput {
   where: OfferWhereUniqueInput!
   data: OfferUpdateWithoutAdDataInput!
+}
+
+input OfferUpdateWithWhereUniqueWithoutCarInput {
+  where: OfferWhereUniqueInput!
+  data: OfferUpdateWithoutCarDataInput!
 }
 
 input OfferUpdateWithWhereUniqueWithoutCreatorInput {
@@ -2585,6 +2864,12 @@ input OfferUpsertWithWhereUniqueWithoutAdInput {
   where: OfferWhereUniqueInput!
   update: OfferUpdateWithoutAdDataInput!
   create: OfferCreateWithoutAdInput!
+}
+
+input OfferUpsertWithWhereUniqueWithoutCarInput {
+  where: OfferWhereUniqueInput!
+  update: OfferUpdateWithoutCarDataInput!
+  create: OfferCreateWithoutCarInput!
 }
 
 input OfferUpsertWithWhereUniqueWithoutCreatorInput {
@@ -2647,6 +2932,9 @@ input OfferWhereInput {
   finalRank_lte: Int
   finalRank_gt: Int
   finalRank_gte: Int
+  addons_every: OfferAddonWhereInput
+  addons_some: OfferAddonWhereInput
+  addons_none: OfferAddonWhereInput
   conversation: ConversationWhereInput
   AND: [OfferWhereInput!]
   OR: [OfferWhereInput!]
@@ -2857,6 +3145,9 @@ type Query {
   offer(where: OfferWhereUniqueInput!): Offer
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer]!
   offersConnection(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfferConnection!
+  offerAddon(where: OfferAddonWhereUniqueInput!): OfferAddon
+  offerAddons(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [OfferAddon]!
+  offerAddonsConnection(where: OfferAddonWhereInput, orderBy: OfferAddonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OfferAddonConnection!
   post(where: PostWhereUniqueInput!): Post
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
@@ -2878,6 +3169,7 @@ type Subscription {
   manufacturer(where: ManufacturerSubscriptionWhereInput): ManufacturerSubscriptionPayload
   message(where: MessageSubscriptionWhereInput): MessageSubscriptionPayload
   offer(where: OfferSubscriptionWhereInput): OfferSubscriptionPayload
+  offerAddon(where: OfferAddonSubscriptionWhereInput): OfferAddonSubscriptionPayload
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }

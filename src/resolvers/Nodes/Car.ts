@@ -22,5 +22,9 @@ export const Car: CarResolvers.Type = {
 
   features: ({ id }, args, ctx: Context) => {
     return ctx.prisma.car({ id }).features();
+  },
+
+  offers: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.car({ id }).offers();
   }
 };
