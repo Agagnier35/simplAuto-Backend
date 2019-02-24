@@ -282,7 +282,7 @@ type Conversation {
 
 type Message {
   id: ID!
-  sender: User!
+  sender: User @private
   text: String!
   image: String
   conversation: Conversation!
