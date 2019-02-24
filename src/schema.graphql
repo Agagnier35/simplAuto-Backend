@@ -12,6 +12,7 @@ type Query {
   carFeatureCategory(name: String!): CarFeatureCategory
   carFeatureCategories: [CarFeatureCategory]
   manufacturers: [Manufacturer]
+  offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
 }
 
