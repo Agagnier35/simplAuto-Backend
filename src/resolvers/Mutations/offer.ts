@@ -67,14 +67,16 @@ export const offer: OfferResolver = {
 
     // delete "custom" addons, to remove DB bloat
     await ctx.prisma.deleteManyOfferAddons({
-      rankValue_not: 0,
+      rankValue_lte: 0,
       id_in: previousAddons.map(a => a.id)
     });
 
     if (addons) {
       updatedData.addons = {
-        connect: addons.filter(a => a.id).map(a => ({ id: a.id })),
-        create: addons.filter(a => !a.id).map(a => ({ name: a.name }))
+        connect: addons.filter(a => a.rankValue > 0).map(a => ({ id: a.id })),
+        create: addons
+          .filter(a => !a.rankValue || a.rankValue <= 0)
+          .map(a => ({ name: a.name }))
       };
     }
 

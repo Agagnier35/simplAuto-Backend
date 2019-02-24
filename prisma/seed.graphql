@@ -279,4 +279,14 @@ mutation {
   Sedan: createCarCategory(data: { name: "sedan" }) {
     id
   }
+
+  # OfferAddons
+  # -------------------------------------------
+  Mags: createOfferAddon(data: { name: "mags", rankValue: 5 }) {
+    id
+  }
+
+  Tires: createOfferAddon(data: { name: "tires", rankValue: 10 }) {
+    id
+  }
 }

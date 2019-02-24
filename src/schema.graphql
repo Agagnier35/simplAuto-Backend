@@ -12,6 +12,7 @@ type Query {
   carFeatureCategory(name: String!): CarFeatureCategory
   carFeatureCategories: [CarFeatureCategory]
   manufacturers: [Manufacturer]
+  offerAddons: [OfferAddon!]
 }
 
 type Mutation {
@@ -104,6 +105,7 @@ type Car {
   photos: [String!]!
   features: [CarFeature!]!
   status: CarStatus!
+  offers: [Offer!]
 }
 
 enum CarStatus {

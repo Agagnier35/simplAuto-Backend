@@ -108,6 +108,7 @@ type Car {
   photos: [String!]!
   features: [CarFeature!]!
   status: CarStatus!  @default(value: PUBLISHED)
+  offers: [Offer!]
 }
 
 enum CarStatus {
