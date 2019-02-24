@@ -17,6 +17,8 @@ const sgMail = require("@sendgrid/mail");
 interface AuthResolvers {
   signup: Types.SignupResolver;
   login: Types.LoginResolver;
+  facebookLogin: Types.FacebookLoginResolver;
+  googleLogin: Types.GoogleLoginResolver;
   logout: Types.LogoutResolver;
   resetPasswordRequest: Types.ResetPasswordRequestResolver;
   resetPassword: Types.ResetPasswordResolver;
@@ -105,14 +107,48 @@ export const auth: AuthResolvers = {
 
   async facebookLogin(parent, {data}, ctx: Context) {
     console.log("Logging in with Facebook.");
+    const user = await ctx.prisma.user({ facebookID: data.facebookID});
+    if(user) {
+      // Same token flow as signup...
+      const token = jwt.sign(
+        { userId: user.id, permissions: user.permissions },
+        process.env.APP_SECRET
+      );
+
+      ctx.response.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365
+      });
+
+      return user;
+    } else {  // We signup the user
+      return this.signup(parent, data, ctx);
+    }
   },
 
   async googleLogin(parent, {data}, ctx: Context) {
     console.log("Logging in with Google.");
+    const user = await ctx.prisma.user({ googleID: data.googleID});
+    if(user) {
+      // Same token flow as signup...
+      const token = jwt.sign(
+        { userId: user.id, permissions: user.permissions },
+        process.env.APP_SECRET
+      );
+
+      ctx.response.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365
+      });
+
+      return user;
+    } else {  // We signup the user
+      return this.signup(parent, data, ctx);
+    }
   },
   
   logout(parent, args, ctx: Context) {
-    ctx.response.clearCookie("token");
+    ctx.response.clearCookienp("token");
 
     return "disconnected";
   },

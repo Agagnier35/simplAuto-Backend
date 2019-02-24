@@ -52,6 +52,8 @@ type User {
   birthDate: Date!
   gender: Gender!
   permissions: [Permission!]!
+  facebookID: String
+  googleID: String
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
@@ -79,6 +81,8 @@ input UserSignupInput {
   birthDate: DateInput!
   gender: Gender!
   permissions: [Permission!]
+  facebookID: String
+  googleID: String
 }
 
 input UserUpdateInput {

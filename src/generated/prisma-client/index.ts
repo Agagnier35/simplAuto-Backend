@@ -666,6 +666,10 @@ export type UserOrderByInput =
   | "location_DESC"
   | "gender_ASC"
   | "gender_DESC"
+  | "facebookID_ASC"
+  | "facebookID_DESC"
+  | "googleID_ASC"
+  | "googleID_DESC"
   | "resetToken_ASC"
   | "resetToken_DESC"
   | "resetTokenExpiry_ASC"
@@ -1086,6 +1090,8 @@ export interface UserCreateWithoutConversationsInput {
   offers?: OfferCreateManyWithoutCreatorInput;
   ads?: AdCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
 }
@@ -1129,6 +1135,8 @@ export interface UserCreateInput {
   offers?: OfferCreateManyWithoutCreatorInput;
   ads?: AdCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
@@ -1272,6 +1280,8 @@ export interface UserUpdateInput {
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
@@ -1394,6 +1404,34 @@ export interface UserWhereInput {
   cars_every?: CarWhereInput;
   cars_some?: CarWhereInput;
   cars_none?: CarWhereInput;
+  facebookID?: ID_Input;
+  facebookID_not?: ID_Input;
+  facebookID_in?: ID_Input[] | ID_Input;
+  facebookID_not_in?: ID_Input[] | ID_Input;
+  facebookID_lt?: ID_Input;
+  facebookID_lte?: ID_Input;
+  facebookID_gt?: ID_Input;
+  facebookID_gte?: ID_Input;
+  facebookID_contains?: ID_Input;
+  facebookID_not_contains?: ID_Input;
+  facebookID_starts_with?: ID_Input;
+  facebookID_not_starts_with?: ID_Input;
+  facebookID_ends_with?: ID_Input;
+  facebookID_not_ends_with?: ID_Input;
+  googleID?: ID_Input;
+  googleID_not?: ID_Input;
+  googleID_in?: ID_Input[] | ID_Input;
+  googleID_not_in?: ID_Input[] | ID_Input;
+  googleID_lt?: ID_Input;
+  googleID_lte?: ID_Input;
+  googleID_gt?: ID_Input;
+  googleID_gte?: ID_Input;
+  googleID_contains?: ID_Input;
+  googleID_not_contains?: ID_Input;
+  googleID_starts_with?: ID_Input;
+  googleID_not_starts_with?: ID_Input;
+  googleID_ends_with?: ID_Input;
+  googleID_not_ends_with?: ID_Input;
   resetToken?: String;
   resetToken_not?: String;
   resetToken_in?: String[] | String;
@@ -1449,6 +1487,8 @@ export interface UserUpdateWithoutAdsDataInput {
   permissions?: UserUpdatepermissionsInput;
   offers?: OfferUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
@@ -2188,6 +2228,8 @@ export interface UserUpdateWithoutCarsDataInput {
   permissions?: UserUpdatepermissionsInput;
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
@@ -2470,6 +2512,8 @@ export interface UserUpdateWithoutOffersDataInput {
   permissions?: UserUpdatepermissionsInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
@@ -2511,6 +2555,8 @@ export interface UserUpdateManyMutationInput {
   location?: String;
   gender?: Gender;
   permissions?: UserUpdatepermissionsInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
 }
@@ -2743,6 +2789,8 @@ export interface OfferAddonUpsertWithWhereUniqueNestedInput {
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
   email?: String;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
 }>;
 
 export interface OfferAddonScalarWhereInput {
@@ -2808,6 +2856,8 @@ export interface UserCreateWithoutAdsInput {
   permissions?: UserCreatepermissionsInput;
   offers?: OfferCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
@@ -2872,6 +2922,8 @@ export interface UserUpdateWithoutConversationsDataInput {
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
 }
@@ -2928,6 +2980,8 @@ export interface UserCreateWithoutOffersInput {
   permissions?: UserCreatepermissionsInput;
   ads?: AdCreateManyWithoutCreatorInput;
   cars?: CarCreateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
@@ -2945,6 +2999,8 @@ export interface UserUpdateDataInput {
   offers?: OfferUpdateManyWithoutCreatorInput;
   ads?: AdUpdateManyWithoutCreatorInput;
   cars?: CarUpdateManyWithoutOwnerInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
@@ -3581,6 +3637,8 @@ export interface UserCreateWithoutCarsInput {
   permissions?: UserCreatepermissionsInput;
   offers?: OfferCreateManyWithoutCreatorInput;
   ads?: AdCreateManyWithoutCreatorInput;
+  facebookID?: ID_Input;
+  googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
@@ -3646,6 +3704,8 @@ export interface UserPreviousValues {
   location: String;
   gender: Gender;
   permissions: Permission[];
+  facebookID?: ID_Output;
+  googleID?: ID_Output;
   resetToken?: String;
   resetTokenExpiry?: Float;
 }
@@ -3661,6 +3721,8 @@ export interface UserPreviousValuesPromise
   location: () => Promise<String>;
   gender: () => Promise<Gender>;
   permissions: () => Promise<Permission[]>;
+  facebookID: () => Promise<ID_Output>;
+  googleID: () => Promise<ID_Output>;
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<Float>;
 }
@@ -3676,6 +3738,8 @@ export interface UserPreviousValuesSubscription
   location: () => Promise<AsyncIterator<String>>;
   gender: () => Promise<AsyncIterator<Gender>>;
   permissions: () => Promise<AsyncIterator<Permission[]>>;
+  facebookID: () => Promise<AsyncIterator<ID_Output>>;
+  googleID: () => Promise<AsyncIterator<ID_Output>>;
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
 }
@@ -5301,6 +5365,8 @@ export interface User {
   location: String;
   gender: Gender;
   permissions: Permission[];
+  facebookID?: ID_Output;
+  googleID?: ID_Output;
   resetToken?: String;
   resetTokenExpiry?: Float;
 }
@@ -5342,6 +5408,8 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  facebookID: () => Promise<ID_Output>;
+  googleID: () => Promise<ID_Output>;
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<Float>;
   conversations: <T = FragmentableArray<Conversation>>(args?: {
@@ -5394,6 +5462,8 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  facebookID: () => Promise<AsyncIterator<ID_Output>>;
+  googleID: () => Promise<AsyncIterator<ID_Output>>;
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
   conversations: <T = Promise<AsyncIterator<ConversationSubscription>>>(args?: {
