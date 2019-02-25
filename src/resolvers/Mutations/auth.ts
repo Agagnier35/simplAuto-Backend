@@ -109,7 +109,7 @@ export const auth: AuthResolvers = {
     console.log("Logging in with Facebook.");
     const user = await ctx.prisma.user({ facebookID: data.facebookID});
     if(user) {
-      // Same token flow as signup...
+      // Same token flow as signup but doesn't necessit password identification ...
       const token = jwt.sign(
         { userId: user.id, permissions: user.permissions },
         process.env.APP_SECRET
@@ -122,7 +122,48 @@ export const auth: AuthResolvers = {
 
       return user;
     } else {  // We signup the user
-      return this.signup(parent, data, ctx);
+      data.email = data.email.toLowerCase();
+
+      // Set default permissions
+      // We set USER as the default
+      // role for a logged in user
+      const basePermissions: Permission[] = ["USER"];
+  
+      const permissions = {
+        set: basePermissions
+      };
+  
+      const { day, month, year } = data.birthDate;
+      const birthDate = {
+        create: {
+          day,
+          month,
+          year
+        }
+      };
+
+  
+      // Finally create
+      const userInput: UserCreateInput = {
+        ...data,
+        permissions,
+        birthDate
+      };
+      const user = await ctx.prisma.createUser(userInput);
+  
+      // Create the JWT token for the user
+      const token = jwt.sign(
+        { permissions: basePermissions, userId: user.id },
+        process.env.APP_SECRET
+      );
+  
+      // Set the JWT as a cookie on the response
+      ctx.response.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
+      });
+  
+      return user;
     }
   },
 
@@ -130,7 +171,7 @@ export const auth: AuthResolvers = {
     console.log("Logging in with Google.");
     const user = await ctx.prisma.user({ googleID: data.googleID});
     if(user) {
-      // Same token flow as signup...
+      // Same token flow as signup but doesn't necessit password identification ...
       const token = jwt.sign(
         { userId: user.id, permissions: user.permissions },
         process.env.APP_SECRET
@@ -143,12 +184,53 @@ export const auth: AuthResolvers = {
 
       return user;
     } else {  // We signup the user
-      return this.signup(parent, data, ctx);
+      data.email = data.email.toLowerCase();
+
+      // Set default permissions
+      // We set USER as the default
+      // role for a logged in user
+      const basePermissions: Permission[] = ["USER"];
+  
+      const permissions = {
+        set: basePermissions
+      };
+  
+      const { day, month, year } = data.birthDate;
+      const birthDate = {
+        create: {
+          day,
+          month,
+          year
+        }
+      };
+
+  
+      // Finally create
+      const userInput: UserCreateInput = {
+        ...data,
+        permissions,
+        birthDate
+      };
+      const user = await ctx.prisma.createUser(userInput);
+  
+      // Create the JWT token for the user
+      const token = jwt.sign(
+        { permissions: basePermissions, userId: user.id },
+        process.env.APP_SECRET
+      );
+  
+      // Set the JWT as a cookie on the response
+      ctx.response.cookie("token", token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
+      });
+  
+      return user;
     }
   },
   
   logout(parent, args, ctx: Context) {
-    ctx.response.clearCookienp("token");
+    ctx.response.clearCookie("token");
 
     return "disconnected";
   },
