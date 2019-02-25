@@ -4,7 +4,8 @@ import {
   MutationResolvers as Types,
   CarStatus
 } from "../../generated/yoga-client";
-import { OfferStatus } from "../../generated/prisma-client";
+import { OfferStatus, User } from "../../generated/prisma-client";
+import { UserNotCreatorError } from "../../errors/authErrors";
 
 const MAX_CARS = 2;
 
@@ -63,6 +64,13 @@ export const car: CarResolvers = {
     });
   },
   async deleteCar(parent, { id }, ctx: Context) {
+    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const userId = getUserId(ctx);
+
+    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+      throw UserNotCreatorError;
+    }
+
     const statusOffer: OfferStatus = "DELETED";
     await ctx.prisma.updateManyOffers({
       data: { status: statusOffer },

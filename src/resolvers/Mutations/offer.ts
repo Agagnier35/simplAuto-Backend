@@ -2,9 +2,10 @@ import {
   MutationResolvers as Types,
   OfferStatus
 } from "../../generated/yoga-client";
-import { getUserId, Context } from "../../utils";
-import { OfferUpdateInput } from "../../generated/prisma-client";
+import { getUserId, Context, getUserPermissions } from "../../utils";
+import { OfferUpdateInput, User } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
+import { UserNotCreatorError } from "../../errors/authErrors";
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
@@ -13,14 +14,6 @@ interface OfferResolver {
 }
 
 export const offer: OfferResolver = {
-  async deleteOffer(parent, { id }, ctx: Context) {
-    const status: OfferStatus = "DELETED";
-    return await ctx.prisma.updateOffer({
-      data: { status },
-      where: { id }
-    });
-  },
-
   async createOffer(parent, { data }, ctx: Context) {
     const id = getUserId(ctx);
     const { adID, price, carID, addons } = data;
@@ -51,6 +44,13 @@ export const offer: OfferResolver = {
   },
   async updateOffer(parent, { data }, ctx: Context) {
     const { addons, id, ...rest } = data;
+
+    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const userId = getUserId(ctx);
+
+    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+      throw UserNotCreatorError;
+    }
 
     const updatedData: OfferUpdateInput = { ...rest };
 
@@ -83,6 +83,20 @@ export const offer: OfferResolver = {
     return ctx.prisma.updateOffer({
       data: updatedData,
       where: { id: data.id }
+    });
+  },
+  async deleteOffer(parent, { id }, ctx: Context) {
+    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const userId = getUserId(ctx);
+
+    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+      throw UserNotCreatorError;
+    }
+
+    const status: OfferStatus = "DELETED";
+    return await ctx.prisma.updateOffer({
+      data: { status },
+      where: { id }
     });
   }
 };

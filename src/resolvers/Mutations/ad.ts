@@ -1,4 +1,4 @@
-import { getUserId, Context } from "../../utils";
+import { getUserId, Context, getUserPermissions } from "../../utils";
 import {
   MutationResolvers as Types,
   AdStatus
@@ -6,8 +6,10 @@ import {
 import {
   AdCreateInput,
   OfferStatus,
-  AdUpdateInput
+  AdUpdateInput,
+  User
 } from "../../generated/prisma-client/index";
+import { UserNotCreatorError } from "../../errors/authErrors";
 
 interface AdResolvers {
   createAd: Types.CreateAdResolver;
@@ -60,6 +62,13 @@ export const ad: AdResolvers = {
   async updateAd(parent, { data }, ctx: Context) {
     const { id, manufacturerID, modelID, categoryID, features, ...rest } = data;
 
+    const adCreator: User = await ctx.prisma.ad({ id }).creator();
+    const userId = getUserId(ctx);
+
+    if (adCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+      throw UserNotCreatorError;
+    }
+
     const updatedData: AdUpdateInput = {
       ...rest
     };
@@ -97,6 +106,13 @@ export const ad: AdResolvers = {
     });
   },
   async deleteAd(parent, { id }, ctx) {
+    const adCreator: User = await ctx.prisma.ad({ id }).creator();
+    const userId = getUserId(ctx);
+
+    if (adCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+      throw UserNotCreatorError;
+    }
+
     const statusOffer: OfferStatus = "DELETED";
     await ctx.prisma.updateManyOffers({
       data: { status: statusOffer },
