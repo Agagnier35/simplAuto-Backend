@@ -19,6 +19,8 @@ type Query {
 type Mutation {
   signup(data: UserSignupInput!): User!
   login(email: String!, password: String!): User!
+  facebookLogin(data: UserSignupInput!): User!
+  googleLogin(data: UserSignupInput!): User!
   logout: String!
   updateUser(data: UserUpdateInput!): User!
   createDraft(title: String!, content: String!): Post!
@@ -51,6 +53,8 @@ type User {
   birthDate: Date!
   gender: Gender!
   permissions: [Permission!]!
+  facebookID: String
+  googleID: String
   offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
@@ -78,6 +82,8 @@ input UserSignupInput {
   birthDate: DateInput!
   gender: Gender!
   permissions: [Permission!]
+  facebookID: String
+  googleID: String
 }
 
 input UserUpdateInput {

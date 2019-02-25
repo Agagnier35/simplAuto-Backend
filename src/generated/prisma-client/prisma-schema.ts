@@ -3187,6 +3187,8 @@ type User {
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
   ads(where: AdWhereInput, orderBy: AdOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Ad!]
   cars(where: CarWhereInput, orderBy: CarOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Car!]
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Conversation!]
@@ -3210,6 +3212,8 @@ input UserCreateInput {
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
@@ -3255,6 +3259,8 @@ input UserCreateWithoutAdsInput {
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
@@ -3271,6 +3277,8 @@ input UserCreateWithoutCarsInput {
   permissions: UserCreatepermissionsInput
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
@@ -3288,6 +3296,8 @@ input UserCreateWithoutConversationsInput {
   offers: OfferCreateManyWithoutCreatorInput
   ads: AdCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3303,6 +3313,8 @@ input UserCreateWithoutOffersInput {
   permissions: UserCreatepermissionsInput
   ads: AdCreateManyWithoutCreatorInput
   cars: CarCreateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
@@ -3328,6 +3340,10 @@ enum UserOrderByInput {
   location_DESC
   gender_ASC
   gender_DESC
+  facebookID_ASC
+  facebookID_DESC
+  googleID_ASC
+  googleID_DESC
   resetToken_ASC
   resetToken_DESC
   resetTokenExpiry_ASC
@@ -3347,6 +3363,8 @@ type UserPreviousValues {
   location: String!
   gender: Gender!
   permissions: [Permission!]!
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3381,6 +3399,8 @@ input UserUpdateDataInput {
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
@@ -3398,6 +3418,8 @@ input UserUpdateInput {
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
@@ -3411,6 +3433,8 @@ input UserUpdateManyMutationInput {
   location: String
   gender: Gender
   permissions: UserUpdatepermissionsInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3465,6 +3489,8 @@ input UserUpdateWithoutAdsDataInput {
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
@@ -3481,6 +3507,8 @@ input UserUpdateWithoutCarsDataInput {
   permissions: UserUpdatepermissionsInput
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
@@ -3498,6 +3526,8 @@ input UserUpdateWithoutConversationsDataInput {
   offers: OfferUpdateManyWithoutCreatorInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
 }
@@ -3513,6 +3543,8 @@ input UserUpdateWithoutOffersDataInput {
   permissions: UserUpdatepermissionsInput
   ads: AdUpdateManyWithoutCreatorInput
   cars: CarUpdateManyWithoutOwnerInput
+  facebookID: ID
+  googleID: ID
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
@@ -3642,6 +3674,34 @@ input UserWhereInput {
   cars_every: CarWhereInput
   cars_some: CarWhereInput
   cars_none: CarWhereInput
+  facebookID: ID
+  facebookID_not: ID
+  facebookID_in: [ID!]
+  facebookID_not_in: [ID!]
+  facebookID_lt: ID
+  facebookID_lte: ID
+  facebookID_gt: ID
+  facebookID_gte: ID
+  facebookID_contains: ID
+  facebookID_not_contains: ID
+  facebookID_starts_with: ID
+  facebookID_not_starts_with: ID
+  facebookID_ends_with: ID
+  facebookID_not_ends_with: ID
+  googleID: ID
+  googleID_not: ID
+  googleID_in: [ID!]
+  googleID_not_in: [ID!]
+  googleID_lt: ID
+  googleID_lte: ID
+  googleID_gt: ID
+  googleID_gte: ID
+  googleID_contains: ID
+  googleID_not_contains: ID
+  googleID_starts_with: ID
+  googleID_not_starts_with: ID
+  googleID_ends_with: ID
+  googleID_not_ends_with: ID
   resetToken: String
   resetToken_not: String
   resetToken_in: [String!]
@@ -3675,5 +3735,7 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+  facebookID: ID
+  googleID: ID
 }
 `
