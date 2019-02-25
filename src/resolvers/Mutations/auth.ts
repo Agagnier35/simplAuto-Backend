@@ -106,7 +106,6 @@ export const auth: AuthResolvers = {
   },
 
   async facebookLogin(parent, {data}, ctx: Context) {
-    console.log("Logging in with Facebook.");
     const user = await ctx.prisma.user({ facebookID: data.facebookID});
     if(user) {
       // Same token flow as signup but doesn't necessit password identification ...
@@ -168,7 +167,6 @@ export const auth: AuthResolvers = {
   },
 
   async googleLogin(parent, {data}, ctx: Context) {
-    console.log("Logging in with Google.");
     const user = await ctx.prisma.user({ googleID: data.googleID});
     if(user) {
       // Same token flow as signup but doesn't necessit password identification ...
