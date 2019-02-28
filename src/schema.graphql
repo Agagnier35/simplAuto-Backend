@@ -310,7 +310,7 @@ input DateInput {
 }
 
 type Subscription {
-  messageSubscription: Message
+  messageSubscription(conversationID: ID!): Message
 }
 
 type Post {
