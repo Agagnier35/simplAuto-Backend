@@ -62,8 +62,6 @@ server.start(
             process.env.APP_SECRET
           ) as JwtCookie;
 
-          console.log(userId);
-
           return { userId, permissions };
         }
 
