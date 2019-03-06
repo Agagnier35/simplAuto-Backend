@@ -20,10 +20,15 @@ export const Ad: AdResolvers.Type = {
     return ctx.prisma.ad({ id }).creator();
   },
 
-  offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.ad({ id }).offers({
+  offers: (parent, args, ctx: Context) => {
+    return ctx.prisma.ad({ id: parent.id }).offers({
       where: {
-        status: "PUBLISHED"
+        status: "PUBLISHED",
+        price_gt: parent.priceLowerBound,
+        price_lt: parent.priceHigherBound,
+        car: {manufacturer:{id: parent}
+        ,
+
       }
     });
   },
