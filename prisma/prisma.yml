@@ -11,7 +11,7 @@ generate:
 
 # Seed your service with initial data based on `seed.graphql`.
 seed:
-  import: seed.graphql
+  run: ts-node ./prisma/seed.ts
 
 # Ensures Prisma client is re-generated after a datamodel change.
 hooks:
