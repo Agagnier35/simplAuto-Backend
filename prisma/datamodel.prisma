@@ -11,8 +11,9 @@ type Post {
 type User {
   id: ID! @unique
   email: String! @unique
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: Date!
@@ -26,12 +27,18 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
+  clientType: ClientType
 }
 
 enum Gender {
   MALE
   FEMALE
   OTHER
+}
+
+enum ClientType {
+  COMPANY
+  INDIVIDUAL
 }
 
 enum Permission {
