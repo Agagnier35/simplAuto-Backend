@@ -46,8 +46,9 @@ type Mutation {
 type User {
   id: ID!
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: Date!
@@ -59,12 +60,18 @@ type User {
   ads: [Ad!]!
   cars: [Car!]!
   conversations: [Conversation!]
+  clientType: ClientType
 }
 
 enum Gender {
   MALE
   FEMALE
   OTHER
+}
+
+enum ClientType {
+  COMPANY
+  INDIVIDUAL
 }
 
 enum Permission {
