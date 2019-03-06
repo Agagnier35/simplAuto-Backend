@@ -715,6 +715,8 @@ export type OfferAddonOrderByInput =
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
+export type ClientType = "COMPANY" | "INDIVIDUAL";
+
 export type CarFeatureOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -5361,6 +5363,7 @@ export interface User {
   email: String;
   firstName: String;
   lastName: String;
+  companyName: String;
   password: String;
   location: String;
   gender: Gender;
@@ -5369,6 +5372,7 @@ export interface User {
   googleID?: ID_Output;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  clientType: ClientType
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
