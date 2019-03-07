@@ -16,8 +16,8 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   offers: [Offer!]!
   ads: [Ad!]!
