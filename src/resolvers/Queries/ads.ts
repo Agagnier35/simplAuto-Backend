@@ -4,7 +4,6 @@ import { QueryResolvers } from "../../generated/yoga-client";
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
   ad: QueryResolvers.AdResolver;
-  suggestion: QueryResolvers.SuggestionsResolver;
 }
 
 export const ads: AdsQueries = {
@@ -17,9 +16,5 @@ export const ads: AdsQueries = {
   },
   ad(parent, { id }, ctx: Context) {
     return ctx.prisma.ad({ id });
-  },
-
-  suggestion(parent, { id }, ctx: Context) {
-    return ctx.prisma.offers();
   }
 };

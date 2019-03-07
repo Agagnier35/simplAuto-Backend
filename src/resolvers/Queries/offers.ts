@@ -1,9 +1,11 @@
 import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
+import { Offer, Float } from "../../generated/prisma-client";
 
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;
   offerAddons: QueryResolvers.OfferAddonsResolver;
+  suggestion: QueryResolvers.SuggestionsResolver;
 }
 
 export const offers: OffersQueries = {
@@ -17,5 +19,25 @@ export const offers: OffersQueries = {
         rankValue_gt: 0
       }
     });
+  },
+
+  suggestion(parent, { id }, ctx: Context) {
+    const weight = {
+      price: 50,
+      manufacturer: 7,
+      model: 7,
+      category: 14,
+      mileage: 14,
+      year: 8
+    };
+
+    type offer_score = {
+      offer: Offer;
+      score: Float;
+      position: number;
+    };
+
+    const max_deviation = 0.4;
+    return ctx.prisma.offers();
   }
 };
