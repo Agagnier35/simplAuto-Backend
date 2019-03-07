@@ -24,7 +24,13 @@ export const Car: CarResolvers.Type = {
     return ctx.prisma.car({ id }).features();
   },
 
-  offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.car({ id }).offers();
+  offers: ({ id }, { pageNumber, pageSize }, ctx: Context) => {
+    const resolverArg: any = {};
+
+    if (pageSize && pageNumber) {
+      resolverArg.skip = pageNumber * pageSize;
+      resolverArg.first = pageSize;
+    }
+    return ctx.prisma.car({ id }).offers(resolverArg);
   }
 };
