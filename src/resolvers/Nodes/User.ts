@@ -16,16 +16,19 @@ export const User: UserResolvers.Type = {
     });
   },
 
-  ads: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).ads({
+  ads: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
+    const resolverArg: any = {
       where: {
         status: "PUBLISHED"
       }
-    });
-  },
+    };
 
-  offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).offers();
+    if (pageSize && pageNumber >= 0) {
+      resolverArg.skip = pageNumber * pageSize;
+      resolverArg.first = pageSize;
+    }
+
+    return ctx.prisma.user({ id }).ads(resolverArg);
   },
 
   conversations: ({ id }, args, ctx: Context) => {
