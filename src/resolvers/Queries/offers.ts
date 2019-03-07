@@ -5,7 +5,7 @@ import { Offer, Float } from "../../generated/prisma-client";
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;
   offerAddons: QueryResolvers.OfferAddonsResolver;
-  suggestion: QueryResolvers.SuggestionsResolver;
+  suggestions: QueryResolvers.SuggestionsResolver;
 }
 
 export const offers: OffersQueries = {
@@ -21,7 +21,7 @@ export const offers: OffersQueries = {
     });
   },
 
-  suggestion(parent, { id }, ctx: Context) {
+  suggestions(parent, { id }, ctx: Context) {
     const weight = {
       price: 50,
       manufacturer: 7,
