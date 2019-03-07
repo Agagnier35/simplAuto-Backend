@@ -114,7 +114,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
-  description: String!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -167,7 +167,7 @@ input CarCreateInput {
   manufacturerID: String!
   modelID: String!
   categoryID: String!
-  description: String!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
