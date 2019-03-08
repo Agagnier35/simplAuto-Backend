@@ -4,6 +4,7 @@ import { QueryResolvers } from "../../generated/yoga-client";
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
   ad: QueryResolvers.AdResolver;
+  allAdsCount: QueryResolvers.AllAdsCountResolver;
 }
 
 export const ads: AdsQueries = {
@@ -23,5 +24,11 @@ export const ads: AdsQueries = {
   },
   ad(parent, { id }, ctx: Context) {
     return ctx.prisma.ad({ id });
+  },
+  allAdsCount(parent, args, ctx: Context) {
+    return ctx.prisma
+      .adsConnection()
+      .aggregate()
+      .count();
   }
 };

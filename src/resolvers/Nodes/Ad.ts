@@ -34,6 +34,20 @@ export const Ad: AdResolvers.Type = {
     return ctx.prisma.ad({ id }).offers(resolverArg);
   },
 
+  offerCount({ id }, args, ctx: Context) {
+    return ctx.prisma
+      .offersConnection({
+        where: {
+          status: "PUBLISHED",
+          ad: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
+
   features: ({ id }, args, ctx: Context) => {
     return ctx.prisma.ad({ id }).features();
   }

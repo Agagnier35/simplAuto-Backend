@@ -1,4 +1,4 @@
-import { Context } from "../../utils";
+import { Context, getUserId } from "../../utils";
 import { UserResolvers } from "../../generated/yoga-client";
 
 export const User: UserResolvers.Type = {
@@ -15,14 +15,27 @@ export const User: UserResolvers.Type = {
       }
     });
   },
-
+  carCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .carsConnection({
+        where: {
+          status: "PUBLISHED",
+          owner: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
   ads: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
     const resolverArg: any = {
       where: {
         status: "PUBLISHED"
       }
     };
-
+    
     if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
@@ -30,8 +43,45 @@ export const User: UserResolvers.Type = {
 
     return ctx.prisma.user({ id }).ads(resolverArg);
   },
+  
+  adCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .adsConnection({
+        where: {
+          status: "PUBLISHED",
+          creator: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
 
   conversations: ({ id }, args, ctx: Context) => {
     return ctx.prisma.user({ id }).conversations();
+  },
+  conversationCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .conversationsConnection({
+        where: {
+          OR: [
+            {
+              buyer: {
+                id
+              }
+            },
+            {
+              seller: {
+                id
+              }
+            }
+          ]
+        }
+      })
+      .aggregate()
+      .count();
   }
 };

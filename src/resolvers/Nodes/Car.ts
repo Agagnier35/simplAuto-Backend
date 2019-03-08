@@ -32,5 +32,22 @@ export const Car: CarResolvers.Type = {
       resolverArg.first = pageSize;
     }
     return ctx.prisma.car({ id }).offers(resolverArg);
+  },
+  offerCount({ id }, args, ctx: Context) {
+    return ctx.prisma
+      .offersConnection({
+        where: {
+          status: "PUBLISHED",
+          car: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
+  async photoCount({ id }, args, ctx: Context) {
+    const cars = await ctx.prisma.car({ id }).photos();
+    return cars.length;
   }
 };
