@@ -27,7 +27,7 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
-  clientType: ClientType
+  clientType: ClientType!
 }
 
 enum Gender {

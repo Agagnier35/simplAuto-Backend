@@ -60,7 +60,7 @@ type User {
   ads: [Ad!]!
   cars: [Car!]!
   conversations: [Conversation!]
-  clientType: ClientType
+  clientType: ClientType!
 }
 
 enum Gender {
@@ -82,8 +82,9 @@ enum Permission {
 
 input UserSignupInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateInput!
@@ -91,6 +92,7 @@ input UserSignupInput {
   permissions: [Permission!]
   facebookID: String
   googleID: String
+  clientType: ClientType!
 }
 
 input UserUpdateInput {
@@ -98,11 +100,13 @@ input UserUpdateInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
+  clientType: ClientType
 }
 
 # Cars
