@@ -45,15 +45,15 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   facebookID: String
   googleID: String
   ads(pageNumber: Int, pageSize: Int): [Ad!]!
   cars: [Car!]!
   conversations: [Conversation!]
-  clientType: ClientType
+  clientType: ClientType!
 }
 
 enum Gender {
