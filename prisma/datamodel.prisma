@@ -6,8 +6,8 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   ads: [Ad!]!
   cars: [Car!]!
@@ -16,7 +16,7 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
-  clientType: ClientType
+  clientType: ClientType!
 }
 
 enum Gender {
@@ -101,6 +101,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!

@@ -46,8 +46,8 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   facebookID: String
   googleID: String
@@ -57,7 +57,7 @@ type User {
   conversationCount: Int!
   adCount: Int!
   carCount: Int!
-  clientType: ClientType
+  clientType: ClientType!
 }
 
 enum Gender {
@@ -115,6 +115,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -169,6 +170,7 @@ input CarCreateInput {
   manufacturerID: String!
   modelID: String!
   categoryID: String!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!

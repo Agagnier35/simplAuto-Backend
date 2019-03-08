@@ -612,6 +612,8 @@ export interface ClientConstructor<T> {
 export type CarOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "description_ASC"
+  | "description_DESC"
   | "year_ASC"
   | "year_DESC"
   | "mileage_ASC"
@@ -857,6 +859,20 @@ export interface CarWhereInput {
   manufacturer?: ManufacturerWhereInput;
   model?: CarModelWhereInput;
   category?: CarCategoryWhereInput;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
   year?: Int;
   year_not?: Int;
   year_in?: Int[] | Int;
@@ -1939,6 +1955,7 @@ export interface CarCategoryUpdateOneInput {
 }
 
 export interface CarUpdateManyMutationInput {
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -1954,6 +1971,7 @@ export interface CarUpdateInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -2225,6 +2243,7 @@ export interface CarUpdateWithoutOffersDataInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -2614,6 +2633,7 @@ export interface CarUpdateWithoutOwnerDataInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -2975,6 +2995,7 @@ export interface CarCreateWithoutOffersInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -3219,6 +3240,7 @@ export interface CarCreateInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -3489,6 +3511,7 @@ export interface CarCreateWithoutOwnerInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -3512,6 +3535,20 @@ export interface CarScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
   year?: Int;
   year_not?: Int;
   year_in?: Int[] | Int;
@@ -3552,6 +3589,7 @@ export interface CarFeatureCategoryUpdateManyMutationInput {
 }
 
 export interface CarUpdateManyDataInput {
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -3821,6 +3859,7 @@ export interface CarCategoryConnectionSubscription
 
 export interface Car {
   id: ID_Output;
+  description?: String;
   year: Int;
   mileage: Int;
   photos: String[];
@@ -3833,6 +3872,7 @@ export interface CarPromise extends Promise<Car>, Fragmentable {
   manufacturer: <T = ManufacturerPromise>() => T;
   model: <T = CarModelPromise>() => T;
   category: <T = CarCategoryPromise>() => T;
+  description: () => Promise<String>;
   year: () => Promise<Int>;
   mileage: () => Promise<Int>;
   photos: () => Promise<String[]>;
@@ -3865,6 +3905,7 @@ export interface CarSubscription
   manufacturer: <T = ManufacturerSubscription>() => T;
   model: <T = CarModelSubscription>() => T;
   category: <T = CarCategorySubscription>() => T;
+  description: () => Promise<AsyncIterator<String>>;
   year: () => Promise<AsyncIterator<Int>>;
   mileage: () => Promise<AsyncIterator<Int>>;
   photos: () => Promise<AsyncIterator<String[]>>;
@@ -4326,6 +4367,7 @@ export interface OfferAddonEdgeSubscription
 
 export interface CarPreviousValues {
   id: ID_Output;
+  description?: String;
   year: Int;
   mileage: Int;
   photos: String[];
@@ -4336,6 +4378,7 @@ export interface CarPreviousValuesPromise
   extends Promise<CarPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  description: () => Promise<String>;
   year: () => Promise<Int>;
   mileage: () => Promise<Int>;
   photos: () => Promise<String[]>;
@@ -4346,6 +4389,7 @@ export interface CarPreviousValuesSubscription
   extends Promise<AsyncIterator<CarPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  description: () => Promise<AsyncIterator<String>>;
   year: () => Promise<AsyncIterator<Int>>;
   mileage: () => Promise<AsyncIterator<Int>>;
   photos: () => Promise<AsyncIterator<String[]>>;

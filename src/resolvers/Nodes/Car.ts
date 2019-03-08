@@ -27,7 +27,7 @@ export const Car: CarResolvers.Type = {
   offers: ({ id }, { pageNumber, pageSize }, ctx: Context) => {
     const resolverArg: any = {};
 
-    if (pageSize && pageNumber) {
+    if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }

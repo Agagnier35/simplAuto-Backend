@@ -15,7 +15,7 @@ export const ads: AdsQueries = {
       }
     };
 
-    if (pageSize && pageNumber) {
+    if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }

@@ -537,6 +537,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -686,6 +687,7 @@ input CarCreateInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -713,6 +715,7 @@ input CarCreateWithoutOffersInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -724,6 +727,7 @@ input CarCreateWithoutOwnerInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -1304,6 +1308,8 @@ input CarModelWhereUniqueInput {
 enum CarOrderByInput {
   id_ASC
   id_DESC
+  description_ASC
+  description_DESC
   year_ASC
   year_DESC
   mileage_ASC
@@ -1318,6 +1324,7 @@ enum CarOrderByInput {
 
 type CarPreviousValues {
   id: ID!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -1339,6 +1346,20 @@ input CarScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   year: Int
   year_not: Int
   year_in: [Int!]
@@ -1393,6 +1414,7 @@ input CarUpdateInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1402,6 +1424,7 @@ input CarUpdateInput {
 }
 
 input CarUpdateManyDataInput {
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1409,6 +1432,7 @@ input CarUpdateManyDataInput {
 }
 
 input CarUpdateManyMutationInput {
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1447,6 +1471,7 @@ input CarUpdateWithoutOffersDataInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1458,6 +1483,7 @@ input CarUpdateWithoutOwnerDataInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1501,6 +1527,20 @@ input CarWhereInput {
   manufacturer: ManufacturerWhereInput
   model: CarModelWhereInput
   category: CarCategoryWhereInput
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   year: Int
   year_not: Int
   year_in: [Int!]

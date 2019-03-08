@@ -15,7 +15,6 @@ export const User: UserResolvers.Type = {
       }
     });
   },
-
   carCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
     return ctx.prisma
@@ -30,22 +29,21 @@ export const User: UserResolvers.Type = {
       .aggregate()
       .count();
   },
-
   ads: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
     const resolverArg: any = {
       where: {
         status: "PUBLISHED"
       }
     };
-
-    if (pageSize && pageNumber) {
+    
+    if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
 
     return ctx.prisma.user({ id }).ads(resolverArg);
   },
-
+  
   adCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
     return ctx.prisma
