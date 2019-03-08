@@ -2,6 +2,8 @@ import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer, Float } from "../../generated/prisma-client";
 
+function calc_score(weight, car) {}
+
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;
   offerAddons: QueryResolvers.OfferAddonsResolver;
@@ -21,7 +23,7 @@ export const offers: OffersQueries = {
     });
   },
 
-  suggestions(parent, { id }, ctx: Context) {
+  async suggestions(parent, { id }, ctx: Context) {
     const weight = {
       price: 50,
       manufacturer: 7,
@@ -38,6 +40,16 @@ export const offers: OffersQueries = {
     };
 
     const max_deviation = 0.4;
-    return ctx.prisma.offers();
+
+    const offers = await ctx.prisma.ad({ id }).offers();
+    let offers_score = [];
+
+    offers.forEach(async element => {
+      const offerCar = await ctx.prisma.offer({ id: element.id }).car();
+      let score = calc_score(weight, offerCar);
+      offers_score.push();
+    });
+
+    return offers_score;
   }
 };
