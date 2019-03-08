@@ -6,7 +6,7 @@
     "debug": "nodemon -e ts,graphql -x ts-node --inspect src/index.ts",
     "build": "rimraf dist && tsc",
     "deploy": "prisma deploy --env-file .env",
-    "seeds": "prisma seed --reset",
+    "seeds": "prisma seed --reset --env-file .env",
     "generate": "graphqlgen",
     "prettierCI": "prettier-check **/*.ts !**/generated/**"
   },

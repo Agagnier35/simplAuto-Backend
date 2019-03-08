@@ -9,7 +9,6 @@ import { Car } from "./Nodes/Car";
 import { CarFeature } from "./Nodes/CarFeature";
 import { CarFeatureCategory } from "./Nodes/CarFeatureCategory";
 import { Resolvers } from "../generated/yoga-client";
-import { Post } from "./Nodes/Post";
 import { CarCategory } from "./Nodes/CarCategory";
 import { CarModel } from "./Nodes/CarModel";
 import { Date } from "./Nodes/Date";
@@ -30,7 +29,6 @@ const resolvers: Resolvers = {
   CarFeature,
   CarFeatureCategory,
   CarModel,
-  Post,
   Date,
   Message,
   Conversation,

@@ -20,12 +20,18 @@ export const Ad: AdResolvers.Type = {
     return ctx.prisma.ad({ id }).creator();
   },
 
-  offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.ad({ id }).offers({
+  offers: ({ id }, { pageNumber, pageSize }, ctx: Context) => {
+    const resolverArg: any = {
       where: {
         status: "PUBLISHED"
       }
-    });
+    };
+
+    if (pageSize && pageNumber >= 0) {
+      resolverArg.skip = pageNumber * pageSize;
+      resolverArg.first = pageSize;
+    }
+    return ctx.prisma.ad({ id }).offers(resolverArg);
   },
 
   features: ({ id }, args, ctx: Context) => {
