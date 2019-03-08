@@ -11,6 +11,7 @@ type Query {
   manufacturers: [Manufacturer]
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
+  allAdsCount: Int!
 }
 
 type Mutation {
@@ -53,6 +54,9 @@ type User {
   ads(pageNumber: Int, pageSize: Int): [Ad!]!
   cars: [Car!]!
   conversations: [Conversation!]
+  conversationCount: Int!
+  adCount: Int!
+  carCount: Int!
   clientType: ClientType
 }
 
@@ -114,9 +118,11 @@ type Car {
   year: Int!
   mileage: Int!
   photos: [String!]!
+  photoCount: Int!
   features: [CarFeature!]!
   status: CarStatus!
   offers(pageNumber: Int, pageSize: Int): [Offer!]
+  offerCount: Int!
 }
 
 enum CarStatus {
@@ -176,6 +182,7 @@ type Ad {
   id: ID!
   creator: User @private
   offers(pageNumber: Int, pageSize: Int): [Offer!]!
+  offerCount: Int!
   priceLowerBound: Float
   priceHigherBound: Float
   manufacturer: Manufacturer
@@ -285,6 +292,7 @@ type Conversation {
   seller: User @private
   offer: Offer!
   messages: [Message!]!
+  messageCount: Int!
 }
 
 # Message
