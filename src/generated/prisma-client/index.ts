@@ -1127,8 +1127,9 @@ export interface MessageSubscriptionWhereInput {
 
 export interface UserCreateInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -1142,6 +1143,7 @@ export interface UserCreateInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
+  clientType: ClientType;
 }
 
 export interface DateSubscriptionWhereInput {
