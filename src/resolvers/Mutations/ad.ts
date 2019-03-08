@@ -55,7 +55,6 @@ export const ad: AdResolvers = {
         }))
       };
     }
-
     return ctx.prisma.createAd(mutation);
   },
 
