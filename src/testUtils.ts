@@ -1,7 +1,4 @@
 import { Prisma } from "./generated/prisma-client";
-jest.mock("./generated/prisma-client");
-
-export const createPrismaMock = (): jest.Mocked<Prisma> => new Prisma() as any;
 
 export const getAdminContext = (prisma: jest.Mocked<Prisma>) => {
   return {
