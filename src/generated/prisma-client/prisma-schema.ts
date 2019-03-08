@@ -537,6 +537,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -686,6 +687,7 @@ input CarCreateInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -713,6 +715,7 @@ input CarCreateWithoutOffersInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -724,6 +727,7 @@ input CarCreateWithoutOwnerInput {
   manufacturer: ManufacturerCreateOneInput!
   model: CarModelCreateOneInput!
   category: CarCategoryCreateOneInput!
+  description: String
   year: Int!
   mileage: Int!
   photos: CarCreatephotosInput
@@ -1304,6 +1308,8 @@ input CarModelWhereUniqueInput {
 enum CarOrderByInput {
   id_ASC
   id_DESC
+  description_ASC
+  description_DESC
   year_ASC
   year_DESC
   mileage_ASC
@@ -1318,6 +1324,7 @@ enum CarOrderByInput {
 
 type CarPreviousValues {
   id: ID!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -1339,6 +1346,20 @@ input CarScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   year: Int
   year_not: Int
   year_in: [Int!]
@@ -1393,6 +1414,7 @@ input CarUpdateInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1402,6 +1424,7 @@ input CarUpdateInput {
 }
 
 input CarUpdateManyDataInput {
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1409,6 +1432,7 @@ input CarUpdateManyDataInput {
 }
 
 input CarUpdateManyMutationInput {
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1447,6 +1471,7 @@ input CarUpdateWithoutOffersDataInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1458,6 +1483,7 @@ input CarUpdateWithoutOwnerDataInput {
   manufacturer: ManufacturerUpdateOneRequiredInput
   model: CarModelUpdateOneRequiredInput
   category: CarCategoryUpdateOneRequiredInput
+  description: String
   year: Int
   mileage: Int
   photos: CarUpdatephotosInput
@@ -1501,6 +1527,20 @@ input CarWhereInput {
   manufacturer: ManufacturerWhereInput
   model: CarModelWhereInput
   category: CarCategoryWhereInput
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
   year: Int
   year_not: Int
   year_in: [Int!]
@@ -1534,6 +1574,11 @@ input CarWhereInput {
 
 input CarWhereUniqueInput {
   id: ID
+}
+
+enum ClientType {
+  COMPANY
+  INDIVIDUAL
 }
 
 type Conversation {
@@ -3177,8 +3222,9 @@ type Subscription {
 type User {
   id: ID!
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: Date!
@@ -3192,6 +3238,7 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Conversation!]
+  clientType: ClientType
 }
 
 type UserConnection {
@@ -3202,8 +3249,9 @@ type UserConnection {
 
 input UserCreateInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateCreateOneInput!
@@ -3217,6 +3265,7 @@ input UserCreateInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserCreateOneInput {
@@ -3250,8 +3299,9 @@ input UserCreatepermissionsInput {
 
 input UserCreateWithoutAdsInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateCreateOneInput!
@@ -3264,12 +3314,14 @@ input UserCreateWithoutAdsInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserCreateWithoutCarsInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateCreateOneInput!
@@ -3282,12 +3334,14 @@ input UserCreateWithoutCarsInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserCreateWithoutConversationsInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateCreateOneInput!
@@ -3300,12 +3354,14 @@ input UserCreateWithoutConversationsInput {
   googleID: ID
   resetToken: String
   resetTokenExpiry: Float
+  clientType: ClientType
 }
 
 input UserCreateWithoutOffersInput {
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   birthDate: DateCreateOneInput!
@@ -3318,6 +3374,7 @@ input UserCreateWithoutOffersInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationCreateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 type UserEdge {
@@ -3334,6 +3391,8 @@ enum UserOrderByInput {
   firstName_DESC
   lastName_ASC
   lastName_DESC
+  companyName_ASC
+  companyName_DESC
   password_ASC
   password_DESC
   location_ASC
@@ -3348,6 +3407,8 @@ enum UserOrderByInput {
   resetToken_DESC
   resetTokenExpiry_ASC
   resetTokenExpiry_DESC
+  clientType_ASC
+  clientType_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -3357,8 +3418,9 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   email: String!
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
   gender: Gender!
@@ -3367,6 +3429,7 @@ type UserPreviousValues {
   googleID: ID
   resetToken: String
   resetTokenExpiry: Float
+  clientType: ClientType
 }
 
 type UserSubscriptionPayload {
@@ -3391,6 +3454,7 @@ input UserUpdateDataInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3404,12 +3468,14 @@ input UserUpdateDataInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserUpdateInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3423,12 +3489,14 @@ input UserUpdateInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserUpdateManyMutationInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   gender: Gender
@@ -3437,6 +3505,7 @@ input UserUpdateManyMutationInput {
   googleID: ID
   resetToken: String
   resetTokenExpiry: Float
+  clientType: ClientType
 }
 
 input UserUpdateOneRequiredInput {
@@ -3482,6 +3551,7 @@ input UserUpdateWithoutAdsDataInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3494,12 +3564,14 @@ input UserUpdateWithoutAdsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserUpdateWithoutCarsDataInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3512,12 +3584,14 @@ input UserUpdateWithoutCarsDataInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserUpdateWithoutConversationsDataInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3530,12 +3604,14 @@ input UserUpdateWithoutConversationsDataInput {
   googleID: ID
   resetToken: String
   resetTokenExpiry: Float
+  clientType: ClientType
 }
 
 input UserUpdateWithoutOffersDataInput {
   email: String
   firstName: String
   lastName: String
+  companyName: String
   password: String
   location: String
   birthDate: DateUpdateOneRequiredInput
@@ -3548,6 +3624,7 @@ input UserUpdateWithoutOffersDataInput {
   resetToken: String
   resetTokenExpiry: Float
   conversations: ConversationUpdateManyWithoutBuyerInput
+  clientType: ClientType
 }
 
 input UserUpsertNestedInput {
@@ -3632,6 +3709,20 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
+  companyName: String
+  companyName_not: String
+  companyName_in: [String!]
+  companyName_not_in: [String!]
+  companyName_lt: String
+  companyName_lte: String
+  companyName_gt: String
+  companyName_gte: String
+  companyName_contains: String
+  companyName_not_contains: String
+  companyName_starts_with: String
+  companyName_not_starts_with: String
+  companyName_ends_with: String
+  companyName_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -3727,6 +3818,10 @@ input UserWhereInput {
   conversations_every: ConversationWhereInput
   conversations_some: ConversationWhereInput
   conversations_none: ConversationWhereInput
+  clientType: ClientType
+  clientType_not: ClientType
+  clientType_in: [ClientType!]
+  clientType_not_in: [ClientType!]
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]

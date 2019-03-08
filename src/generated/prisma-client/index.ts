@@ -612,6 +612,8 @@ export interface ClientConstructor<T> {
 export type CarOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "description_ASC"
+  | "description_DESC"
   | "year_ASC"
   | "year_DESC"
   | "mileage_ASC"
@@ -623,7 +625,7 @@ export type CarOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
+export type CarStatus = "PUBLISHED" | "SOLD" | "DELETED";
 
 export type AdOrderByInput =
   | "id_ASC"
@@ -660,6 +662,8 @@ export type UserOrderByInput =
   | "firstName_DESC"
   | "lastName_ASC"
   | "lastName_DESC"
+  | "companyName_ASC"
+  | "companyName_DESC"
   | "password_ASC"
   | "password_DESC"
   | "location_ASC"
@@ -674,6 +678,8 @@ export type UserOrderByInput =
   | "resetToken_DESC"
   | "resetTokenExpiry_ASC"
   | "resetTokenExpiry_DESC"
+  | "clientType_ASC"
+  | "clientType_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -715,8 +721,6 @@ export type OfferAddonOrderByInput =
 
 export type Gender = "MALE" | "FEMALE" | "OTHER";
 
-export type ClientType = "COMPANY" | "INDIVIDUAL";
-
 export type CarFeatureOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -757,12 +761,6 @@ export type ConversationOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type CarStatus = "PUBLISHED" | "SOLD" | "DELETED";
-
-export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
-
-export type OfferStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
-
 export type OfferOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -777,19 +775,27 @@ export type OfferOrderByInput =
   | "finalRank_ASC"
   | "finalRank_DESC";
 
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export type CarCategoryOrderByInput =
+export type PostOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "published_ASC"
+  | "published_DESC"
+  | "title_ASC"
+  | "title_DESC"
+  | "content_ASC"
+  | "content_DESC";
 
-export type Permission = "USER" | "PREMIUM" | "ADMIN";
+export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
+
+export type ClientType = "COMPANY" | "INDIVIDUAL";
+
+export type CarFeatureType = "TRUE_FALSE" | "MULTIPLE_CHOICE";
+
+export type OfferStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 
 export type DateOrderByInput =
   | "day_ASC"
@@ -805,19 +811,19 @@ export type DateOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type PostOrderByInput =
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type CarCategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC"
-  | "published_ASC"
-  | "published_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "content_ASC"
-  | "content_DESC";
+  | "updatedAt_DESC";
+
+export type Permission = "USER" | "PREMIUM" | "ADMIN";
 
 export interface CarModelUpsertWithWhereUniqueNestedInput {
   where: CarModelWhereUniqueInput;
@@ -853,6 +859,20 @@ export interface CarWhereInput {
   manufacturer?: ManufacturerWhereInput;
   model?: CarModelWhereInput;
   category?: CarCategoryWhereInput;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
   year?: Int;
   year_not?: Int;
   year_in?: Int[] | Int;
@@ -891,7 +911,7 @@ export interface CarFeatureCategoryUpdateOneRequiredWithoutFeaturesInput {
   connect?: CarFeatureCategoryWhereUniqueInput;
 }
 
-export interface ConversationWhereInput {
+export interface MessageWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -906,15 +926,39 @@ export interface ConversationWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  offer?: OfferWhereInput;
-  buyer?: UserWhereInput;
-  seller?: UserWhereInput;
-  messages_every?: MessageWhereInput;
-  messages_some?: MessageWhereInput;
-  messages_none?: MessageWhereInput;
-  AND?: ConversationWhereInput[] | ConversationWhereInput;
-  OR?: ConversationWhereInput[] | ConversationWhereInput;
-  NOT?: ConversationWhereInput[] | ConversationWhereInput;
+  sender?: UserWhereInput;
+  text?: String;
+  text_not?: String;
+  text_in?: String[] | String;
+  text_not_in?: String[] | String;
+  text_lt?: String;
+  text_lte?: String;
+  text_gt?: String;
+  text_gte?: String;
+  text_contains?: String;
+  text_not_contains?: String;
+  text_starts_with?: String;
+  text_not_starts_with?: String;
+  text_ends_with?: String;
+  text_not_ends_with?: String;
+  image?: String;
+  image_not?: String;
+  image_in?: String[] | String;
+  image_not_in?: String[] | String;
+  image_lt?: String;
+  image_lte?: String;
+  image_gt?: String;
+  image_gte?: String;
+  image_contains?: String;
+  image_not_contains?: String;
+  image_starts_with?: String;
+  image_not_starts_with?: String;
+  image_ends_with?: String;
+  image_not_ends_with?: String;
+  conversation?: ConversationWhereInput;
+  AND?: MessageWhereInput[] | MessageWhereInput;
+  OR?: MessageWhereInput[] | MessageWhereInput;
+  NOT?: MessageWhereInput[] | MessageWhereInput;
 }
 
 export interface CarFeatureCategoryUpdateWithoutFeaturesDataInput {
@@ -1082,8 +1126,9 @@ export interface CarModelWhereInput {
 
 export interface UserCreateWithoutConversationsInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -1096,6 +1141,7 @@ export interface UserCreateWithoutConversationsInput {
   googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  clientType?: ClientType;
 }
 
 export interface OfferSubscriptionWhereInput {
@@ -1127,8 +1173,9 @@ export interface MessageSubscriptionWhereInput {
 
 export interface UserCreateInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -1142,6 +1189,7 @@ export interface UserCreateInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface DateSubscriptionWhereInput {
@@ -1274,6 +1322,7 @@ export interface UserUpdateInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -1287,6 +1336,7 @@ export interface UserUpdateInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface AdUpdateInput {
@@ -1364,6 +1414,20 @@ export interface UserWhereInput {
   lastName_not_starts_with?: String;
   lastName_ends_with?: String;
   lastName_not_ends_with?: String;
+  companyName?: String;
+  companyName_not?: String;
+  companyName_in?: String[] | String;
+  companyName_not_in?: String[] | String;
+  companyName_lt?: String;
+  companyName_lte?: String;
+  companyName_gt?: String;
+  companyName_gte?: String;
+  companyName_contains?: String;
+  companyName_not_contains?: String;
+  companyName_starts_with?: String;
+  companyName_not_starts_with?: String;
+  companyName_ends_with?: String;
+  companyName_not_ends_with?: String;
   password?: String;
   password_not?: String;
   password_in?: String[] | String;
@@ -1459,6 +1523,10 @@ export interface UserWhereInput {
   conversations_every?: ConversationWhereInput;
   conversations_some?: ConversationWhereInput;
   conversations_none?: ConversationWhereInput;
+  clientType?: ClientType;
+  clientType_not?: ClientType;
+  clientType_in?: ClientType[] | ClientType;
+  clientType_not_in?: ClientType[] | ClientType;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
@@ -1482,6 +1550,7 @@ export interface UserUpdateWithoutAdsDataInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -1494,6 +1563,7 @@ export interface UserUpdateWithoutAdsDataInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export type CarFeatureWhereUniqueInput = AtLeastOne<{
@@ -1885,6 +1955,7 @@ export interface CarCategoryUpdateOneInput {
 }
 
 export interface CarUpdateManyMutationInput {
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -1900,6 +1971,7 @@ export interface CarUpdateInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -1956,16 +2028,7 @@ export interface DateCreateOneInput {
   create?: DateCreateInput;
 }
 
-export interface CarUpsertWithoutOffersInput {
-  update: CarUpdateWithoutOffersDataInput;
-  create: CarCreateWithoutOffersInput;
-}
-
-export interface UserCreatepermissionsInput {
-  set?: Permission[] | Permission;
-}
-
-export interface MessageWhereInput {
+export interface ConversationWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
   id_in?: ID_Input[] | ID_Input;
@@ -1980,39 +2043,24 @@ export interface MessageWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  sender?: UserWhereInput;
-  text?: String;
-  text_not?: String;
-  text_in?: String[] | String;
-  text_not_in?: String[] | String;
-  text_lt?: String;
-  text_lte?: String;
-  text_gt?: String;
-  text_gte?: String;
-  text_contains?: String;
-  text_not_contains?: String;
-  text_starts_with?: String;
-  text_not_starts_with?: String;
-  text_ends_with?: String;
-  text_not_ends_with?: String;
-  image?: String;
-  image_not?: String;
-  image_in?: String[] | String;
-  image_not_in?: String[] | String;
-  image_lt?: String;
-  image_lte?: String;
-  image_gt?: String;
-  image_gte?: String;
-  image_contains?: String;
-  image_not_contains?: String;
-  image_starts_with?: String;
-  image_not_starts_with?: String;
-  image_ends_with?: String;
-  image_not_ends_with?: String;
-  conversation?: ConversationWhereInput;
-  AND?: MessageWhereInput[] | MessageWhereInput;
-  OR?: MessageWhereInput[] | MessageWhereInput;
-  NOT?: MessageWhereInput[] | MessageWhereInput;
+  offer?: OfferWhereInput;
+  buyer?: UserWhereInput;
+  seller?: UserWhereInput;
+  messages_every?: MessageWhereInput;
+  messages_some?: MessageWhereInput;
+  messages_none?: MessageWhereInput;
+  AND?: ConversationWhereInput[] | ConversationWhereInput;
+  OR?: ConversationWhereInput[] | ConversationWhereInput;
+  NOT?: ConversationWhereInput[] | ConversationWhereInput;
+}
+
+export interface UserCreatepermissionsInput {
+  set?: Permission[] | Permission;
+}
+
+export interface CarUpsertWithoutOffersInput {
+  update: CarUpdateWithoutOffersDataInput;
+  create: CarCreateWithoutOffersInput;
 }
 
 export interface OfferCreateWithoutCreatorInput {
@@ -2195,6 +2243,7 @@ export interface CarUpdateWithoutOffersDataInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -2223,6 +2272,7 @@ export interface UserUpdateWithoutCarsDataInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -2235,6 +2285,7 @@ export interface UserUpdateWithoutCarsDataInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface UserCreateOneWithoutOffersInput {
@@ -2507,6 +2558,7 @@ export interface UserUpdateWithoutOffersDataInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -2519,6 +2571,7 @@ export interface UserUpdateWithoutOffersDataInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface CarCategorySubscriptionWhereInput {
@@ -2553,6 +2606,7 @@ export interface UserUpdateManyMutationInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   gender?: Gender;
@@ -2561,6 +2615,7 @@ export interface UserUpdateManyMutationInput {
   googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  clientType?: ClientType;
 }
 
 export interface CarUpdateWithWhereUniqueWithoutOwnerInput {
@@ -2578,6 +2633,7 @@ export interface CarUpdateWithoutOwnerDataInput {
   manufacturer?: ManufacturerUpdateOneRequiredInput;
   model?: CarModelUpdateOneRequiredInput;
   category?: CarCategoryUpdateOneRequiredInput;
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -2849,8 +2905,9 @@ export interface OfferAddonUpdateManyWithWhereNestedInput {
 
 export interface UserCreateWithoutAdsInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -2863,6 +2920,7 @@ export interface UserCreateWithoutAdsInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface OfferAddonUpdateManyDataInput {
@@ -2916,6 +2974,7 @@ export interface UserUpdateWithoutConversationsDataInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -2928,6 +2987,7 @@ export interface UserUpdateWithoutConversationsDataInput {
   googleID?: ID_Input;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  clientType?: ClientType;
 }
 
 export interface CarCreateWithoutOffersInput {
@@ -2935,6 +2995,7 @@ export interface CarCreateWithoutOffersInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -2973,8 +3034,9 @@ export interface UserUpdateOneRequiredInput {
 
 export interface UserCreateWithoutOffersInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -2987,12 +3049,14 @@ export interface UserCreateWithoutOffersInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface UserUpdateDataInput {
   email?: String;
   firstName?: String;
   lastName?: String;
+  companyName?: String;
   password?: String;
   location?: String;
   birthDate?: DateUpdateOneRequiredInput;
@@ -3006,6 +3070,7 @@ export interface UserUpdateDataInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationUpdateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface OfferCreateManyWithoutCarInput {
@@ -3175,6 +3240,7 @@ export interface CarCreateInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -3445,6 +3511,7 @@ export interface CarCreateWithoutOwnerInput {
   manufacturer: ManufacturerCreateOneInput;
   model: CarModelCreateOneInput;
   category: CarCategoryCreateOneInput;
+  description?: String;
   year: Int;
   mileage: Int;
   photos?: CarCreatephotosInput;
@@ -3468,6 +3535,20 @@ export interface CarScalarWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
   year?: Int;
   year_not?: Int;
   year_in?: Int[] | Int;
@@ -3508,6 +3589,7 @@ export interface CarFeatureCategoryUpdateManyMutationInput {
 }
 
 export interface CarUpdateManyDataInput {
+  description?: String;
   year?: Int;
   mileage?: Int;
   photos?: CarUpdatephotosInput;
@@ -3630,8 +3712,9 @@ export interface UserUpsertWithoutOffersInput {
 
 export interface UserCreateWithoutCarsInput {
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   birthDate: DateCreateOneInput;
@@ -3644,6 +3727,7 @@ export interface UserCreateWithoutCarsInput {
   resetToken?: String;
   resetTokenExpiry?: Float;
   conversations?: ConversationCreateManyWithoutBuyerInput;
+  clientType?: ClientType;
 }
 
 export interface CarCategoryUpdateInput {
@@ -3700,8 +3784,9 @@ export interface NodeNode {
 export interface UserPreviousValues {
   id: ID_Output;
   email: String;
-  firstName: String;
-  lastName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   gender: Gender;
@@ -3710,6 +3795,7 @@ export interface UserPreviousValues {
   googleID?: ID_Output;
   resetToken?: String;
   resetTokenExpiry?: Float;
+  clientType?: ClientType;
 }
 
 export interface UserPreviousValuesPromise
@@ -3719,6 +3805,7 @@ export interface UserPreviousValuesPromise
   email: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  companyName: () => Promise<String>;
   password: () => Promise<String>;
   location: () => Promise<String>;
   gender: () => Promise<Gender>;
@@ -3727,6 +3814,7 @@ export interface UserPreviousValuesPromise
   googleID: () => Promise<ID_Output>;
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<Float>;
+  clientType: () => Promise<ClientType>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -3736,6 +3824,7 @@ export interface UserPreviousValuesSubscription
   email: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  companyName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   location: () => Promise<AsyncIterator<String>>;
   gender: () => Promise<AsyncIterator<Gender>>;
@@ -3744,6 +3833,7 @@ export interface UserPreviousValuesSubscription
   googleID: () => Promise<AsyncIterator<ID_Output>>;
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
+  clientType: () => Promise<AsyncIterator<ClientType>>;
 }
 
 export interface CarCategoryConnection {
@@ -3769,6 +3859,7 @@ export interface CarCategoryConnectionSubscription
 
 export interface Car {
   id: ID_Output;
+  description?: String;
   year: Int;
   mileage: Int;
   photos: String[];
@@ -3781,6 +3872,7 @@ export interface CarPromise extends Promise<Car>, Fragmentable {
   manufacturer: <T = ManufacturerPromise>() => T;
   model: <T = CarModelPromise>() => T;
   category: <T = CarCategoryPromise>() => T;
+  description: () => Promise<String>;
   year: () => Promise<Int>;
   mileage: () => Promise<Int>;
   photos: () => Promise<String[]>;
@@ -3813,6 +3905,7 @@ export interface CarSubscription
   manufacturer: <T = ManufacturerSubscription>() => T;
   model: <T = CarModelSubscription>() => T;
   category: <T = CarCategorySubscription>() => T;
+  description: () => Promise<AsyncIterator<String>>;
   year: () => Promise<AsyncIterator<Int>>;
   mileage: () => Promise<AsyncIterator<Int>>;
   photos: () => Promise<AsyncIterator<String[]>>;
@@ -4274,6 +4367,7 @@ export interface OfferAddonEdgeSubscription
 
 export interface CarPreviousValues {
   id: ID_Output;
+  description?: String;
   year: Int;
   mileage: Int;
   photos: String[];
@@ -4284,6 +4378,7 @@ export interface CarPreviousValuesPromise
   extends Promise<CarPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  description: () => Promise<String>;
   year: () => Promise<Int>;
   mileage: () => Promise<Int>;
   photos: () => Promise<String[]>;
@@ -4294,6 +4389,7 @@ export interface CarPreviousValuesSubscription
   extends Promise<AsyncIterator<CarPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  description: () => Promise<AsyncIterator<String>>;
   year: () => Promise<AsyncIterator<Int>>;
   mileage: () => Promise<AsyncIterator<Int>>;
   photos: () => Promise<AsyncIterator<String[]>>;
@@ -5361,9 +5457,9 @@ export interface OfferAddonSubscription
 export interface User {
   id: ID_Output;
   email: String;
-  firstName: String;
-  lastName: String;
-  companyName: String;
+  firstName?: String;
+  lastName?: String;
+  companyName?: String;
   password: String;
   location: String;
   gender: Gender;
@@ -5372,7 +5468,7 @@ export interface User {
   googleID?: ID_Output;
   resetToken?: String;
   resetTokenExpiry?: Float;
-  clientType: ClientType
+  clientType?: ClientType;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -5380,6 +5476,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   email: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
+  companyName: () => Promise<String>;
   password: () => Promise<String>;
   location: () => Promise<String>;
   birthDate: <T = DatePromise>() => T;
@@ -5425,6 +5522,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  clientType: () => Promise<ClientType>;
 }
 
 export interface UserSubscription
@@ -5434,6 +5532,7 @@ export interface UserSubscription
   email: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
+  companyName: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   location: () => Promise<AsyncIterator<String>>;
   birthDate: <T = DateSubscription>() => T;
@@ -5479,6 +5578,7 @@ export interface UserSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  clientType: () => Promise<AsyncIterator<ClientType>>;
 }
 
 export interface MessageSubscriptionPayload {
@@ -5905,6 +6005,10 @@ export const models: Model[] = [
   },
   {
     name: "CarStatus",
+    embedded: false
+  },
+  {
+    name: "ClientType",
     embedded: false
   },
   {
