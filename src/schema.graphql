@@ -1,11 +1,8 @@
 directive @private(requires: Permission = ADMIN) on FIELD_DEFINITION
 
 type Query {
-  feed: [Post!]!
-  drafts: [Post!]!
-  post(id: ID!): Post
   me: User
-  ads(adFeaturesIDs: [String]): [Ad!]
+  ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
   car(id: ID!): Car
   carCategories: [CarCategory]
@@ -23,14 +20,11 @@ type Mutation {
   googleLogin(data: UserSignupInput!): User!
   logout: String!
   updateUser(data: UserUpdateInput!): User!
-  createDraft(title: String!, content: String!): Post!
   createCar(data: CarCreateInput!): Car
   deleteCar(id: ID!): Car
   createAd(data: AdCreateInput!): Ad
   updateAd(data: AdUpdateInput!): Ad
   deleteAd(id: ID!): Ad
-  publish(id: ID!): Post!
-  deletePost(id: ID!): Post!
   resetPasswordRequest(email: String!): String!
   resetPassword(resetToken: String!, password: String!): User!
   createOffer(data: OfferCreateInput!): Offer
@@ -56,8 +50,7 @@ type User {
   permissions: [Permission!]!
   facebookID: String
   googleID: String
-  offers: [Offer!]!
-  ads: [Ad!]!
+  ads(pageNumber: Int, pageSize: Int): [Ad!]!
   cars: [Car!]!
   conversations: [Conversation!]
   clientType: ClientType!
@@ -123,7 +116,7 @@ type Car {
   photos: [String!]!
   features: [CarFeature!]!
   status: CarStatus!
-  offers: [Offer!]
+  offers(pageNumber: Int, pageSize: Int): [Offer!]
 }
 
 enum CarStatus {
@@ -182,7 +175,7 @@ input CarCreateInput {
 type Ad {
   id: ID!
   creator: User @private
-  offers: [Offer!]!
+  offers(pageNumber: Int, pageSize: Int): [Offer!]!
   priceLowerBound: Float
   priceHigherBound: Float
   manufacturer: Manufacturer
@@ -329,12 +322,3 @@ input DateInput {
 type Subscription {
   messageSubscription: Message
 }
-
-type Post {
-  id: ID!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
-}
-
