@@ -17,6 +17,7 @@ type User {
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
   clientType: ClientType!
+  language: ClientLanguage
 }
 
 enum Gender {
@@ -28,6 +29,11 @@ enum Gender {
 enum ClientType {
   COMPANY
   INDIVIDUAL
+}
+
+enum ClientLanguage {
+  FRENCH
+  ENGLISH
 }
 
 enum Permission {
@@ -95,6 +101,11 @@ enum OfferStatus {
   DELETED
 }
 
+enum ConversationStatus {
+  OPENED
+  DELETED
+}
+
 type Car {
   id: ID! @unique
   owner: User!
@@ -156,6 +167,7 @@ type Conversation {
   buyer: User! @relation(name: "BuyerRelation")
   seller: User! @relation(name: "SellerRelation")
   messages: [Message!]!
+  status: ConversationStatus
 }
 
 
