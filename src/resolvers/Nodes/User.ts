@@ -8,12 +8,19 @@ export const User: UserResolvers.Type = {
     return ctx.prisma.user({ id }).birthDate();
   },
 
-  cars: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).cars({
+  cars: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
+    const resolverArg: any = {
       where: {
         status: "PUBLISHED"
       }
-    });
+    };
+
+    if (pageSize && pageNumber >= 0) {
+      resolverArg.skip = pageNumber * pageSize;
+      resolverArg.first = pageSize;
+    }
+
+    return ctx.prisma.user({ id }).cars(resolverArg);
   },
   carCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
@@ -35,7 +42,7 @@ export const User: UserResolvers.Type = {
         status: "PUBLISHED"
       }
     };
-    
+
     if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
@@ -43,7 +50,7 @@ export const User: UserResolvers.Type = {
 
     return ctx.prisma.user({ id }).ads(resolverArg);
   },
-  
+
   adCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
     return ctx.prisma

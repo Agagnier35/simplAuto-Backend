@@ -52,7 +52,7 @@ type User {
   facebookID: String
   googleID: String
   ads(pageNumber: Int, pageSize: Int): [Ad!]!
-  cars: [Car!]!
+  cars(pageNumber: Int, pageSize: Int): [Car!]!
   conversations: [Conversation!]
   conversationCount: Int!
   adCount: Int!
