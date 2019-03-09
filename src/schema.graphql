@@ -7,7 +7,7 @@ type Query {
   me: User
   ads(adFeaturesIDs: [String]): [Ad!]
   ad(id: ID!): Ad
-  suggestions(id: ID!): OfferPosition
+  suggestions(id: ID!): [OfferPosition]
   car(id: ID!): Car
   carCategories: [CarCategory]
   carFeatureCategory(name: String!): CarFeatureCategory
