@@ -17,6 +17,7 @@ type User {
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
   clientType: ClientType!
+  notifications: [Notification!]!
 }
 
 enum Gender {
@@ -158,11 +159,22 @@ type Conversation {
   messages: [Message!]!
 }
 
-
 type Message {
   id: ID! @unique
   sender: User!
   text: String!
   image: String
   conversation: Conversation!
+}
+
+type Notification {
+  id: ID!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }

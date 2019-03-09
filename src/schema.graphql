@@ -314,6 +314,21 @@ input SendMessageInput {
   image: String
 }
 
+# Notifications
+# ------------------------------------------------------
+
+type Notification {
+  id: ID!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
+}
+
 # Util
 # ------------------------------------------------------
 
