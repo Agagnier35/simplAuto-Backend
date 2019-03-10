@@ -20,86 +20,98 @@ function calc_score(
     year: 8
   };
 
-  const max_deviation = 0.2;
+  const max_deviation = 0.3;
 
   let total_score = 0;
+  let max_score = 0;
 
   //price
-  if (offer.price < ad.priceLowerBound) {
-    const minimum = ad.priceLowerBound * (1 - max_deviation);
-    const gap_ad_minimum = ad.priceLowerBound - minimum;
-    const gap_offer_minimum = offer.price - minimum;
-    const perc_score = gap_offer_minimum / gap_ad_minimum;
-    const weight_score = weight.price * perc_score;
+  if (ad.priceLowerBound != null && ad.priceHigherBound != null) {
+    if (offer.price < ad.priceLowerBound) {
+      const minimum = ad.priceLowerBound * (1 - max_deviation);
+      const gap_ad_minimum = ad.priceLowerBound - minimum;
+      const gap_offer_minimum = offer.price - minimum;
+      const perc_score = gap_offer_minimum / gap_ad_minimum;
+      const weight_score = weight.price * perc_score;
 
-    if (weight_score < 0) {
-      total_score += 0;
-    } else {
-      total_score += weight_score;
-    }
-  } else if (offer.price > ad.priceHigherBound) {
-    const maximum = ad.priceHigherBound * (1 + max_deviation);
-    const gap_ad_maximum = maximum - ad.priceHigherBound;
-    const gap_offer_maximum = maximum - offer.price;
-    const perc_score = gap_offer_maximum / gap_ad_maximum;
-    const weight_score = weight.price * perc_score;
+      if (weight_score < 0) {
+        total_score += 0;
+      } else {
+        total_score += weight_score;
+      }
+    } else if (offer.price > ad.priceHigherBound) {
+      const maximum = ad.priceHigherBound * (1 + max_deviation);
+      const gap_ad_maximum = maximum - ad.priceHigherBound;
+      const gap_offer_maximum = maximum - offer.price;
+      const perc_score = gap_offer_maximum / gap_ad_maximum;
+      const weight_score = weight.price * perc_score;
 
-    if (weight_score < 0) {
-      total_score += 0;
+      if (weight_score < 0) {
+        total_score += 0;
+      } else {
+        total_score += weight_score;
+      }
     } else {
-      total_score += weight_score;
+      total_score += weight.price;
     }
-  } else {
-    total_score += weight.price;
   }
 
   // manufacturer
-  SameManufacturer ? (total_score += weight.manufacturer) : (total_score += 0);
-
+  if (SameManufacturer != null) {
+    SameManufacturer
+      ? (total_score += weight.manufacturer)
+      : (total_score += 0);
+  }
   // model
-  SameModel ? (total_score += weight.model) : (total_score += 0);
-
+  if (SameModel != null) {
+    SameModel ? (total_score += weight.model) : (total_score += 0);
+  }
   //Category
-  SameCategory ? (total_score += weight.category) : (total_score += 0);
-
+  if (SameCategory != null) {
+    SameCategory ? (total_score += weight.category) : (total_score += 0);
+  }
   //mileage
 
-  if (offerCar.mileage < ad.mileageLowerBound) {
-    const minimum = ad.mileageLowerBound * (1 - max_deviation);
-    const gap_ad_minimum = ad.mileageLowerBound - minimum;
-    const gap_offer_minimum = offerCar.mileage - minimum;
-    const perc_score = gap_offer_minimum / gap_ad_minimum;
-    const weight_score = weight.price * perc_score;
+  if (ad.mileageHigherBound != null && ad.mileageLowerBound != null) {
+    if (offerCar.mileage < ad.mileageLowerBound) {
+      const minimum = ad.mileageLowerBound * (1 - max_deviation);
+      const gap_ad_minimum = ad.mileageLowerBound - minimum;
+      const gap_offer_minimum = offerCar.mileage - minimum;
+      const perc_score = gap_offer_minimum / gap_ad_minimum;
+      const weight_score = weight.price * perc_score;
 
-    if (weight_score < 0) {
-      total_score += 0;
-    } else {
-      total_score += weight_score;
-    }
-  } else if (offerCar.mileage > ad.mileageHigherBound) {
-    const maximum = ad.priceHigherBound * (1 + max_deviation);
-    const gap_ad_maximum = maximum - ad.priceHigherBound;
-    const gap_offer_maximum = maximum - offer.price;
-    const perc_score = gap_offer_maximum / gap_ad_maximum;
-    const weight_score = weight.price * perc_score;
+      if (weight_score < 0) {
+        total_score += 0;
+      } else {
+        total_score += weight_score;
+      }
+    } else if (offerCar.mileage > ad.mileageHigherBound) {
+      const maximum = ad.priceHigherBound * (1 + max_deviation);
+      const gap_ad_maximum = maximum - ad.priceHigherBound;
+      const gap_offer_maximum = maximum - offer.price;
+      const perc_score = gap_offer_maximum / gap_ad_maximum;
+      const weight_score = weight.price * perc_score;
 
-    if (weight_score < 0) {
-      total_score += 0;
+      if (weight_score < 0) {
+        total_score += 0;
+      } else {
+        total_score += weight_score;
+      }
     } else {
-      total_score += weight_score;
+      total_score += weight.mileage;
     }
-  } else {
-    total_score += weight.mileage;
   }
 
   //year
-  if (
-    offerCar.year > ad.yearLowerBound - 1 &&
-    offerCar.year < ad.yearHigherBound + 1
-  ) {
-    total_score += weight.year;
-  } else {
-    total_score += 0;
+  if (ad.yearHigherBound != null && ad.yearLowerBound != null) {
+    if (
+      offerCar.year > ad.yearLowerBound - 1 &&
+      offerCar.year < ad.yearHigherBound + 1
+    ) {
+      total_score += weight.year;
+    } else {
+      total_score += 0;
+    }
   }
 
   return total_score;
@@ -153,17 +165,23 @@ export const offers: OffersQueries = {
       let SameModel = null;
       let SameCategory = null;
 
-      offerCarManufacturer.id === adManufacturer.id
-        ? (SameManufacturer = true)
-        : (SameManufacturer = false);
+      if (adManufacturer != null) {
+        offerCarManufacturer.id === adManufacturer.id
+          ? (SameManufacturer = true)
+          : (SameManufacturer = false);
+      }
 
-      offerCarModel.id === adModel.id
-        ? (SameModel = true)
-        : (SameModel = false);
+      if (adModel != null) {
+        offerCarModel.id === adModel.id
+          ? (SameModel = true)
+          : (SameModel = false);
+      }
 
-      offerCarCategory.id === adCategory.id
-        ? (SameCategory = true)
-        : (SameCategory = false);
+      if (adCategory != null) {
+        offerCarCategory.id === adCategory.id
+          ? (SameCategory = true)
+          : (SameCategory = false);
+      }
 
       const score = calc_score(
         offerCar,
