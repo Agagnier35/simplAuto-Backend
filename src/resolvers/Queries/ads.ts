@@ -2,103 +2,9 @@ import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer, Car, Ad } from "../../generated/prisma-client";
 import { AdPosition } from "../../models";
+import { calc_score_adSuggestion } from "../../utils/calc_score";
+import { CarModel } from "../Nodes/CarModel";
 
-function calc_score(
-  ad: Ad,
-  yourCar: Car,
-  SameManufacturer: Boolean,
-  SameModel: Boolean,
-  SameCategory: Boolean
-) {
-  const weight = {
-    price: 50,
-    manufacturer: 7,
-    model: 7,
-    category: 14,
-    mileage: 14,
-    year: 8
-  };
-
-  const max_deviation = 0.3;
-
-  let total_score = 0;
-  let max_score = 0;
-
-  // manufacturer
-  if (SameManufacturer != null) {
-    SameManufacturer
-      ? (total_score += weight.manufacturer)
-      : (total_score += 0);
-
-    max_score += weight.manufacturer;
-  }
-
-  // model
-  if (SameModel != null) {
-    SameModel ? (total_score += weight.model) : (total_score += 0);
-    max_score += weight.model;
-  }
-
-  //Category
-  if (SameCategory != null) {
-    SameCategory ? (total_score += weight.category) : (total_score += 0);
-    max_score += weight.category;
-  }
-
-  //mileage
-
-  if (ad.mileageHigherBound != null && ad.mileageLowerBound != null) {
-    if (yourCar.mileage < ad.mileageLowerBound) {
-      const minimum = ad.mileageLowerBound * (1 - max_deviation);
-      const gap_ad_minimum = ad.mileageLowerBound - minimum;
-      const gap_yourCar_minimum = yourCar.mileage - minimum;
-      const perc_score = gap_yourCar_minimum / gap_ad_minimum;
-      const weight_score = weight.price * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else if (yourCar.mileage > ad.mileageHigherBound) {
-      const maximum = ad.mileageHigherBound * (1 + max_deviation);
-      const gap_ad_maximum = maximum - ad.mileageHigherBound;
-      const gap_yourCar_maximum = maximum - yourCar.mileage;
-      const perc_score = gap_yourCar_maximum / gap_ad_maximum;
-      const weight_score = weight.mileage * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else {
-      total_score += weight.mileage;
-    }
-    max_score += weight.mileage;
-  }
-
-  //year
-  if (ad.yearHigherBound != null && ad.yearLowerBound != null) {
-    if (
-      yourCar.year > ad.yearLowerBound - 1 &&
-      yourCar.year < ad.yearHigherBound + 1
-    ) {
-      total_score += weight.year;
-    } else {
-      total_score += 0;
-    }
-    max_score += weight.year;
-  }
-
-  return Math.floor((total_score / max_score) * 100);
-}
-
-interface OffersQueries {
-  offer: QueryResolvers.OfferResolver;
-  offerAddons: QueryResolvers.OfferAddonsResolver;
-  suggestions: QueryResolvers.SuggestionsResolver;
-}
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
   ad: QueryResolvers.AdResolver;
@@ -116,15 +22,15 @@ export const ads: AdsQueries = {
   ad(parent, { id }, ctx: Context) {
     return ctx.prisma.ad({ id });
   },
-  //id of Car
+
   async adSuggestion(parent, { id }, ctx: Context) {
     const ads = await ctx.prisma.ads();
     const car = await ctx.prisma.car({ id });
     let ads_score = [];
 
-    const CarManufacturer = await ctx.prisma.car({ id }).manufacturer();
-    const CarModel = await ctx.prisma.car({ id }).model();
-    const CarCategory = await ctx.prisma.car({ id }).category();
+    const carManufacturer = await ctx.prisma.car({ id }).manufacturer();
+    const carModel = await ctx.prisma.car({ id }).model();
+    const carCategory = await ctx.prisma.car({ id }).category();
 
     for (let i = 0; i < ads.length; i++) {
       const adCarManufacturer = await ctx.prisma
@@ -135,34 +41,34 @@ export const ads: AdsQueries = {
 
       const adCarCategory = await ctx.prisma.ad({ id: ads[i].id }).category();
 
-      let SameManufacturer = null;
-      let SameModel = null;
-      let SameCategory = null;
+      let sameManufacturer = null;
+      let sameModel = null;
+      let sameCategory = null;
+      adCarManufacturer && carManufacturer
+        ? carManufacturer.id === adCarManufacturer.id
+          ? (sameManufacturer = true)
+          : (sameManufacturer = false)
+        : null;
 
-      if (adCarManufacturer != null) {
-        CarManufacturer.id === adCarManufacturer.id
-          ? (SameManufacturer = true)
-          : (SameManufacturer = false);
-      }
+      adCarModel && carModel
+        ? carModel.id === adCarModel.id
+          ? (sameModel = true)
+          : (sameModel = false)
+        : null;
 
-      if (adCarModel != null) {
-        CarModel.id === adCarModel.id
-          ? (SameModel = true)
-          : (SameModel = false);
-      }
+      adCarCategory && carCategory
+        ? carCategory.id === adCarCategory.id
+          ? (sameCategory = true)
+          : (sameCategory = false)
+        : null;
 
-      if (adCarCategory != null) {
-        CarCategory.id === adCarCategory.id
-          ? (SameCategory = true)
-          : (SameCategory = false);
-      }
-
-      const score = calc_score(
+      console.log(car);
+      const score = calc_score_adSuggestion(
         ads[i],
         car,
-        SameManufacturer,
-        SameModel,
-        SameCategory
+        sameManufacturer,
+        sameModel,
+        sameCategory
       );
 
       const ad_score: AdPosition = {

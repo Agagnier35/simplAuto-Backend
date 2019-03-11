@@ -2,127 +2,7 @@ import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer, Car, Ad } from "../../generated/prisma-client";
 import { OfferPosition } from "../../models";
-
-function calc_score(
-  offerCar: Car,
-  offer: Offer,
-  ad: Ad,
-  SameManufacturer: Boolean,
-  SameModel: Boolean,
-  SameCategory: Boolean
-) {
-  const weight = {
-    price: 50,
-    manufacturer: 7,
-    model: 7,
-    category: 14,
-    mileage: 14,
-    year: 8
-  };
-
-  const max_deviation = 0.3;
-
-  let total_score = 0;
-  let max_score = 0;
-
-  //price
-  if (ad.priceLowerBound != null && ad.priceHigherBound != null) {
-    if (offer.price < ad.priceLowerBound) {
-      const minimum = ad.priceLowerBound * (1 - max_deviation);
-      const gap_ad_minimum = ad.priceLowerBound - minimum;
-      const gap_offer_minimum = offer.price - minimum;
-      const perc_score = gap_offer_minimum / gap_ad_minimum;
-      const weight_score = weight.price * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else if (offer.price > ad.priceHigherBound) {
-      const maximum = ad.priceHigherBound * (1 + max_deviation);
-      const gap_ad_maximum = maximum - ad.priceHigherBound;
-      const gap_offer_maximum = maximum - offer.price;
-      const perc_score = gap_offer_maximum / gap_ad_maximum;
-      const weight_score = weight.price * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else {
-      total_score += weight.price;
-    }
-    max_score += weight.price;
-  }
-
-  // manufacturer
-  if (SameManufacturer != null) {
-    SameManufacturer
-      ? (total_score += weight.manufacturer)
-      : (total_score += 0);
-
-    max_score += weight.manufacturer;
-  }
-  // model
-  if (SameModel != null) {
-    SameModel ? (total_score += weight.model) : (total_score += 0);
-    max_score += weight.model;
-  }
-  //Category
-  if (SameCategory != null) {
-    SameCategory ? (total_score += weight.category) : (total_score += 0);
-    max_score += weight.category;
-  }
-  //mileage
-
-  if (ad.mileageHigherBound != null && ad.mileageLowerBound != null) {
-    if (offerCar.mileage < ad.mileageLowerBound) {
-      const minimum = ad.mileageLowerBound * (1 - max_deviation);
-      const gap_ad_minimum = ad.mileageLowerBound - minimum;
-      const gap_offer_minimum = offerCar.mileage - minimum;
-      const perc_score = gap_offer_minimum / gap_ad_minimum;
-      const weight_score = weight.price * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else if (offerCar.mileage > ad.mileageHigherBound) {
-      const maximum = ad.mileageHigherBound * (1 + max_deviation);
-      const gap_ad_maximum = maximum - ad.mileageHigherBound;
-      const gap_offer_maximum = maximum - offerCar.mileage;
-      const perc_score = gap_offer_maximum / gap_ad_maximum;
-      const weight_score = weight.mileage * perc_score;
-
-      if (weight_score < 0) {
-        total_score += 0;
-      } else {
-        total_score += weight_score;
-      }
-    } else {
-      total_score += weight.mileage;
-    }
-    max_score += weight.mileage;
-  }
-
-  //year
-  if (ad.yearHigherBound != null && ad.yearLowerBound != null) {
-    if (
-      offerCar.year > ad.yearLowerBound - 1 &&
-      offerCar.year < ad.yearHigherBound + 1
-    ) {
-      total_score += weight.year;
-    } else {
-      total_score += 0;
-    }
-    max_score += weight.year;
-  }
-
-  return Math.floor((total_score / max_score) * 100);
-}
+import { calc_score_suggestion } from "../../utils/calc_score";
 
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;
@@ -142,7 +22,6 @@ export const offers: OffersQueries = {
       }
     });
   },
-  //id is Ad
   async suggestions(parent, { id }, ctx: Context) {
     const offers = await ctx.prisma.ad({ id }).offers();
     const ad = await ctx.prisma.ad({ id });
@@ -173,25 +52,25 @@ export const offers: OffersQueries = {
       let SameModel = null;
       let SameCategory = null;
 
-      if (adManufacturer != null) {
-        offerCarManufacturer.id === adManufacturer.id
+      adManufacturer && offerCarManufacturer
+        ? offerCarManufacturer.id === adManufacturer.id
           ? (SameManufacturer = true)
-          : (SameManufacturer = false);
-      }
+          : (SameManufacturer = false)
+        : null;
 
-      if (adModel != null) {
-        offerCarModel.id === adModel.id
+      adModel && offerCarModel
+        ? offerCarModel.id === adModel.id
           ? (SameModel = true)
-          : (SameModel = false);
-      }
+          : (SameModel = false)
+        : null;
 
-      if (adCategory != null) {
-        offerCarCategory.id === adCategory.id
+      adCategory && offerCarCategory
+        ? offerCarCategory.id === adCategory.id
           ? (SameCategory = true)
-          : (SameCategory = false);
-      }
+          : (SameCategory = false)
+        : null;
 
-      const score = calc_score(
+      const score = calc_score_suggestion(
         offerCar,
         offers[i],
         ad,

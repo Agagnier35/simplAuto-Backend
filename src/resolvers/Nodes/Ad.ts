@@ -1,6 +1,5 @@
 import { Context } from "../../utils";
 import { AdResolvers } from "../../generated/yoga-client";
-import { parentPort } from "worker_threads";
 
 export const Ad: AdResolvers.Type = {
   ...AdResolvers.defaultResolvers,
@@ -30,16 +29,16 @@ export const Ad: AdResolvers.Type = {
     return ctx.prisma.ad({ id: parent.id }).offers({
       where: {
         status: "PUBLISHED",
-        price_gt: parent.priceLowerBound,
-        price_lt: parent.priceHigherBound,
+        price_gte: parent.priceLowerBound,
+        price_lte: parent.priceHigherBound,
         car: {
           manufacturer: { id: manufacturer.id },
           model: { id: model.id },
           category: { id: category.id },
-          mileage_gt: parent.mileageLowerBound,
-          mileage_lt: parent.priceHigherBound,
-          year_gt: parent.yearLowerBound,
-          year_lt: parent.yearHigherBound
+          mileage_gte: parent.mileageLowerBound,
+          mileage_lte: parent.priceHigherBound,
+          year_gte: parent.yearLowerBound,
+          year_lte: parent.yearHigherBound
         }
       }
     });
