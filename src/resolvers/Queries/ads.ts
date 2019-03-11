@@ -32,16 +32,19 @@ function calc_score(
 
     max_score += weight.manufacturer;
   }
+
   // model
   if (SameModel != null) {
     SameModel ? (total_score += weight.model) : (total_score += 0);
     max_score += weight.model;
   }
+
   //Category
   if (SameCategory != null) {
     SameCategory ? (total_score += weight.category) : (total_score += 0);
     max_score += weight.category;
   }
+
   //mileage
 
   if (ad.mileageHigherBound != null && ad.mileageLowerBound != null) {
@@ -62,7 +65,7 @@ function calc_score(
       const gap_ad_maximum = maximum - ad.mileageHigherBound;
       const gap_yourCar_maximum = maximum - yourCar.mileage;
       const perc_score = gap_yourCar_maximum / gap_ad_maximum;
-      const weight_score = weight.price * perc_score;
+      const weight_score = weight.mileage * perc_score;
 
       if (weight_score < 0) {
         total_score += 0;
@@ -88,7 +91,7 @@ function calc_score(
     max_score += weight.year;
   }
 
-  return (total_score / max_score) * 100;
+  return Math.floor((total_score / max_score) * 100);
 }
 
 interface OffersQueries {
@@ -113,24 +116,24 @@ export const ads: AdsQueries = {
   ad(parent, { id }, ctx: Context) {
     return ctx.prisma.ad({ id });
   },
-  //parent is a Car
+  //id of Car
   async adSuggestion(parent, { id }, ctx: Context) {
     const ads = await ctx.prisma.ads();
+    const car = await ctx.prisma.car({ id });
     let ads_score = [];
 
     const CarManufacturer = await ctx.prisma.car({ id }).manufacturer();
     const CarModel = await ctx.prisma.car({ id }).model();
     const CarCategory = await ctx.prisma.car({ id }).category();
-    2;
 
-    ads.forEach(async element => {
+    for (let i = 0; i < ads.length; i++) {
       const adCarManufacturer = await ctx.prisma
-        .ad({ id: element.id })
+        .ad({ id: ads[i].id })
         .manufacturer();
 
-      const adCarModel = await ctx.prisma.ad({ id: element.id }).model();
+      const adCarModel = await ctx.prisma.ad({ id: ads[i].id }).model();
 
-      const adCarCategory = await ctx.prisma.ad({ id: element.id }).category();
+      const adCarCategory = await ctx.prisma.ad({ id: ads[i].id }).category();
 
       let SameManufacturer = null;
       let SameModel = null;
@@ -155,23 +158,22 @@ export const ads: AdsQueries = {
       }
 
       const score = calc_score(
-        element,
-        parent,
+        ads[i],
+        car,
         SameManufacturer,
         SameModel,
         SameCategory
       );
 
       const ad_score: AdPosition = {
-        ad: element,
+        ad: ads[i],
         score: score,
         position: null
       };
-
       ads_score.push(ad_score);
-    });
+    }
 
-    ads_score.sort((a, b) => (a.score > b.score ? 1 : -1));
+    ads_score.sort((a, b) => (a.score > b.score ? -1 : 1));
     for (let i = 0; i < ads_score.length; i++) {
       ads_score[i].position = i;
     }

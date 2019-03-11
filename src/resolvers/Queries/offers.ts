@@ -95,7 +95,7 @@ function calc_score(
       const gap_ad_maximum = maximum - ad.mileageHigherBound;
       const gap_offer_maximum = maximum - offerCar.mileage;
       const perc_score = gap_offer_maximum / gap_ad_maximum;
-      const weight_score = weight.price * perc_score;
+      const weight_score = weight.mileage * perc_score;
 
       if (weight_score < 0) {
         total_score += 0;
@@ -121,7 +121,7 @@ function calc_score(
     max_score += weight.year;
   }
 
-  return (total_score / max_score) * 100;
+  return Math.floor((total_score / max_score) * 100);
 }
 
 interface OffersQueries {
@@ -142,29 +142,30 @@ export const offers: OffersQueries = {
       }
     });
   },
-  //parent is a Ad
+  //id is Ad
   async suggestions(parent, { id }, ctx: Context) {
     const offers = await ctx.prisma.ad({ id }).offers();
+    const ad = await ctx.prisma.ad({ id });
     let offers_score = [];
 
     const adManufacturer = await ctx.prisma.ad({ id }).manufacturer();
     const adModel = await ctx.prisma.ad({ id }).model();
     const adCategory = await ctx.prisma.ad({ id }).category();
 
-    offers.forEach(async element => {
-      const offerCar = await ctx.prisma.offer({ id: element.id }).car();
+    for (let i = 0; i < offers.length; i++) {
+      const offerCar = await ctx.prisma.offer({ id: offers[i].id }).car();
       const offerCarManufacturer = await ctx.prisma
-        .offer({ id: element.id })
+        .offer({ id: offers[i].id })
         .car()
         .manufacturer();
 
       const offerCarModel = await ctx.prisma
-        .offer({ id: element.id })
+        .offer({ id: offers[i].id })
         .car()
         .model();
 
       const offerCarCategory = await ctx.prisma
-        .offer({ id: element.id })
+        .offer({ id: offers[i].id })
         .car()
         .category();
 
@@ -192,22 +193,21 @@ export const offers: OffersQueries = {
 
       const score = calc_score(
         offerCar,
-        element,
-        parent,
+        offers[i],
+        ad,
         SameManufacturer,
         SameModel,
         SameCategory
       );
 
       const offer_score: OfferPosition = {
-        offer: element,
+        offer: offers[i],
         score: score,
         position: null
       };
 
       offers_score.push(offer_score);
-    });
-
+    }
     offers_score.sort((a, b) => (a.score > b.score ? 1 : -1));
     for (let i = 0; i < offers_score.length; i++) {
       offers_score[i].position = i;
