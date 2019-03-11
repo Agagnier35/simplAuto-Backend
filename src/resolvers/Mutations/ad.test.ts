@@ -309,7 +309,7 @@ describe("Ads mutations tests suite", () => {
       });
     });
 
-    test("When deleting an Ad. Then prisma should on update the Ad", async () => {
+    test("When deleting an Ad. Then prisma should not actually delete the ad", async () => {
       prisma.deleteAd = jest.fn();
       const deleteAdInput = { id: "someAdId" };
       const userCtx = getUserContext(prisma);

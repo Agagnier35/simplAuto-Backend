@@ -9,7 +9,6 @@ import {
   getContextWithId
 } from "../../testUtils";
 import { carLimitReachedError } from "../../errors/carErrors";
-import { connect } from "http2";
 import { UserNotCreatorError } from "../../errors/authErrors";
 
 let prisma: jest.Mocked<Prisma>;
@@ -171,7 +170,7 @@ describe("Cars mutations tests suite", () => {
       });
     });
 
-    test("When deleting a car. Then prisma should on update the Ad", async () => {
+    test("When deleting a car. Then prisma should not actually delete the car", async () => {
       prisma.deleteCar = jest.fn();
       const deleteAdInput = { id: "someCarId" };
       const userCtx = getUserContext(prisma);
