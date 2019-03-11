@@ -35,7 +35,7 @@ export const User: UserResolvers.Type = {
         status: "PUBLISHED"
       }
     };
-    
+
     if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
@@ -43,11 +43,30 @@ export const User: UserResolvers.Type = {
 
     return ctx.prisma.user({ id }).ads(resolverArg);
   },
-  
+
   adCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
     return ctx.prisma
       .adsConnection({
+        where: {
+          status: "PUBLISHED",
+          creator: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
+
+  offers: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).offers();
+  },
+
+  offerCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .offersConnection({
         where: {
           status: "PUBLISHED",
           creator: {
@@ -79,6 +98,23 @@ export const User: UserResolvers.Type = {
               }
             }
           ]
+        }
+      })
+      .aggregate()
+      .count();
+  },
+  notifications: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).notifications();
+  },
+
+  notificationCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .notificationsConnection({
+        where: {
+          owner: {
+            id
+          }
         }
       })
       .aggregate()

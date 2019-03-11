@@ -18,6 +18,7 @@ type User {
   conversations: [Conversation!] @relation(name: "BuyerRelation")
   clientType: ClientType!
   notifications: [Notification!]!
+  offers: [Offer!]!
 }
 
 enum Gender {
@@ -168,7 +169,8 @@ type Message {
 }
 
 type Notification {
-  id: ID!
+  id: ID! @unique
+  owner: User!
   type: NotificationType!
   objectID: ID
 }

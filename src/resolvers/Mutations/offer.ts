@@ -40,7 +40,22 @@ export const offer: OfferResolver = {
       };
     }
 
-    return ctx.prisma.createOffer(offerInput);
+    const offer = await ctx.prisma.createOffer(offerInput);
+
+    const adOwner = await ctx.prisma.ad({ id: adID }).creator();
+
+    // Send a notification to the ad owner
+    await ctx.prisma.createNotification({
+      owner: {
+        connect: {
+          id: adOwner.id
+        }
+      },
+      type: "NEW_OFFER",
+      objectID: offer.id
+    });
+
+    return offer;
   },
   async updateOffer(parent, { data }, ctx: Context) {
     const { addons, id, ...rest } = data;
