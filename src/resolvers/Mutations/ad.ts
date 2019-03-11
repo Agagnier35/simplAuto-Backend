@@ -116,7 +116,9 @@ export const ad: AdResolvers = {
     const adCreator: User = await ctx.prisma.ad({ id }).creator();
     const userId = getUserId(ctx);
 
-    if (!(adCreator.id === userId || getUserPermissions(ctx) === "ADMIN")) {
+    if (
+      !(adCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
+    ) {
       throw UserNotCreatorError;
     }
 
@@ -171,7 +173,9 @@ export const ad: AdResolvers = {
     const adCreator: User = await ctx.prisma.ad({ id }).creator();
     const userId = getUserId(ctx);
 
-    if (!(adCreator.id === userId || getUserPermissions(ctx) === "ADMIN")) {
+    if (
+      !(adCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
+    ) {
       throw UserNotCreatorError;
     }
 

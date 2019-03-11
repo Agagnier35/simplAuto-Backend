@@ -67,7 +67,9 @@ export const car: CarResolvers = {
     const carCreator: User = await ctx.prisma.car({ id }).owner();
     const userId = getUserId(ctx);
 
-    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+    if (
+      !(carCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
+    ) {
       throw UserNotCreatorError;
     }
 
