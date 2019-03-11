@@ -54,6 +54,7 @@ function calc_score(
     } else {
       total_score += weight.price;
     }
+    max_score += weight.price;
   }
 
   // manufacturer
@@ -61,14 +62,18 @@ function calc_score(
     SameManufacturer
       ? (total_score += weight.manufacturer)
       : (total_score += 0);
+
+    max_score += weight.manufacturer;
   }
   // model
   if (SameModel != null) {
     SameModel ? (total_score += weight.model) : (total_score += 0);
+    max_score += weight.model;
   }
   //Category
   if (SameCategory != null) {
     SameCategory ? (total_score += weight.category) : (total_score += 0);
+    max_score += weight.category;
   }
   //mileage
 
@@ -100,6 +105,7 @@ function calc_score(
     } else {
       total_score += weight.mileage;
     }
+    max_score += weight.mileage;
   }
 
   //year
@@ -112,9 +118,10 @@ function calc_score(
     } else {
       total_score += 0;
     }
+    max_score += weight.year;
   }
 
-  return total_score;
+  return (total_score / max_score) * 100;
 }
 
 interface OffersQueries {
@@ -201,7 +208,7 @@ export const offers: OffersQueries = {
       offers_score.push(offer_score);
     });
 
-    offers_score.sort((a, b) => (a.score > b.color ? 1 : -1));
+    offers_score.sort((a, b) => (a.score > b.score ? 1 : -1));
     for (let i = 0; i < offers_score.length; i++) {
       offers_score[i].position = i;
     }

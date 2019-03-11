@@ -227,6 +227,12 @@ enum AdFeatureImportance {
   HIGH
 }
 
+type AdPosition{
+  ad: Ad
+  position: Int
+  score: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
