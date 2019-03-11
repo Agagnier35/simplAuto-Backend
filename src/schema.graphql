@@ -58,6 +58,10 @@ type User {
   adCount: Int!
   carCount: Int!
   clientType: ClientType!
+  offers: [Offer!]!
+  offerCount: Int!
+  notifications: [Notification!]!
+  notificationCount: Int!
 }
 
 enum Gender {
@@ -312,6 +316,22 @@ input SendMessageInput {
   conversationID: ID!
   text: String!
   image: String
+}
+
+# Notifications
+# ------------------------------------------------------
+
+type Notification {
+  id: ID!
+  owner: User!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }
 
 # Util

@@ -15,6 +15,7 @@ import { Date } from "./Nodes/Date";
 import { Message } from "./Nodes/Message";
 import { Conversation } from "./Nodes/Conversation";
 import { OfferAddon } from "./Nodes/OfferAddon";
+import { Notification } from "./Nodes/Notification";
 
 const resolvers: Resolvers = {
   Query,
@@ -32,7 +33,8 @@ const resolvers: Resolvers = {
   Date,
   Message,
   Conversation,
-  OfferAddon
+  OfferAddon,
+  Notification
 };
 
 export default resolvers;

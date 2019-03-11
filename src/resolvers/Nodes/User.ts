@@ -66,6 +66,25 @@ export const User: UserResolvers.Type = {
       .count();
   },
 
+  offers: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).offers();
+  },
+
+  offerCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .offersConnection({
+        where: {
+          status: "PUBLISHED",
+          creator: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
+
   conversations: ({ id }, args, ctx: Context) => {
     return ctx.prisma.user({ id }).conversations();
   },
@@ -86,6 +105,23 @@ export const User: UserResolvers.Type = {
               }
             }
           ]
+        }
+      })
+      .aggregate()
+      .count();
+  },
+  notifications: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).notifications();
+  },
+
+  notificationCount(parent, args, ctx: Context) {
+    const id = getUserId(ctx);
+    return ctx.prisma
+      .notificationsConnection({
+        where: {
+          owner: {
+            id
+          }
         }
       })
       .aggregate()

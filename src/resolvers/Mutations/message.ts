@@ -14,7 +14,7 @@ export const message: MessageResolver = {
 
     const { text, image, conversationID } = data;
 
-    return await ctx.prisma.createMessage({
+    const message = await ctx.prisma.createMessage({
       text,
       image,
       sender: {
@@ -28,5 +28,26 @@ export const message: MessageResolver = {
         }
       }
     });
+
+    const buyer = await ctx.prisma.conversation({ id: conversationID }).buyer();
+    const seller = await ctx.prisma
+      .conversation({ id: conversationID })
+      .seller();
+
+    const senderIsBuyer = buyer.id === id;
+    const offer = await ctx.prisma.conversation({ id: conversationID }).offer();
+
+    // send notification to the other member of the conversation
+    await ctx.prisma.createNotification({
+      owner: {
+        connect: {
+          id: senderIsBuyer ? seller.id : buyer.id
+        }
+      },
+      type: "OFFER_MESSAGE",
+      objectID: offer.id
+    });
+
+    return message;
   }
 };
