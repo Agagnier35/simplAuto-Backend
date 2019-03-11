@@ -91,9 +91,9 @@ function calc_score(
         total_score += weight_score;
       }
     } else if (offerCar.mileage > ad.mileageHigherBound) {
-      const maximum = ad.priceHigherBound * (1 + max_deviation);
-      const gap_ad_maximum = maximum - ad.priceHigherBound;
-      const gap_offer_maximum = maximum - offer.price;
+      const maximum = ad.mileageHigherBound * (1 + max_deviation);
+      const gap_ad_maximum = maximum - ad.mileageHigherBound;
+      const gap_offer_maximum = maximum - offerCar.mileage;
       const perc_score = gap_offer_maximum / gap_ad_maximum;
       const weight_score = weight.price * perc_score;
 
@@ -142,10 +142,14 @@ export const offers: OffersQueries = {
       }
     });
   },
-
+  //parent is a Ad
   async suggestions(parent, { id }, ctx: Context) {
     const offers = await ctx.prisma.ad({ id }).offers();
     let offers_score = [];
+
+    const adManufacturer = await ctx.prisma.ad({ id }).manufacturer();
+    const adModel = await ctx.prisma.ad({ id }).model();
+    const adCategory = await ctx.prisma.ad({ id }).category();
 
     offers.forEach(async element => {
       const offerCar = await ctx.prisma.offer({ id: element.id }).car();
@@ -163,10 +167,6 @@ export const offers: OffersQueries = {
         .offer({ id: element.id })
         .car()
         .category();
-
-      const adManufacturer = await ctx.prisma.ad({ id }).manufacturer();
-      const adModel = await ctx.prisma.ad({ id }).model();
-      const adCategory = await ctx.prisma.ad({ id }).category();
 
       let SameManufacturer = null;
       let SameModel = null;
