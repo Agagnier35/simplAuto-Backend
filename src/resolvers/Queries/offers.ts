@@ -11,7 +11,16 @@ interface OffersQueries {
 }
 
 export const offers: OffersQueries = {
-  offer(parent, { id }, ctx: Context) {
+  async offer(parent, { id }, ctx: Context) {
+    const userID = ctx.request.userId;
+    if (userID) {
+      await ctx.prisma.deleteManyNotifications({
+        owner: {
+          id: userID
+        },
+        objectID: id
+      });
+    }
     return ctx.prisma.offer({ id });
   },
 

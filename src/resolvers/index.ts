@@ -9,13 +9,13 @@ import { Car } from "./Nodes/Car";
 import { CarFeature } from "./Nodes/CarFeature";
 import { CarFeatureCategory } from "./Nodes/CarFeatureCategory";
 import { Resolvers } from "../generated/yoga-client";
-import { Post } from "./Nodes/Post";
 import { CarCategory } from "./Nodes/CarCategory";
 import { CarModel } from "./Nodes/CarModel";
 import { Date } from "./Nodes/Date";
 import { Message } from "./Nodes/Message";
 import { Conversation } from "./Nodes/Conversation";
 import { OfferAddon } from "./Nodes/OfferAddon";
+import { Notification } from "./Nodes/Notification";
 import { OfferPosition } from "./Nodes/OfferPosition";
 
 const resolvers: Resolvers = {
@@ -31,12 +31,12 @@ const resolvers: Resolvers = {
   CarFeature,
   CarFeatureCategory,
   CarModel,
-  Post,
   Date,
   Message,
   Conversation,
   OfferAddon,
   OfferPosition
+  Notification
 };
 
 export default resolvers;

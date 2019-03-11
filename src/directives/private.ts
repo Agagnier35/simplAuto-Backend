@@ -1,6 +1,13 @@
 import { SchemaDirectiveVisitor } from "graphql-tools";
 import { defaultFieldResolver } from "graphql";
-import { getUserId, Context } from "../utils";
+import { Context as Ctx } from "../utils";
+import { Permission } from "../generated/prisma-client";
+
+interface Context extends Ctx {
+  userId?: string;
+  permissions: [Permission];
+  connection?: any;
+}
 
 export class PrivateDirective extends SchemaDirectiveVisitor {
   visitFieldDefinition(field, details) {
@@ -18,10 +25,18 @@ export class PrivateDirective extends SchemaDirectiveVisitor {
 
       const user = await resolve.apply(this, args);
 
-      const id = context.request.userId;
-
-      // If theres no token
-      if (!id) {
+      let id;
+      if (context.request) {
+        // (http)
+        id = context.request.userId;
+      } else if (context.userId) {
+        // Playground (websocket)
+        id = context.userId;
+      } else if (context.connection) {
+        // App (websocket)
+        id = context.connection.context.userId;
+      } else {
+        // If theres no token
         return;
       }
 

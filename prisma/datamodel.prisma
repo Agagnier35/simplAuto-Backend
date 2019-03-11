@@ -1,24 +1,14 @@
-type Post {
-  id: ID! @unique
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  published: Boolean! @default(value: "false")
-  title: String!
-  content: String!
-  author: User!
-}
-
 type User {
   id: ID! @unique
   email: String! @unique
-  firstName: String!
-  lastName: String!
+  firstName: String
+  lastName: String
+  companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
-  offers: [Offer!]!
   ads: [Ad!]!
   cars: [Car!]!
   facebookID: ID @unique
@@ -26,12 +16,20 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
+  clientType: ClientType!
+  notifications: [Notification!]!
+  offers: [Offer!]!
 }
 
 enum Gender {
   MALE
   FEMALE
   OTHER
+}
+
+enum ClientType {
+  COMPANY
+  INDIVIDUAL
 }
 
 enum Permission {
@@ -105,6 +103,7 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -161,11 +160,23 @@ type Conversation {
   messages: [Message!]!
 }
 
-
 type Message {
   id: ID! @unique
   sender: User!
   text: String!
   image: String
   conversation: Conversation!
+}
+
+type Notification {
+  id: ID! @unique
+  owner: User!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }
