@@ -7,7 +7,8 @@ import {
   InvalidPasswordError,
   InvalidEmailError,
   InvalidEmailFormatError,
-  TokenExpiredOrInvalidError
+  TokenExpiredOrInvalidError,
+  InvalidClientTypeData
 } from "../../errors/authErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { Permission, User } from "../../generated/prisma-client";
@@ -42,10 +43,23 @@ const createBasicUser = (data: Types.UserSignupInput) => {
       year
     }
   };
-
   // Verify email format
   if (!emailRegex.test(data.email)) {
     throw InvalidEmailFormatError;
+  }
+
+  if (
+    data.clientType === "INDIVIDUAL" &&
+    (!data.firstName || !data.lastName || data.companyName)
+  ) {
+    throw InvalidClientTypeData;
+  }
+
+  if (
+    data.clientType === "COMPANY" &&
+    (data.firstName || data.lastName || !data.companyName)
+  ) {
+    throw InvalidClientTypeData;
   }
 
   return {
