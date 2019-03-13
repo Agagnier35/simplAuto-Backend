@@ -88,8 +88,8 @@ input UserSignupInput {
   companyName: String
   password: String!
   location: String!
-  birthDate: DateInput!
-  gender: Gender!
+  birthDate: DateInput
+  gender: Gender
   permissions: [Permission!]
   facebookID: String
   googleID: String
