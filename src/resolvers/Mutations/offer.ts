@@ -44,6 +44,16 @@ export const offer: OfferResolver = {
 
     const adOwner = await ctx.prisma.ad({ id: adID }).creator();
 
+    const notificationArray = await ctx.prisma.notifications({
+      where: {
+        type: "NEW_OFFER",
+        owner: {
+          id: adOwner.id
+        },
+        objectID: offer.id
+      }
+    });
+
     // Send a notification to the ad owner
     await ctx.prisma.createNotification({
       owner: {

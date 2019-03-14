@@ -33,6 +33,7 @@ type Mutation {
   deleteOffer(id: ID!): Offer
   createConversation(offerID: ID!): Conversation!
   sendMessage(data: SendMessageInput): Message!
+  deleteNotification(id: ID!): Notification
 }
 
 # USER
@@ -326,6 +327,8 @@ type Notification {
   owner: User!
   type: NotificationType!
   objectID: ID
+  count: Int!
+  updatedAt: String!
 }
 
 enum NotificationType {
