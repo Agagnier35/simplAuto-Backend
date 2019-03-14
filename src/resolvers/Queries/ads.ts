@@ -95,7 +95,8 @@ export const ads: AdsQueries = {
       let already_offered = false;
 
       for (let j = 0; j < carOffer.length; j++) {
-        if (ads[i].id === carOffer[j].id) {
+        const OfferAd = await ctx.prisma.offer({ id: carOffer[j].id }).ad();
+        if (ads[i].id === OfferAd.id) {
           already_offered = true;
         }
       }
