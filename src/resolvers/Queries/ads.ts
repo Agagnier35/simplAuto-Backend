@@ -35,9 +35,9 @@ export const ads: AdsQueries = {
       .adsConnection()
       .aggregate()
       .count();
-  }
+  },
 
-  async adSuggestion(parent, { id }, ctx: Context) {
+  async adSuggestion(parent, { id, pageNumber, pageSize }, ctx: Context) {
     const ads = await ctx.prisma.ads();
     const car = await ctx.prisma.car({ id });
     let ads_score = [];
@@ -96,6 +96,17 @@ export const ads: AdsQueries = {
     ads_score.sort((a, b) => (a.score > b.score ? -1 : 1));
     for (let i = 0; i < ads_score.length; i++) {
       ads_score[i].position = i;
+    }
+
+    if (pageSize && pageNumber >= 0) {
+      if (pageNumber === 0) {
+        ads_score = ads_score.slice(0, pageSize);
+      } else {
+        ads_score = ads_score.slice(
+          pageNumber * pageSize - 1,
+          pageSize * pageNumber + pageSize
+        );
+      }
     }
 
     return ads_score;

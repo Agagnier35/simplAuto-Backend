@@ -31,7 +31,7 @@ export const offers: OffersQueries = {
       }
     });
   },
-  async suggestions(parent, { id }, ctx: Context) {
+  async suggestions(parent, { id, pageNumber, pageSize }, ctx: Context) {
     const offers = await ctx.prisma.ad({ id }).offers();
     const ad = await ctx.prisma.ad({ id });
     let offers_score = [];
@@ -99,6 +99,17 @@ export const offers: OffersQueries = {
     offers_score.sort((a, b) => (a.score > b.score ? 1 : -1));
     for (let i = 0; i < offers_score.length; i++) {
       offers_score[i].position = i;
+    }
+
+    if (pageSize && pageNumber >= 0) {
+      if (pageNumber === 0) {
+        offers_score = offers_score.slice(0, pageSize);
+      } else {
+        offers_score = offers_score.slice(
+          pageNumber * pageSize - 1,
+          pageSize * pageNumber + pageSize
+        );
+      }
     }
 
     return offers_score;
