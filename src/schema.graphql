@@ -249,6 +249,7 @@ type AdPosition{
   ad: Ad
   position: Int
   score: Int
+  total_length: Int
 }
 
 # Offer
