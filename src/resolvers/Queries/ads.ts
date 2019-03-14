@@ -1,7 +1,7 @@
 import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer, Car, Ad } from "../../generated/prisma-client";
-import { AdPosition, AdSuggestions } from "../../models";
+import { AdPosition } from "../../models";
 import { calc_score_adSuggestion } from "../../utils/calc_score";
 import { CarModel } from "../Nodes/CarModel";
 
