@@ -29,6 +29,7 @@ export const Ad: AdResolvers.Type = {
         status: "PUBLISHED",
         price_gte: parent.priceLowerBound,
         price_lte: parent.priceHigherBound,
+
         car: {
           manufacturer: { id: manufacturer.id },
           model: { id: model.id },
