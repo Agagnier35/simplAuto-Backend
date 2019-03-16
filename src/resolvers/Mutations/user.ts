@@ -4,9 +4,11 @@ import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { UserUpdateInput } from "../../generated/prisma-client/index";
 import { InvalidEmailFormatError } from "../../errors/authErrors";
 import * as bcrypt from "bcryptjs";
+import stripe from "../../stripe";
 
 interface UserResolvers {
   updateUser: Types.UpdateUserResolver;
+  goPremium: Types.GoPremiumResolver;
 }
 
 export const user: UserResolvers = {
@@ -53,6 +55,27 @@ export const user: UserResolvers = {
     return ctx.prisma.updateUser({
       where: { id },
       data: updatedData
+    });
+  },
+  async goPremium(parent, { stripeToken }, ctx: Context, info) {
+    const id = getUserId(ctx);
+
+    const permissions = await ctx.prisma.user({ id }).permissions();
+    permissions.push("PREMIUM");
+
+    const charge = await stripe.charges.create({
+      amount: 1000,
+      currency: "CAD",
+      source: stripeToken
+    });
+
+    return ctx.prisma.updateUser({
+      where: { id },
+      data: {
+        permissions: {
+          set: permissions
+        }
+      }
     });
   }
 };
