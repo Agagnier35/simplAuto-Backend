@@ -60,10 +60,13 @@ export const user: UserResolvers = {
   async goPremium(parent, { stripeToken }, ctx: Context, info) {
     const id = getUserId(ctx);
 
+    const user = await ctx.prisma.user({ id });
+
     const permissions = await ctx.prisma.user({ id }).permissions();
     permissions.push("PREMIUM");
 
     const charge = await stripe.charges.create({
+      customer: user.stripeCustomerID,
       amount: 1000,
       currency: "CAD",
       source: stripeToken
