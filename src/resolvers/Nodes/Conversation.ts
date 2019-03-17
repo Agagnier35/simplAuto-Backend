@@ -18,5 +18,17 @@ export const Conversation: ConversationResolvers.Type = {
 
   messages: ({ id }, args, ctx: Context) => {
     return ctx.prisma.conversation({ id }).messages();
+  },
+  messageCount({ id }, args, ctx: Context) {
+    return ctx.prisma
+      .messagesConnection({
+        where: {
+          conversation: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
   }
 };

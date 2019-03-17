@@ -6,8 +6,8 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   ads: [Ad!]!
   cars: [Car!]!
@@ -16,7 +16,10 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
-  clientType: ClientType
+  clientType: ClientType!
+  language: ClientLanguage
+  notifications: [Notification!]!
+  offers: [Offer!]!
 }
 
 enum Gender {
@@ -28,6 +31,11 @@ enum Gender {
 enum ClientType {
   COMPANY
   INDIVIDUAL
+}
+
+enum ClientLanguage {
+  FRENCH
+  ENGLISH
 }
 
 enum Permission {
@@ -95,12 +103,18 @@ enum OfferStatus {
   DELETED
 }
 
+enum ConversationStatus {
+  OPENED
+  DELETED
+}
+
 type Car {
   id: ID! @unique
   owner: User!
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -155,8 +169,8 @@ type Conversation {
   buyer: User! @relation(name: "BuyerRelation")
   seller: User! @relation(name: "SellerRelation")
   messages: [Message!]!
+  status: ConversationStatus
 }
-
 
 type Message {
   id: ID! @unique
@@ -164,4 +178,17 @@ type Message {
   text: String!
   image: String
   conversation: Conversation!
+}
+
+type Notification {
+  id: ID! @unique
+  owner: User!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }

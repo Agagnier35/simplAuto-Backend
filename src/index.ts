@@ -6,6 +6,8 @@ import { prisma } from "./generated/prisma-client";
 import resolvers from "./resolvers";
 import { Request } from "express";
 import schemaDirectives from "./directives/index";
+import cookie from "cookie";
+import { AuthError } from "./errors/authErrors";
 
 const cookieParser = require("cookie-parser");
 
@@ -54,6 +56,24 @@ server.start(
     cors: {
       credentials: true,
       origin: process.env.FRONTEND_URL
+    },
+    subscriptions: {
+      onConnect: (connectionParams, webSocket) => {
+        // TODO : test if connectionParams works outsite of playground
+        const rawCookie = webSocket.upgradeReq.headers.cookie;
+        const cookies = cookie.parse(rawCookie);
+
+        if (cookies.token) {
+          const { userId, permissions } = jwt.verify(
+            cookies.token,
+            process.env.APP_SECRET
+          ) as JwtCookie;
+
+          return { userId, permissions };
+        }
+
+        throw AuthError;
+      }
     }
   },
   () => {

@@ -1,33 +1,16 @@
-import { Context, getUserId } from "../../utils";
+import { Context } from "../../utils";
 
 export const Subscription = {
   messageSubscription: {
-    subscribe: async (parent, args, ctx: Context) => {
-      const userID = getUserId(ctx);
-
+    subscribe: async (parent, { conversationID }, ctx: Context) => {
       return ctx.prisma.$subscribe
         .message({
           mutation_in: ["CREATED"],
-          OR: [
-            {
-              node: {
-                conversation: {
-                  buyer: {
-                    id: userID
-                  }
-                }
-              }
-            },
-            {
-              node: {
-                conversation: {
-                  seller: {
-                    id: userID
-                  }
-                }
-              }
+          node: {
+            conversation: {
+              id: conversationID
             }
-          ]
+          }
         })
         .node();
     },

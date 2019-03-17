@@ -4,6 +4,8 @@ type Query {
   me: User
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
+  suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
+  adSuggestion(id: ID!, pageNumber: Int, pageSize: Int): [AdPosition]
   car(id: ID!): Car
   carCategories: [CarCategory]
   carFeatureCategory(name: String!): CarFeatureCategory
@@ -11,6 +13,7 @@ type Query {
   manufacturers: [Manufacturer]
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
+  allAdsCount: Int!
 }
 
 type Mutation {
@@ -45,15 +48,23 @@ type User {
   companyName: String
   password: String!
   location: String!
-  birthDate: Date!
-  gender: Gender!
+  birthDate: Date
+  gender: Gender
   permissions: [Permission!]!
   facebookID: String
   googleID: String
   ads(pageNumber: Int, pageSize: Int): [Ad!]!
-  cars: [Car!]!
+  cars(pageNumber: Int, pageSize: Int): [Car!]!
   conversations: [Conversation!]
-  clientType: ClientType
+  conversationCount: Int!
+  adCount: Int!
+  carCount: Int!
+  clientType: ClientType!
+  language: UserLanguage
+  offers: [Offer!]!
+  offerCount: Int!
+  notifications: [Notification!]!
+  notificationCount: Int!
 }
 
 enum Gender {
@@ -86,6 +97,7 @@ input UserSignupInput {
   facebookID: String
   googleID: String
   clientType: ClientType!
+  language: UserLanguage
 }
 
 input UserUpdateInput {
@@ -100,6 +112,7 @@ input UserUpdateInput {
   gender: Gender
   permissions: [Permission!]
   clientType: ClientType
+  language: UserLanguage
 }
 
 # Cars
@@ -111,12 +124,15 @@ type Car {
   manufacturer: Manufacturer!
   model: CarModel!
   category: CarCategory!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
+  photoCount: Int!
   features: [CarFeature!]!
   status: CarStatus!
   offers(pageNumber: Int, pageSize: Int): [Offer!]
+  offerCount: Int!
 }
 
 enum CarStatus {
@@ -163,6 +179,7 @@ input CarCreateInput {
   manufacturerID: String!
   modelID: String!
   categoryID: String!
+  description: String
   year: Int!
   mileage: Int!
   photos: [String!]!
@@ -176,6 +193,7 @@ type Ad {
   id: ID!
   creator: User @private
   offers(pageNumber: Int, pageSize: Int): [Offer!]!
+  offerCount: Int!
   priceLowerBound: Float
   priceHigherBound: Float
   manufacturer: Manufacturer
@@ -230,6 +248,13 @@ enum AdFeatureImportance {
   HIGH
 }
 
+type AdPosition{
+  ad: Ad
+  position: Int
+  score: Int
+  total_length: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
@@ -248,6 +273,16 @@ type Offer {
 enum OfferStatus {
   PUBLISHED
   ACCEPTED
+  DELETED
+}
+
+enum UserLanguage {
+  FRENCH
+  ENGLISH
+}
+
+enum ConversationStatus {
+  OPENED
   DELETED
 }
 
@@ -276,6 +311,12 @@ input OfferAddonInput {
   rankValue: Int
 }
 
+type OfferPosition {
+  offer: Offer
+  position: Int
+  score: Int
+}
+
 # Conversation
 # ------------------------------------------------------
 
@@ -285,6 +326,8 @@ type Conversation {
   seller: User @private
   offer: Offer!
   messages: [Message!]!
+  messageCount: Int!
+  status: ConversationStatus
 }
 
 # Message
@@ -292,7 +335,7 @@ type Conversation {
 
 type Message {
   id: ID!
-  sender: User!
+  sender: User @private
   text: String!
   image: String
   conversation: Conversation!
@@ -302,6 +345,22 @@ input SendMessageInput {
   conversationID: ID!
   text: String!
   image: String
+}
+
+# Notifications
+# ------------------------------------------------------
+
+type Notification {
+  id: ID!
+  owner: User!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }
 
 # Util
@@ -320,5 +379,5 @@ input DateInput {
 }
 
 type Subscription {
-  messageSubscription: Message
+  messageSubscription(conversationID: ID!): Message
 }

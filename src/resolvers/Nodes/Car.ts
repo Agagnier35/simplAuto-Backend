@@ -27,10 +27,27 @@ export const Car: CarResolvers.Type = {
   offers: ({ id }, { pageNumber, pageSize }, ctx: Context) => {
     const resolverArg: any = {};
 
-    if (pageSize && pageNumber) {
+    if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
     return ctx.prisma.car({ id }).offers(resolverArg);
+  },
+  offerCount({ id }, args, ctx: Context) {
+    return ctx.prisma
+      .offersConnection({
+        where: {
+          status: "PUBLISHED",
+          car: {
+            id
+          }
+        }
+      })
+      .aggregate()
+      .count();
+  },
+  async photoCount({ id }, args, ctx: Context) {
+    const cars = await ctx.prisma.car({ id }).photos();
+    return cars.length;
   }
 };
