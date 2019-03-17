@@ -1,6 +1,6 @@
 import Stripe from "stripe";
 import { User } from "./generated/prisma-client/index";
-import { StripeCreateCustomerError } from "./errors/authErrors";
+import { StripeCreateCustomerError } from "./errors/stripeErrors";
 import { Context } from "./utils";
 
 const stripe = new Stripe(process.env.STRIPE_KEY);

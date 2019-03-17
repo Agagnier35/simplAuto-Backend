@@ -5,6 +5,7 @@ import { UserUpdateInput } from "../../generated/prisma-client/index";
 import { InvalidEmailFormatError } from "../../errors/authErrors";
 import * as bcrypt from "bcryptjs";
 import stripe from "../../stripe";
+import { StripeCreateSubscriptionError } from "../../errors/stripeErrors";
 
 interface UserResolvers {
   updateUser: Types.UpdateUserResolver;
@@ -65,12 +66,33 @@ export const user: UserResolvers = {
     const permissions = await ctx.prisma.user({ id }).permissions();
     permissions.push("PREMIUM");
 
-    const charge = await stripe.charges.create({
-      customer: user.stripeCustomerID,
-      amount: 1000,
-      currency: "CAD",
+    // const charge = await stripe.charges.create({
+    //   customer: user.stripeCustomerID,
+    //   amount: 1000,
+    //   currency: "CAD",
+    //   source: stripeToken
+    // });
+
+    // Set default payment method for Stripe Subscription
+    await stripe.customers.update(user.stripeCustomerID, {
       source: stripeToken
     });
+
+    await stripe.subscriptions.create(
+      {
+        customer: user.stripeCustomerID,
+        items: [
+          {
+            plan: "plan_Ei8YQ7ekbIinfE"
+          }
+        ]
+      },
+      err => {
+        if (err) {
+          throw StripeCreateSubscriptionError;
+        }
+      }
+    );
 
     return ctx.prisma.updateUser({
       where: { id },
