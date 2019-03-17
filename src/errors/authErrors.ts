@@ -11,3 +11,5 @@ export const TokenExpiredOrInvalidError = new Error("tokenExpiredOrInvalid");
 export const AuthError = new Error("authError");
 
 export const UserNotCreatorError = new Error("userNotCreatorError");
+
+export const InvalidClientTypeData = new Error("invalidClientTypeData");

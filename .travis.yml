@@ -7,7 +7,7 @@ cache:
 script:
   - npm run prettierCI
   - npm run generate
-  - npm test
+  - npm run test-ci
   - npm run build
 notifications:
   email: false

@@ -6,6 +6,10 @@ import { getUserId, Context, getUserPermissions } from "../../utils";
 import { OfferUpdateInput, User } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import { UserNotCreatorError } from "../../errors/authErrors";
+import {
+  CannotCreateOfferOnOwnAd,
+  CannotCreateOfferWithNotOwnedCar
+} from "../../errors/offerErrors";
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
@@ -17,6 +21,16 @@ export const offer: OfferResolver = {
   async createOffer(parent, { data }, ctx: Context) {
     const id = getUserId(ctx);
     const { adID, price, carID, addons } = data;
+
+    const adCreator: User = await ctx.prisma.ad({ id: adID }).creator();
+    const carOwner: User = await ctx.prisma.car({ id: carID }).owner();
+
+    if (adCreator.id === id) {
+      throw CannotCreateOfferOnOwnAd;
+    }
+    if (carOwner.id !== id) {
+      throw CannotCreateOfferWithNotOwnedCar;
+    }
 
     const offerInput: OfferCreateInput = {
       price,
@@ -63,7 +77,9 @@ export const offer: OfferResolver = {
     const carCreator: User = await ctx.prisma.car({ id }).owner();
     const userId = getUserId(ctx);
 
-    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+    if (
+      !(carCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
+    ) {
       throw UserNotCreatorError;
     }
 
@@ -71,27 +87,27 @@ export const offer: OfferResolver = {
 
     // disconnect all addons, to handle removing addons
     const previousAddons = await ctx.prisma.offer({ id }).addons();
-    await ctx.prisma.updateOffer({
-      data: {
-        addons: {
-          disconnect: previousAddons.map(a => ({ id: a.id }))
-        }
-      },
-      where: { id: data.id }
-    });
+    if (previousAddons) {
+      await ctx.prisma.updateOffer({
+        data: {
+          addons: {
+            disconnect: previousAddons.map(a => ({ id: a.id }))
+          }
+        },
+        where: { id: data.id }
+      });
 
-    // delete "custom" addons, to remove DB bloat
-    await ctx.prisma.deleteManyOfferAddons({
-      rankValue_lte: 0,
-      id_in: previousAddons.map(a => a.id)
-    });
+      // delete "custom" addons, to remove DB bloat
+      await ctx.prisma.deleteManyOfferAddons({
+        rankValue_lte: 0,
+        id_in: previousAddons.map(a => a.id)
+      });
+    }
 
     if (addons) {
       updatedData.addons = {
-        connect: addons.filter(a => a.rankValue > 0).map(a => ({ id: a.id })),
-        create: addons
-          .filter(a => !a.rankValue || a.rankValue <= 0)
-          .map(a => ({ name: a.name }))
+        connect: addons.filter(a => a.id).map(a => ({ id: a.id })),
+        create: addons.filter(a => !a.id).map(a => ({ name: a.name }))
       };
     }
 
@@ -104,7 +120,9 @@ export const offer: OfferResolver = {
     const carCreator: User = await ctx.prisma.car({ id }).owner();
     const userId = getUserId(ctx);
 
-    if (carCreator.id !== userId || getUserPermissions(ctx) === "ADMIN") {
+    if (
+      !(carCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
+    ) {
       throw UserNotCreatorError;
     }
 
