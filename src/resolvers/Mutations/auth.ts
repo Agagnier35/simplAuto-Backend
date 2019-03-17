@@ -13,6 +13,7 @@ import {
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { Permission, User } from "../../generated/prisma-client";
 import { UserCreateInput } from "../../generated/prisma-client/index";
+import { createCustomer } from "../../stripe";
 const sgMail = require("@sendgrid/mail");
 
 interface AuthResolvers {
@@ -90,6 +91,8 @@ export const auth: AuthResolvers = {
     userInput.password = await bcrypt.hash(data.password, 10);
 
     const user: User = await ctx.prisma.createUser(userInput);
+    // Create stripe customer to track bills later on
+    await createCustomer(user, ctx);
 
     createAndInjectToken(user, ctx);
 
@@ -118,6 +121,8 @@ export const auth: AuthResolvers = {
     if (!user) {
       const userInput = createBasicUser(data);
       user = await ctx.prisma.createUser(userInput);
+      // Create stripe customer to track bills later on
+      await createCustomer(user, ctx);
     }
     createAndInjectToken(user, ctx);
     return user;
@@ -128,6 +133,8 @@ export const auth: AuthResolvers = {
     if (!user) {
       const userInput = createBasicUser(data);
       user = await ctx.prisma.createUser(userInput);
+      // Create stripe customer to track bills later on
+      await createCustomer(user, ctx);
     }
     createAndInjectToken(user, ctx);
     return user;
