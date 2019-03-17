@@ -1,5 +1,8 @@
 import { getUserId, Context, emailRegex } from "../../utils";
-import { UserNotFoundError } from "../../errors/userErrors";
+import {
+  UserNotFoundError,
+  UserAlreadyPremiumError
+} from "../../errors/userErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { UserUpdateInput } from "../../generated/prisma-client/index";
 import { InvalidEmailFormatError } from "../../errors/authErrors";
@@ -64,6 +67,11 @@ export const user: UserResolvers = {
     const user = await ctx.prisma.user({ id });
 
     const permissions = await ctx.prisma.user({ id }).permissions();
+
+    if (permissions.includes("PREMIUM")) {
+      throw UserAlreadyPremiumError;
+    }
+
     permissions.push("PREMIUM");
 
     // const charge = await stripe.charges.create({
