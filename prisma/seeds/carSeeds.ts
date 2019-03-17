@@ -26,7 +26,9 @@ export const seedCars = async (prisma: Prisma) => {
       connect: { id: manufacturers.find(m => m.name === "Jeep").id }
     },
     model: { connect: { id: carModels.find(c => c.name === "Wrangler").id } },
-    category: { connect: { id: carCategories.find(c => c.name === "vus").id } },
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Minivan").id }
+    },
     year: 2018,
     mileage: 102000,
     status: "PUBLISHED",
@@ -48,7 +50,9 @@ export const seedCars = async (prisma: Prisma) => {
     },
     model: { connect: { id: carModels.find(c => c.name === "Civic").id } },
     category: {
-      connect: { id: carCategories.find(c => c.name === "hot wheel").id }
+      connect: {
+        id: carCategories.find(c => c.name === "Motorcycle - Scooter").id
+      }
     },
     year: 2020,
     mileage: 5,

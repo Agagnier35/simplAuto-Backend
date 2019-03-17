@@ -4,6 +4,8 @@ type Query {
   me: User
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
+  suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
+  adSuggestion(id: ID!, pageNumber: Int, pageSize: Int): [AdPosition]
   car(id: ID!): Car
   carCategories: [CarCategory]
   carFeatureCategory(name: String!): CarFeatureCategory
@@ -59,6 +61,10 @@ type User {
   carCount: Int!
   clientType: ClientType!
   language: UserLanguage
+  offers: [Offer!]!
+  offerCount: Int!
+  notifications: [Notification!]!
+  notificationCount: Int!
 }
 
 enum Gender {
@@ -242,6 +248,13 @@ enum AdFeatureImportance {
   HIGH
 }
 
+type AdPosition{
+  ad: Ad
+  position: Int
+  score: Int
+  total_length: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
@@ -298,6 +311,12 @@ input OfferAddonInput {
   rankValue: Int
 }
 
+type OfferPosition {
+  offer: Offer
+  position: Int
+  score: Int
+}
+
 # Conversation
 # ------------------------------------------------------
 
@@ -326,6 +345,22 @@ input SendMessageInput {
   conversationID: ID!
   text: String!
   image: String
+}
+
+# Notifications
+# ------------------------------------------------------
+
+type Notification {
+  id: ID!
+  owner: User!
+  type: NotificationType!
+  objectID: ID
+}
+
+enum NotificationType {
+  GENERAL
+  OFFER_MESSAGE
+  NEW_OFFER
 }
 
 # Util
