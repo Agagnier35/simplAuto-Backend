@@ -4,6 +4,8 @@ type Query {
   me: User
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
+  suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
+  adSuggestion(id: ID!, pageNumber: Int, pageSize: Int): [AdPosition]
   car(id: ID!): Car
   carCategories: [CarCategory]
   carFeatureCategory(name: String!): CarFeatureCategory
@@ -243,6 +245,13 @@ enum AdFeatureImportance {
   HIGH
 }
 
+type AdPosition{
+  ad: Ad
+  position: Int
+  score: Int
+  total_length: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
@@ -287,6 +296,12 @@ input OfferAddonInput {
   id: ID
   name: String
   rankValue: Int
+}
+
+type OfferPosition {
+  offer: Offer
+  position: Int
+  score: Int
 }
 
 # Conversation

@@ -20,10 +20,25 @@ export const Ad: AdResolvers.Type = {
     return ctx.prisma.ad({ id }).creator();
   },
 
-  offers: ({ id }, { pageNumber, pageSize }, ctx: Context) => {
+  offers: async (parent, { pageNumber, pageSize }, ctx: Context) => {
+    const manufacturer = await ctx.prisma.ad({ id: parent.id }).manufacturer();
+    const model = await ctx.prisma.ad({ id: parent.id }).model();
+    const category = await ctx.prisma.ad({ id: parent.id }).category();
     const resolverArg: any = {
       where: {
-        status: "PUBLISHED"
+        status: "PUBLISHED",
+        price_gte: parent.priceLowerBound,
+        price_lte: parent.priceHigherBound,
+
+        car: {
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
+          mileage_gte: parent.mileageLowerBound,
+          mileage_lte: parent.priceHigherBound,
+          year_gte: parent.yearLowerBound,
+          year_lte: parent.yearHigherBound
+        }
       }
     };
 
@@ -31,7 +46,7 @@ export const Ad: AdResolvers.Type = {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
-    return ctx.prisma.ad({ id }).offers(resolverArg);
+    return ctx.prisma.ad({ id: parent.id }).offers(resolverArg);
   },
 
   offerCount({ id }, args, ctx: Context) {
