@@ -4,6 +4,8 @@ type Query {
   me: User
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
+  suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
+  adSuggestion(id: ID!, pageNumber: Int, pageSize: Int): [AdPosition]
   car(id: ID!): Car
   carCategories: [CarCategory]
   carFeatureCategory(name: String!): CarFeatureCategory
@@ -58,6 +60,7 @@ type User {
   adCount: Int!
   carCount: Int!
   clientType: ClientType!
+  language: UserLanguage
   offers: [Offer!]!
   offerCount: Int!
   notifications: [Notification!]!
@@ -94,6 +97,7 @@ input UserSignupInput {
   facebookID: String
   googleID: String
   clientType: ClientType!
+  language: UserLanguage
 }
 
 input UserUpdateInput {
@@ -108,6 +112,7 @@ input UserUpdateInput {
   gender: Gender
   permissions: [Permission!]
   clientType: ClientType
+  language: UserLanguage
 }
 
 # Cars
@@ -243,6 +248,13 @@ enum AdFeatureImportance {
   HIGH
 }
 
+type AdPosition{
+  ad: Ad
+  position: Int
+  score: Int
+  total_length: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
@@ -261,6 +273,16 @@ type Offer {
 enum OfferStatus {
   PUBLISHED
   ACCEPTED
+  DELETED
+}
+
+enum UserLanguage {
+  FRENCH
+  ENGLISH
+}
+
+enum ConversationStatus {
+  OPENED
   DELETED
 }
 
@@ -289,6 +311,12 @@ input OfferAddonInput {
   rankValue: Int
 }
 
+type OfferPosition {
+  offer: Offer
+  position: Int
+  score: Int
+}
+
 # Conversation
 # ------------------------------------------------------
 
@@ -299,6 +327,7 @@ type Conversation {
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
 }
 
 # Message

@@ -1,4 +1,6 @@
 import { GraphQLServer } from "graphql-yoga";
+import { makeExecutableSchema } from "graphql-tools";
+import { importSchema } from "graphql-import";
 import * as jwt from "jsonwebtoken";
 import { prisma } from "./generated/prisma-client";
 import resolvers from "./resolvers";
@@ -11,10 +13,15 @@ const cookieParser = require("cookie-parser");
 
 require("dotenv").config({ path: ".env" });
 
+const typeDefs = importSchema("./src/schema.graphql");
+export const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers: resolvers as any
+});
+
 const server = new GraphQLServer({
   schemaDirectives,
-  resolvers: resolvers as any,
-  typeDefs: "./src/schema.graphql",
+  schema,
   context: request => ({
     ...request,
     prisma
