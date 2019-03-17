@@ -60,6 +60,7 @@ type User {
   adCount: Int!
   carCount: Int!
   clientType: ClientType!
+  language: UserLanguage
   offers: [Offer!]!
   offerCount: Int!
   notifications: [Notification!]!
@@ -96,6 +97,7 @@ input UserSignupInput {
   facebookID: String
   googleID: String
   clientType: ClientType!
+  language: UserLanguage
 }
 
 input UserUpdateInput {
@@ -110,6 +112,7 @@ input UserUpdateInput {
   gender: Gender
   permissions: [Permission!]
   clientType: ClientType
+  language: UserLanguage
 }
 
 # Cars
@@ -273,6 +276,16 @@ enum OfferStatus {
   DELETED
 }
 
+enum UserLanguage {
+  FRENCH
+  ENGLISH
+}
+
+enum ConversationStatus {
+  OPENED
+  DELETED
+}
+
 input OfferCreateInput {
   adID: String!
   carID: String!
@@ -314,6 +327,7 @@ type Conversation {
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
 }
 
 # Message

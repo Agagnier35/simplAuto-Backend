@@ -700,13 +700,21 @@ export type OfferAddonOrderByInput =
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "price_ASC"
+  | "price_DESC"
+  | "status_ASC"
+  | "status_DESC"
+  | "finalRank_ASC"
+  | "finalRank_DESC";
 
 export type ClientType = "COMPANY" | "INDIVIDUAL";
 
 export type OfferOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -745,6 +753,8 @@ export type UserOrderByInput =
   | "resetTokenExpiry_DESC"
   | "clientType_ASC"
   | "clientType_DESC"
+  | "language_ASC"
+  | "language_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -800,7 +810,25 @@ export type CarOrderByInput =
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "updatedAt_DESC"
+  | "priceLowerBound_ASC"
+  | "priceLowerBound_DESC"
+  | "priceHigherBound_ASC"
+  | "priceHigherBound_DESC"
+  | "mileageLowerBound_ASC"
+  | "mileageLowerBound_DESC"
+  | "mileageHigherBound_ASC"
+  | "mileageHigherBound_DESC"
+  | "yearLowerBound_ASC"
+  | "yearLowerBound_DESC"
+  | "yearHigherBound_ASC"
+  | "yearHigherBound_DESC"
+  | "isUrgent_ASC"
+  | "isUrgent_DESC"
+  | "isFirst_ASC"
+  | "isFirst_DESC"
+  | "status_ASC"
+  | "status_DESC";
 
 export type CarCategoryOrderByInput =
   | "id_ASC"
@@ -835,6 +863,8 @@ export type AdStatus = "PUBLISHED" | "ACCEPTED" | "DELETED";
 export type AdOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -1317,6 +1347,17 @@ export interface CarFeatureCategorySubscriptionWhereInput {
     | CarFeatureCategorySubscriptionWhereInput;
 }
 
+export interface CarCategorySubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: CarCategoryWhereInput;
+  AND?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+  OR?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+  NOT?: CarCategorySubscriptionWhereInput[] | CarCategorySubscriptionWhereInput;
+}
+
 export interface AdUpdateInput {
   creator?: UserUpdateOneRequiredWithoutAdsInput;
   offers?: OfferUpdateManyWithoutAdInput;
@@ -1748,38 +1789,13 @@ export type ConversationWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface CarModelScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
+export interface CarModelUpdateManyWithWhereNestedInput {
+  where: CarModelScalarWhereInput;
+  data: CarModelUpdateManyDataInput;
+}
+
+export interface CarFeatureUpdateWithoutCategoryDataInput {
   name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  AND?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-  OR?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
-  NOT?: CarModelScalarWhereInput[] | CarModelScalarWhereInput;
 }
 
 export interface MessageUpdateInput {
@@ -1859,8 +1875,8 @@ export interface CarModelUpdateInput {
   name?: String;
 }
 
-export interface CarCategoryUpdateDataInput {
-  name?: String;
+export interface CarUpdatephotosInput {
+  set?: String[] | String;
 }
 
 export interface CarFeatureUpsertWithWhereUniqueWithoutCategoryInput {
@@ -4053,6 +4069,7 @@ export interface UserPreviousValuesPromise
   resetToken: () => Promise<String>;
   resetTokenExpiry: () => Promise<Float>;
   clientType: () => Promise<ClientType>;
+  language: () => Promise<ClientLanguage>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -4072,6 +4089,57 @@ export interface UserPreviousValuesSubscription
   resetToken: () => Promise<AsyncIterator<String>>;
   resetTokenExpiry: () => Promise<AsyncIterator<Float>>;
   clientType: () => Promise<AsyncIterator<ClientType>>;
+  language: () => Promise<AsyncIterator<ClientLanguage>>;
+}
+
+export interface CarCategoryEdge {
+  node: CarCategory;
+  cursor: String;
+}
+
+export interface CarCategoryEdgePromise
+  extends Promise<CarCategoryEdge>,
+    Fragmentable {
+  node: <T = CarCategoryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface CarCategoryEdgeSubscription
+  extends Promise<AsyncIterator<CarCategoryEdge>>,
+    Fragmentable {
+  node: <T = CarCategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface OfferPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  price: Float;
+  status: OfferStatus;
+  finalRank?: Int;
+}
+
+export interface OfferPreviousValuesPromise
+  extends Promise<OfferPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  price: () => Promise<Float>;
+  status: () => Promise<OfferStatus>;
+  finalRank: () => Promise<Int>;
+}
+
+export interface OfferPreviousValuesSubscription
+  extends Promise<AsyncIterator<OfferPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  price: () => Promise<AsyncIterator<Float>>;
+  status: () => Promise<AsyncIterator<OfferStatus>>;
+  finalRank: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface CarCategoryConnection {
@@ -4163,21 +4231,14 @@ export interface CarConnectionSubscription
   aggregate: <T = AggregateCarSubscription>() => T;
 }
 
-export interface CarEdge {
-  node: Car;
-  cursor: String;
+export interface BatchPayload {
+  count: Long;
 }
 
-export interface CarEdgePromise extends Promise<CarEdge>, Fragmentable {
-  node: <T = CarPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface CarEdgeSubscription
-  extends Promise<AsyncIterator<CarEdge>>,
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
     Fragmentable {
-  node: <T = CarSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<Long>;
 }
 
 export interface OfferAddonPreviousValues {
@@ -4901,6 +4962,26 @@ export interface DateEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
+export interface Date {
+  day: Int;
+  month: Int;
+  year: Int;
+}
+
+export interface DatePromise extends Promise<Date>, Fragmentable {
+  day: () => Promise<Int>;
+  month: () => Promise<Int>;
+  year: () => Promise<Int>;
+}
+
+export interface DateSubscription
+  extends Promise<AsyncIterator<Date>>,
+    Fragmentable {
+  day: () => Promise<AsyncIterator<Int>>;
+  month: () => Promise<AsyncIterator<Int>>;
+  year: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface CarCategorySubscriptionPayload {
   mutation: MutationType;
   node: CarCategory;
@@ -5565,18 +5646,21 @@ export interface MessageEdgeSubscription
 
 export interface ConversationPreviousValues {
   id: ID_Output;
+  status?: ConversationStatus;
 }
 
 export interface ConversationPreviousValuesPromise
   extends Promise<ConversationPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  status: () => Promise<ConversationStatus>;
 }
 
 export interface ConversationPreviousValuesSubscription
   extends Promise<AsyncIterator<ConversationPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  status: () => Promise<AsyncIterator<ConversationStatus>>;
 }
 
 export interface ManufacturerConnection {
@@ -6174,13 +6258,17 @@ export interface AggregateUser {
 export interface AggregateUserPromise
   extends Promise<AggregateUser>,
     Fragmentable {
-  count: () => Promise<Int>;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<CarFeatureEdge>>() => T;
+  aggregate: <T = AggregateCarFeaturePromise>() => T;
 }
 
 export interface AggregateUserSubscription
   extends Promise<AsyncIterator<AggregateUser>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<CarFeatureEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateCarFeatureSubscription>() => T;
 }
 
 export interface CarFeatureCategoryConnection {
