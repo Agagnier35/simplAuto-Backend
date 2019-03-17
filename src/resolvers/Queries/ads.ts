@@ -1,9 +1,8 @@
 import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer, Car, Ad } from "../../generated/prisma-client";
+import { Offer, Ad } from "../../generated/prisma-client";
 import { AdPosition } from "../../models";
-import { calc_score_adSuggestion } from "../../utils/calc_score";
-import { CarModel } from "../Nodes/CarModel";
+import { calcScoreAdSuggestion } from "../../utils/calcScore";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -40,45 +39,39 @@ export const ads: AdsQueries = {
   async adSuggestion(parent, { id, pageNumber, pageSize }, ctx: Context) {
     const ads = await ctx.prisma.ads();
     const car = await ctx.prisma.car({ id });
-    const carOffer = await ctx.prisma.car({ id }).offers();
-    let ads_score = [];
+    const offersWithCar = await ctx.prisma.car({ id }).offers();
+    let adsScore = [];
 
     const carManufacturer = await ctx.prisma.car({ id }).manufacturer();
     const carModel = await ctx.prisma.car({ id }).model();
     const carCategory = await ctx.prisma.car({ id }).category();
 
-    for (let i = 0; i < ads.length; i++) {
-      const adCarManufacturer = await ctx.prisma
-        .ad({ id: ads[i].id })
-        .manufacturer();
+    ads.forEach(async (ad: Ad) => {
+      const { id } = ad;
+      const adCarManufacturer = await ctx.prisma.ad({ id }).manufacturer();
 
-      const adCarModel = await ctx.prisma.ad({ id: ads[i].id }).model();
+      const adCarModel = await ctx.prisma.ad({ id }).model();
 
-      const adCarCategory = await ctx.prisma.ad({ id: ads[i].id }).category();
+      const adCarCategory = await ctx.prisma.ad({ id }).category();
 
       let sameManufacturer = null;
       let sameModel = null;
       let sameCategory = null;
-      adCarManufacturer && carManufacturer
-        ? carManufacturer.id === adCarManufacturer.id
-          ? (sameManufacturer = true)
-          : (sameManufacturer = false)
-        : null;
 
-      adCarModel && carModel
-        ? carModel.id === adCarModel.id
-          ? (sameModel = true)
-          : (sameModel = false)
-        : null;
+      if (adCarManufacturer && carManufacturer) {
+        sameManufacturer = carManufacturer.id === adCarManufacturer.id;
+      }
 
-      adCarCategory && carCategory
-        ? carCategory.id === adCarCategory.id
-          ? (sameCategory = true)
-          : (sameCategory = false)
-        : null;
+      if (adCarModel && carModel) {
+        sameModel = carModel.id === adCarModel.id;
+      }
 
-      const score = calc_score_adSuggestion(
-        ads[i],
+      if (adCarCategory && carCategory) {
+        sameCategory = carCategory.id === adCarCategory.id;
+      }
+
+      const score = calcScoreAdSuggestion(
+        ad,
         car,
         sameManufacturer,
         sameModel,
@@ -86,42 +79,43 @@ export const ads: AdsQueries = {
       );
 
       const ad_score: AdPosition = {
-        ad: ads[i],
-        score: score,
+        score,
+        ad,
         position: null,
         total_length: null
       };
 
       let already_offered = false;
 
-      for (let j = 0; j < carOffer.length; j++) {
-        const OfferAd = await ctx.prisma.offer({ id: carOffer[j].id }).ad();
-        if (ads[i].id === OfferAd.id) {
+      offersWithCar.forEach(async (offer: Offer) => {
+        const adInOffer = await ctx.prisma.offer({ id: offer.id }).ad();
+        if (ad.id === adInOffer.id) {
           already_offered = true;
         }
-      }
-      if (!already_offered) {
-        ads_score.push(ad_score);
-      }
-    }
+      });
 
-    ads_score.sort((a, b) => (a.score > b.score ? -1 : 1));
-    for (let i = 0; i < ads_score.length; i++) {
-      ads_score[i].position = i;
-      ads_score[i].total_length = ads_score.length;
-    }
+      if (!already_offered) {
+        adsScore.push(ad_score);
+      }
+    });
+
+    adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
+    adsScore.forEach((adScore, i: number) => {
+      adScore.position = i;
+      adScore.total_length = adsScore.length;
+    });
 
     if (pageSize && pageNumber >= 0) {
       if (pageNumber === 0) {
-        ads_score = ads_score.slice(0, pageSize);
+        adsScore = adsScore.slice(0, pageSize);
       } else {
-        ads_score = ads_score.slice(
+        adsScore = adsScore.slice(
           pageNumber * pageSize - 1,
           pageSize * pageNumber + pageSize
         );
       }
     }
 
-    return ads_score;
+    return adsScore;
   }
 };
