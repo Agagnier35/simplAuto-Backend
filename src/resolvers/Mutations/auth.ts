@@ -7,10 +7,11 @@ import {
   InvalidPasswordError,
   InvalidEmailError,
   InvalidEmailFormatError,
-  TokenExpiredOrInvalidError
+  TokenExpiredOrInvalidError,
+  InvalidClientTypeData
 } from "../../errors/authErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
-import { Permission } from "../../generated/prisma-client";
+import { Permission, User } from "../../generated/prisma-client";
 import { UserCreateInput } from "../../generated/prisma-client/index";
 import { createCustomer } from "../../stripe";
 const sgMail = require("@sendgrid/mail");
@@ -25,60 +26,75 @@ interface AuthResolvers {
   resetPassword: Types.ResetPasswordResolver;
 }
 
+const createBasicUser = (data: Types.UserSignupInput) => {
+  data.email = data.email.toLowerCase();
+
+  // We set USER as the default
+  const basePermissions: Permission[] = ["USER"];
+
+  const permissions = {
+    set: basePermissions
+  };
+
+  const { day, month, year } = data.birthDate;
+  const birthDate = {
+    create: {
+      day,
+      month,
+      year
+    }
+  };
+  // Verify email format
+  if (!emailRegex.test(data.email)) {
+    throw InvalidEmailFormatError;
+  }
+
+  if (
+    data.clientType === "INDIVIDUAL" &&
+    (!data.firstName || !data.lastName || data.companyName)
+  ) {
+    throw InvalidClientTypeData;
+  }
+
+  if (
+    data.clientType === "COMPANY" &&
+    (data.firstName || data.lastName || !data.companyName)
+  ) {
+    throw InvalidClientTypeData;
+  }
+
+  return {
+    ...data,
+    permissions,
+    birthDate
+  };
+};
+
+const createAndInjectToken = (user: User, ctx: Context) => {
+  // Create the JWT token for the user
+  const token = jwt.sign(
+    { permissions: user.permissions, userId: user.id },
+    process.env.APP_SECRET
+  );
+
+  // Set the JWT as a cookie on the response
+  ctx.response.cookie("token", token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
+  });
+};
+
 export const auth: AuthResolvers = {
   async signup(parent, { data }, ctx: Context) {
-    // Lowercase the emails
-    data.email = data.email.toLowerCase();
-
-    // Set default permissions
-    // We set USER as the default
-    // role for a logged in user
-    const basePermissions: Permission[] = ["USER"];
-
-    const permissions = {
-      set: basePermissions
-    };
-
-    const { day, month, year } = data.birthDate;
-    const birthDate = {
-      create: {
-        day,
-        month,
-        year
-      }
-    };
-
-    // Verify email format
-    if (!emailRegex.test(data.email)) {
-      throw InvalidEmailFormatError;
-    }
-
+    const userInput: UserCreateInput = createBasicUser(data);
     // Hash passwords
-    const password = await bcrypt.hash(data.password, 10);
+    userInput.password = await bcrypt.hash(data.password, 10);
 
-    // Finally create
-    const userInput: UserCreateInput = {
-      ...data,
-      password,
-      permissions,
-      birthDate
-    };
-    const user = await ctx.prisma.createUser(userInput);
-
+    const user: User = await ctx.prisma.createUser(userInput);
     // Create stripe customer to track bills later on
     await createCustomer(user, ctx);
 
-    // Create the JWT token for the user
-    const token = jwt.sign(
-      { permissions: basePermissions, userId: user.id },
-      process.env.APP_SECRET
-    );
-
-    // Set the JWT as a cookie on the response
-    ctx.response.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
-    });
+    createAndInjectToken(user, ctx);
 
     return user;
   },
@@ -95,140 +111,33 @@ export const auth: AuthResolvers = {
       throw InvalidPasswordError;
     }
 
-    // Same token flow as signup...
-    const token = jwt.sign(
-      { userId: user.id, permissions: user.permissions },
-      process.env.APP_SECRET
-    );
-
-    ctx.response.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365
-    });
+    createAndInjectToken(user, ctx);
 
     return user;
   },
 
   async facebookLogin(parent, { data }, ctx: Context) {
-    const user = await ctx.prisma.user({ facebookID: data.facebookID });
-    if (user) {
-      // Same token flow as signup but doesn't necessit password identification ...
-      const token = jwt.sign(
-        { userId: user.id, permissions: user.permissions },
-        process.env.APP_SECRET
-      );
-
-      ctx.response.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365
-      });
-
-      return user;
-    } else {
-      // We signup the user
-      data.email = data.email.toLowerCase();
-
-      // Set default permissions
-      // We set USER as the default
-      // role for a logged in user
-      const basePermissions: Permission[] = ["USER"];
-
-      const permissions = {
-        set: basePermissions
-      };
-
-      const { day, month, year } = data.birthDate;
-      const birthDate = {
-        create: {
-          day,
-          month,
-          year
-        }
-      };
-
-      // Finally create
-      const userInput: UserCreateInput = {
-        ...data,
-        permissions,
-        birthDate
-      };
-      const user = await ctx.prisma.createUser(userInput);
-
-      // Create the JWT token for the user
-      const token = jwt.sign(
-        { permissions: basePermissions, userId: user.id },
-        process.env.APP_SECRET
-      );
-
-      // Set the JWT as a cookie on the response
-      ctx.response.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
-      });
-
-      return user;
+    let user = await ctx.prisma.user({ facebookID: data.facebookID });
+    if (!user) {
+      const userInput = createBasicUser(data);
+      user = await ctx.prisma.createUser(userInput);
+      // Create stripe customer to track bills later on
+      await createCustomer(user, ctx);
     }
+    createAndInjectToken(user, ctx);
+    return user;
   },
 
   async googleLogin(parent, { data }, ctx: Context) {
-    const user = await ctx.prisma.user({ googleID: data.googleID });
-    if (user) {
-      // Same token flow as signup but doesn't necessit password identification ...
-      const token = jwt.sign(
-        { userId: user.id, permissions: user.permissions },
-        process.env.APP_SECRET
-      );
-
-      ctx.response.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365
-      });
-
-      return user;
-    } else {
-      // We signup the user
-      data.email = data.email.toLowerCase();
-
-      // Set default permissions
-      // We set USER as the default
-      // role for a logged in user
-      const basePermissions: Permission[] = ["USER"];
-
-      const permissions = {
-        set: basePermissions
-      };
-
-      const { day, month, year } = data.birthDate;
-      const birthDate = {
-        create: {
-          day,
-          month,
-          year
-        }
-      };
-
-      // Finally create
-      const userInput: UserCreateInput = {
-        ...data,
-        permissions,
-        birthDate
-      };
-      const user = await ctx.prisma.createUser(userInput);
-
-      // Create the JWT token for the user
-      const token = jwt.sign(
-        { permissions: basePermissions, userId: user.id },
-        process.env.APP_SECRET
-      );
-
-      // Set the JWT as a cookie on the response
-      ctx.response.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
-      });
-
-      return user;
+    let user = await ctx.prisma.user({ googleID: data.googleID });
+    if (!user) {
+      const userInput = createBasicUser(data);
+      user = await ctx.prisma.createUser(userInput);
+      // Create stripe customer to track bills later on
+      await createCustomer(user, ctx);
     }
+    createAndInjectToken(user, ctx);
+    return user;
   },
 
   logout(parent, args, ctx: Context) {
@@ -292,17 +201,7 @@ export const auth: AuthResolvers = {
       where: { email: user.email }
     });
 
-    // Same token flow as signup...
-    const token = jwt.sign(
-      { userId: user.id, permissions: user.permissions },
-      process.env.APP_SECRET
-    );
-
-    ctx.response.cookie("token", token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365
-    });
-
+    createAndInjectToken(user, ctx);
     return updatedUser;
   }
 };

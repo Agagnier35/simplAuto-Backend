@@ -16,6 +16,8 @@ import { Message } from "./Nodes/Message";
 import { Conversation } from "./Nodes/Conversation";
 import { OfferAddon } from "./Nodes/OfferAddon";
 import { Notification } from "./Nodes/Notification";
+import { OfferPosition } from "./Nodes/OfferPosition";
+import { AdPosition } from "./Nodes/AdPosition";
 
 const resolvers: Resolvers = {
   Query,
@@ -34,7 +36,9 @@ const resolvers: Resolvers = {
   Message,
   Conversation,
   OfferAddon,
-  Notification
+  OfferPosition,
+  Notification,
+  AdPosition
 };
 
 export default resolvers;

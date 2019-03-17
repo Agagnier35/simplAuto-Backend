@@ -1585,6 +1585,11 @@ input CarWhereUniqueInput {
   id: ID
 }
 
+enum ClientLanguage {
+  FRENCH
+  ENGLISH
+}
+
 enum ClientType {
   COMPANY
   INDIVIDUAL
@@ -1596,6 +1601,7 @@ type Conversation {
   buyer: User!
   seller: User!
   messages(where: MessageWhereInput, orderBy: MessageOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Message!]
+  status: ConversationStatus
 }
 
 type ConversationConnection {
@@ -1609,6 +1615,7 @@ input ConversationCreateInput {
   buyer: UserCreateOneWithoutConversationsInput!
   seller: UserCreateOneInput!
   messages: MessageCreateManyWithoutConversationInput
+  status: ConversationStatus
 }
 
 input ConversationCreateManyWithoutBuyerInput {
@@ -1630,18 +1637,21 @@ input ConversationCreateWithoutBuyerInput {
   offer: OfferCreateOneWithoutConversationInput!
   seller: UserCreateOneInput!
   messages: MessageCreateManyWithoutConversationInput
+  status: ConversationStatus
 }
 
 input ConversationCreateWithoutMessagesInput {
   offer: OfferCreateOneWithoutConversationInput!
   buyer: UserCreateOneWithoutConversationsInput!
   seller: UserCreateOneInput!
+  status: ConversationStatus
 }
 
 input ConversationCreateWithoutOfferInput {
   buyer: UserCreateOneWithoutConversationsInput!
   seller: UserCreateOneInput!
   messages: MessageCreateManyWithoutConversationInput
+  status: ConversationStatus
 }
 
 type ConversationEdge {
@@ -1652,6 +1662,8 @@ type ConversationEdge {
 enum ConversationOrderByInput {
   id_ASC
   id_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1660,6 +1672,7 @@ enum ConversationOrderByInput {
 
 type ConversationPreviousValues {
   id: ID!
+  status: ConversationStatus
 }
 
 input ConversationScalarWhereInput {
@@ -1677,9 +1690,18 @@ input ConversationScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  status: ConversationStatus
+  status_not: ConversationStatus
+  status_in: [ConversationStatus!]
+  status_not_in: [ConversationStatus!]
   AND: [ConversationScalarWhereInput!]
   OR: [ConversationScalarWhereInput!]
   NOT: [ConversationScalarWhereInput!]
+}
+
+enum ConversationStatus {
+  OPENED
+  DELETED
 }
 
 type ConversationSubscriptionPayload {
@@ -1705,6 +1727,15 @@ input ConversationUpdateInput {
   buyer: UserUpdateOneRequiredWithoutConversationsInput
   seller: UserUpdateOneRequiredInput
   messages: MessageUpdateManyWithoutConversationInput
+  status: ConversationStatus
+}
+
+input ConversationUpdateManyDataInput {
+  status: ConversationStatus
+}
+
+input ConversationUpdateManyMutationInput {
+  status: ConversationStatus
 }
 
 input ConversationUpdateManyWithoutBuyerInput {
@@ -1716,6 +1747,12 @@ input ConversationUpdateManyWithoutBuyerInput {
   update: [ConversationUpdateWithWhereUniqueWithoutBuyerInput!]
   upsert: [ConversationUpsertWithWhereUniqueWithoutBuyerInput!]
   deleteMany: [ConversationScalarWhereInput!]
+  updateMany: [ConversationUpdateManyWithWhereNestedInput!]
+}
+
+input ConversationUpdateManyWithWhereNestedInput {
+  where: ConversationScalarWhereInput!
+  data: ConversationUpdateManyDataInput!
 }
 
 input ConversationUpdateOneRequiredWithoutMessagesInput {
@@ -1738,18 +1775,21 @@ input ConversationUpdateWithoutBuyerDataInput {
   offer: OfferUpdateOneRequiredWithoutConversationInput
   seller: UserUpdateOneRequiredInput
   messages: MessageUpdateManyWithoutConversationInput
+  status: ConversationStatus
 }
 
 input ConversationUpdateWithoutMessagesDataInput {
   offer: OfferUpdateOneRequiredWithoutConversationInput
   buyer: UserUpdateOneRequiredWithoutConversationsInput
   seller: UserUpdateOneRequiredInput
+  status: ConversationStatus
 }
 
 input ConversationUpdateWithoutOfferDataInput {
   buyer: UserUpdateOneRequiredWithoutConversationsInput
   seller: UserUpdateOneRequiredInput
   messages: MessageUpdateManyWithoutConversationInput
+  status: ConversationStatus
 }
 
 input ConversationUpdateWithWhereUniqueWithoutBuyerInput {
@@ -1794,6 +1834,10 @@ input ConversationWhereInput {
   messages_every: MessageWhereInput
   messages_some: MessageWhereInput
   messages_none: MessageWhereInput
+  status: ConversationStatus
+  status_not: ConversationStatus
+  status_in: [ConversationStatus!]
+  status_not_in: [ConversationStatus!]
   AND: [ConversationWhereInput!]
   OR: [ConversationWhereInput!]
   NOT: [ConversationWhereInput!]
@@ -2383,6 +2427,7 @@ type Mutation {
   deleteManyCarModels(where: CarModelWhereInput): BatchPayload!
   createConversation(data: ConversationCreateInput!): Conversation!
   updateConversation(data: ConversationUpdateInput!, where: ConversationWhereUniqueInput!): Conversation
+  updateManyConversations(data: ConversationUpdateManyMutationInput!, where: ConversationWhereInput): BatchPayload!
   upsertConversation(where: ConversationWhereUniqueInput!, create: ConversationCreateInput!, update: ConversationUpdateInput!): Conversation!
   deleteConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteManyConversations(where: ConversationWhereInput): BatchPayload!
@@ -2930,7 +2975,7 @@ type OfferConnection {
 }
 
 input OfferCreateInput {
-  creator: UserCreateOneWithoutOffersInput!
+  creator: UserCreateOneInput!
   ad: AdCreateOneWithoutOffersInput!
   car: CarCreateOneWithoutOffersInput!
   price: Float!
@@ -2950,18 +2995,13 @@ input OfferCreateManyWithoutCarInput {
   connect: [OfferWhereUniqueInput!]
 }
 
-input OfferCreateManyWithoutCreatorInput {
-  create: [OfferCreateWithoutCreatorInput!]
-  connect: [OfferWhereUniqueInput!]
-}
-
 input OfferCreateOneWithoutConversationInput {
   create: OfferCreateWithoutConversationInput
   connect: OfferWhereUniqueInput
 }
 
 input OfferCreateWithoutAdInput {
-  creator: UserCreateOneWithoutOffersInput!
+  creator: UserCreateOneInput!
   car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
@@ -2971,7 +3011,7 @@ input OfferCreateWithoutAdInput {
 }
 
 input OfferCreateWithoutCarInput {
-  creator: UserCreateOneWithoutOffersInput!
+  creator: UserCreateOneInput!
   ad: AdCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
@@ -2981,23 +3021,13 @@ input OfferCreateWithoutCarInput {
 }
 
 input OfferCreateWithoutConversationInput {
-  creator: UserCreateOneWithoutOffersInput!
+  creator: UserCreateOneInput!
   ad: AdCreateOneWithoutOffersInput!
   car: CarCreateOneWithoutOffersInput!
   price: Float!
   status: OfferStatus
   finalRank: Int
   addons: OfferAddonCreateManyInput
-}
-
-input OfferCreateWithoutCreatorInput {
-  ad: AdCreateOneWithoutOffersInput!
-  car: CarCreateOneWithoutOffersInput!
-  price: Float!
-  status: OfferStatus
-  finalRank: Int
-  addons: OfferAddonCreateManyInput
-  conversation: ConversationCreateOneWithoutOfferInput
 }
 
 type OfferEdge {
@@ -3110,7 +3140,7 @@ input OfferSubscriptionWhereInput {
 }
 
 input OfferUpdateInput {
-  creator: UserUpdateOneRequiredWithoutOffersInput
+  creator: UserUpdateOneRequiredInput
   ad: AdUpdateOneRequiredWithoutOffersInput
   car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
@@ -3181,7 +3211,7 @@ input OfferUpdateOneRequiredWithoutConversationInput {
 }
 
 input OfferUpdateWithoutAdDataInput {
-  creator: UserUpdateOneRequiredWithoutOffersInput
+  creator: UserUpdateOneRequiredInput
   car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
@@ -3191,7 +3221,7 @@ input OfferUpdateWithoutAdDataInput {
 }
 
 input OfferUpdateWithoutCarDataInput {
-  creator: UserUpdateOneRequiredWithoutOffersInput
+  creator: UserUpdateOneRequiredInput
   ad: AdUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
@@ -3201,23 +3231,13 @@ input OfferUpdateWithoutCarDataInput {
 }
 
 input OfferUpdateWithoutConversationDataInput {
-  creator: UserUpdateOneRequiredWithoutOffersInput
+  creator: UserUpdateOneRequiredInput
   ad: AdUpdateOneRequiredWithoutOffersInput
   car: CarUpdateOneRequiredWithoutOffersInput
   price: Float
   status: OfferStatus
   finalRank: Int
   addons: OfferAddonUpdateManyInput
-}
-
-input OfferUpdateWithoutCreatorDataInput {
-  ad: AdUpdateOneRequiredWithoutOffersInput
-  car: CarUpdateOneRequiredWithoutOffersInput
-  price: Float
-  status: OfferStatus
-  finalRank: Int
-  addons: OfferAddonUpdateManyInput
-  conversation: ConversationUpdateOneWithoutOfferInput
 }
 
 input OfferUpdateWithWhereUniqueWithoutAdInput {
@@ -3228,11 +3248,6 @@ input OfferUpdateWithWhereUniqueWithoutAdInput {
 input OfferUpdateWithWhereUniqueWithoutCarInput {
   where: OfferWhereUniqueInput!
   data: OfferUpdateWithoutCarDataInput!
-}
-
-input OfferUpdateWithWhereUniqueWithoutCreatorInput {
-  where: OfferWhereUniqueInput!
-  data: OfferUpdateWithoutCreatorDataInput!
 }
 
 input OfferUpsertWithoutConversationInput {
@@ -3250,12 +3265,6 @@ input OfferUpsertWithWhereUniqueWithoutCarInput {
   where: OfferWhereUniqueInput!
   update: OfferUpdateWithoutCarDataInput!
   create: OfferCreateWithoutCarInput!
-}
-
-input OfferUpsertWithWhereUniqueWithoutCreatorInput {
-  where: OfferWhereUniqueInput!
-  update: OfferUpdateWithoutCreatorDataInput!
-  create: OfferCreateWithoutCreatorInput!
 }
 
 input OfferWhereInput {
@@ -3632,6 +3641,8 @@ enum UserOrderByInput {
   clientType_DESC
   stripeCustomerID_ASC
   stripeCustomerID_DESC
+  language_ASC
+  language_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -3735,6 +3746,7 @@ input UserUpdateManyMutationInput {
   resetTokenExpiry: Float
   clientType: ClientType
   stripeCustomerID: String
+  language: ClientLanguage
 }
 
 input UserUpdateOneRequiredInput {

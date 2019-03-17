@@ -3,4 +3,5 @@ schema: ./src/schema.graphql
 models:
   files:
     - ./src/generated/prisma-client/index.ts
+    - ./src/models/index.ts
 output: ./src/generated/yoga-client/index.ts
