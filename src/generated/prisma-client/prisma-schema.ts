@@ -1848,6 +1848,7 @@ input ConversationWhereUniqueInput {
 }
 
 type Date {
+  id: ID!
   day: Int!
   month: Int!
   year: Int!
@@ -1867,6 +1868,7 @@ input DateCreateInput {
 
 input DateCreateOneInput {
   create: DateCreateInput
+  connect: DateWhereUniqueInput
 }
 
 type DateEdge {
@@ -1875,14 +1877,14 @@ type DateEdge {
 }
 
 enum DateOrderByInput {
+  id_ASC
+  id_DESC
   day_ASC
   day_DESC
   month_ASC
   month_DESC
   year_ASC
   year_DESC
-  id_ASC
-  id_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1890,6 +1892,7 @@ enum DateOrderByInput {
 }
 
 type DatePreviousValues {
+  id: ID!
   day: Int!
   month: Int!
   year: Int!
@@ -1921,6 +1924,12 @@ input DateUpdateDataInput {
   year: Int
 }
 
+input DateUpdateInput {
+  day: Int
+  month: Int
+  year: Int
+}
+
 input DateUpdateManyMutationInput {
   day: Int
   month: Int
@@ -1933,6 +1942,7 @@ input DateUpdateOneInput {
   upsert: DateUpsertNestedInput
   delete: Boolean
   disconnect: Boolean
+  connect: DateWhereUniqueInput
 }
 
 input DateUpsertNestedInput {
@@ -1941,6 +1951,20 @@ input DateUpsertNestedInput {
 }
 
 input DateWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
   day: Int
   day_not: Int
   day_in: [Int!]
@@ -1968,6 +1992,10 @@ input DateWhereInput {
   AND: [DateWhereInput!]
   OR: [DateWhereInput!]
   NOT: [DateWhereInput!]
+}
+
+input DateWhereUniqueInput {
+  id: ID
 }
 
 enum Gender {
@@ -2117,6 +2145,7 @@ input ManufacturerWhereUniqueInput {
 
 type Message {
   id: ID!
+  updatedAt: DateTime!
   sender: User!
   text: String!
   image: String
@@ -2155,18 +2184,19 @@ type MessageEdge {
 enum MessageOrderByInput {
   id_ASC
   id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
   text_ASC
   text_DESC
   image_ASC
   image_DESC
   createdAt_ASC
   createdAt_DESC
-  updatedAt_ASC
-  updatedAt_DESC
 }
 
 type MessagePreviousValues {
   id: ID!
+  updatedAt: DateTime!
   text: String!
   image: String
 }
@@ -2186,6 +2216,14 @@ input MessageScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   text: String
   text_not: String
   text_in: [String!]
@@ -2303,6 +2341,14 @@ input MessageWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   sender: UserWhereInput
   text: String
   text_not: String
@@ -2386,7 +2432,10 @@ type Mutation {
   deleteConversation(where: ConversationWhereUniqueInput!): Conversation
   deleteManyConversations(where: ConversationWhereInput): BatchPayload!
   createDate(data: DateCreateInput!): Date!
+  updateDate(data: DateUpdateInput!, where: DateWhereUniqueInput!): Date
   updateManyDates(data: DateUpdateManyMutationInput!, where: DateWhereInput): BatchPayload!
+  upsertDate(where: DateWhereUniqueInput!, create: DateCreateInput!, update: DateUpdateInput!): Date!
+  deleteDate(where: DateWhereUniqueInput!): Date
   deleteManyDates(where: DateWhereInput): BatchPayload!
   createManufacturer(data: ManufacturerCreateInput!): Manufacturer!
   updateManufacturer(data: ManufacturerUpdateInput!, where: ManufacturerWhereUniqueInput!): Manufacturer
@@ -2438,9 +2487,12 @@ interface Node {
 
 type Notification {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   owner: User!
   type: NotificationType!
   objectID: ID
+  count: Int!
 }
 
 type NotificationConnection {
@@ -2453,6 +2505,7 @@ input NotificationCreateInput {
   owner: UserCreateOneWithoutNotificationsInput!
   type: NotificationType!
   objectID: ID
+  count: Int
 }
 
 input NotificationCreateManyWithoutOwnerInput {
@@ -2463,6 +2516,7 @@ input NotificationCreateManyWithoutOwnerInput {
 input NotificationCreateWithoutOwnerInput {
   type: NotificationType!
   objectID: ID
+  count: Int
 }
 
 type NotificationEdge {
@@ -2473,20 +2527,25 @@ type NotificationEdge {
 enum NotificationOrderByInput {
   id_ASC
   id_DESC
-  type_ASC
-  type_DESC
-  objectID_ASC
-  objectID_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
+  type_ASC
+  type_DESC
+  objectID_ASC
+  objectID_DESC
+  count_ASC
+  count_DESC
 }
 
 type NotificationPreviousValues {
   id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   type: NotificationType!
   objectID: ID
+  count: Int!
 }
 
 input NotificationScalarWhereInput {
@@ -2504,6 +2563,22 @@ input NotificationScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   type: NotificationType
   type_not: NotificationType
   type_in: [NotificationType!]
@@ -2522,6 +2597,14 @@ input NotificationScalarWhereInput {
   objectID_not_starts_with: ID
   objectID_ends_with: ID
   objectID_not_ends_with: ID
+  count: Int
+  count_not: Int
+  count_in: [Int!]
+  count_not_in: [Int!]
+  count_lt: Int
+  count_lte: Int
+  count_gt: Int
+  count_gte: Int
   AND: [NotificationScalarWhereInput!]
   OR: [NotificationScalarWhereInput!]
   NOT: [NotificationScalarWhereInput!]
@@ -2555,16 +2638,19 @@ input NotificationUpdateInput {
   owner: UserUpdateOneRequiredWithoutNotificationsInput
   type: NotificationType
   objectID: ID
+  count: Int
 }
 
 input NotificationUpdateManyDataInput {
   type: NotificationType
   objectID: ID
+  count: Int
 }
 
 input NotificationUpdateManyMutationInput {
   type: NotificationType
   objectID: ID
+  count: Int
 }
 
 input NotificationUpdateManyWithoutOwnerInput {
@@ -2587,6 +2673,7 @@ input NotificationUpdateManyWithWhereNestedInput {
 input NotificationUpdateWithoutOwnerDataInput {
   type: NotificationType
   objectID: ID
+  count: Int
 }
 
 input NotificationUpdateWithWhereUniqueWithoutOwnerInput {
@@ -2615,6 +2702,22 @@ input NotificationWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   owner: UserWhereInput
   type: NotificationType
   type_not: NotificationType
@@ -2634,6 +2737,14 @@ input NotificationWhereInput {
   objectID_not_starts_with: ID
   objectID_ends_with: ID
   objectID_not_ends_with: ID
+  count: Int
+  count_not: Int
+  count_in: [Int!]
+  count_not_in: [Int!]
+  count_lt: Int
+  count_lte: Int
+  count_gt: Int
+  count_gte: Int
   AND: [NotificationWhereInput!]
   OR: [NotificationWhereInput!]
   NOT: [NotificationWhereInput!]
@@ -3258,6 +3369,7 @@ type Query {
   conversation(where: ConversationWhereUniqueInput!): Conversation
   conversations(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Conversation]!
   conversationsConnection(where: ConversationWhereInput, orderBy: ConversationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ConversationConnection!
+  date(where: DateWhereUniqueInput!): Date
   dates(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Date]!
   datesConnection(where: DateWhereInput, orderBy: DateOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DateConnection!
   manufacturer(where: ManufacturerWhereUniqueInput!): Manufacturer

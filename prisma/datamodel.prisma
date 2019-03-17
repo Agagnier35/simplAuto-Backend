@@ -66,6 +66,7 @@ type Ad {
 }
 
 type Date {
+  id: ID! @unique
   day: Int!
   month: Int!
   year: Int!
@@ -174,6 +175,7 @@ type Conversation {
 
 type Message {
   id: ID! @unique
+  updatedAt: DateTime!
   sender: User!
   text: String!
   image: String
@@ -182,9 +184,12 @@ type Message {
 
 type Notification {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   owner: User!
   type: NotificationType!
   objectID: ID
+  count: Int! @default(value: 1)
 }
 
 enum NotificationType {
