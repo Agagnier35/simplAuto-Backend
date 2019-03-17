@@ -40,7 +40,7 @@ export const offers: OffersQueries = {
     const adModel = await ctx.prisma.ad({ id }).model();
     const adCategory = await ctx.prisma.ad({ id }).category();
 
-    offers.forEach(async (offer: Offer) => {
+    for (const offer of offers) {
       const { id } = offer;
       const offerCar = await ctx.prisma.offer({ id }).car();
       const offerCarManufacturer = await ctx.prisma
@@ -90,7 +90,7 @@ export const offers: OffersQueries = {
       };
 
       offersScore.push(offer_score);
-    });
+    }
 
     offersScore.sort((a, b) => (a.score > b.score ? 1 : -1));
     offersScore.forEach((offerScore, i: number) => {

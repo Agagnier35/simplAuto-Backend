@@ -46,7 +46,7 @@ export const ads: AdsQueries = {
     const carModel = await ctx.prisma.car({ id }).model();
     const carCategory = await ctx.prisma.car({ id }).category();
 
-    ads.forEach(async (ad: Ad) => {
+    for (const ad of ads) {
       const { id } = ad;
       const adCarManufacturer = await ctx.prisma.ad({ id }).manufacturer();
 
@@ -87,17 +87,17 @@ export const ads: AdsQueries = {
 
       let already_offered = false;
 
-      offersWithCar.forEach(async (offer: Offer) => {
+      for (const offer of offersWithCar) {
         const adInOffer = await ctx.prisma.offer({ id: offer.id }).ad();
         if (ad.id === adInOffer.id) {
           already_offered = true;
         }
-      });
+      }
 
       if (!already_offered) {
         adsScore.push(ad_score);
       }
-    });
+    }
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
     adsScore.forEach((adScore, i: number) => {
