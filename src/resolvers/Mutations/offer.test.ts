@@ -21,7 +21,9 @@ describe("Offers mutations tests suite", () => {
 
   describe("Create Offer test suite", () => {
     beforeEach(() => {
-      prisma.createOffer = jest.fn();
+      prisma.createOffer = jest.fn().mockReturnValue({
+        id: "someRandomOfferID"
+      });
       prisma.ad = jest.fn();
 
       prisma.ad = jest.fn().mockReturnValue({
@@ -30,6 +32,7 @@ describe("Offers mutations tests suite", () => {
       prisma.car = jest.fn().mockReturnValue({
         owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
       });
+      prisma.createNotification = jest.fn();
     });
 
     const basicOfferCreateInput = {

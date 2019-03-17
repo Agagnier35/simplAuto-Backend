@@ -19,6 +19,7 @@ jest.mock("bcryptjs", () => ({
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn()
 }));
+jest.mock("../../stripe");
 
 let prisma: jest.Mocked<Prisma>;
 describe("Auth mutations tests suite", () => {
