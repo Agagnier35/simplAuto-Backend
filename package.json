@@ -11,7 +11,8 @@
     "prettierCI": "prettier-check **/*.ts !**/generated/**",
     "test": "NODE_ENV=test jest --watch",
     "test-win": "SET NODE_ENV=test&& jest --watch",
-    "test-ci": "NODE_ENV=test jest"
+    "test-ci": "NODE_ENV=test jest",
+    "reset": "prisma reset"
   },
   "dependencies": {
     "@sendgrid/mail": "^6.3.1",
