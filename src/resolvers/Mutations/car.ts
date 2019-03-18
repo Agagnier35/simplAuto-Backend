@@ -7,7 +7,8 @@ import {
 import { OfferStatus, User } from "../../generated/prisma-client";
 import { UserNotCreatorError } from "../../errors/authErrors";
 
-const MAX_CARS = 2;
+export const MAX_CARS = 2;
+export const MAX_CARS_NOT_PREMIUM = 5;
 
 interface CarResolvers {
   createCar: Types.CreateCarResolver;

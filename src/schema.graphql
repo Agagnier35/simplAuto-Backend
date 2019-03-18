@@ -14,6 +14,7 @@ type Query {
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
   allAdsCount: Int!
+  getPrices: Prices!
 }
 
 type Mutation {
@@ -367,6 +368,16 @@ enum NotificationType {
   GENERAL
   OFFER_MESSAGE
   NEW_OFFER
+}
+
+# Prices
+# ------------------------------------------------------
+
+type Prices {
+  premiumAccount: Int!
+  carSpot: Int!
+  urgentAd: Int!
+  topAd: Int!
 }
 
 # Util

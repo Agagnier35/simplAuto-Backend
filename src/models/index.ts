@@ -12,3 +12,10 @@ export interface AdPosition {
   score: number | null;
   total_length: number | null;
 }
+
+export interface Prices {
+  premiumAccount: number;
+  carSpot: number;
+  urgentAd: number;
+  topAd: number;
+}

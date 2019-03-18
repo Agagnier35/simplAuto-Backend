@@ -18,6 +18,7 @@ import { OfferAddon } from "./Nodes/OfferAddon";
 import { Notification } from "./Nodes/Notification";
 import { OfferPosition } from "./Nodes/OfferPosition";
 import { AdPosition } from "./Nodes/AdPosition";
+import { Prices } from "./Nodes/Prices";
 
 const resolvers: Resolvers = {
   Query,
@@ -38,7 +39,8 @@ const resolvers: Resolvers = {
   OfferAddon,
   OfferPosition,
   Notification,
-  AdPosition
+  AdPosition,
+  Prices
 };
 
 export default resolvers;
