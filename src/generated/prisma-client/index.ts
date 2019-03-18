@@ -4339,6 +4339,10 @@ export interface User {
   clientType: ClientType;
   language?: ClientLanguage;
   stripeCustomerID?: String;
+  notificationEmailOffer: boolean;
+  notificationEmailMessage: boolean;
+  notificationInAppOffer: boolean;
+  notificationInAppMessage: boolean;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
