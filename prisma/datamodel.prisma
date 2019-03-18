@@ -62,9 +62,9 @@ type Ad {
   yearLowerBound: Int
   yearHigherBound: Int
   features: [CarFeature!]
-  isUrgent: Boolean! @default(value: false)
-  isFirst: Boolean! @default(value: false)
   status: AdStatus! @default(value: PUBLISHED)
+  urgentExpiry: String
+  topExpiry: String
 }
 
 type Date {
