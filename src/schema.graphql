@@ -67,6 +67,10 @@ type User {
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 enum Gender {

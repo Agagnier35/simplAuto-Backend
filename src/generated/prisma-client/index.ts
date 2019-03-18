@@ -2189,6 +2189,10 @@ export interface UserCreateInput {
   notifications?: NotificationCreateManyWithoutOwnerInput;
   offers?: OfferCreateManyWithoutCreatorInput;
   stripeCustomerID?: String;
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 export interface NotificationCreateManyWithoutOwnerInput {
