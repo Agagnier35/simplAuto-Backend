@@ -6,6 +6,7 @@ cache:
     - node_modules
 script:
   - npm run prettierCI
+  - npm run prisma-generate
   - npm run generate
   - npm run test-ci
   - npm run build

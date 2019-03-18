@@ -9,6 +9,7 @@ interface AdsQueries {
   ad: QueryResolvers.AdResolver;
   allAdsCount: QueryResolvers.AllAdsCountResolver;
   adSuggestion: QueryResolvers.AdSuggestionResolver;
+  statsForAds: QueryResolvers.StatsForAdsResolver;
 }
 
 export const ads: AdsQueries = {
@@ -117,5 +118,8 @@ export const ads: AdsQueries = {
     }
 
     return adsScore;
+  },
+  statsForAds(parent, { id }, ctx: Context, info) {
+    return { averagePrice: 0, averageTimeOnMarket: 0 };
   }
 };

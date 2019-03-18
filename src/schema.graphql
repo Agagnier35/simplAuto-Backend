@@ -14,6 +14,7 @@ type Query {
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
   allAdsCount: Int!
+  statsForAds(id: ID!): AdStatistics
 }
 
 type Mutation {
@@ -49,7 +50,8 @@ type User {
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: Location!
+  radius: Int!
   birthDate: Date
   gender: Gender
   permissions: [Permission!]!
@@ -86,13 +88,26 @@ enum Permission {
   ADMIN
 }
 
+type Location{
+  name: String!
+  longitude: Float!
+  latitude: Float!
+}
+
+input LocationInput{
+  name: String!
+  longitude: Float!
+  latitude: Float!
+}
+
 input UserSignupInput {
   email: String!
   firstName: String
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: LocationInput!
+  radius: Int!
   birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
@@ -109,7 +124,8 @@ input UserUpdateInput {
   lastName: String
   companyName: String
   password: String
-  location: String
+  location: LocationInput
+  radius: Int
   birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
@@ -250,11 +266,16 @@ enum AdFeatureImportance {
   HIGH
 }
 
-type AdPosition{
+type AdPosition {
   ad: Ad
   position: Int
   score: Int
   total_length: Int
+}
+
+type AdStatistics {
+  averagePrice: Float!
+  averageTimeOnMarket: Float!
 }
 
 # Offer

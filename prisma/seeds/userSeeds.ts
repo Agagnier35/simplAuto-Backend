@@ -11,7 +11,14 @@ export const seedUsers = async (prisma: Prisma) => {
     lastName: "Bergeron",
     companyName: "",
     password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m", // "secret42"
-    location: "Laval",
+    location: {
+      create: {
+        name: "Montreal, QC, Canada",
+        longitude: -73.58781,
+        latitude: 45.50884
+      }
+    },
+    radius: 100000000,
     birthDate: { create: { day: 9, month: 5, year: 1990 } },
     gender: "MALE",
     permissions: { set: ["USER", "ADMIN"] },
@@ -24,7 +31,14 @@ export const seedUsers = async (prisma: Prisma) => {
     lastName: "Clark",
     companyName: "",
     password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m", // "secret42"
-    location: "Montreal",
+    location: {
+      create: {
+        name: "Montreal, QC, Canada",
+        longitude: -73.58781,
+        latitude: 45.50884
+      }
+    },
+    radius: 100000000,
     birthDate: { create: { day: 20, month: 2, year: 1992 } },
     gender: "MALE",
     permissions: { set: ["USER"] },
@@ -37,7 +51,14 @@ export const seedUsers = async (prisma: Prisma) => {
     lastName: "Dave",
     companyName: "",
     password: "$2b$10$dqyYw5XovLjpmkYNiRDEWuwKaRAvLaG45fnXE5b3KTccKZcRPka2m", // "secret42"
-    location: "Montreal",
+    location: {
+      create: {
+        name: "Montreal, QC, Canada",
+        longitude: -73.58781,
+        latitude: 45.50884
+      }
+    },
+    radius: 100000000,
     birthDate: { create: { day: 9, month: 9, year: 1994 } },
     gender: "MALE",
     permissions: { set: ["USER"] },

@@ -18,7 +18,14 @@ interface UserResolvers {
 export const user: UserResolvers = {
   async updateUser(parent, { data }, ctx: Context, info) {
     const userId = getUserId(ctx);
-    const { id, permissions, birthDate, password, ...updatedValues } = data;
+    const {
+      id,
+      permissions,
+      birthDate,
+      password,
+      location,
+      ...updatedValues
+    } = data;
 
     const userExists = await ctx.prisma.$exists.user({
       id: userId
@@ -39,6 +46,17 @@ export const user: UserResolvers = {
         }
       };
       updatedData.birthDate = newBirthDate;
+    }
+    if (data.location) {
+      const { name, longitude, latitude } = data.location;
+      const newLocation = {
+        create: {
+          name,
+          longitude,
+          latitude
+        }
+      };
+      updatedData.location = newLocation;
     }
 
     if (updatedValues.email && !emailRegex.test(updatedValues.email)) {
