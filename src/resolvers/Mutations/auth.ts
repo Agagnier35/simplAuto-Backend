@@ -36,11 +36,6 @@ const createBasicUser = (data: Types.UserSignupInput) => {
     set: basePermissions
   };
 
-  const notificationEmailOffer: boolean = true;
-  const notificationEmailMessage: boolean = true;
-  const notificationInAppOffer: boolean = true;
-  const notificationInAppMessage: boolean = true;
-
   const { day, month, year } = data.birthDate;
   const birthDate = {
     create: {
@@ -71,11 +66,7 @@ const createBasicUser = (data: Types.UserSignupInput) => {
   return {
     ...data,
     permissions,
-    birthDate,
-    notificationEmailOffer,
-    notificationEmailMessage,
-    notificationInAppOffer,
-    notificationInAppMessage
+    birthDate
   };
 };
 

@@ -21,10 +21,10 @@ type User {
   notifications: [Notification!]!
   offers: [Offer!]!
   stripeCustomerID: String
-  notificationEmailOffer: Boolean
-  notificationEmailMessage: Boolean
-  notificationInAppOffer: Boolean
-  notificationInAppMessage: Boolean
+  notificationEmailOffer: Boolean! @default(value: true)
+  notificationEmailMessage: Boolean! @default(value: true)
+  notificationInAppOffer: Boolean! @default(value: true)
+  notificationInAppMessage: Boolean! @default(value: true)
 }
 
 enum Gender {
