@@ -37,6 +37,7 @@ type Mutation {
   sendMessage(data: SendMessageInput): Message!
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
+  buyCarSpot(stripeToken: String!, amount: Int!): User!
 }
 
 # USER
@@ -67,6 +68,7 @@ type User {
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
+  carLimit: Int!
 }
 
 enum Gender {

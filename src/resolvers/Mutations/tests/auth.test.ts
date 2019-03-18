@@ -1,17 +1,17 @@
-import { Prisma } from "../../generated/prisma-client";
+import { Prisma } from "../../../generated/prisma-client";
 import createMockInstance from "jest-create-mock-instance";
-import * as Utils from "../../utils";
+import * as Utils from "../../../utils";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
-import { auth as AuthMutationResolver } from "../Mutations/auth";
-import { MutationResolvers as Types } from "../../generated/yoga-client";
-import { getNotLoggedInContext } from "../../testUtils";
+import { auth as AuthMutationResolver } from "../auth";
+import { MutationResolvers as Types } from "../../../generated/yoga-client";
+import { getNotLoggedInContext } from "../../../testUtils";
 import {
   InvalidEmailFormatError,
   InvalidClientTypeData,
   InvalidPasswordError,
   InvalidEmailError
-} from "../../errors/authErrors";
+} from "../../../errors/authErrors";
 jest.mock("bcryptjs", () => ({
   hash: jest.fn(() => "encryptedPWD"),
   compare: jest.fn((pwd, pwd2) => pwd === pwd2)
@@ -19,7 +19,7 @@ jest.mock("bcryptjs", () => ({
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn()
 }));
-jest.mock("../../stripe");
+jest.mock("../../../stripe");
 
 let prisma: jest.Mocked<Prisma>;
 describe("Auth mutations tests suite", () => {

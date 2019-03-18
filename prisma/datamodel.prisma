@@ -21,6 +21,7 @@ type User {
   notifications: [Notification!]!
   offers: [Offer!]!
   stripeCustomerID: String
+  carLimit: Int! @default(value: 2)
 }
 
 enum Gender {
