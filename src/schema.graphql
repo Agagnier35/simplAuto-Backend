@@ -67,6 +67,7 @@ type User {
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
+  createdAt: String!
 }
 
 enum Gender {
@@ -270,6 +271,7 @@ type Offer {
   finalRank: Int
   addons: [OfferAddon!]
   conversation: Conversation
+  createdAt: String!
 }
 
 enum OfferStatus {

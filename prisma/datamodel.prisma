@@ -21,6 +21,8 @@ type User {
   notifications: [Notification!]!
   offers: [Offer!]!
   stripeCustomerID: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum Gender {

@@ -121,10 +121,4 @@ export const seedCarFeaturesCategories = async (prisma: Prisma) => {
     type: "TRUE_FALSE",
     features: { create: [{ name: "true" }, { name: "false" }] }
   });
-
-  const Aileron = await prisma.createCarFeatureCategory({
-    name: "aileron",
-    type: "MULTIPLE_CHOICE",
-    features: { create: [{ name: "fire" }] }
-  });
 };
