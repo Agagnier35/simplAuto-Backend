@@ -119,6 +119,10 @@ input UserUpdateInput {
   permissions: [Permission!]
   clientType: ClientType
   language: UserLanguage
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 # Cars
