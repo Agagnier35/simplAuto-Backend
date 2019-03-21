@@ -2863,10 +2863,10 @@ export interface UserUpdateInput {
   notifications?: NotificationUpdateManyWithoutOwnerInput;
   offers?: OfferUpdateManyWithoutCreatorInput;
   stripeCustomerID?: String;
-  notificationEmailOffer?: boolean;
-  notificationEmailMessage?: boolean;
-  notificationInAppOffer?: boolean;
-  notificationInAppMessage?: boolean;
+  notificationEmailOffer?: Boolean;
+  notificationEmailMessage?: Boolean;
+  notificationInAppOffer?: Boolean;
+  notificationInAppMessage?: Boolean;
 }
 
 export interface OfferAddonUpdateDataInput {
