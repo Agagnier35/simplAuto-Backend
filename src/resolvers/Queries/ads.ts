@@ -1,8 +1,9 @@
-import { Context } from "../../utils";
+import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer, Ad } from "../../generated/prisma-client";
 import { AdPosition } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
+import { fetchStatsFromAPI } from "../../utils/apiGateway";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -119,7 +120,10 @@ export const ads: AdsQueries = {
 
     return adsScore;
   },
-  statsForAds(parent, { id }, ctx: Context, info) {
-    return { averagePrice: 0, averageTimeOnMarket: 0 };
+  async statsForAds(parent, { id }, ctx: Context, info) {
+    const ad = await ctx.prisma.ad({ id });
+    const userID = getUserId(ctx);
+    const user = await ctx.prisma.user({ id: userID });
+    return await fetchStatsFromAPI(ad, user, ctx);
   }
 };

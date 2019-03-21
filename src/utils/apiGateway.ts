@@ -10,11 +10,11 @@ import { GatewayError } from "../errors/gatewayErrors";
 import { Context } from "../utils";
 
 const baseURLAPI = "http://api.marketcheck.com/v1/search";
-const ALL_ROWS = 999999; // the API doesnt offer all rows ...
 
 export const fetchStatsFromAPI = async (ad: Ad, user: User, ctx: Context) => {
   const location = await ctx.prisma.user({ id: user.id }).location();
   const params: any = createBaseAPIParameters(user.radius, location);
+  const headers: any = { Host: "marketcheck-prod.apigee.net" };
 
   const { id } = ad;
   const make: Manufacturer = await ctx.prisma.ad({ id }).manufacturer();
@@ -31,24 +31,24 @@ export const fetchStatsFromAPI = async (ad: Ad, user: User, ctx: Context) => {
     params.year = year;
   }
 
-  axios
-    .get(baseURLAPI, { params })
-    .then(response => {
-      console.log(response);
-    })
-    .catch(() => {
-      throw GatewayError;
-    });
+  try {
+    const response = await axios.get(baseURLAPI, { params, headers });
+    const { price, dom } = response.data.stats;
+    return { averagePrice: price.mean, averageTimeOnMarket: dom.mean };
+  } catch (error) {
+    throw GatewayError;
+  }
 };
 
-const createBaseAPIParameters = async (radius: number, location: Location) => {
+const createBaseAPIParameters = (radius: number, location: Location) => {
   return {
     radius,
-    api_key: "",
+    api_key: process.env.MARKETCHECK_KEY,
     start: 0,
-    rows: ALL_ROWS,
+    rows: 0,
     latitude: location.latitude,
-    longitude: location.longitude
+    longitude: location.longitude,
+    stats: "price,dom"
   };
 };
 
@@ -57,7 +57,7 @@ const getYearRangeString = (ad: Ad) => {
 
   if (ad.yearLowerBound || ad.yearHigherBound) {
     // API only supports 1980 and onwards
-    const lowerBound = ad.yearLowerBound <= 1980 ? ad.yearLowerBound : 1980;
+    const lowerBound = ad.yearLowerBound >= 1980 ? ad.yearLowerBound : 1980;
     const higherBound = ad.yearHigherBound
       ? ad.yearHigherBound
       : new Date().getFullYear;
