@@ -91,7 +91,8 @@ export const offers: OffersQueries = {
       const offer_score: OfferPosition = {
         offer: offers[i],
         score: score,
-        position: null
+        position: null,
+        total_length: null
       };
 
       offers_score.push(offer_score);
@@ -99,6 +100,7 @@ export const offers: OffersQueries = {
     offers_score.sort((a, b) => (a.score > b.score ? 1 : -1));
     for (let i = 0; i < offers_score.length; i++) {
       offers_score[i].position = i;
+      offers_score[i].total_length = offers_score.length;
     }
 
     if (pageSize && pageNumber >= 0) {
