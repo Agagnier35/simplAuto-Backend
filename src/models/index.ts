@@ -13,7 +13,9 @@ export interface AdPosition {
   total_length: number | null;
 }
 
-export interface AdStatistics {
-  averagePrice: number;
-  averageTimeOnMarket: number;
+export interface Statistics {
+  averagePriceAPI: number;
+  averageTimeOnMarketAPI: number;
+  averagePriceApp: number;
+  averageTimeOnMarketApp: number;
 }

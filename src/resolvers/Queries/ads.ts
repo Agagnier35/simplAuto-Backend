@@ -1,9 +1,10 @@
 import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer, Ad } from "../../generated/prisma-client";
-import { AdPosition } from "../../models";
+import { Offer, Ad, Car } from "../../generated/prisma-client";
+import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
-import { fetchStatsFromAPI } from "../../utils/apiGateway";
+import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
+import moment from "moment";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -122,8 +123,52 @@ export const ads: AdsQueries = {
   },
   async statsForAds(parent, { id }, ctx: Context, info) {
     const ad = await ctx.prisma.ad({ id });
+    const manufacturer = await ctx.prisma.ad({ id }).manufacturer();
+    const model = await ctx.prisma.ad({ id }).model();
+    const category = await ctx.prisma.ad({ id }).category();
+
     const userID = getUserId(ctx);
     const user = await ctx.prisma.user({ id: userID });
-    return await fetchStatsFromAPI(ad, user, ctx);
+
+    const allOffersThatMatchesAd: Offer[] = await ctx.prisma.offers({
+      where: {
+        car: {
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
+          mileage_gte: ad.mileageLowerBound,
+          mileage_lte: ad.priceHigherBound,
+          year_gte: ad.yearLowerBound,
+          year_lte: ad.yearHigherBound
+        }
+      }
+    });
+
+    const statsAPI = await fetchAdStatsFromAPI(ad, user, ctx);
+
+    const statsObject: Statistics = {
+      averagePriceAPI: statsAPI.averagePriceAPI,
+      averageTimeOnMarketAPI: statsAPI.averageTimeOnMarketAPI,
+      averageTimeOnMarketApp: 0,
+      averagePriceApp: 0
+    };
+
+    if (allOffersThatMatchesAd && allOffersThatMatchesAd.length > 0) {
+      for (const offer of allOffersThatMatchesAd) {
+        const beginningDate = moment(offer.createdAt);
+        statsObject.averageTimeOnMarketApp +=
+          offer.status !== "PUBLISHED"
+            ? moment
+                .duration(moment(offer.updatedAt).diff(beginningDate))
+                .asDays()
+            : 0;
+
+        statsObject.averagePriceApp += offer.price;
+      }
+      statsObject.averageTimeOnMarketApp /= allOffersThatMatchesAd.length;
+      statsObject.averagePriceApp /= allOffersThatMatchesAd.length;
+    }
+
+    return statsObject;
   }
 };

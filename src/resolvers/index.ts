@@ -18,7 +18,7 @@ import { OfferAddon } from "./Nodes/OfferAddon";
 import { Notification } from "./Nodes/Notification";
 import { OfferPosition } from "./Nodes/OfferPosition";
 import { AdPosition } from "./Nodes/AdPosition";
-import { AdStatistics } from "./Nodes/AdStatistics";
+import { Statistics } from "./Nodes/Statistics";
 import { Location } from "./Nodes/Location";
 
 const resolvers: Resolvers = {
@@ -41,7 +41,7 @@ const resolvers: Resolvers = {
   OfferPosition,
   Notification,
   AdPosition,
-  AdStatistics,
+  Statistics,
   Location
 };
 

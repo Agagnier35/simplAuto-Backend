@@ -14,7 +14,8 @@ type Query {
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
   allAdsCount: Int!
-  statsForAds(id: ID!): AdStatistics
+  statsForAds(id: ID!): Statistics
+  statsForOffer(id: ID!): Statistics
 }
 
 type Mutation {
@@ -273,9 +274,11 @@ type AdPosition {
   total_length: Int
 }
 
-type AdStatistics {
-  averagePrice: Float!
-  averageTimeOnMarket: Float!
+type Statistics {
+  averagePriceAPI: Float!
+  averageTimeOnMarketAPI: Float!
+  averagePriceApp: Float!
+  averageTimeOnMarketApp: Float!
 }
 
 # Offer
