@@ -3,7 +3,7 @@ import {
   OfferStatus
 } from "../../generated/yoga-client";
 import { getUserId, Context, getUserPermissions } from "../../utils";
-import { OfferUpdateInput, User } from "../../generated/prisma-client";
+import { OfferUpdateInput, User, Ad } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import { UserNotCreatorError } from "../../errors/authErrors";
 import {
@@ -15,6 +15,7 @@ interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
+  acceptOffer: Types.AcceptOfferResolver;
 }
 
 export const offer: OfferResolver = {
@@ -129,6 +130,29 @@ export const offer: OfferResolver = {
     const status: OfferStatus = "DELETED";
     return await ctx.prisma.updateOffer({
       data: { status },
+      where: { id }
+    });
+  },
+  async acceptOffer(parent, { id }, ctx: Context) {
+    const acceptedAdId: string = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .id();
+
+    const statusOffer: OfferStatus = "DELETED";
+    await ctx.prisma.updateManyOffers({
+      data: { status: statusOffer },
+      where: { ad: { id } }
+    });
+
+    const statusAccepted: OfferStatus = "ACCEPTED";
+    await ctx.prisma.updateAd({
+      data: { status: statusAccepted },
+      where: { id: acceptedAdId }
+    });
+
+    return await ctx.prisma.updateOffer({
+      data: { status: statusAccepted },
       where: { id }
     });
   }
