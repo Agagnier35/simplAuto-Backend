@@ -7,7 +7,7 @@ import { OfferUpdateInput, User, Ad } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
-  AdHasAlreadyBeenAcceptedError
+  AdNotOneMarketError
 } from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
@@ -140,7 +140,7 @@ export const offer: OfferResolver = {
     const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
 
     if (acceptedAd.status !== "PUBLISHED") {
-      throw AdHasAlreadyBeenAcceptedError;
+      throw AdNotOneMarketError;
     }
 
     const statusOffer: OfferStatus = "DELETED";
