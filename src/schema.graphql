@@ -35,6 +35,8 @@ type Mutation {
   deleteOffer(id: ID!): Offer
   createConversation(offerID: ID!): Conversation!
   sendMessage(data: SendMessageInput): Message!
+  deleteNotification(id: ID!): Notification
+  goPremium(stripeToken: String!): User!
 }
 
 # USER
@@ -60,6 +62,7 @@ type User {
   adCount: Int!
   carCount: Int!
   clientType: ClientType!
+  language: UserLanguage
   offers: [Offer!]!
   offerCount: Int!
   notifications: [Notification!]!
@@ -90,12 +93,13 @@ input UserSignupInput {
   companyName: String
   password: String!
   location: String!
-  birthDate: DateInput!
-  gender: Gender!
+  birthDate: DateInput
+  gender: Gender
   permissions: [Permission!]
   facebookID: String
   googleID: String
   clientType: ClientType!
+  language: UserLanguage
 }
 
 input UserUpdateInput {
@@ -110,6 +114,7 @@ input UserUpdateInput {
   gender: Gender
   permissions: [Permission!]
   clientType: ClientType
+  language: UserLanguage
 }
 
 # Cars
@@ -273,6 +278,16 @@ enum OfferStatus {
   DELETED
 }
 
+enum UserLanguage {
+  FRENCH
+  ENGLISH
+}
+
+enum ConversationStatus {
+  OPENED
+  DELETED
+}
+
 input OfferCreateInput {
   adID: String!
   carID: String!
@@ -315,6 +330,7 @@ type Conversation {
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
 }
 
 # Message
@@ -342,6 +358,8 @@ type Notification {
   owner: User!
   type: NotificationType!
   objectID: ID
+  count: Int!
+  updatedAt: String!
 }
 
 enum NotificationType {

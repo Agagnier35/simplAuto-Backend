@@ -1,20 +1,29 @@
 import { GraphQLServer } from "graphql-yoga";
+import { makeExecutableSchema } from "graphql-tools";
+import { importSchema } from "graphql-import";
 import * as jwt from "jsonwebtoken";
-import { prisma } from "./generated/prisma-client";
+import { prisma, Permission } from "./generated/prisma-client";
 import resolvers from "./resolvers";
 import { Request } from "express";
 import schemaDirectives from "./directives/index";
 import cookie from "cookie";
 import { AuthError } from "./errors/authErrors";
+import { User } from "./generated/prisma-client/index";
 
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 require("dotenv").config({ path: ".env" });
 
+const typeDefs = importSchema("./src/schema.graphql");
+export const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers: resolvers as any
+});
+
 const server = new GraphQLServer({
   schemaDirectives,
-  resolvers: resolvers as any,
-  typeDefs: "./src/schema.graphql",
+  schema,
   context: request => ({
     ...request,
     prisma
@@ -42,6 +51,38 @@ server.express.use((req: Request & JwtCookie, res, next) => {
   }
 
   next();
+});
+
+server.express.use("/webhook", bodyParser.raw({ type: "*/*" }), (req, res) => {
+  // Retrieve the request's body and parse it as JSON
+  const stripeEvent = JSON.parse(req.body);
+
+  switch (stripeEvent.type) {
+    case "customer.source.deleted":
+    case "customer.source.expiring":
+      // Remove the premium permission from the user
+      const email = stripeEvent.data.object.owner.email;
+      prisma.user({ email }).then((user: User) => {
+        const permissions = user.permissions.filter(
+          (permission: Permission) => permission !== "PREMIUM"
+        );
+
+        prisma
+          .updateUser({
+            where: { email },
+            data: {
+              permissions: {
+                set: permissions
+              }
+            }
+          })
+          .then(() => {
+            res.sendStatus(200);
+          });
+      });
+
+      break;
+  }
 });
 
 server.start(

@@ -25,7 +25,7 @@ export const seedAds = async (prisma: Prisma) => {
     priceLowerBound: 50,
     priceHigherBound: 5000,
     category: {
-      connect: { id: carCategories.find(c => c.name === "sedan").id }
+      connect: { id: carCategories.find(c => c.name === "Sedan").id }
     },
     manufacturer: {
       connect: { id: manufacturers.find(m => m.name === "Volkswagen").id }
@@ -49,7 +49,7 @@ export const seedAds = async (prisma: Prisma) => {
     },
     priceLowerBound: 5000,
     priceHigherBound: 10000,
-    category: { connect: { id: carCategories.find(c => c.name === "vus").id } },
+    category: { connect: { id: carCategories.find(c => c.name === "SUV").id } },
     manufacturer: {
       connect: { id: manufacturers.find(m => m.name === "Honda").id }
     },

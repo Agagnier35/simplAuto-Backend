@@ -17,8 +17,10 @@ type User {
   resetTokenExpiry: Float
   conversations: [Conversation!] @relation(name: "BuyerRelation")
   clientType: ClientType!
+  language: ClientLanguage
   notifications: [Notification!]!
   offers: [Offer!]!
+  stripeCustomerID: String
 }
 
 enum Gender {
@@ -30,6 +32,11 @@ enum Gender {
 enum ClientType {
   COMPANY
   INDIVIDUAL
+}
+
+enum ClientLanguage {
+  FRENCH
+  ENGLISH
 }
 
 enum Permission {
@@ -60,6 +67,7 @@ type Ad {
 }
 
 type Date {
+  id: ID! @unique
   day: Int!
   month: Int!
   year: Int!
@@ -94,6 +102,11 @@ type OfferAddon{
 enum OfferStatus {
   PUBLISHED
   ACCEPTED
+  DELETED
+}
+
+enum ConversationStatus {
+  OPENED
   DELETED
 }
 
@@ -158,10 +171,12 @@ type Conversation {
   buyer: User! @relation(name: "BuyerRelation")
   seller: User! @relation(name: "SellerRelation")
   messages: [Message!]!
+  status: ConversationStatus
 }
 
 type Message {
   id: ID! @unique
+  updatedAt: DateTime!
   sender: User!
   text: String!
   image: String
@@ -170,9 +185,12 @@ type Message {
 
 type Notification {
   id: ID! @unique
+  createdAt: DateTime!
+  updatedAt: DateTime!
   owner: User!
   type: NotificationType!
   objectID: ID
+  count: Int! @default(value: 1)
 }
 
 enum NotificationType {

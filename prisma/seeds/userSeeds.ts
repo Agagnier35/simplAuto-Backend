@@ -1,6 +1,10 @@
 import { Prisma } from "../../src/generated/prisma-client";
+import { createCustomer, deleteSeededCustomers } from "../../src/stripe";
+import { Context } from "../../src/utils";
 
 export const seedUsers = async (prisma: Prisma) => {
+  const ctx = { prisma } as Context;
+
   const user1 = await prisma.createUser({
     email: "dominic@yopmail.com",
     firstName: "Dominic",
@@ -39,4 +43,10 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER"] },
     clientType: "INDIVIDUAL"
   });
+
+  // Create stripe customers for the accounts
+  await deleteSeededCustomers();
+  await createCustomer(user1, ctx);
+  await createCustomer(user2, ctx);
+  await createCustomer(user3, ctx);
 };
