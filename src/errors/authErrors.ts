@@ -13,3 +13,7 @@ export const AuthError = new Error("authError");
 export const UserNotCreatorError = new Error("userNotCreatorError");
 
 export const InvalidClientTypeData = new Error("invalidClientTypeData");
+
+export const AdHasAlreadyBeenAcceptedError = new Error(
+  "adHasAlreadyBeenAcceptedError"
+);

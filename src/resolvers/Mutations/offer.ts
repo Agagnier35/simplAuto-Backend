@@ -5,7 +5,10 @@ import {
 import { getUserId, Context, getUserPermissions } from "../../utils";
 import { OfferUpdateInput, User, Ad } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
-import { UserNotCreatorError } from "../../errors/authErrors";
+import {
+  UserNotCreatorError,
+  AdHasAlreadyBeenAcceptedError
+} from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
   CannotCreateOfferWithNotOwnedCar
@@ -134,10 +137,11 @@ export const offer: OfferResolver = {
     });
   },
   async acceptOffer(parent, { id }, ctx: Context) {
-    const acceptedAdId: string = await ctx.prisma
-      .offer({ id })
-      .ad()
-      .id();
+    const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
+
+    if (acceptedAd.status !== "PUBLISHED") {
+      throw AdHasAlreadyBeenAcceptedError;
+    }
 
     const statusOffer: OfferStatus = "DELETED";
     await ctx.prisma.updateManyOffers({
@@ -148,7 +152,7 @@ export const offer: OfferResolver = {
     const statusAccepted: OfferStatus = "ACCEPTED";
     await ctx.prisma.updateAd({
       data: { status: statusAccepted },
-      where: { id: acceptedAdId }
+      where: { id: acceptedAd.id }
     });
 
     return await ctx.prisma.updateOffer({
