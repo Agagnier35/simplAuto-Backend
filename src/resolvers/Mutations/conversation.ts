@@ -6,6 +6,7 @@ import { Context, getUserId } from "../../utils";
 
 interface ConversationResolver {
   createConversation: Types.CreateConversationResolver;
+  updateConversation: Types.UpdateConversationResolver;
 }
 
 export const conversation: ConversationResolver = {
@@ -30,6 +31,13 @@ export const conversation: ConversationResolver = {
           id: offerID
         }
       }
+    });
+  }
+  async updateConversation(parent, { data }, ctx: Context) {
+    return await ctx.prisma.updateConversation({
+
+    status:
+    
     });
   }
 };
