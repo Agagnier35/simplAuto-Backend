@@ -32,12 +32,14 @@ export const conversation: ConversationResolver = {
         }
       }
     });
-  }
-  async updateConversation(parent, { data }, ctx: Context) {
+  },
+  async updateConversation(parent, { offerID }, ctx: Context) {
     return await ctx.prisma.updateConversation({
-
-    status:
-    
+      offer: {
+        connect: {
+          id: offerID
+        }
+      }
     });
   }
 };
