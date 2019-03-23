@@ -37,6 +37,7 @@ type Mutation {
   sendMessage(data: SendMessageInput): Message!
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
+  updateConversation(data: ConversationUpdateInput!): Conversation!
 }
 
 # USER
@@ -329,6 +330,11 @@ type Conversation {
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
+}
+
+input ConversationUpdateInput {
+  id: ID!
   status: ConversationStatus
 }
 
