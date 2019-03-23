@@ -263,7 +263,7 @@ type AdPosition{
 
 type Offer {
   id: ID!
-  creator: User @private
+  creator: User
   ad: Ad!
   car: Car!
   price: Float!
