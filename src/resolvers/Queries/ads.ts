@@ -1,6 +1,5 @@
 import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer, Ad } from "../../generated/prisma-client";
 import { AdPosition } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 
@@ -85,19 +84,19 @@ export const ads: AdsQueries = {
         score,
         ad,
         position: null,
-        total_length: null
+        totalLength: null
       };
 
-      let already_offered = false;
+      let alreadyOffered = false;
 
       for (const offer of offersWithCar) {
         const adInOffer = await ctx.prisma.offer({ id: offer.id }).ad();
         if (ad.id === adInOffer.id) {
-          already_offered = true;
+          alreadyOffered = true;
         }
       }
 
-      if (!already_offered && user.id !== adOwner.id) {
+      if (!alreadyOffered && user.id !== adOwner.id) {
         adsScore.push(ad_score);
       }
     }

@@ -1,6 +1,5 @@
 import { Context } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer } from "../../generated/prisma-client";
 import { OfferPosition } from "../../models";
 import { calcScoreSuggestion } from "../../utils/calcScore";
 
@@ -75,23 +74,19 @@ export const offers: OffersQueries = {
       );
 
       const offer_score: OfferPosition = {
-        offer: offer,
-        score: score,
+        offer,
+        score,
         position: null,
-        total_length: null
+        totalLength: null
       };
 
       offersScore.push(offer_score);
-    }
-    offersScore.sort((a, b) => (a.score > b.score ? 1 : -1));
-    for (let i = 0; i < offersScore.length; i++) {
-      offersScore[i].position = i;
-      offersScore[i].total_length = offersScore.length;
     }
 
     offersScore.sort((a, b) => (a.score > b.score ? 1 : -1));
     offersScore.forEach((offerScore, i: number) => {
       offerScore.position = i;
+      offerScore.totalLength = offersScore.length;
     });
 
     if (pageSize && pageNumber >= 0) {

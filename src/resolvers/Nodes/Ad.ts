@@ -27,6 +27,18 @@ export const Ad: AdResolvers.Type = {
     const resolverArg: any = {
       where: {
         status: "PUBLISHED",
+        price_gte: parent.priceLowerBound,
+        price_lte: parent.priceHigherBound,
+
+        car: {
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
+          mileage_gte: parent.mileageLowerBound,
+          mileage_lte: parent.priceHigherBound,
+          year_gte: parent.yearLowerBound,
+          year_lte: parent.yearHigherBound
+        }
       }
     };
 
