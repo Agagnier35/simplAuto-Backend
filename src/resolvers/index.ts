@@ -43,7 +43,7 @@ const resolvers: Resolvers = {
   Notification,
   AdPosition,
   Statistics,
-  Location
+  Location,
   Prices
 };
 
