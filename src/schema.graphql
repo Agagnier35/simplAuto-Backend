@@ -213,7 +213,6 @@ type Ad {
   features: [CarFeature!]
   urgentExpiry: String
   topExpiry: String
-  isFirst: Boolean!
   status: AdStatus!
 }
 
