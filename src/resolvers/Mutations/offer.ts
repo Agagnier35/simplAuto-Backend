@@ -25,7 +25,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
-  sendAcceptaionEmail: Types.SendAcceptaionEmailResolver;
+  sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -184,8 +184,9 @@ export const offer: OfferResolver = {
     const emailSeller = carOwner.email;
     const firstNameSeller = carOwner.firstName;
     const lastNameSeller = carOwner.lastName;
-    const locationSeller = await ctx.prisma.user({ id: carOwner.id }).location()
-      .name;
+    const locationSeller = await ctx.prisma
+      .user({ id: carOwner.id })
+      .location();
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msgBuyer = {
@@ -196,7 +197,7 @@ export const offer: OfferResolver = {
       dynamic_template_data: {
         firstName: firstNameBuyer,
         lastName: lastNameBuyer,
-        location: locationSeller,
+        location: locationSeller.name,
         link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
       }
     };
@@ -210,7 +211,7 @@ export const offer: OfferResolver = {
       dynamic_template_data: {
         firstName: firstNameSeller,
         lastName: lastNameSeller,
-        location: locationSeller,
+        location: locationSeller.name,
         link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
       }
     };
