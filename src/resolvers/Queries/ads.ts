@@ -4,6 +4,7 @@ import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
+import { Offer } from "../../generated/prisma-client";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -109,7 +110,7 @@ export const ads: AdsQueries = {
 
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
-      adScore.total_length = adsScore.length;
+      adScore.totalLength = adsScore.length;
     });
 
     if (pageSize && pageNumber >= 0) {
