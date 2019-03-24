@@ -16,6 +16,7 @@ type Query {
   allAdsCount: Int!
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
+  getPrices: Prices!
 }
 
 type Mutation {
@@ -41,6 +42,9 @@ type Mutation {
   goPremium(stripeToken: String!): User!
   acceptOffer(id: ID!): Offer
   sendNotificationEmail(id: ID!): String
+  buyCarSpot(stripeToken: String!, amount: Int!): User!
+  buyUrgentAd(stripeToken: String!, id: ID!): Ad!
+  buyTopAd(stripeToken: String!, id: ID!): Ad!
 }
 
 # USER
@@ -76,6 +80,7 @@ type User {
   notificationEmailMessage: Boolean!
   notificationInAppOffer: Boolean!
   notificationInAppMessage: Boolean!
+  carLimit: Int!
   createdAt: String!
 }
 
@@ -234,8 +239,8 @@ type Ad {
   yearLowerBound: Int
   yearHigherBound: Int
   features: [CarFeature!]
-  isUrgent: Boolean!
-  isFirst: Boolean!
+  urgentExpiry: String
+  topExpiry: String
   status: AdStatus!
 }
 
@@ -402,6 +407,16 @@ enum NotificationType {
   GENERAL
   OFFER_MESSAGE
   NEW_OFFER
+}
+
+# Prices
+# ------------------------------------------------------
+
+type Prices {
+  premiumAccount: Int!
+  carSpot: Int!
+  urgentAd: Int!
+  topAd: Int!
 }
 
 # Util

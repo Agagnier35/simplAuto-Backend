@@ -20,6 +20,7 @@ import { OfferPosition } from "./Nodes/OfferPosition";
 import { AdPosition } from "./Nodes/AdPosition";
 import { Statistics } from "./Nodes/Statistics";
 import { Location } from "./Nodes/Location";
+import { Prices } from "./Nodes/Prices";
 
 const resolvers: Resolvers = {
   Query,
@@ -42,7 +43,8 @@ const resolvers: Resolvers = {
   Notification,
   AdPosition,
   Statistics,
-  Location
+  Location,
+  Prices
 };
 
 export default resolvers;
