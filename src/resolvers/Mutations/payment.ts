@@ -16,6 +16,8 @@ import { MAX_CARS_NOT_PREMIUM } from "./car";
 interface PaymentResolvers {
   goPremium: Types.GoPremiumResolver;
   buyCarSpot: Types.BuyCarSpotResolver;
+  buyUrgentAd: Types.BuyUrgentAdResolver;
+  buyTopAd: Types.BuyTopAdResolver;
 }
 
 export const payment: PaymentResolvers = {
@@ -91,6 +93,69 @@ export const payment: PaymentResolvers = {
       where: { id },
       data: {
         carLimit: user.carLimit + amount
+      }
+    });
+  },
+  async buyUrgentAd(parent, { stripeToken, id }, ctx: Context, info) {
+    const userID = getUserId(ctx);
+
+    const user = await ctx.prisma.user({ id: userID });
+
+    try {
+      const order = await stripe.orders.create({
+        currency: "cad",
+        items: [
+          {
+            type: "sku",
+            parent: process.env["STRIPE_SKU_URGENT_AD"]
+          }
+        ],
+        email: user.email
+      });
+
+      await stripe.orders.pay(order.id, {
+        source: stripeToken
+      });
+    } catch (error) {
+      throw StripeCarSpotOrderError;
+    }
+
+    return ctx.prisma.updateAd({
+      where: { id },
+      data: {
+        urgentExpiry: Date.now().toString()
+      }
+    });
+  },
+
+  async buyTopAd(parent, { stripeToken, id }, ctx: Context, info) {
+    const userID = getUserId(ctx);
+
+    const user = await ctx.prisma.user({ id: userID });
+
+    try {
+      const order = await stripe.orders.create({
+        currency: "cad",
+        items: [
+          {
+            type: "sku",
+            parent: process.env["STRIPE_SKU_TOP_AD"]
+          }
+        ],
+        email: user.email
+      });
+
+      await stripe.orders.pay(order.id, {
+        source: stripeToken
+      });
+    } catch (error) {
+      throw StripeCarSpotOrderError;
+    }
+
+    return ctx.prisma.updateAd({
+      where: { id },
+      data: {
+        topExpiry: Date.now().toString()
       }
     });
   }

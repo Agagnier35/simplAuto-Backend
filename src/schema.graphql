@@ -39,8 +39,8 @@ type Mutation {
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
   buyCarSpot(stripeToken: String!, amount: Int!): User!
-  buyUrgentAd(stripeToken: String!): Ad!
-  buyTopAd(stripeToken: String!): Ad!
+  buyUrgentAd(stripeToken: String!, id: ID!): Ad!
+  buyTopAd(stripeToken: String!, id: ID!): Ad!
 }
 
 # USER
