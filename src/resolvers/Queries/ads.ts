@@ -110,7 +110,7 @@ export const ads: AdsQueries = {
 
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
-      adScore.total_length = adsScore.length;
+      adScore.totalLength = adsScore.length;
     });
 
     if (pageSize && pageNumber >= 0) {

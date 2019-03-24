@@ -353,7 +353,7 @@ type OfferPosition {
   offer: Offer
   position: Int
   score: Int
-  total_length: Int
+  totalLength: Int
 }
 
 # Conversation
