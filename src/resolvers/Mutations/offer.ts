@@ -184,21 +184,24 @@ export const offer: OfferResolver = {
     const emailSeller = carOwner.email;
     const firstNameSeller = adCreator.firstName;
     const lastNameSeller = adCreator.lastName;
+    const locationSeller = await ctx.prisma
+      .user({ id: adCreator.id })
+      .location().name;
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
+    const msgBuyer = {
       to: emailBuyer,
       from: "simplauto@yopmail.com",
       subject: "Simplauto Reset password",
-      templateId: "d-f7fe2f7bca064724b367e4a6271d7941",
+      templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
       dynamic_template_data: {
         firstName: firstNameBuyer,
         lastName: lastNameBuyer,
-        email: emailBuyer,
-        link: ""
+        location: locationSeller,
+        link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
       }
     };
-    sgMail.send(msg);
+    sgMail.send(msgBuyer);
 
     return "emailSent";
   }
