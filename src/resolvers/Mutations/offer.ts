@@ -3,7 +3,12 @@ import {
   OfferStatus
 } from "../../generated/yoga-client";
 import { getUserId, Context, getUserPermissions } from "../../utils";
-import { OfferUpdateInput, User, Ad } from "../../generated/prisma-client";
+import {
+  OfferUpdateInput,
+  User,
+  Ad,
+  Offer
+} from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
@@ -13,6 +18,7 @@ import {
   CannotCreateOfferOnOwnAd,
   CannotCreateOfferWithNotOwnedCar
 } from "../../errors/offerErrors";
+const sgMail = require("@sendgrid/mail");
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
@@ -159,5 +165,40 @@ export const offer: OfferResolver = {
       data: { status: statusAccepted },
       where: { id }
     });
+  },
+  async sendAcceptaionEmail(parent, { id }, ctx: Context) {
+    const carOwner: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
+
+    const emailBuyer = adCreator.email;
+    const firstNameBuyer = adCreator.firstName;
+    const lastNameBuyer = adCreator.lastName;
+
+    const emailSeller = carOwner.email;
+    const firstNameSeller = adCreator.firstName;
+    const lastNameSeller = adCreator.lastName;
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: emailBuyer,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto Reset password",
+      templateId: "d-f7fe2f7bca064724b367e4a6271d7941",
+      dynamic_template_data: {
+        firstName: firstNameBuyer,
+        lastName: lastNameBuyer,
+        email: emailBuyer,
+        link: `${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}`
+      }
+    };
+    sgMail.send(msg);
+
+    return "emailSent";
   }
 };
