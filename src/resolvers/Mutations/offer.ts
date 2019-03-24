@@ -192,7 +192,7 @@ export const offer: OfferResolver = {
     const msgBuyer = {
       to: emailBuyer,
       from: "simplauto@yopmail.com",
-      subject: "Simplauto Reset password",
+      subject: "Simplauto accepted offer",
       templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
       dynamic_template_data: {
         firstName: firstNameBuyer,
@@ -206,8 +206,8 @@ export const offer: OfferResolver = {
     const msgSeller = {
       to: emailSeller,
       from: "simplauto@yopmail.com",
-      subject: "Simplauto Reset password",
-      templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
+      subject: "Simplauto accepted offer",
+      templateId: "d-f7b59ea95033476e8d8fe55a185cece7",
       dynamic_template_data: {
         firstName: firstNameSeller,
         lastName: lastNameSeller,
