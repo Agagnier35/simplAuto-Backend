@@ -25,6 +25,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
+  sendAcceptaionEmail: Types.SendNotificationEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -194,7 +195,7 @@ export const offer: OfferResolver = {
         firstName: firstNameBuyer,
         lastName: lastNameBuyer,
         email: emailBuyer,
-        link: `${process.env.FRONTEND_URL}/reset?resetToken=${resetToken}`
+        link: ""
       }
     };
     sgMail.send(msg);

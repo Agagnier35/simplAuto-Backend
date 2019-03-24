@@ -4,6 +4,7 @@ import { OfferPosition, Statistics } from "../../models";
 import { calcScoreSuggestion } from "../../utils/calcScore";
 import { fetchOfferStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
+import { Offer } from "../../generated/prisma-client";
 
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;

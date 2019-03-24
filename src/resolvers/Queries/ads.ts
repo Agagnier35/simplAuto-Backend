@@ -4,6 +4,7 @@ import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
+import { Offer } from "../../generated/prisma-client";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;

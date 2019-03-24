@@ -40,7 +40,7 @@ type Mutation {
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
   acceptOffer(id: ID!): Offer
-  sendNotificationEmail(id: ID!): String
+  sendAcceptaionEmail(id: ID!): String
 }
 
 # USER
