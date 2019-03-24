@@ -4,6 +4,7 @@ export interface OfferPosition {
   offer: Offer | null;
   position: number | null;
   score: number | null;
+  total_length: number | null;
 }
 
 export interface AdPosition {

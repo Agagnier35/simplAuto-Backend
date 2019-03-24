@@ -281,7 +281,7 @@ type AdPosition {
   ad: Ad
   position: Int
   score: Int
-  total_length: Int
+  totalLength: Int
 }
 
 type Statistics {
@@ -352,6 +352,7 @@ type OfferPosition {
   offer: Offer
   position: Int
   score: Int
+  total_length: Int
 }
 
 # Conversation

@@ -1,6 +1,5 @@
 import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer, Ad, Car } from "../../generated/prisma-client";
 import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
@@ -42,6 +41,7 @@ export const ads: AdsQueries = {
   async adSuggestion(parent, { id, pageNumber, pageSize }, ctx: Context) {
     const ads = await ctx.prisma.ads();
     const car = await ctx.prisma.car({ id });
+    const user = await ctx.prisma.car({ id }).owner();
     const offersWithCar = await ctx.prisma.car({ id }).offers();
     let adsScore = [];
 
@@ -56,6 +56,8 @@ export const ads: AdsQueries = {
       const adCarModel = await ctx.prisma.ad({ id }).model();
 
       const adCarCategory = await ctx.prisma.ad({ id }).category();
+
+      const adOwner = await ctx.prisma.ad({ id }).creator();
 
       let sameManufacturer = null;
       let sameModel = null;
@@ -85,24 +87,26 @@ export const ads: AdsQueries = {
         score,
         ad,
         position: null,
-        total_length: null
+        totalLength: null
       };
 
-      let already_offered = false;
+      let alreadyOffered = false;
 
       for (const offer of offersWithCar) {
         const adInOffer = await ctx.prisma.offer({ id: offer.id }).ad();
         if (ad.id === adInOffer.id) {
-          already_offered = true;
+          alreadyOffered = true;
         }
       }
 
-      if (!already_offered) {
+      if (!alreadyOffered && user.id !== adOwner.id) {
         adsScore.push(ad_score);
       }
     }
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
+    adsScore.sort(a => (a.ad.isUrgent ? -1 : 1));
+
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
       adScore.total_length = adsScore.length;
