@@ -25,7 +25,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
-  sendNotificationEmail: Types.SendNotificationEmailResolver;
+  sendAcceptaionEmail: Types.SendAcceptaionEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -182,11 +182,10 @@ export const offer: OfferResolver = {
     const lastNameBuyer = adCreator.lastName;
 
     const emailSeller = carOwner.email;
-    const firstNameSeller = adCreator.firstName;
-    const lastNameSeller = adCreator.lastName;
-    const locationSeller = await ctx.prisma
-      .user({ id: adCreator.id })
-      .location().name;
+    const firstNameSeller = carOwner.firstName;
+    const lastNameSeller = carOwner.lastName;
+    const locationSeller = await ctx.prisma.user({ id: carOwner.id }).location()
+      .name;
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
     const msgBuyer = {
