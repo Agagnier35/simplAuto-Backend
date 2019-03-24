@@ -1,15 +1,15 @@
-import * as Utils from "../../utils";
-import { car as CarMutationResolver } from "../Mutations/car";
-import { Prisma } from "../../generated/prisma-client";
+import * as Utils from "../../../utils";
+import { car as CarMutationResolver } from "../car";
+import { Prisma } from "../../../generated/prisma-client";
 import createMockInstance from "jest-create-mock-instance";
 import {
   getUserContext,
   getPremiumContext,
   getAdminContext,
   getContextWithId
-} from "../../testUtils";
-import { carLimitReachedError } from "../../errors/carErrors";
-import { UserNotCreatorError } from "../../errors/authErrors";
+} from "../../../testUtils";
+import { carLimitReachedError } from "../../../errors/carErrors";
+import { UserNotCreatorError } from "../../../errors/authErrors";
 
 let prisma: jest.Mocked<Prisma>;
 describe("Cars mutations tests suite", () => {

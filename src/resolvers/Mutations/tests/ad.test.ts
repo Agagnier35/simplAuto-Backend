@@ -1,18 +1,18 @@
-import * as Utils from "../../utils";
-import { ad as AdMutationResolver } from "../Mutations/ad";
+import * as Utils from "../../../utils";
+import { ad as AdMutationResolver } from "../ad";
 import {
   getUserContext,
   getAdminContext,
   getContextWithId
-} from "../../testUtils";
+} from "../../../testUtils";
 import { createMockInstance } from "jest-create-mock-instance";
-import { Prisma } from "../../generated/prisma-client";
+import { Prisma } from "../../../generated/prisma-client";
 import {
   InvalidPriceBoundsError,
   InvalidYearBoundsError,
   InvalidMileageBoundsError
-} from "../../errors/adErrors";
-import { UserNotCreatorError } from "../../errors/authErrors";
+} from "../../../errors/adErrors";
+import { UserNotCreatorError } from "../../../errors/authErrors";
 
 let prisma: jest.Mocked<Prisma>;
 describe("Ads mutations tests suite", () => {

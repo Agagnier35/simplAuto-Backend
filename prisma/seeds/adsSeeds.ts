@@ -35,7 +35,6 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 20000,
     yearLowerBound: 2016,
     yearHigherBound: 2018,
-    isUrgent: true,
     features: { connect: [{ id: redColor[0].id }] }
   });
 
@@ -58,7 +57,6 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 100000,
     yearLowerBound: 1800,
     yearHigherBound: 2020,
-    isUrgent: false,
     features: { connect: [{ id: blueColor[0].id }] }
   });
 };

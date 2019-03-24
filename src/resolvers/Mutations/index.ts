@@ -7,6 +7,7 @@ import { conversation } from "./conversation";
 import { MutationResolvers } from "../../generated/yoga-client";
 import { message } from "./message";
 import { notification } from "./notification";
+import { payment } from "./payment";
 
 const Mutations: MutationResolvers.Type = {
   ...auth,
@@ -16,7 +17,8 @@ const Mutations: MutationResolvers.Type = {
   ...offer,
   ...conversation,
   ...message,
-  ...notification
+  ...notification,
+  ...payment
 };
 
 export default Mutations;
