@@ -1,14 +1,16 @@
-import { Context } from "../../utils";
+import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
-import { Offer, Ad } from "../../generated/prisma-client";
-import { AdPosition } from "../../models";
+import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
+import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
+import moment from "moment";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
   ad: QueryResolvers.AdResolver;
   allAdsCount: QueryResolvers.AllAdsCountResolver;
   adSuggestion: QueryResolvers.AdSuggestionResolver;
+  statsForAds: QueryResolvers.StatsForAdsResolver;
 }
 
 export const ads: AdsQueries = {
@@ -39,6 +41,7 @@ export const ads: AdsQueries = {
   async adSuggestion(parent, { id, pageNumber, pageSize }, ctx: Context) {
     const ads = await ctx.prisma.ads();
     const car = await ctx.prisma.car({ id });
+    const user = await ctx.prisma.car({ id }).owner();
     const offersWithCar = await ctx.prisma.car({ id }).offers();
     let adsScore = [];
 
@@ -53,6 +56,8 @@ export const ads: AdsQueries = {
       const adCarModel = await ctx.prisma.ad({ id }).model();
 
       const adCarCategory = await ctx.prisma.ad({ id }).category();
+
+      const adOwner = await ctx.prisma.ad({ id }).creator();
 
       let sameManufacturer = null;
       let sameModel = null;
@@ -82,24 +87,26 @@ export const ads: AdsQueries = {
         score,
         ad,
         position: null,
-        total_length: null
+        totalLength: null
       };
 
-      let already_offered = false;
+      let alreadyOffered = false;
 
       for (const offer of offersWithCar) {
         const adInOffer = await ctx.prisma.offer({ id: offer.id }).ad();
         if (ad.id === adInOffer.id) {
-          already_offered = true;
+          alreadyOffered = true;
         }
       }
 
-      if (!already_offered) {
+      if (!alreadyOffered && user.id !== adOwner.id) {
         adsScore.push(ad_score);
       }
     }
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
+    adsScore.sort(a => (a.ad.isUrgent ? -1 : 1));
+
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
       adScore.total_length = adsScore.length;
@@ -117,5 +124,55 @@ export const ads: AdsQueries = {
     }
 
     return adsScore;
+  },
+  async statsForAds(parent, { id }, ctx: Context, info) {
+    const ad = await ctx.prisma.ad({ id });
+    const manufacturer = await ctx.prisma.ad({ id }).manufacturer();
+    const model = await ctx.prisma.ad({ id }).model();
+    const category = await ctx.prisma.ad({ id }).category();
+
+    const userID = getUserId(ctx);
+    const user = await ctx.prisma.user({ id: userID });
+
+    const allOffersThatMatchesAd: Offer[] = await ctx.prisma.offers({
+      where: {
+        car: {
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
+          mileage_gte: ad.mileageLowerBound,
+          mileage_lte: ad.priceHigherBound,
+          year_gte: ad.yearLowerBound,
+          year_lte: ad.yearHigherBound
+        }
+      }
+    });
+
+    const statsAPI = await fetchAdStatsFromAPI(ad, user, ctx);
+
+    const statsObject: Statistics = {
+      averagePriceAPI: statsAPI.averagePriceAPI,
+      averageTimeOnMarketAPI: statsAPI.averageTimeOnMarketAPI,
+      averageTimeOnMarketApp: 0,
+      averagePriceApp: 0
+    };
+
+    if (allOffersThatMatchesAd && allOffersThatMatchesAd.length > 0) {
+      for (const offer of allOffersThatMatchesAd) {
+        const beginningDate = moment(offer.createdAt);
+        statsObject.averageTimeOnMarketApp +=
+          offer.status !== "PUBLISHED"
+            ? moment
+                .duration(moment(offer.updatedAt).diff(beginningDate))
+                .asDays()
+            : 0;
+
+        statsObject.averagePriceApp += offer.price;
+      }
+      statsObject.averageTimeOnMarketApp /= allOffersThatMatchesAd.length;
+      statsObject.averagePriceApp /= allOffersThatMatchesAd.length;
+    }
+
+    return statsObject;
   }
 };

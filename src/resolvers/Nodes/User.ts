@@ -8,6 +8,10 @@ export const User: UserResolvers.Type = {
     return ctx.prisma.user({ id }).birthDate();
   },
 
+  location: ({ id }, args, ctx: Context) => {
+    return ctx.prisma.user({ id }).location();
+  },
+
   cars: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
     const resolverArg: any = {
       where: {
