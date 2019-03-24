@@ -1,13 +1,16 @@
-import { Context } from "../../utils";
+import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { Offer } from "../../generated/prisma-client";
-import { OfferPosition } from "../../models";
+import { OfferPosition, Statistics } from "../../models";
 import { calcScoreSuggestion } from "../../utils/calcScore";
+import { fetchOfferStatsFromAPI } from "../../utils/apiGateway";
+import moment from "moment";
 
 interface OffersQueries {
   offer: QueryResolvers.OfferResolver;
   offerAddons: QueryResolvers.OfferAddonsResolver;
   suggestions: QueryResolvers.SuggestionsResolver;
+  statsForOffer: QueryResolvers.StatsForAdsResolver;
 }
 
 export const offers: OffersQueries = {
@@ -100,5 +103,60 @@ export const offers: OffersQueries = {
     }
 
     return offersScore;
+  },
+  async statsForOffer(parent, { id }, ctx: Context, info) {
+    const car = await ctx.prisma.offer({ id }).car();
+    const manufacturer = await ctx.prisma
+      .offer({ id })
+      .car()
+      .manufacturer();
+    const model = await ctx.prisma
+      .offer({ id })
+      .car()
+      .model();
+    const category = await ctx.prisma
+      .offer({ id })
+      .car()
+      .category();
+
+    const userID = getUserId(ctx);
+    const user = await ctx.prisma.user({ id: userID });
+
+    const allOffersThatMatchesCar: Offer[] = await ctx.prisma.offers({
+      where: {
+        car: {
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
+          year: car.year
+        }
+      }
+    });
+
+    const statsAPI = await fetchOfferStatsFromAPI(car, user, ctx);
+
+    const statsObject: Statistics = {
+      averagePriceAPI: statsAPI.averagePriceAPI,
+      averageTimeOnMarketAPI: statsAPI.averageTimeOnMarketAPI,
+      averageTimeOnMarketApp: 0,
+      averagePriceApp: 0
+    };
+
+    if (allOffersThatMatchesCar && allOffersThatMatchesCar.length > 0) {
+      for (const offer of allOffersThatMatchesCar) {
+        const beginningDate = moment(offer.createdAt);
+        statsObject.averageTimeOnMarketApp +=
+          offer.status !== "PUBLISHED"
+            ? moment
+                .duration(moment(offer.updatedAt).diff(beginningDate))
+                .asDays()
+            : 0;
+        statsObject.averagePriceApp += offer.price;
+      }
+      statsObject.averageTimeOnMarketApp /= allOffersThatMatchesCar.length;
+      statsObject.averagePriceApp /= allOffersThatMatchesCar.length;
+    }
+
+    return statsObject;
   }
 };

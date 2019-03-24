@@ -44,6 +44,15 @@ const createBasicUser = (data: Types.UserSignupInput) => {
       year
     }
   };
+
+  const { name, longitude, latitude } = data.location;
+  const location = {
+    create: {
+      name,
+      longitude,
+      latitude
+    }
+  };
   // Verify email format
   if (!emailRegex.test(data.email)) {
     throw InvalidEmailFormatError;
@@ -66,6 +75,7 @@ const createBasicUser = (data: Types.UserSignupInput) => {
   return {
     ...data,
     permissions,
+    location,
     birthDate
   };
 };

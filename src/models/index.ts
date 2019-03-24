@@ -12,3 +12,10 @@ export interface AdPosition {
   score: number | null;
   total_length: number | null;
 }
+
+export interface Statistics {
+  averagePriceAPI: number;
+  averageTimeOnMarketAPI: number;
+  averagePriceApp: number;
+  averageTimeOnMarketApp: number;
+}

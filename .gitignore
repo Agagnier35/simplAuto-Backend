@@ -2,7 +2,7 @@
 /node_modules
 
 # generated
-/src/generated/yoga-client
+/src/generated
 
 # build
 /dist

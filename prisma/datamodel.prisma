@@ -5,7 +5,8 @@ type User {
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: Location!
+  radius: Int!
   birthDate: Date
   gender: Gender
   permissions: [Permission!]!
@@ -25,6 +26,12 @@ type User {
   notificationEmailMessage: Boolean! @default(value: true)
   notificationInAppOffer: Boolean! @default(value: true)
   notificationInAppMessage: Boolean! @default(value: true)
+}
+
+type Location {
+  name: String!
+  longitude: Float!
+  latitude: Float!
 }
 
 enum Gender {
