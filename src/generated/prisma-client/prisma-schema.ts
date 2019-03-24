@@ -3469,6 +3469,10 @@ type User {
   notifications(where: NotificationWhereInput, orderBy: NotificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Notification!]
   offers(where: OfferWhereInput, orderBy: OfferOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Offer!]
   stripeCustomerID: String
+  notificationEmailOffer: Boolean!
+  notificationEmailMessage: Boolean!
+  notificationInAppOffer: Boolean!
+  notificationInAppMessage: Boolean!
 }
 
 type UserConnection {
@@ -3499,6 +3503,10 @@ input UserCreateInput {
   notifications: NotificationCreateManyWithoutOwnerInput
   offers: OfferCreateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserCreateOneInput {
@@ -3556,6 +3564,10 @@ input UserCreateWithoutAdsInput {
   notifications: NotificationCreateManyWithoutOwnerInput
   offers: OfferCreateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserCreateWithoutCarsInput {
@@ -3579,6 +3591,10 @@ input UserCreateWithoutCarsInput {
   notifications: NotificationCreateManyWithoutOwnerInput
   offers: OfferCreateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserCreateWithoutConversationsInput {
@@ -3602,6 +3618,10 @@ input UserCreateWithoutConversationsInput {
   notifications: NotificationCreateManyWithoutOwnerInput
   offers: OfferCreateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserCreateWithoutNotificationsInput {
@@ -3625,6 +3645,10 @@ input UserCreateWithoutNotificationsInput {
   language: ClientLanguage
   offers: OfferCreateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserCreateWithoutOffersInput {
@@ -3648,6 +3672,10 @@ input UserCreateWithoutOffersInput {
   language: ClientLanguage
   notifications: NotificationCreateManyWithoutOwnerInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 type UserEdge {
@@ -3686,6 +3714,14 @@ enum UserOrderByInput {
   language_DESC
   stripeCustomerID_ASC
   stripeCustomerID_DESC
+  notificationEmailOffer_ASC
+  notificationEmailOffer_DESC
+  notificationEmailMessage_ASC
+  notificationEmailMessage_DESC
+  notificationInAppOffer_ASC
+  notificationInAppOffer_DESC
+  notificationInAppMessage_ASC
+  notificationInAppMessage_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -3709,6 +3745,10 @@ type UserPreviousValues {
   clientType: ClientType!
   language: ClientLanguage
   stripeCustomerID: String
+  notificationEmailOffer: Boolean!
+  notificationEmailMessage: Boolean!
+  notificationInAppOffer: Boolean!
+  notificationInAppMessage: Boolean!
 }
 
 type UserSubscriptionPayload {
@@ -3751,6 +3791,10 @@ input UserUpdateDataInput {
   notifications: NotificationUpdateManyWithoutOwnerInput
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateInput {
@@ -3775,6 +3819,10 @@ input UserUpdateInput {
   notifications: NotificationUpdateManyWithoutOwnerInput
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateManyMutationInput {
@@ -3793,6 +3841,10 @@ input UserUpdateManyMutationInput {
   clientType: ClientType
   language: ClientLanguage
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateOneRequiredInput {
@@ -3862,6 +3914,10 @@ input UserUpdateWithoutAdsDataInput {
   notifications: NotificationUpdateManyWithoutOwnerInput
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateWithoutCarsDataInput {
@@ -3885,6 +3941,10 @@ input UserUpdateWithoutCarsDataInput {
   notifications: NotificationUpdateManyWithoutOwnerInput
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateWithoutConversationsDataInput {
@@ -3908,6 +3968,10 @@ input UserUpdateWithoutConversationsDataInput {
   notifications: NotificationUpdateManyWithoutOwnerInput
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateWithoutNotificationsDataInput {
@@ -3931,6 +3995,10 @@ input UserUpdateWithoutNotificationsDataInput {
   language: ClientLanguage
   offers: OfferUpdateManyWithoutCreatorInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpdateWithoutOffersDataInput {
@@ -3954,6 +4022,10 @@ input UserUpdateWithoutOffersDataInput {
   language: ClientLanguage
   notifications: NotificationUpdateManyWithoutOwnerInput
   stripeCustomerID: String
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 input UserUpsertNestedInput {
@@ -4177,6 +4249,14 @@ input UserWhereInput {
   stripeCustomerID_not_starts_with: String
   stripeCustomerID_ends_with: String
   stripeCustomerID_not_ends_with: String
+  notificationEmailOffer: Boolean
+  notificationEmailOffer_not: Boolean
+  notificationEmailMessage: Boolean
+  notificationEmailMessage_not: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppOffer_not: Boolean
+  notificationInAppMessage: Boolean
+  notificationInAppMessage_not: Boolean
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
