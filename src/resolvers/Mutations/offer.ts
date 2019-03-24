@@ -25,7 +25,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
-  sendAcceptaionEmail: Types.SendNotificationEmailResolver;
+  sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -167,7 +167,7 @@ export const offer: OfferResolver = {
       where: { id }
     });
   },
-  async sendAcceptaionEmail(parent, { id }, ctx: Context) {
+  async sendNotificationEmail(parent, { id }, ctx: Context) {
     const carOwner: User = await ctx.prisma
       .offer({ id })
       .car()
