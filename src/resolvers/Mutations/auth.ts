@@ -11,7 +11,11 @@ import {
   InvalidClientTypeData
 } from "../../errors/authErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
-import { Permission, User } from "../../generated/prisma-client";
+import {
+  Permission,
+  User,
+  DateCreateOneInput
+} from "../../generated/prisma-client";
 import { UserCreateInput } from "../../generated/prisma-client/index";
 import { createCustomer } from "../../stripe";
 const sgMail = require("@sendgrid/mail");
@@ -27,6 +31,7 @@ interface AuthResolvers {
 }
 
 const createBasicUser = (data: Types.UserSignupInput) => {
+  let birthDate;
   data.email = data.email.toLowerCase();
 
   // We set USER as the default
@@ -34,15 +39,6 @@ const createBasicUser = (data: Types.UserSignupInput) => {
 
   const permissions = {
     set: basePermissions
-  };
-
-  const { day, month, year } = data.birthDate;
-  const birthDate = {
-    create: {
-      day,
-      month,
-      year
-    }
   };
 
   const { name, longitude, latitude } = data.location;
@@ -58,18 +54,24 @@ const createBasicUser = (data: Types.UserSignupInput) => {
     throw InvalidEmailFormatError;
   }
 
-  if (
-    data.clientType === "INDIVIDUAL" &&
-    (!data.firstName || !data.lastName || data.companyName)
-  ) {
-    throw InvalidClientTypeData;
-  }
+  if (data.clientType === "INDIVIDUAL") {
+    if (!data.firstName || !data.lastName || data.companyName) {
+      throw InvalidClientTypeData;
+    }
 
-  if (
-    data.clientType === "COMPANY" &&
-    (data.firstName || data.lastName || !data.companyName)
-  ) {
-    throw InvalidClientTypeData;
+    const { day, month, year } = data.birthDate;
+
+    birthDate = {
+      create: {
+        day,
+        month,
+        year
+      }
+    };
+  } else if (data.clientType === "COMPANY") {
+    if (data.firstName || data.lastName || !data.companyName) {
+      throw InvalidClientTypeData;
+    }
   }
 
   return {

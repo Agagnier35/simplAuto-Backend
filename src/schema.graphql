@@ -75,6 +75,7 @@ type User {
   notificationEmailMessage: Boolean!
   notificationInAppOffer: Boolean!
   notificationInAppMessage: Boolean!
+  createdAt: String!
 }
 
 enum Gender {
@@ -295,7 +296,7 @@ type Statistics {
 
 type Offer {
   id: ID!
-  creator: User @private
+  creator: User
   ad: Ad!
   car: Car!
   price: Float!
@@ -303,6 +304,7 @@ type Offer {
   finalRank: Int
   addons: [OfferAddon!]
   conversation: Conversation
+  createdAt: String!
 }
 
 enum OfferStatus {

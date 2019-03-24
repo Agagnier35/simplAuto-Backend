@@ -26,6 +26,8 @@ type User {
   notificationEmailMessage: Boolean! @default(value: true)
   notificationInAppOffer: Boolean! @default(value: true)
   notificationInAppMessage: Boolean! @default(value: true)
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Location {
