@@ -203,6 +203,20 @@ export const offer: OfferResolver = {
     };
     sgMail.send(msgBuyer);
 
+    const msgSeller = {
+      to: emailSeller,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto Reset password",
+      templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
+      dynamic_template_data: {
+        firstName: firstNameSeller,
+        lastName: lastNameSeller,
+        location: locationSeller,
+        link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
+      }
+    };
+    sgMail.send(msgSeller);
+
     return "emailSent";
   }
 };
