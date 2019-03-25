@@ -99,22 +99,10 @@ export const ad: AdResolvers = {
   },
 
   async updateAd(parent, { data }, ctx: Context) {
-    const {
-      id,
-      manufacturerID,
-      modelID,
-      categoryID,
-      features,
-      priceLowerBound,
-      priceHigherBound,
-      mileageLowerBound,
-      mileageHigherBound,
-      yearLowerBound,
-      yearHigherBound
-    } = data;
-
-    const adCreator: User = await ctx.prisma.ad({ id }).creator();
+    console.log(data);
     const userId = getUserId(ctx);
+    const { id, manufacturerID, modelID, categoryID, features, ...rest } = data;
+    const adCreator: User = await ctx.prisma.ad({ id }).creator();
 
     if (
       !(adCreator.id === userId || getUserPermissions(ctx).includes("ADMIN"))
@@ -122,34 +110,51 @@ export const ad: AdResolvers = {
       throw UserNotCreatorError;
     }
 
-    const updatedData: AdUpdateInput = {};
+    if (validatePriceBounds(data)) {
+      throw InvalidPriceBoundsError;
+    }
 
-    updatedData.priceLowerBound = priceLowerBound ? priceLowerBound : null;
-    updatedData.priceHigherBound = priceHigherBound ? priceHigherBound : null;
-    updatedData.mileageLowerBound = mileageLowerBound
-      ? mileageLowerBound
-      : null;
-    updatedData.mileageHigherBound = mileageHigherBound
-      ? mileageHigherBound
-      : null;
-    updatedData.yearLowerBound = yearLowerBound ? yearLowerBound : null;
-    updatedData.yearHigherBound = yearHigherBound ? yearHigherBound : null;
+    if (validateYearBounds(data)) {
+      throw InvalidYearBoundsError;
+    }
 
-    updatedData.manufacturer = manufacturerID
-      ? { connect: { id: manufacturerID } }
-      : null;
+    if (validateMileageBounds(data)) {
+      throw InvalidMileageBoundsError;
+    }
+    
+    const mutation: AdUpdateInput = {
+      ...rest,
+      creator: {
+        connect: { id: userId }
+      }
+    };
+    
+    if (manufacturerID) {
+      mutation.manufacturer = {
+        connect: { id: manufacturerID }
+      };
+    }
 
-    updatedData.model = modelID ? { connect: { id: modelID } } : null;
+    if (modelID) {
+      mutation.model = {
+        connect: { id: modelID }
+      };
+    }
 
-    updatedData.category = categoryID ? { connect: { id: categoryID } } : null;
+    if (categoryID) {
+      mutation.category = {
+        connect: { id: categoryID }
+      };
+    }
 
     if (features && features.length > 0) {
-      updatedData.features = {
+      mutation.features = {
         connect: features.map(feature => ({
           id: feature
         }))
       };
     }
+  
 
     // disconnect every feature, to handle removing features
     const previousFeatures = await ctx.prisma.ad({ id }).features();
@@ -165,7 +170,7 @@ export const ad: AdResolvers = {
     }
 
     return await ctx.prisma.updateAd({
-      data: updatedData,
+      data: mutation,
       where: { id }
     });
   },
