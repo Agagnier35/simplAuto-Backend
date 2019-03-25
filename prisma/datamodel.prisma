@@ -5,7 +5,8 @@ type User {
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: Location!
+  radius: Int!
   birthDate: Date
   gender: Gender
   permissions: [Permission!]!
@@ -21,6 +22,19 @@ type User {
   notifications: [Notification!]!
   offers: [Offer!]!
   stripeCustomerID: String
+  carLimit: Int! @default(value: 2)
+  notificationEmailOffer: Boolean! @default(value: true)
+  notificationEmailMessage: Boolean! @default(value: true)
+  notificationInAppOffer: Boolean! @default(value: true)
+  notificationInAppMessage: Boolean! @default(value: true)
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Location {
+  name: String!
+  longitude: Float!
+  latitude: Float!
 }
 
 enum Gender {
@@ -61,9 +75,9 @@ type Ad {
   yearLowerBound: Int
   yearHigherBound: Int
   features: [CarFeature!]
-  isUrgent: Boolean! @default(value: false)
-  isFirst: Boolean! @default(value: false)
   status: AdStatus! @default(value: PUBLISHED)
+  urgentExpiry: String
+  topExpiry: String
 }
 
 type Date {

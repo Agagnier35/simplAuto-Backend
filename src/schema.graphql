@@ -14,6 +14,9 @@ type Query {
   offer(id: ID!): Offer
   offerAddons: [OfferAddon!]
   allAdsCount: Int!
+  statsForAds(id: ID!): Statistics
+  statsForOffer(id: ID!): Statistics
+  getPrices: Prices!
 }
 
 type Mutation {
@@ -37,6 +40,10 @@ type Mutation {
   sendMessage(data: SendMessageInput): Message!
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
+  acceptOffer(id: ID!): Offer
+  buyCarSpot(stripeToken: String!, amount: Int!): User!
+  buyUrgentAd(stripeToken: String!, id: ID!): Ad!
+  buyTopAd(stripeToken: String!, id: ID!): Ad!
   updateConversation(data: ConversationUpdateInput!): Conversation!
 }
 
@@ -50,7 +57,8 @@ type User {
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: Location!
+  radius: Int!
   birthDate: Date
   gender: Gender
   permissions: [Permission!]!
@@ -68,6 +76,12 @@ type User {
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
+  notificationEmailOffer: Boolean!
+  notificationEmailMessage: Boolean!
+  notificationInAppOffer: Boolean!
+  notificationInAppMessage: Boolean!
+  carLimit: Int!
+  createdAt: String!
 }
 
 enum Gender {
@@ -87,13 +101,26 @@ enum Permission {
   ADMIN
 }
 
+type Location{
+  name: String!
+  longitude: Float!
+  latitude: Float!
+}
+
+input LocationInput{
+  name: String!
+  longitude: Float!
+  latitude: Float!
+}
+
 input UserSignupInput {
   email: String!
   firstName: String
   lastName: String
   companyName: String
   password: String!
-  location: String!
+  location: LocationInput!
+  radius: Int!
   birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
@@ -110,12 +137,17 @@ input UserUpdateInput {
   lastName: String
   companyName: String
   password: String
-  location: String
+  location: LocationInput
+  radius: Int
   birthDate: DateInput
   gender: Gender
   permissions: [Permission!]
   clientType: ClientType
   language: UserLanguage
+  notificationEmailOffer: Boolean
+  notificationEmailMessage: Boolean
+  notificationInAppOffer: Boolean
+  notificationInAppMessage: Boolean
 }
 
 # Cars
@@ -207,8 +239,8 @@ type Ad {
   yearLowerBound: Int
   yearHigherBound: Int
   features: [CarFeature!]
-  isUrgent: Boolean!
-  isFirst: Boolean!
+  urgentExpiry: String
+  topExpiry: String
   status: AdStatus!
 }
 
@@ -251,11 +283,18 @@ enum AdFeatureImportance {
   HIGH
 }
 
-type AdPosition{
+type AdPosition {
   ad: Ad
   position: Int
   score: Int
-  total_length: Int
+  totalLength: Int
+}
+
+type Statistics {
+  averagePriceAPI: Float!
+  averageTimeOnMarketAPI: Float!
+  averagePriceApp: Float!
+  averageTimeOnMarketApp: Float!
 }
 
 # Offer
@@ -263,7 +302,7 @@ type AdPosition{
 
 type Offer {
   id: ID!
-  creator: User @private
+  creator: User
   ad: Ad!
   car: Car!
   price: Float!
@@ -271,6 +310,7 @@ type Offer {
   finalRank: Int
   addons: [OfferAddon!]
   conversation: Conversation
+  createdAt: String!
 }
 
 enum OfferStatus {
@@ -318,6 +358,7 @@ type OfferPosition {
   offer: Offer
   position: Int
   score: Int
+  totalLength: Int
 }
 
 # Conversation
@@ -371,6 +412,16 @@ enum NotificationType {
   GENERAL
   OFFER_MESSAGE
   NEW_OFFER
+}
+
+# Prices
+# ------------------------------------------------------
+
+type Prices {
+  premiumAccount: Int!
+  carSpot: Int!
+  urgentAd: Int!
+  topAd: Int!
 }
 
 # Util

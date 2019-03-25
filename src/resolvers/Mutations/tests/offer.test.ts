@@ -1,17 +1,17 @@
-import * as Utils from "../../utils";
-import { offer as OfferMutationResolver } from "../Mutations/offer";
-import { Prisma } from "../../generated/prisma-client";
+import * as Utils from "../../../utils";
+import { offer as OfferMutationResolver } from "../offer";
+import { Prisma } from "../../../generated/prisma-client";
 import createMockInstance from "jest-create-mock-instance";
 import {
   getUserContext,
   getAdminContext,
   getContextWithId
-} from "../../testUtils";
+} from "../../../testUtils";
 import {
   CannotCreateOfferOnOwnAd,
   CannotCreateOfferWithNotOwnedCar
-} from "../../errors/offerErrors";
-import { UserNotCreatorError } from "../../errors/authErrors";
+} from "../../../errors/offerErrors";
+import { UserNotCreatorError } from "../../../errors/authErrors";
 
 let prisma: jest.Mocked<Prisma>;
 describe("Offers mutations tests suite", () => {

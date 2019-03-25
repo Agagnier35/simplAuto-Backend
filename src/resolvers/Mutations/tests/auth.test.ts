@@ -1,17 +1,17 @@
-import { Prisma } from "../../generated/prisma-client";
+import { Prisma } from "../../../generated/prisma-client";
 import createMockInstance from "jest-create-mock-instance";
-import * as Utils from "../../utils";
+import * as Utils from "../../../utils";
 import * as jwt from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
-import { auth as AuthMutationResolver } from "../Mutations/auth";
-import { MutationResolvers as Types } from "../../generated/yoga-client";
-import { getNotLoggedInContext } from "../../testUtils";
+import { auth as AuthMutationResolver } from "../auth";
+import { MutationResolvers as Types } from "../../../generated/yoga-client";
+import { getNotLoggedInContext } from "../../../testUtils";
 import {
   InvalidEmailFormatError,
   InvalidClientTypeData,
   InvalidPasswordError,
   InvalidEmailError
-} from "../../errors/authErrors";
+} from "../../../errors/authErrors";
 jest.mock("bcryptjs", () => ({
   hash: jest.fn(() => "encryptedPWD"),
   compare: jest.fn((pwd, pwd2) => pwd === pwd2)
@@ -19,7 +19,7 @@ jest.mock("bcryptjs", () => ({
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn()
 }));
-jest.mock("../../stripe");
+jest.mock("../../../stripe");
 
 let prisma: jest.Mocked<Prisma>;
 describe("Auth mutations tests suite", () => {
@@ -37,7 +37,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "secret42",
-        location: "Lost",
+        location: { name: "Lost", longitude: 9, latitude: 10 },
+        radius: 9999,
         birthDate: {
           day: 1,
           month: 1,
@@ -78,7 +79,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "encryptedPWD",
-        location: "Lost",
+        location: { create: { name: "Lost", longitude: 9, latitude: 10 } },
+        radius: 9999,
         birthDate: {
           create: {
             day: 1,
@@ -123,7 +125,8 @@ describe("Auth mutations tests suite", () => {
           email: "JESUS@yopmail.com",
           clientType: "INDIVIDUAL",
           password: "secret42",
-          location: "Lost",
+          location: { name: "Lost", longitude: 9, latitude: 10 },
+          radius: 9999,
           birthDate: {
             day: 1,
             month: 1,
@@ -152,7 +155,8 @@ describe("Auth mutations tests suite", () => {
           lastName: "Christ",
           companyName: "Jew Inc.",
           password: "secret42",
-          location: "Lost",
+          location: { name: "Lost", longitude: 9, latitude: 10 },
+          radius: 9999,
           birthDate: {
             day: 1,
             month: 1,
@@ -181,7 +185,8 @@ describe("Auth mutations tests suite", () => {
           lastName: "Christ",
           companyName: "Jew Inc.",
           password: "secret42",
-          location: "Lost",
+          location: { name: "Lost", longitude: 9, latitude: 10 },
+          radius: 9999,
           birthDate: {
             day: 1,
             month: 1,
@@ -207,7 +212,8 @@ describe("Auth mutations tests suite", () => {
           email: "JESUS@yopmail.com",
           clientType: "COMPANY",
           password: "secret42",
-          location: "Lost",
+          location: { name: "Lost", longitude: 9, latitude: 10 },
+          radius: 9999,
           birthDate: {
             day: 1,
             month: 1,
@@ -317,7 +323,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "secret42",
-        location: "Lost",
+        location: { name: "Lost", longitude: 9, latitude: 10 },
+        radius: 9999,
         birthDate: {
           day: 1,
           month: 1,
@@ -356,7 +363,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "secret42",
-        location: "Lost",
+        location: { create: { name: "Lost", longitude: 9, latitude: 10 } },
+        radius: 9999,
         birthDate: {
           create: {
             day: 1,
@@ -412,7 +420,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "secret42",
-        location: "Lost",
+        location: { name: "Lost", longitude: 9, latitude: 10 },
+        radius: 9999,
         birthDate: {
           day: 1,
           month: 1,
@@ -451,7 +460,8 @@ describe("Auth mutations tests suite", () => {
         firstName: "Jesus",
         lastName: "Christ",
         password: "secret42",
-        location: "Lost",
+        location: { create: { name: "Lost", longitude: 9, latitude: 10 } },
+        radius: 9999,
         birthDate: {
           create: {
             day: 1,
