@@ -3,6 +3,7 @@ import {
   OfferStatus
 } from "../../generated/yoga-client";
 import { Context, getUserId } from "../../utils";
+import { ID_Input } from "../../generated/prisma-client";
 
 interface ConversationResolver {
   createConversation: Types.CreateConversationResolver;
@@ -33,12 +34,13 @@ export const conversation: ConversationResolver = {
       }
     });
   },
-  async updateConversation(parent, { offerID }, ctx: Context) {
+  async updateConversation(parent, { data }, ctx: Context) {
     return await ctx.prisma.updateConversation({
-      offer: {
-        connect: {
-          id: offerID
-        }
+      data: {
+        status: data.status
+      },
+      where: {
+        id: data.id
       }
     });
   }
