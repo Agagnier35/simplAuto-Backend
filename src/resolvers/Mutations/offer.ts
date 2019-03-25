@@ -180,10 +180,24 @@ export const offer: OfferResolver = {
     const emailBuyer = adCreator.email;
     const firstNameBuyer = adCreator.firstName;
     const lastNameBuyer = adCreator.lastName;
+    const companyNameBuyer = carOwner.companyName;
+    let buyerName = "";
+    if (companyNameBuyer !== "") {
+      buyerName = companyNameBuyer;
+    } else {
+      buyerName = firstNameBuyer + " " + lastNameBuyer;
+    }
 
     const emailSeller = carOwner.email;
     const firstNameSeller = carOwner.firstName;
     const lastNameSeller = carOwner.lastName;
+    const companyNameSeller = carOwner.companyName;
+    let sellerName = "";
+    if (companyNameSeller !== "") {
+      sellerName = companyNameSeller;
+    } else {
+      sellerName = firstNameSeller + " " + lastNameSeller;
+    }
     const locationSeller = await ctx.prisma
       .user({ id: carOwner.id })
       .location();
@@ -195,8 +209,7 @@ export const offer: OfferResolver = {
       subject: "Simplauto accepted offer",
       templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
       dynamic_template_data: {
-        firstName: firstNameBuyer,
-        lastName: lastNameBuyer,
+        name: buyerName,
         location: locationSeller.name,
         link: `${process.env.FRONTEND_URL}/offer?id=${id}`
       }
@@ -209,8 +222,7 @@ export const offer: OfferResolver = {
       subject: "Simplauto accepted offer",
       templateId: "d-f7b59ea95033476e8d8fe55a185cece7",
       dynamic_template_data: {
-        firstName: firstNameSeller,
-        lastName: lastNameSeller,
+        name: sellerName,
         location: locationSeller.name,
         link: `${process.env.FRONTEND_URL}/offer?id=${id}`
       }
