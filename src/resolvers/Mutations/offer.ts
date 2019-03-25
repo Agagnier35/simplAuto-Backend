@@ -25,7 +25,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
-  sendAcceptaionEmail: Types.SendNotificationEmailResolver;
+  sendAcceptaionEmail: Types.SendAcceptaionEmailResolver;
 }
 
 export const offer: OfferResolver = {
