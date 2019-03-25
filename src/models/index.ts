@@ -20,3 +20,10 @@ export interface Statistics {
   averagePriceApp: number;
   averageTimeOnMarketApp: number;
 }
+
+export interface Prices {
+  premiumAccount: number;
+  carSpot: number;
+  urgentAd: number;
+  topAd: number;
+}
