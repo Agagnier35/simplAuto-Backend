@@ -198,7 +198,7 @@ export const offer: OfferResolver = {
         firstName: firstNameBuyer,
         lastName: lastNameBuyer,
         location: locationSeller.name,
-        link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
+        link: `${process.env.FRONTEND_URL}/offre?id=${id}`
       }
     };
     sgMail.send(msgBuyer);
@@ -212,7 +212,7 @@ export const offer: OfferResolver = {
         firstName: firstNameSeller,
         lastName: lastNameSeller,
         location: locationSeller.name,
-        link: `${process.env.FRONTEND_URL}/adDetail?id=${id}`
+        link: `${process.env.FRONTEND_URL}/offre?id=${id}`
       }
     };
     sgMail.send(msgSeller);
