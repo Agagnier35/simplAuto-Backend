@@ -105,6 +105,7 @@ enum Permission {
 }
 
 type Location{
+  id: ID!
   name: String!
   longitude: Float!
   latitude: Float!

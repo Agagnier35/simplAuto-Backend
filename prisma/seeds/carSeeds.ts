@@ -130,6 +130,45 @@ export const seedCars = async (prisma: Prisma) => {
     }
   });
 
+  const car3 = await prisma.createCar({
+    owner: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Jeep").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Wrangler").id } },
+    category: {
+      connect: { id: carCategories.find(c => c.name === "SUV").id }
+    },
+    year: 2015,
+    mileage: 20000,
+    status: "PUBLISHED",
+    description:
+      "Tucson, Arizona — Fraîchement débarqué au Salon de l’auto de Los Angeles au début du mois de décembre",
+    features: {
+      connect: [
+        { id: motor[0].id },
+        { id: color[0].id },
+        { id: fuelType[0].id },
+        { id: drivetrain[0].id },
+        { id: transmission[0].id },
+        { id: sunroof[0].id },
+        { id: cruiseControl[0].id },
+        { id: trailerHitch[0].id },
+        { id: airConditioning[0].id }
+      ]
+    },
+    photos: {
+      set: [
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/lnlewjvyvlacsms3cwgz.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094812/CarImages/jh8ebagegv7z0w40j1un.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094811/CarImages/zyskzryxqtwpbjsrfukj.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/lnlewjvyvlacsms3cwgz.jpg"
+      ]
+    }
+  });
+
   const car4 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
