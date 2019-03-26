@@ -40,7 +40,7 @@ export const ads: AdsQueries = {
   },
 
   async adSuggestion(parent, { id, pageNumber, pageSize }, ctx: Context) {
-    const ads = await ctx.prisma.ads();
+    const ads = await ctx.prisma.ads({ where: { status: "PUBLISHED" } });
     const car = await ctx.prisma.car({ id });
     const user = await ctx.prisma.car({ id }).owner();
     const offersWithCar = await ctx.prisma.car({ id }).offers();
