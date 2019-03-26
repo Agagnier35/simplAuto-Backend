@@ -7,7 +7,9 @@ import {
   OfferUpdateInput,
   User,
   Ad,
-  Offer
+  Offer,
+  CarStatus,
+  Car
 } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
@@ -145,6 +147,7 @@ export const offer: OfferResolver = {
   },
   async acceptOffer(parent, { id }, ctx: Context) {
     const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
+    const acceptedCar: Car = await ctx.prisma.offer({ id }).car();
 
     if (acceptedAd.status !== "PUBLISHED") {
       throw AdNotOneMarketError;
@@ -156,7 +159,14 @@ export const offer: OfferResolver = {
       where: { ad: { id } }
     });
 
+    const statusSold: CarStatus = "SOLD";
+    await ctx.prisma.updateCar({
+      data: { status: statusSold },
+      where: { id: acceptedCar.id }
+    });
+
     const statusAccepted: OfferStatus = "ACCEPTED";
+
     await ctx.prisma.updateAd({
       data: { status: statusAccepted },
       where: { id: acceptedAd.id }
