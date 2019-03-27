@@ -182,9 +182,17 @@ export const offer: OfferResolver = {
   },
   async refuseOffer(parent, { id }, ctx: Context) {
     const offer: Offer = await ctx.prisma.offer({ id });
+    const userId = getUserId(ctx);
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
 
     if (offer.status !== "PUBLISHED") {
       throw OfferNotOneMarketError;
+    }
+    if (adCreator.id !== userId) {
+      throw UserNotCreatorError;
     }
 
     const statusDeleted: OfferStatus = "DELETED";
