@@ -115,6 +115,7 @@ type OfferAddon{
 
 enum OfferStatus {
   PUBLISHED
+  REFUSED
   ACCEPTED
   DELETED
 }

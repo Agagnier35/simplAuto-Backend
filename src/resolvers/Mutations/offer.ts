@@ -195,7 +195,7 @@ export const offer: OfferResolver = {
       throw UserNotCreatorError;
     }
 
-    const statusDeleted: OfferStatus = "DELETED";
+    const statusDeleted: OfferStatus = "REFUSED";
     return await ctx.prisma.updateOffer({
       data: { status: statusDeleted },
       where: { id }

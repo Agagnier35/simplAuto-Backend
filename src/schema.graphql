@@ -316,6 +316,7 @@ type Offer {
 
 enum OfferStatus {
   PUBLISHED
+  REFUSED
   ACCEPTED
   DELETED
 }
