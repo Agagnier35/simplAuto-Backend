@@ -17,7 +17,7 @@ type Query {
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
   getPrices: Prices!
-  homePageAds: [Ad!]
+  homePageAds: [Ad]
 }
 
 type Mutation {

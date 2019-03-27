@@ -35,7 +35,7 @@ export const Ad: AdResolvers.Type = {
           model: { id: model.id },
           category: { id: category.id },
           mileage_gte: parent.mileageLowerBound,
-          mileage_lte: parent.priceHigherBound,
+          mileage_lte: parent.mileageHigherBound,
           year_gte: parent.yearLowerBound,
           year_lte: parent.yearHigherBound
         }
