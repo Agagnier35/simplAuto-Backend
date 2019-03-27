@@ -15,3 +15,5 @@ export const UserNotCreatorError = new Error("userNotCreatorError");
 export const InvalidClientTypeData = new Error("invalidClientTypeData");
 
 export const AdNotOneMarketError = new Error("adNotOneMarketError");
+
+export const OfferNotOneMarketError = new Error("OfferNotOneMarketError");

@@ -9,12 +9,14 @@ import {
   Ad,
   Offer,
   CarStatus,
-  Car
+  Car,
+  AdStatus
 } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
-  AdNotOneMarketError
+  AdNotOneMarketError,
+  OfferNotOneMarketError
 } from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
@@ -27,6 +29,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
+  refuseOffer: Types.RefuseOfferResolver;
   sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
@@ -165,15 +168,28 @@ export const offer: OfferResolver = {
       where: { id: acceptedCar.id }
     });
 
-    const statusAccepted: OfferStatus = "ACCEPTED";
-
+    const statusOfferAccepted: OfferStatus = "ACCEPTED";
+    const statusAdAccepted: AdStatus = "ACCEPTED";
     await ctx.prisma.updateAd({
-      data: { status: statusAccepted },
+      data: { status: statusOfferAccepted },
       where: { id: acceptedAd.id }
     });
 
     return await ctx.prisma.updateOffer({
-      data: { status: statusAccepted },
+      data: { status: statusAdAccepted },
+      where: { id }
+    });
+  },
+  async refuseOffer(parent, { id }, ctx: Context) {
+    const offer: Offer = await ctx.prisma.offer({ id });
+
+    if (offer.status !== "PUBLISHED") {
+      throw OfferNotOneMarketError;
+    }
+
+    const statusDeleted: OfferStatus = "DELETED";
+    return await ctx.prisma.updateOffer({
+      data: { status: statusDeleted },
       where: { id }
     });
   },
