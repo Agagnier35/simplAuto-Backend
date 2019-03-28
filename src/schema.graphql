@@ -17,6 +17,8 @@ type Query {
   allAdsCount: Int!
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
+  adminStats: AdminStatistics
+  adminStatisticsCar(data: AdminCarResarchInput): AdminCarResearchStatistics
   getPrices: Prices!
   users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
   homePageAds: [Ad]
@@ -310,6 +312,54 @@ type Statistics {
   averageTimeOnMarketAPI: Float!
   averagePriceApp: Float!
   averageTimeOnMarketApp: Float!
+}
+
+type AdminStatistics {
+  top10MostSoldMakeModel: [Top10Car]!
+  top10FastestSold: [Top10Car]!
+
+  bestSeller: User!
+  bestSellerTop10Cars: [Top10Car]!
+
+  allVehiculesCount: Int!
+  allAdsCount: Int!
+  activeUsersCount: Int!
+  inactiveUsersCount: Int!
+}
+
+type Top10Car {
+  model: CarModel!
+  make: Manufacturer!
+  number: Int!
+  averageTime: Float!
+  averagePrice: Float!
+}
+
+type AdminCarResearchStatistics {
+  averagePriceAPI: Float!
+  averageTimeOnMarketAPI: Float!
+  lowestPriceSoldAPI: Float!
+  highestPriceSoldAPI: Float!
+  lowestTimeOnMarketAPI: Float!
+  highestTimeOnMarketAPI: Float!
+
+  averagePriceApp: Float!
+  averageTimeOnMarketApp: Float!
+  lowestPriceSoldApp: Float!
+  highestPriceSoldApp: Float!
+  lowestTimeOnMarketApp: Float!
+  highestTimeOnMarketApp: Float!
+}
+
+input AdminCarResarchInput {
+  manufacturerID: String
+  modelID: String
+  categoryID: String
+  year: Int
+  mileage: Int
+  featuresIDs: [String!]
+  location: LocationInput
+  radius: Int
 }
 
 # Offer
