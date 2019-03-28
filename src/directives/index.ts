@@ -1,7 +1,9 @@
 import { PrivateDirective } from "./private";
+import { NotBannedDirective } from "./notBanned";
 
 const schemaDirectives = {
-  private: PrivateDirective
+  private: PrivateDirective,
+  notBanned: NotBannedDirective
 };
 
 export default schemaDirectives;

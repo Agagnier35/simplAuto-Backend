@@ -29,12 +29,18 @@ type User {
   notificationInAppMessage: Boolean! @default(value: true)
   createdAt: DateTime!
   updatedAt: DateTime!
+  status: UserStatus! @default(value: NORMAL)
 }
 
 type Location {
   name: String!
   longitude: Float!
   latitude: Float!
+}
+
+enum UserStatus {
+  NORMAL
+  BANNED
 }
 
 enum Gender {
