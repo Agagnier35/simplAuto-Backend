@@ -17,6 +17,7 @@ type Query {
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
   getPrices: Prices!
+  users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): [User]
 }
 
 type Mutation {
@@ -436,4 +437,39 @@ input DateInput {
 
 type Subscription {
   messageSubscription(conversationID: ID!): Message
+}
+
+input UserWhereInput {
+  id: ID
+  email: String
+  firstName: String
+  lastName: String
+  companyName: String
+  location: LocationInput
+  radius: Int
+  radius_lt: Int
+  radius_lte: Int
+  radius_gt: Int
+  radius_gte: Int
+  gender: Gender
+  clientType: ClientType
+  language: UserLanguage
+  carLimit: Int
+  carLimit_lt: Int
+  carLimit_lte: Int
+  carLimit_gt: Int
+  carLimit_gte: Int
+  createdAt: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  updatedAt: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
 }
