@@ -40,8 +40,7 @@ export const ads: AdsQueries = {
     }
 
     const adsNb = allAds.length;
-    const startIndex =
-      Math.floor(Math.random() * (adsNb - adRequire + 1)) + adRequire;
+    const startIndex = Math.floor(Math.random() * (adsNb - adRequire));
 
     return [
       allAds[startIndex],
