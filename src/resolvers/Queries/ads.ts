@@ -32,7 +32,11 @@ export const ads: AdsQueries = {
     return ctx.prisma.ads(resolverArg);
   },
   async homePageAds(parent, args, ctx: Context) {
-    const allAds = await ctx.prisma.ads();
+    const allAds = await ctx.prisma.ads({
+      where: {
+        status: "PUBLISHED"
+      }
+    });
     const adRequire = 5;
 
     if (allAds.length < adRequire) {

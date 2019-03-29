@@ -1,5 +1,6 @@
 import { Context } from "../../utils";
 import { AdResolvers } from "../../generated/yoga-client";
+import { Offer } from "../../generated/prisma-client";
 
 export const Ad: AdResolvers.Type = {
   ...AdResolvers.defaultResolvers,
@@ -46,7 +47,13 @@ export const Ad: AdResolvers.Type = {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
-    return ctx.prisma.ad({ id: parent.id }).offers(resolverArg);
+
+    let offersWanted: Offer[] = await ctx.prisma
+      .ad({ id: parent.id })
+      .offers(resolverArg);
+    offersWanted.sort((a, b) => (a.price > b.price ? -1 : 1));
+
+    return offersWanted;
   },
 
   offerCount({ id }, args, ctx: Context) {
