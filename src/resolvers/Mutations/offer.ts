@@ -3,7 +3,12 @@ import {
   OfferStatus
 } from "../../generated/yoga-client";
 import { getUserId, Context, getUserPermissions } from "../../utils";
-import { OfferUpdateInput, User, Ad } from "../../generated/prisma-client";
+import {
+  OfferUpdateInput,
+  User,
+  Ad,
+  Offer
+} from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
@@ -13,12 +18,14 @@ import {
   CannotCreateOfferOnOwnAd,
   CannotCreateOfferWithNotOwnedCar
 } from "../../errors/offerErrors";
+const sgMail = require("@sendgrid/mail");
 
 interface OfferResolver {
   deleteOffer: Types.DeleteOfferResolver;
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
+  sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -159,5 +166,69 @@ export const offer: OfferResolver = {
       data: { status: statusAccepted },
       where: { id }
     });
+  },
+  async sendNotificationEmail(parent, { id }, ctx: Context) {
+    const carOwner: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
+
+    const emailBuyer = adCreator.email;
+    const firstNameBuyer = adCreator.firstName;
+    const lastNameBuyer = adCreator.lastName;
+    const companyNameBuyer = carOwner.companyName;
+    let buyerName = "";
+    if (companyNameBuyer !== "") {
+      buyerName = companyNameBuyer;
+    } else {
+      buyerName = firstNameBuyer + " " + lastNameBuyer;
+    }
+
+    const emailSeller = carOwner.email;
+    const firstNameSeller = carOwner.firstName;
+    const lastNameSeller = carOwner.lastName;
+    const companyNameSeller = carOwner.companyName;
+    let sellerName = "";
+    if (companyNameSeller !== "") {
+      sellerName = companyNameSeller;
+    } else {
+      sellerName = firstNameSeller + " " + lastNameSeller;
+    }
+    const locationSeller = await ctx.prisma
+      .user({ id: carOwner.id })
+      .location();
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msgBuyer = {
+      to: emailBuyer,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto accepted offer",
+      templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
+      dynamic_template_data: {
+        name: buyerName,
+        location: locationSeller.name,
+        link: `${process.env.FRONTEND_URL}/offer?id=${id}`
+      }
+    };
+    sgMail.send(msgBuyer);
+
+    const msgSeller = {
+      to: emailSeller,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto accepted offer",
+      templateId: "d-f7b59ea95033476e8d8fe55a185cece7",
+      dynamic_template_data: {
+        name: sellerName,
+        location: locationSeller.name,
+        link: `${process.env.FRONTEND_URL}/offer?id=${id}`
+      }
+    };
+    sgMail.send(msgSeller);
+
+    return "emailSent";
   }
 };

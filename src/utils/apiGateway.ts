@@ -35,7 +35,10 @@ export const fetchAdStatsFromAPI = async (ad: Ad, user: User, ctx: Context) => {
   try {
     const response = await axios.get(baseURLAPI, { params, headers });
     const { price, dom } = response.data.stats;
-    return { averagePriceAPI: price.mean, averageTimeOnMarketAPI: dom.mean };
+    return {
+      averagePriceAPI: price.mean ? price.mean : 0,
+      averageTimeOnMarketAPI: dom.mean ? dom.mean : 0
+    };
   } catch (error) {
     throw GatewayError;
   }
@@ -68,7 +71,10 @@ export const fetchOfferStatsFromAPI = async (
   try {
     const response = await axios.get(baseURLAPI, { params, headers });
     const { price, dom } = response.data.stats;
-    return { averagePriceAPI: price.mean, averageTimeOnMarketAPI: dom.mean };
+    return {
+      averagePriceAPI: price.mean ? price.mean : 0,
+      averageTimeOnMarketAPI: dom.mean ? dom.mean : 0
+    };
   } catch (error) {
     throw GatewayError;
   }
