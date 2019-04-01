@@ -155,7 +155,7 @@ export const seedCars = async (prisma: Prisma) => {
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/aston.jfif",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/aston.jpg",
       ]
     }
   });
@@ -222,7 +222,7 @@ export const seedCars = async (prisma: Prisma) => {
     manufacturer: {
       connect: { id: manufacturers.find(m => m.name === "Volvo").id }
     },
-    model: { connect: { id: carModels.find(c => c.name === "Xc90").id } },
+    model: { connect: { id: carModels.find(c => c.name === "XC90").id } },
     category: {
       connect: { id: carCategories.find(c => c.name === "Incomplete").id }
     },
@@ -248,7 +248,7 @@ export const seedCars = async (prisma: Prisma) => {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
     manufacturer: {
-      connect: { id: manufacturers.find(m => m.name === "Mini").id }
+      connect: { id: manufacturers.find(m => m.name === "MINI").id }
     },
     model: { connect: { id: carModels.find(c => c.name === "Cooper").id } },
     category: {
@@ -260,7 +260,7 @@ export const seedCars = async (prisma: Prisma) => {
     description:
       "This car will be your soulmate",
     features: {
-      connect: [,
+      connect: [
         { id: drivetrain[0].id },
         { id: transmission[0].id },
       ]
@@ -279,7 +279,7 @@ export const seedCars = async (prisma: Prisma) => {
     manufacturer: {
       connect: { id: manufacturers.find(m => m.name === "Isuzu").id }
     },
-    model: { connect: { id: carModels.find(c => c.name === "Npr").id } },
+    model: { connect: { id: carModels.find(c => c.name === "NPR").id } },
     category: {
       connect: { id: carCategories.find(c => c.name === "Wagon").id }
     },
