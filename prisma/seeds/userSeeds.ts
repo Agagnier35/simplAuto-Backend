@@ -65,7 +65,7 @@ export const seedUsers = async (prisma: Prisma) => {
     radius: 100000000,
     birthDate: { create: { day: 9, month: 9, year: 1994 } },
     gender: "MALE",
-    permissions: { set: ["USER"] },
+    permissions: { set: ["USER", "PREMIUM"] },
     clientType: "INDIVIDUAL",
     carLimit: 2,
     language: "FRENCH"
