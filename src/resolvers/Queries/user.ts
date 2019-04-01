@@ -4,6 +4,7 @@ import { NotAnAdminError } from "../../errors/authErrors";
 
 interface UsersQueries {
   users: QueryResolvers.UsersResolver;
+  user: QueryResolvers.UserResolver;
 }
 
 export const users: UsersQueries = {
@@ -36,5 +37,16 @@ export const users: UsersQueries = {
       users,
       count
     };
+  },
+  async user(parent, { id }, ctx: Context) {
+    const userID = getUserId(ctx);
+
+    const permissions = await ctx.prisma.user({ id: userID }).permissions();
+
+    if (permissions.includes("ADMIN") || id === userID) {
+      return await ctx.prisma.user({ id });
+    }
+
+    throw NotAnAdminError;
   }
 };

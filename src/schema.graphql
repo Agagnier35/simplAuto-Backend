@@ -20,6 +20,7 @@ type Query {
   getPrices: Prices!
   users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
   homePageAds: [Ad]
+  user(id: ID!): User
 }
 
 type Mutation {
