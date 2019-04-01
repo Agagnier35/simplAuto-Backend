@@ -127,9 +127,9 @@ export const offers: OffersQueries = {
     const allOffersThatMatchesCar: Offer[] = await ctx.prisma.offers({
       where: {
         car: {
-          manufacturer: { id: manufacturer ? manufacturer.id : null },
-          model: { id: model ? model.id : null },
-          category: { id: category ? category.id : null },
+          manufacturer: { id: manufacturer.id },
+          model: { id: model.id },
+          category: { id: category.id },
           year: car.year
         }
       }
