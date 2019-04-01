@@ -32,6 +32,21 @@ export const seedAds = async (prisma: Prisma) => {
   const greyColor: CarFeature[] = await prisma.carFeatures({
     where: { name: "grey", category: { name: "color" } }
   });
+  const fiveDoors: CarFeature[] = await prisma.carFeatures({
+    where: { name: "5", category: { name: "doorNumber" } }
+  });
+  const twoDoors: CarFeature[] = await prisma.carFeatures({
+    where: { name: "5", category: { name: "doorNumber" } }
+  });
+  const threeSeats: CarFeature[] = await prisma.carFeatures({
+    where: { name: "3", category: { name: "seatNumber" } }
+  });
+  const isCruise: CarFeature[] = await prisma.carFeatures({
+    where: { name: "true", category: { name: "cruiseControl" } }
+  });
+  const manualTransmission: CarFeature[] = await prisma.carFeatures({
+    where: { name: "manual", category: { name: "transmission" } }
+  });
 
   const ad1 = await prisma.createAd({
     creator: {
@@ -68,7 +83,13 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 100000,
     yearLowerBound: 1800,
     yearHigherBound: 2020,
-    features: { connect: [{ id: blueColor[0].id }] }
+    features: {
+      connect: [
+        { id: blueColor[0].id },
+        { id: isCruise[0].id },
+        { id: manualTransmission[0].id }
+      ]
+    }
   });
 
   const ad7 = await prisma.createAd({
@@ -88,7 +109,13 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 120000,
     yearLowerBound: 1980,
     yearHigherBound: 2020,
-    features: { connect: [{ id: greyColor[0].id }] }
+    features: {
+      connect: [
+        { id: greyColor[0].id },
+        { id: twoDoors[0].id },
+        { id: isCruise[0].id }
+      ]
+    }
   });
 
   const ad8 = await prisma.createAd({
@@ -97,16 +124,25 @@ export const seedAds = async (prisma: Prisma) => {
     },
     priceLowerBound: 20000,
     priceHigherBound: 36000,
-    category: { connect: { id: carCategories.find(c => c.name === "SUV").id } },
-    manufacturer: {
-      connect: { id: manufacturers.find(m => m.name === "Honda").id }
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Convertible").id }
     },
-    model: { connect: { id: carModels.find(c => c.name === "Civic").id } },
-    mileageLowerBound: 50000,
-    mileageHigherBound: 100000,
-    yearLowerBound: 1800,
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Cadillac").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "XT5").id } },
+    mileageLowerBound: 10000,
+    mileageHigherBound: 80000,
+    yearLowerBound: 2000,
     yearHigherBound: 2020,
-    features: { connect: [{ id: blueColor[0].id }] }
+    features: {
+      connect: [
+        { id: blueColor[0].id },
+        { id: fiveDoors[0].id },
+        { id: isCruise[0].id },
+        { id: manualTransmission[0].id }
+      ]
+    }
   });
 
   const ad9 = await prisma.createAd({
@@ -124,7 +160,9 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 125000,
     yearLowerBound: 1925,
     yearHigherBound: 2020,
-    features: { connect: [{ id: yellowColor[0].id }] }
+    features: {
+      connect: [{ id: yellowColor[0].id }, { id: manualTransmission[0].id }]
+    }
   });
 
   const ad10 = await prisma.createAd({
@@ -164,6 +202,12 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 70000,
     yearLowerBound: 1800,
     yearHigherBound: 2015,
-    features: { connect: [{ id: orangeColor[0].id }] }
+    features: {
+      connect: [
+        { id: orangeColor[0].id },
+        { id: twoDoors[0].id },
+        { id: threeSeats[0].id }
+      ]
+    }
   });
 };
