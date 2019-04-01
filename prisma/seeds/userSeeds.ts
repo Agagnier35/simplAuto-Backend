@@ -24,7 +24,7 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER", "ADMIN"] },
     clientType: "INDIVIDUAL",
     carLimit: 5,
-    language: 'FRENCH'
+    language: "FRENCH"
   });
 
   const user2 = await prisma.createUser({
@@ -46,7 +46,7 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER"] },
     clientType: "INDIVIDUAL",
     carLimit: 3,
-    language:'ENGLISH'
+    language: "ENGLISH"
   });
 
   const user3 = await prisma.createUser({
@@ -65,10 +65,10 @@ export const seedUsers = async (prisma: Prisma) => {
     radius: 100000000,
     birthDate: { create: { day: 9, month: 9, year: 1994 } },
     gender: "MALE",
-    permissions: { set: ["USER"] },
+    permissions: { set: ["USER", "PREMIUM"] },
     clientType: "INDIVIDUAL",
     carLimit: 2,
-    language: 'FRENCH'
+    language: "FRENCH"
   });
 
   const user4 = await prisma.createUser({
@@ -90,7 +90,7 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER"] },
     clientType: "INDIVIDUAL",
     carLimit: 2,
-    language: 'FRENCH'
+    language: "FRENCH"
   });
 
   const user5 = await prisma.createUser({
@@ -110,7 +110,7 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER"] },
     clientType: "COMPANY",
     carLimit: 2,
-    language: 'FRENCH'
+    language: "FRENCH"
   });
 
   const user6 = await prisma.createUser({
@@ -132,7 +132,7 @@ export const seedUsers = async (prisma: Prisma) => {
     permissions: { set: ["USER"] },
     clientType: "INDIVIDUAL",
     carLimit: 2,
-    language: 'FRENCH'
+    language: "FRENCH"
   });
 
   const user7 = await prisma.createUser({
@@ -152,10 +152,9 @@ export const seedUsers = async (prisma: Prisma) => {
     birthDate: { create: { day: 9, month: 9, year: 1994 } },
     gender: "MALE",
     permissions: { set: ["USER"] },
-    clientType: "INDIVIDUAL",,
+    clientType: "INDIVIDUAL",
     carLimit: 2,
-    language: 'FRENCH'
-
+    language: "FRENCH"
   });
 
   // Create stripe customers for the accounts
