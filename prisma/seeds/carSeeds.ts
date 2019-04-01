@@ -58,6 +58,10 @@ export const seedCars = async (prisma: Prisma) => {
     where: { name: "true", category: { name: "airConditioning" } }
   });
 
+  const redColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "red", category: { name: "color" } }
+  });
+
   const car1 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
@@ -122,6 +126,111 @@ export const seedCars = async (prisma: Prisma) => {
         "https://res.cloudinary.com/simplauto/image/upload/v1550946108/CarImages/mdqng4tzsn2tk1c3ncar.jpg",
         "https://res.cloudinary.com/simplauto/image/upload/v1550946110/CarImages/opwr3g8gjxaq3lu8po9a.jpg",
         "https://res.cloudinary.com/simplauto/image/upload/v1550946109/CarImages/noq1xat8t0qbqop9smum.jpg"
+      ]
+    }
+  });
+
+  const car4 = await prisma.createCar({
+    owner: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    category: {
+      connect: {
+        id: carCategories.find(c => c.name === "Convertible").id
+      }
+    },
+    year: 1995,
+    mileage: 90000,
+    status: "PUBLISHED",
+    features: {
+      connect: [
+        { id: drivetrain[0].id },
+        { id: transmission[0].id },
+        { id: redColor[0].id },
+        { id: cruiseControl[0].id },
+        { id: trailerHitch[0].id },
+        { id: airConditioning[0].id }
+      ]
+    },
+    photos: {
+      set: [
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144129/CarImages/iqb5w7je6oaibwj6xlev.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/atbjddg2lmd5qpanx4ml.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/rboqbhafzye9qczvngo3.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144129/CarImages/iqb5w7je6oaibwj6xlev.jpg"
+      ]
+    }
+  });
+
+  const car5 = await prisma.createCar({
+    owner: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    category: {
+      connect: {
+        id: carCategories.find(c => c.name === "Convertible").id
+      }
+    },
+    year: 1990,
+    mileage: 80000,
+    status: "PUBLISHED",
+    features: {
+      connect: [
+        { id: drivetrain[0].id },
+        { id: transmission[0].id },
+        { id: redColor[0].id },
+        { id: cruiseControl[0].id },
+        { id: airConditioning[0].id }
+      ]
+    },
+    photos: {
+      set: [
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/rboqbhafzye9qczvngo3.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/atbjddg2lmd5qpanx4ml.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144129/CarImages/iqb5w7je6oaibwj6xlev.jpg"
+      ]
+    }
+  });
+
+  const car6 = await prisma.createCar({
+    owner: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    category: {
+      connect: {
+        id: carCategories.find(c => c.name === "Convertible").id
+      }
+    },
+    year: 1988,
+    mileage: 80500,
+    status: "PUBLISHED",
+    features: {
+      connect: [
+        { id: drivetrain[0].id },
+        { id: transmission[0].id },
+        { id: redColor[0].id },
+        { id: cruiseControl[0].id },
+        { id: trailerHitch[0].id },
+        { id: airConditioning[0].id }
+      ]
+    },
+    photos: {
+      set: [
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/atbjddg2lmd5qpanx4ml.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144128/CarImages/rboqbhafzye9qczvngo3.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144129/CarImages/iqb5w7je6oaibwj6xlev.jpg"
       ]
     }
   });
