@@ -90,7 +90,10 @@ export const offer: OfferResolver = {
   async updateOffer(parent, { data }, ctx: Context) {
     const { addons, id, ...rest } = data;
 
-    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const carCreator: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
     const userId = getUserId(ctx);
 
     if (
@@ -133,7 +136,10 @@ export const offer: OfferResolver = {
     });
   },
   async deleteOffer(parent, { id }, ctx: Context) {
-    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const carCreator: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
     const userId = getUserId(ctx);
 
     if (
