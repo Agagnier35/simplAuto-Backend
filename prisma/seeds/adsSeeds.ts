@@ -17,6 +17,36 @@ export const seedAds = async (prisma: Prisma) => {
   const redColor: CarFeature[] = await prisma.carFeatures({
     where: { name: "red", category: { name: "color" } }
   });
+  const blueColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "blue", category: { name: "color" } }
+  });
+  const goldColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "gold", category: { name: "color" } }
+  });
+  const yellowColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "yellow", category: { name: "color" } }
+  });
+  const orangeColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "orange", category: { name: "color" } }
+  });
+  const greyColor: CarFeature[] = await prisma.carFeatures({
+    where: { name: "grey", category: { name: "color" } }
+  });
+  const fiveDoors: CarFeature[] = await prisma.carFeatures({
+    where: { name: "5", category: { name: "doorNumber" } }
+  });
+  const twoDoors: CarFeature[] = await prisma.carFeatures({
+    where: { name: "5", category: { name: "doorNumber" } }
+  });
+  const threeSeats: CarFeature[] = await prisma.carFeatures({
+    where: { name: "3", category: { name: "seatNumber" } }
+  });
+  const isCruise: CarFeature[] = await prisma.carFeatures({
+    where: { name: "true", category: { name: "cruiseControl" } }
+  });
+  const manualTransmission: CarFeature[] = await prisma.carFeatures({
+    where: { name: "manual", category: { name: "transmission" } }
+  });
 
   const ad1 = await prisma.createAd({
     creator: {
@@ -38,10 +68,6 @@ export const seedAds = async (prisma: Prisma) => {
     features: { connect: [{ id: redColor[0].id }] }
   });
 
-  const blueColor: CarFeature[] = await prisma.carFeatures({
-    where: { name: "blue", category: { name: "color" } }
-  });
-
   const ad2 = await prisma.createAd({
     creator: {
       connect: { id: users.find(u => u.email === "dominic@yopmail.com").id }
@@ -57,7 +83,132 @@ export const seedAds = async (prisma: Prisma) => {
     mileageHigherBound: 100000,
     yearLowerBound: 1800,
     yearHigherBound: 2020,
-    features: { connect: [{ id: blueColor[0].id }] }
+    features: {
+      connect: [
+        { id: blueColor[0].id },
+        { id: isCruise[0].id },
+        { id: manualTransmission[0].id }
+      ]
+    }
+  });
+
+  const ad7 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "lol@yopmail.com").id }
+    },
+    priceLowerBound: 12000,
+    priceHigherBound: 26000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Coupe").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Audi").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Q8").id } },
+    mileageLowerBound: 20000,
+    mileageHigherBound: 120000,
+    yearLowerBound: 1980,
+    yearHigherBound: 2020,
+    features: {
+      connect: [
+        { id: greyColor[0].id },
+        { id: twoDoors[0].id },
+        { id: isCruise[0].id }
+      ]
+    }
+  });
+
+  const ad8 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "lol@yopmail.com").id }
+    },
+    priceLowerBound: 20000,
+    priceHigherBound: 36000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Convertible").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Cadillac").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "XT5").id } },
+    mileageLowerBound: 10000,
+    mileageHigherBound: 80000,
+    yearLowerBound: 2000,
+    yearHigherBound: 2020,
+    features: {
+      connect: [
+        { id: blueColor[0].id },
+        { id: fiveDoors[0].id },
+        { id: isCruise[0].id },
+        { id: manualTransmission[0].id }
+      ]
+    }
+  });
+
+  const ad9 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "bellepro@yopmail.com").id }
+    },
+    priceLowerBound: 3000,
+    priceHigherBound: 8000,
+    category: { connect: { id: carCategories.find(c => c.name === "Bus").id } },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Dodge").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Aries").id } },
+    mileageLowerBound: 50000,
+    mileageHigherBound: 125000,
+    yearLowerBound: 1925,
+    yearHigherBound: 2020,
+    features: {
+      connect: [{ id: yellowColor[0].id }, { id: manualTransmission[0].id }]
+    }
+  });
+
+  const ad10 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "bellepro@yopmail.com").id }
+    },
+    priceLowerBound: 8000,
+    priceHigherBound: 15000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Wagon").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "GMC").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Vandura").id } },
+    mileageLowerBound: 30000,
+    mileageHigherBound: 100000,
+    yearLowerBound: 2001,
+    yearHigherBound: 2019,
+    features: { connect: [{ id: goldColor[0].id }] }
+  });
+
+  const ad11 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "bellepro@yopmail.com").id }
+    },
+    priceLowerBound: 1000,
+    priceHigherBound: 6000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Pickup").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Oldsmobile").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Bravada").id } },
+    mileageLowerBound: 0,
+    mileageHigherBound: 70000,
+    yearLowerBound: 1800,
+    yearHigherBound: 2015,
+    features: {
+      connect: [
+        { id: orangeColor[0].id },
+        { id: twoDoors[0].id },
+        { id: threeSeats[0].id }
+      ]
+    }
   });
 
   const ad12 = await prisma.createAd({
