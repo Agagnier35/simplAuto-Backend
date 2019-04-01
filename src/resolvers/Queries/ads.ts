@@ -4,7 +4,8 @@ import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
-import { Offer } from "../../generated/prisma-client";
+import { Offer, Ad, CarWhereInput } from "../../generated/prisma-client";
+import { offers } from "./offers";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -135,17 +136,25 @@ export const ads: AdsQueries = {
     const userID = getUserId(ctx);
     const user = await ctx.prisma.user({ id: userID });
 
+    const car: CarWhereInput = {
+      mileage_gte: ad.mileageLowerBound,
+      mileage_lte: ad.mileageHigherBound,
+      year_gte: ad.yearLowerBound,
+      year_lte: ad.yearHigherBound
+    };
+    if (manufacturer) {
+      car.manufacturer = { id: manufacturer.id };
+    }
+    if (model) {
+      car.model = { id: model.id };
+    }
+    if (category) {
+      car.category = { id: category.id };
+    }
+
     const allOffersThatMatchesAd: Offer[] = await ctx.prisma.offers({
       where: {
-        car: {
-          manufacturer: { id: manufacturer.id },
-          model: { id: model.id },
-          category: { id: category.id },
-          mileage_gte: ad.mileageLowerBound,
-          mileage_lte: ad.priceHigherBound,
-          year_gte: ad.yearLowerBound,
-          year_lte: ad.yearHigherBound
-        }
+        car
       }
     });
 
