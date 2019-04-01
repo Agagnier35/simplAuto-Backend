@@ -25,6 +25,16 @@ export const users: UsersQueries = {
       resolverArg.first = pageSize;
     }
 
-    return await ctx.prisma.users(resolverArg);
+    const users = await ctx.prisma.users(resolverArg);
+
+    const count = await ctx.prisma
+      .usersConnection()
+      .aggregate()
+      .count();
+
+    return {
+      users,
+      count
+    };
   }
 };

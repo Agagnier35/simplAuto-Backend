@@ -18,7 +18,7 @@ type Query {
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
   getPrices: Prices!
-  users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): [User]
+  users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
 }
 
 type Mutation {
@@ -452,8 +452,11 @@ input UserWhereInput {
   id: ID
   email: String
   firstName: String
+  firstName_contains: String
   lastName: String
+  lastName_contains: String
   companyName: String
+  companyName_contains: String
   location: LocationInput
   radius: Int
   radius_lt: Int
@@ -481,4 +484,9 @@ input UserWhereInput {
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
+}
+
+type UsersPayload {
+  users: [User]
+  count: Int
 }

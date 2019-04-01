@@ -16,8 +16,10 @@ export const Offer: OfferResolvers.Type = {
     return ctx.prisma.offer({ id }).car();
   },
 
-  conversation: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.offer({ id }).conversation();
+  conversation: async ({ id }, args, ctx: Context) => {
+    const conversation = await ctx.prisma.offer({ id }).conversation();
+    if(conversation.status === "DELETED") return;
+    return conversation;
   },
   addons: ({ id }, args, ctx: Context) => {
     return ctx.prisma.offer({ id }).addons();
