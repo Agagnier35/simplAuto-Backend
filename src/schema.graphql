@@ -19,6 +19,7 @@ type Query {
   statsForOffer(id: ID!): Statistics
   getPrices: Prices!
   users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
+  user(id: ID!): User
 }
 
 type Mutation {
@@ -111,6 +112,7 @@ enum Permission {
 }
 
 type Location{
+  id: ID!
   name: String!
   longitude: Float!
   latitude: Float!

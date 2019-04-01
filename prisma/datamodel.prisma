@@ -33,6 +33,7 @@ type User {
 }
 
 type Location {
+  id: ID! @unique
   name: String!
   longitude: Float!
   latitude: Float!
