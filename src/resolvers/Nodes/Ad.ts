@@ -1,6 +1,9 @@
 import { Context } from "../../utils";
 import { AdResolvers } from "../../generated/yoga-client";
-import { Offer } from "../../generated/prisma-client";
+import {
+  OfferWhereInput,
+  OfferOrderByInput
+} from "../../generated/prisma-client";
 
 export const Ad: AdResolvers.Type = {
   ...AdResolvers.defaultResolvers,
@@ -25,7 +28,12 @@ export const Ad: AdResolvers.Type = {
     const manufacturer = await ctx.prisma.ad({ id: parent.id }).manufacturer();
     const model = await ctx.prisma.ad({ id: parent.id }).model();
     const category = await ctx.prisma.ad({ id: parent.id }).category();
-    const resolverArg: any = {
+    const resolverArg: {
+      where: OfferWhereInput;
+      orderBy: OfferOrderByInput;
+      skip?: number;
+      first?: number;
+    } = {
       where: {
         status: "PUBLISHED",
         price_gte: parent.priceLowerBound,
@@ -40,7 +48,8 @@ export const Ad: AdResolvers.Type = {
           year_gte: parent.yearLowerBound,
           year_lte: parent.yearHigherBound
         }
-      }
+      },
+      orderBy: "price_ASC"
     };
 
     if (pageSize && pageNumber >= 0) {
@@ -48,12 +57,7 @@ export const Ad: AdResolvers.Type = {
       resolverArg.first = pageSize;
     }
 
-    let offersWanted: Offer[] = await ctx.prisma
-      .ad({ id: parent.id })
-      .offers(resolverArg);
-    offersWanted.sort((a, b) => (a.price > b.price ? -1 : 1));
-
-    return offersWanted;
+    return await ctx.prisma.ad({ id: parent.id }).offers(resolverArg);
   },
 
   offerCount({ id }, args, ctx: Context) {
