@@ -1,5 +1,10 @@
 import { Context } from "../../utils";
 import { AdResolvers } from "../../generated/yoga-client";
+import {
+  OfferWhereInput,
+  OfferOrderByInput,
+  CarWhereInput
+} from "../../generated/prisma-client";
 
 export const Ad: AdResolvers.Type = {
   ...AdResolvers.defaultResolvers,
@@ -24,29 +29,44 @@ export const Ad: AdResolvers.Type = {
     const manufacturer = await ctx.prisma.ad({ id: parent.id }).manufacturer();
     const model = await ctx.prisma.ad({ id: parent.id }).model();
     const category = await ctx.prisma.ad({ id: parent.id }).category();
-    const resolverArg: any = {
+
+    const car: CarWhereInput = {
+      mileage_gte: parent.mileageLowerBound,
+      mileage_lte: parent.mileageHigherBound,
+      year_gte: parent.yearLowerBound,
+      year_lte: parent.yearHigherBound
+    }
+    if(manufacturer){
+      car.manufacturer = { id: manufacturer.id }
+    }
+    if(model){
+      car.model = { id: model.id }
+    }
+    if(category){
+      car.category = { id: category.id }
+    }
+
+    const resolverArg: {
+      where: OfferWhereInput;
+      orderBy: OfferOrderByInput;
+      skip?: number;
+      first?: number;
+    } = {
       where: {
+        car,
         status: "PUBLISHED",
         price_gte: parent.priceLowerBound,
         price_lte: parent.priceHigherBound,
-
-        car: {
-          manufacturer: { id: manufacturer.id },
-          model: { id: model.id },
-          category: { id: category.id },
-          mileage_gte: parent.mileageLowerBound,
-          mileage_lte: parent.priceHigherBound,
-          year_gte: parent.yearLowerBound,
-          year_lte: parent.yearHigherBound
-        }
-      }
+      },
+      orderBy: "price_ASC"
     };
 
     if (pageSize && pageNumber >= 0) {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
-    return ctx.prisma.ad({ id: parent.id }).offers(resolverArg);
+
+    return await ctx.prisma.ad({ id: parent.id }).offers(resolverArg);
   },
 
   offerCount({ id }, args, ctx: Context) {

@@ -90,6 +90,9 @@ describe("Offers mutations tests suite", () => {
       prisma.car = jest.fn().mockReturnValue({
         owner: jest.fn(() => ({ id: "someRandomID" }))
       });
+      prisma.offer = jest.fn().mockReturnValue({
+        car: jest.fn(() => ({ owner: jest.fn(() => ({ id: "someRandomID" })) }))
+      });
 
       await expect(
         OfferMutationResolver.createOffer(
@@ -104,10 +107,10 @@ describe("Offers mutations tests suite", () => {
 
   describe("Update offer test suite", () => {
     beforeEach(() => {
-      prisma.car = jest.fn().mockReturnValue({
-        owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
-      });
       prisma.offer = jest.fn().mockReturnValue({
+        car: jest.fn(() => ({
+          owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
+        })),
         addons: jest.fn(() => [])
       });
       prisma.deleteManyOfferAddons = jest.fn();
@@ -160,6 +163,9 @@ describe("Offers mutations tests suite", () => {
 
     test("When updating offer, then delete and reconnect all addons", async () => {
       prisma.offer = jest.fn().mockReturnValue({
+        car: jest.fn(() => ({
+          owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
+        })),
         addons: jest.fn(() => [
           { id: "addon1", rankValue: 10 },
           { id: "addon2", rankValue: 0 }
@@ -206,8 +212,10 @@ describe("Offers mutations tests suite", () => {
 
   describe("Delete offer test suite", () => {
     beforeEach(() => {
-      prisma.car = jest.fn().mockReturnValue({
-        owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
+      prisma.offer = jest.fn().mockReturnValue({
+        car: jest.fn(() => ({
+          owner: jest.fn(() => ({ id: "cjsxuztcx049d087164xib1bd" }))
+        }))
       });
       prisma.updateOffer = jest.fn();
     });
