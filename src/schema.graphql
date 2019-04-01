@@ -41,6 +41,7 @@ type Mutation {
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
   acceptOffer(id: ID!): Offer
+  refuseOffer(id: ID!): Offer
   sendNotificationEmail(id: ID!): String
   buyCarSpot(stripeToken: String!, amount: Int!): User!
   buyUrgentAd(stripeToken: String!, id: ID!): Ad!
@@ -316,6 +317,7 @@ type Offer {
 
 enum OfferStatus {
   PUBLISHED
+  REFUSED
   ACCEPTED
   DELETED
 }

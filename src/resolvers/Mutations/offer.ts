@@ -7,12 +7,16 @@ import {
   OfferUpdateInput,
   User,
   Ad,
-  Offer
+  Offer,
+  CarStatus,
+  Car,
+  AdStatus
 } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
-  AdNotOneMarketError
+  AdNotOneMarketError,
+  OfferNotOnMarketError
 } from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
@@ -25,6 +29,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
+  refuseOffer: Types.RefuseOfferResolver;
   sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
@@ -145,6 +150,7 @@ export const offer: OfferResolver = {
   },
   async acceptOffer(parent, { id }, ctx: Context) {
     const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
+    const acceptedCar: Car = await ctx.prisma.offer({ id }).car();
 
     if (acceptedAd.status !== "PUBLISHED") {
       throw AdNotOneMarketError;
@@ -156,14 +162,42 @@ export const offer: OfferResolver = {
       where: { ad: { id } }
     });
 
-    const statusAccepted: OfferStatus = "ACCEPTED";
+    const statusSold: CarStatus = "SOLD";
+    await ctx.prisma.updateCar({
+      data: { status: statusSold },
+      where: { id: acceptedCar.id }
+    });
+
+    const statusOfferAccepted: OfferStatus = "ACCEPTED";
+    const statusAdAccepted: AdStatus = "ACCEPTED";
     await ctx.prisma.updateAd({
-      data: { status: statusAccepted },
+      data: { status: statusAdAccepted },
       where: { id: acceptedAd.id }
     });
 
     return await ctx.prisma.updateOffer({
-      data: { status: statusAccepted },
+      data: { status: statusOfferAccepted },
+      where: { id }
+    });
+  },
+  async refuseOffer(parent, { id }, ctx: Context) {
+    const offer: Offer = await ctx.prisma.offer({ id });
+    const userId = getUserId(ctx);
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
+
+    if (offer.status !== "PUBLISHED") {
+      throw OfferNotOnMarketError;
+    }
+    if (adCreator.id !== userId) {
+      throw UserNotCreatorError;
+    }
+
+    const statusDeleted: OfferStatus = "REFUSED";
+    return await ctx.prisma.updateOffer({
+      data: { status: statusDeleted },
       where: { id }
     });
   },
