@@ -2,6 +2,7 @@ import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
+import { distanceFromCoordinate } from "../../utils/mathFunction";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
 import { Offer, Ad, CarWhereInput } from "../../generated/prisma-client";
@@ -133,10 +134,13 @@ export const ads: AdsQueries = {
         }
       }
 
-      const distance = Math.sqrt(
-        ((adOwnerLocation.latitude - userLocation.latitude) ^ 2) +
-          ((adOwnerLocation.longitude - userLocation.longitude) ^ 2)
+      const distance = distanceFromCoordinate(
+        adOwnerLocation.longitude,
+        adOwnerLocation.latitude,
+        userLocation.longitude,
+        userLocation.latitude
       );
+
       if (distance <= adOwner.radius && distance <= user.radius) {
         if (!alreadyOffered && user.id !== adOwner.id) {
           adsScore.push(ad_score);
@@ -146,7 +150,7 @@ export const ads: AdsQueries = {
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
 
-    adsScore.sort(a => (moment().isBefore(a.ad.urgentExpiry) ? -1 : 1));
+    adsScore.sort(a => (moment().isBefore(a.ad.topExpiry) ? -1 : 1));
 
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
