@@ -274,7 +274,33 @@ export const seedCars = async (prisma: Prisma) => {
     }
   });
 
-  const car10 = await prisma.createCar({
+  const car7 = await prisma.createCar({
+    owner: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Subaru").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Impreza").id } },
+    category: {
+      connect: {
+        id: carCategories.find(c => c.name === "Sedan").id
+      }
+    },
+    year: 2019,
+    mileage: 20000,
+    status: "PUBLISHED",
+    features: { connect: [{ id: redColor[0].id }] },
+    photos: {
+      set: [
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144111/CarImages/trim_09.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144111/CarImages/18535387876x640.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1554144111/CarImages/280px-2007-2009_Subaru_Impreza_sedan_--_03-22-2010.jpg"
+      ]
+    }
+  });
+
+  const car8 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -288,8 +314,7 @@ export const seedCars = async (prisma: Prisma) => {
     year: 1978,
     mileage: 666666,
     status: "PUBLISHED",
-    description:
-      "Beautiful Aston Martin with sunroof",
+    description: "Beautiful Aston Martin with sunroof",
     features: {
       connect: [
         { id: motor[0].id },
@@ -303,12 +328,12 @@ export const seedCars = async (prisma: Prisma) => {
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/aston.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/aston.jpg"
       ]
     }
   });
 
-  const car11 = await prisma.createCar({
+  const car9 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -322,25 +347,24 @@ export const seedCars = async (prisma: Prisma) => {
     year: 2020,
     mileage: 1234,
     status: "PUBLISHED",
-    description:
-      "1337 Tesla Car. Must Buy !",
+    description: "1337 Tesla Car. Must Buy !",
     features: {
       connect: [
         { id: motor[0].id },
         { id: color[0].id },
         { id: fuelType[0].id },
         { id: doorNumber[0].id },
-        { id: seatNumber[0].id },
+        { id: seatNumber[0].id }
       ]
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/tesla.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/tesla.jpg"
       ]
     }
   });
 
-  const car12 = await prisma.createCar({
+  const car10 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -358,12 +382,12 @@ export const seedCars = async (prisma: Prisma) => {
       "Le JPEG File Interchange Format, abrégé JFIF, est une norme pour faciliter l'échange de fichiers contenant des images enregistrées avec la compression JPEG.",
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/subaru.jpeg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/subaru.jpeg"
       ]
     }
   });
 
-  const car13 = await prisma.createCar({
+  const car11 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -377,21 +401,18 @@ export const seedCars = async (prisma: Prisma) => {
     year: 2028,
     mileage: 1010410,
     status: "PUBLISHED",
-    description:
-      "VROOM VROOM !",
+    description: "VROOM VROOM !",
     features: {
-      connect: [
-        { id: airConditioning[0].id }
-      ]
+      connect: [{ id: airConditioning[0].id }]
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/volvo.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/volvo.jpg"
       ]
     }
   });
 
-  const car14 = await prisma.createCar({
+  const car12 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -405,22 +426,18 @@ export const seedCars = async (prisma: Prisma) => {
     year: 2001,
     mileage: 100001,
     status: "PUBLISHED",
-    description:
-      "This car will be your soulmate",
+    description: "This car will be your soulmate",
     features: {
-      connect: [
-        { id: drivetrain[0].id },
-        { id: transmission[0].id },
-      ]
+      connect: [{ id: drivetrain[0].id }, { id: transmission[0].id }]
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/mini.jpeg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/mini.jpeg"
       ]
     }
   });
 
-  const car15 = await prisma.createCar({
+  const car13 = await prisma.createCar({
     owner: {
       connect: { id: users.find(u => u.email === "king@yopmail.com").id }
     },
@@ -434,16 +451,13 @@ export const seedCars = async (prisma: Prisma) => {
     year: 1999,
     mileage: 90,
     status: "PUBLISHED",
-    description:
-      "Isuzu? More like is for u !",
+    description: "Isuzu? More like is for u !",
     features: {
-      connect: [
-        { id: airConditioning[0].id }
-      ]
+      connect: [{ id: airConditioning[0].id }]
     },
     photos: {
       set: [
-        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/isuzu.jpg",
+        "https://res.cloudinary.com/simplauto/image/upload/v1553094813/CarImages/isuzu.jpg"
       ]
     }
   });

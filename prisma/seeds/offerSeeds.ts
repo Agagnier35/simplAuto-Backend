@@ -151,4 +151,33 @@ export const seedOffers = async (prisma: Prisma) => {
     price: 68000,
     status: "PUBLISHED"
   });
+
+  // --------Offers 100% Subaru Impreza---------
+  const subarusImprezaAds: Ad[] = await prisma.ads({
+    where: {
+      manufacturer: { name: "Subaru" },
+      model: { name: "Impreza" }
+    }
+  });
+  const [car]: Car[] = await prisma.cars({
+    where: {
+      owner: { email: "king@yopmail.com" },
+      manufacturer: { name: "Subaru" },
+      model: { name: "Impreza" }
+    }
+  });
+
+  let price = 10000;
+  for (const ad of subarusImprezaAds) {
+    const offer: Offer = await prisma.createOffer({
+      price,
+      creator: {
+        connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+      },
+      ad: { connect: { id: ad.id } },
+      car: { connect: { id: car.id } },
+      status: "PUBLISHED"
+    });
+    price += 100;
+  }
 };
