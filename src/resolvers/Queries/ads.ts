@@ -2,6 +2,7 @@ import { Context, getUserId } from "../../utils";
 import { QueryResolvers } from "../../generated/yoga-client";
 import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
+import { distanceFromCoordinate } from "../../utils/mathFunction";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
 import { Offer, Ad, CarWhereInput } from "../../generated/prisma-client";
@@ -68,6 +69,10 @@ export const ads: AdsQueries = {
     const ads = await ctx.prisma.ads({ where: { status: "PUBLISHED" } });
     const car = await ctx.prisma.car({ id });
     const user = await ctx.prisma.car({ id }).owner();
+    const userLocation = await ctx.prisma
+      .car({ id })
+      .owner()
+      .location();
     const offersWithCar = await ctx.prisma.car({ id }).offers();
     let adsScore = [];
 
@@ -84,6 +89,10 @@ export const ads: AdsQueries = {
       const adCarCategory = await ctx.prisma.ad({ id }).category();
 
       const adOwner = await ctx.prisma.ad({ id }).creator();
+      const adOwnerLocation = await ctx.prisma
+        .ad({ id })
+        .creator()
+        .location();
 
       let sameManufacturer = null;
       let sameModel = null;
@@ -125,13 +134,23 @@ export const ads: AdsQueries = {
         }
       }
 
-      if (!alreadyOffered && user.id !== adOwner.id) {
-        adsScore.push(ad_score);
+      const distance = distanceFromCoordinate(
+        adOwnerLocation.longitude,
+        adOwnerLocation.latitude,
+        userLocation.longitude,
+        userLocation.latitude
+      );
+
+      if (distance <= adOwner.radius && distance <= user.radius) {
+        if (!alreadyOffered && user.id !== adOwner.id) {
+          adsScore.push(ad_score);
+        }
       }
     }
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
-    adsScore.sort(a => (a.ad.isUrgent ? -1 : 1));
+
+    adsScore.sort(a => (moment().isBefore(a.ad.topExpiry) ? -1 : 1));
 
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;

@@ -2,10 +2,10 @@ import { Car, Offer, Ad } from "../generated/prisma-client";
 
 const weight = {
   price: 50,
-  manufacturer: 7,
-  model: 7,
-  category: 14,
-  mileage: 14,
+  manufacturer: 11,
+  model: 11,
+  category: 10,
+  mileage: 10,
   year: 8
 };
 
