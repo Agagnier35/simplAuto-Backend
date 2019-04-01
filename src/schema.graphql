@@ -45,6 +45,7 @@ type Mutation {
   buyCarSpot(stripeToken: String!, amount: Int!): User!
   buyUrgentAd(stripeToken: String!, id: ID!): Ad!
   buyTopAd(stripeToken: String!, id: ID!): Ad!
+  updateConversation(data: ConversationUpdateInput!): Conversation!
 }
 
 # USER
@@ -371,6 +372,11 @@ type Conversation {
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
+}
+
+input ConversationUpdateInput {
+  id: ID!
   status: ConversationStatus
 }
 

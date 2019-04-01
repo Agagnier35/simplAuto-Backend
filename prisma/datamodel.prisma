@@ -185,7 +185,7 @@ type Conversation {
   buyer: User! @relation(name: "BuyerRelation")
   seller: User! @relation(name: "SellerRelation")
   messages: [Message!]!
-  status: ConversationStatus
+  status: ConversationStatus @default(value: OPENED)
 }
 
 type Message {
