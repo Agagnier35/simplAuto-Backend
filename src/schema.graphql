@@ -19,6 +19,7 @@ type Query {
   statsForOffer(id: ID!): Statistics
   getPrices: Prices!
   users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
+  homePageAds: [Ad]
 }
 
 type Mutation {
@@ -43,11 +44,13 @@ type Mutation {
   deleteNotification(id: ID!): Notification
   goPremium(stripeToken: String!): User!
   acceptOffer(id: ID!): Offer
+  refuseOffer(id: ID!): Offer
   sendNotificationEmail(id: ID!): String
   buyCarSpot(stripeToken: String!, amount: Int!): User!
   buyUrgentAd(stripeToken: String!, id: ID!): Ad!
   buyTopAd(stripeToken: String!, id: ID!): Ad!
   banUser(id: ID!): User
+  updateConversation(data: ConversationUpdateInput!): Conversation!
 }
 
 # USER
@@ -111,6 +114,7 @@ enum Permission {
 }
 
 type Location{
+  id: ID!
   name: String!
   longitude: Float!
   latitude: Float!
@@ -236,7 +240,7 @@ input CarCreateInput {
 
 type Ad {
   id: ID!
-  creator: User @private
+  creator: User
   offers(pageNumber: Int, pageSize: Int): [Offer!]!
   offerCount: Int!
   priceLowerBound: Float
@@ -325,6 +329,7 @@ type Offer {
 
 enum OfferStatus {
   PUBLISHED
+  REFUSED
   ACCEPTED
   DELETED
 }
@@ -376,11 +381,16 @@ type OfferPosition {
 
 type Conversation {
   id: ID!
-  buyer: User @private
-  seller: User @private
+  buyer: User!
+  seller: User!
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
+  status: ConversationStatus
+}
+
+input ConversationUpdateInput {
+  id: ID!
   status: ConversationStatus
 }
 
@@ -389,9 +399,10 @@ type Conversation {
 
 type Message {
   id: ID!
-  sender: User @private
+  sender: User!
   text: String!
   image: String
+  updatedAt: String!
   conversation: Conversation!
 }
 
