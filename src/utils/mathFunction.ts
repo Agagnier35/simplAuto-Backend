@@ -4,7 +4,7 @@ export function distanceFromCoordinate(
   longitudeB: number,
   latitudeB: number
 ) {
-  const radius = 6371e3;
+  const radius = 6371;
   const phiA = toRadian(latitudeA);
   const phiB = toRadian(latitudeB);
   const Deltaphi = toRadian(latitudeB - latitudeA);
