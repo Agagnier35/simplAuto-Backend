@@ -16,7 +16,7 @@ import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
   AdNotOneMarketError,
-  OfferNotOneMarketError
+  OfferNotOnMarketError
 } from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
@@ -171,12 +171,12 @@ export const offer: OfferResolver = {
     const statusOfferAccepted: OfferStatus = "ACCEPTED";
     const statusAdAccepted: AdStatus = "ACCEPTED";
     await ctx.prisma.updateAd({
-      data: { status: statusOfferAccepted },
+      data: { status: statusAdAccepted },
       where: { id: acceptedAd.id }
     });
 
     return await ctx.prisma.updateOffer({
-      data: { status: statusAdAccepted },
+      data: { status: statusOfferAccepted },
       where: { id }
     });
   },
@@ -189,7 +189,7 @@ export const offer: OfferResolver = {
       .creator();
 
     if (offer.status !== "PUBLISHED") {
-      throw OfferNotOneMarketError;
+      throw OfferNotOnMarketError;
     }
     if (adCreator.id !== userId) {
       throw UserNotCreatorError;
