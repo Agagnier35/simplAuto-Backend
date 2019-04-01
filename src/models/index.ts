@@ -1,4 +1,4 @@
-import { Offer, Ad } from "../generated/prisma-client";
+import { Offer, Ad, User } from "../generated/prisma-client";
 
 export interface OfferPosition {
   offer: Offer | null;
@@ -26,4 +26,9 @@ export interface Prices {
   carSpot: number;
   urgentAd: number;
   topAd: number;
+}
+
+export interface UsersPayload {
+  count: number | null;
+  users: User[] | null;
 }

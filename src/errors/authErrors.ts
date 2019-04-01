@@ -17,3 +17,5 @@ export const InvalidClientTypeData = new Error("invalidClientTypeData");
 export const AdNotOneMarketError = new Error("adNotOneMarketError");
 
 export const OfferNotOnMarketError = new Error("OfferNotOnMarketError");
+
+export const NotAnAdminError = new Error("notAnAdminError");

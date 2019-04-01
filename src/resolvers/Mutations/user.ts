@@ -1,12 +1,16 @@
 import { getUserId, Context, emailRegex } from "../../utils";
-import { UserNotFoundError } from "../../errors/userErrors";
+import { UserNotFoundError, BanningUserError } from "../../errors/userErrors";
 import { MutationResolvers as Types } from "../../generated/yoga-client";
 import { UserUpdateInput } from "../../generated/prisma-client/index";
-import { InvalidEmailFormatError } from "../../errors/authErrors";
+import {
+  InvalidEmailFormatError,
+  NotAnAdminError
+} from "../../errors/authErrors";
 import * as bcrypt from "bcryptjs";
 
 interface UserResolvers {
   updateUser: Types.UpdateUserResolver;
+  banUser: Types.BanUserResolver;
 }
 
 export const user: UserResolvers = {
@@ -72,5 +76,53 @@ export const user: UserResolvers = {
       where: { id },
       data: updatedData
     });
+  },
+  async banUser(parent, { id }, ctx: Context) {
+    const userID = getUserId(ctx);
+
+    const permissions = await ctx.prisma.user({ id: userID }).permissions();
+
+    if (!permissions.includes("ADMIN")) {
+      throw NotAnAdminError;
+    }
+
+    try {
+      const user = await ctx.prisma.updateUser({
+        where: {
+          id
+        },
+        data: {
+          status: "BANNED"
+        }
+      });
+
+      // Delete all ads
+      await ctx.prisma.updateManyAds({
+        where: {
+          creator: {
+            id
+          }
+        },
+        data: {
+          status: "DELETED"
+        }
+      });
+
+      // Delete all offers
+      await ctx.prisma.updateManyOffers({
+        where: {
+          creator: {
+            id
+          }
+        },
+        data: {
+          status: "DELETED"
+        }
+      });
+
+      return user;
+    } catch (error) {
+      throw BanningUserError;
+    }
   }
 };

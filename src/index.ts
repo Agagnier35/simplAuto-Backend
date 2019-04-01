@@ -17,6 +17,7 @@ require("dotenv").config({ path: ".env" });
 
 const typeDefs = importSchema("./src/schema.graphql");
 export const schema = makeExecutableSchema({
+  schemaDirectives,
   typeDefs,
   resolvers: resolvers as any
 });
