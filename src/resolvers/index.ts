@@ -21,6 +21,7 @@ import { AdPosition } from "./Nodes/AdPosition";
 import { Statistics } from "./Nodes/Statistics";
 import { Location } from "./Nodes/Location";
 import { Prices } from "./Nodes/Prices";
+import { UsersPayload } from "./Nodes/UsersPayload";
 
 const resolvers: Resolvers = {
   Query,
@@ -44,7 +45,8 @@ const resolvers: Resolvers = {
   AdPosition,
   Statistics,
   Location,
-  Prices
+  Prices,
+  UsersPayload
 };
 
 export default resolvers;
