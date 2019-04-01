@@ -17,7 +17,12 @@ export const Offer: OfferResolvers.Type = {
   },
 
   conversation: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.offer({ id }).conversation();
+    const conversation = ctx.prisma.offer({ id }).conversation();
+    if (conversation.status.toString() !== "DELETED") {
+      console.log("allo");
+      return conversation;
+    }
+    return;
   },
   addons: ({ id }, args, ctx: Context) => {
     return ctx.prisma.offer({ id }).addons();
