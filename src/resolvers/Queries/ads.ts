@@ -138,9 +138,9 @@ export const ads: AdsQueries = {
     const allOffersThatMatchesAd: Offer[] = await ctx.prisma.offers({
       where: {
         car: {
-          manufacturer: { id: manufacturer.id },
-          model: { id: model.id },
-          category: { id: category.id },
+          manufacturer: { id: manufacturer ? manufacturer.id : null },
+          model: { id: model ? model.id : null },
+          category: { id: category ? category.id : null },
           mileage_gte: ad.mileageLowerBound,
           mileage_lte: ad.priceHigherBound,
           year_gte: ad.yearLowerBound,
