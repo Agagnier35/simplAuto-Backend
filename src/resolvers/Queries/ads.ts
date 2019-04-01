@@ -4,7 +4,8 @@ import { AdPosition, Statistics } from "../../models";
 import { calcScoreAdSuggestion } from "../../utils/calcScore";
 import { fetchAdStatsFromAPI } from "../../utils/apiGateway";
 import moment from "moment";
-import { Offer } from "../../generated/prisma-client";
+import { Offer, Ad } from "../../generated/prisma-client";
+import { offers } from "./offers";
 
 interface AdsQueries {
   ads: QueryResolvers.AdsResolver;
@@ -12,6 +13,7 @@ interface AdsQueries {
   allAdsCount: QueryResolvers.AllAdsCountResolver;
   adSuggestion: QueryResolvers.AdSuggestionResolver;
   statsForAds: QueryResolvers.StatsForAdsResolver;
+  homePageAds: QueryResolvers.HomePageAdsResolver;
 }
 
 export const ads: AdsQueries = {
@@ -28,6 +30,29 @@ export const ads: AdsQueries = {
     }
 
     return ctx.prisma.ads(resolverArg);
+  },
+  async homePageAds(parent, args, ctx: Context) {
+    const allAds = await ctx.prisma.ads({
+      where: {
+        status: "PUBLISHED"
+      }
+    });
+    const adRequire = 5;
+
+    if (allAds.length < adRequire) {
+      return allAds;
+    }
+
+    const adsNb = allAds.length;
+    const startIndex = Math.floor(Math.random() * (adsNb - adRequire));
+
+    return [
+      allAds[startIndex],
+      allAds[startIndex + 1],
+      allAds[startIndex + 2],
+      allAds[startIndex + 3],
+      allAds[startIndex + 4]
+    ];
   },
   ad(parent, { id }, ctx: Context) {
     return ctx.prisma.ad({ id });
