@@ -59,4 +59,82 @@ export const seedAds = async (prisma: Prisma) => {
     yearHigherBound: 2020,
     features: { connect: [{ id: blueColor[0].id }] }
   });
+
+  const ad12 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "marcat@yopmail.com").id }
+    },
+    priceLowerBound: 50000,
+    priceHigherBound: 100000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Convertible").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    mileageLowerBound: 50000,
+    mileageHigherBound: 89000,
+    yearLowerBound: 1900,
+    yearHigherBound: 2020,
+    features: {
+      connect: [
+        {
+          id: redColor[0].id
+        }
+      ]
+    }
+  });
+
+  const ad13 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "lol@yopmail.com").id }
+    },
+    priceLowerBound: 50000,
+    priceHigherBound: 99000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Convertible").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    mileageLowerBound: 50000,
+    mileageHigherBound: 89000,
+    yearLowerBound: 1900,
+    yearHigherBound: 2020,
+    features: {
+      connect: [
+        {
+          id: redColor[0].id
+        }
+      ]
+    }
+  });
+
+  const ad14 = await prisma.createAd({
+    creator: {
+      connect: { id: users.find(u => u.email === "bellepro@yopmail.com").id }
+    },
+    priceLowerBound: 60000,
+    priceHigherBound: 90000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Convertible").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Ferrari").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Testarossa").id } },
+    mileageLowerBound: 50000,
+    mileageHigherBound: 95000,
+    yearLowerBound: 1900,
+    yearHigherBound: 2020,
+    features: {
+      connect: [
+        {
+          id: redColor[0].id
+        }
+      ]
+    }
+  });
 };
