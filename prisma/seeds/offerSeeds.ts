@@ -151,4 +151,72 @@ export const seedOffers = async (prisma: Prisma) => {
     price: 68000,
     status: "PUBLISHED"
   });
+
+  // -------Offer6---------
+  const ad6: Ad[] = await prisma.ads({
+    where: {
+      creator: { email: "marcat@yopmail.com" },
+      manufacturer: {
+        name: "Ferrari"
+      },
+      model: {
+        name: "Testarossa"
+      }
+    }
+  });
+  const car6: Car[] = await prisma.cars({
+    where: {
+      owner: { email: "king@yopmail.com" },
+      manufacturer: {
+        name: "Ferrari"
+      },
+      model: {
+        name: "Testarossa"
+      },
+      year: 1995
+    }
+  });
+  const offer6: Offer = await prisma.createOffer({
+    creator: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    ad: { connect: { id: ad6[0].id } },
+    car: { connect: { id: car6[0].id } },
+    price: 68000,
+    status: "PUBLISHED"
+  });
+
+  // -------Offer7---------
+  const ad7: Ad[] = await prisma.ads({
+    where: {
+      creator: { email: "marcat@yopmail.com" },
+      manufacturer: {
+        name: "Ferrari"
+      },
+      model: {
+        name: "Testarossa"
+      }
+    }
+  });
+  const car7: Car[] = await prisma.cars({
+    where: {
+      owner: { email: "king@yopmail.com" },
+      manufacturer: {
+        name: "Ferrari"
+      },
+      model: {
+        name: "Testarossa"
+      },
+      year: 1990
+    }
+  });
+  const offer7: Offer = await prisma.createOffer({
+    creator: {
+      connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+    },
+    ad: { connect: { id: ad7[0].id } },
+    car: { connect: { id: car7[0].id } },
+    price: 67000,
+    status: "PUBLISHED"
+  });
 };
