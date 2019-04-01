@@ -30,20 +30,38 @@ export const Ad: AdResolvers.Type = {
     const model = await ctx.prisma.ad({ id: parent.id }).model();
     const category = await ctx.prisma.ad({ id: parent.id }).category();
 
-    const car: CarWhereInput = {
-      mileage_gte: parent.mileageLowerBound,
-      mileage_lte: parent.mileageHigherBound,
-      year_gte: parent.yearLowerBound,
-      year_lte: parent.yearHigherBound
+    const car: CarWhereInput = {};
+    if (parent.mileageLowerBound) {
+      car.mileage_gte = parent.mileageLowerBound;
     }
-    if(manufacturer){
-      car.manufacturer = { id: manufacturer.id }
+    if (parent.mileageHigherBound) {
+      car.mileage_lte = parent.mileageHigherBound;
     }
-    if(model){
-      car.model = { id: model.id }
+    if (parent.yearLowerBound) {
+      car.year_gte = parent.yearLowerBound;
     }
-    if(category){
-      car.category = { id: category.id }
+    if (parent.mileageHigherBound) {
+      car.year_lte = parent.yearHigherBound;
+    }
+    if (manufacturer) {
+      car.manufacturer = { id: manufacturer.id };
+    }
+    if (model) {
+      car.model = { id: model.id };
+    }
+    if (category) {
+      car.category = { id: category.id };
+    }
+
+    const where: OfferWhereInput = {
+      car,
+      status: "PUBLISHED"
+    };
+    if (parent.priceLowerBound) {
+      where.price_gte = parent.priceLowerBound;
+    }
+    if (parent.priceHigherBound) {
+      where.price_lte = parent.priceHigherBound;
     }
 
     const resolverArg: {
@@ -52,12 +70,7 @@ export const Ad: AdResolvers.Type = {
       skip?: number;
       first?: number;
     } = {
-      where: {
-        car,
-        status: "PUBLISHED",
-        price_gte: parent.priceLowerBound,
-        price_lte: parent.priceHigherBound,
-      },
+      where,
       orderBy: "price_ASC"
     };
 

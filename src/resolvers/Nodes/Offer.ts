@@ -18,7 +18,7 @@ export const Offer: OfferResolvers.Type = {
 
   conversation: async ({ id }, args, ctx: Context) => {
     const conversation = await ctx.prisma.offer({ id }).conversation();
-    if (conversation.status !== "DELETED") {
+    if (conversation && conversation.status !== "DELETED") {
       return conversation;
     }
   },

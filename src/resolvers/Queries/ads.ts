@@ -160,12 +160,19 @@ export const ads: AdsQueries = {
     const userID = getUserId(ctx);
     const user = await ctx.prisma.user({ id: userID });
 
-    const car: CarWhereInput = {
-      mileage_gte: ad.mileageLowerBound,
-      mileage_lte: ad.mileageHigherBound,
-      year_gte: ad.yearLowerBound,
-      year_lte: ad.yearHigherBound
-    };
+    const car: CarWhereInput = {};
+    if (ad.mileageLowerBound) {
+      car.mileage_gte = ad.mileageLowerBound;
+    }
+    if (ad.mileageHigherBound) {
+      car.mileage_lte = ad.mileageHigherBound;
+    }
+    if (ad.yearLowerBound) {
+      car.year_gte = ad.yearLowerBound;
+    }
+    if (ad.mileageHigherBound) {
+      car.year_lte = ad.yearHigherBound;
+    }
     if (manufacturer) {
       car.manufacturer = { id: manufacturer.id };
     }

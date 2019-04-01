@@ -288,4 +288,64 @@ export const seedAds = async (prisma: Prisma) => {
       ]
     }
   });
+
+  const ad4 = await prisma.createAd({
+    creator: {
+      connect: {
+        id: users.find(u => u.email === "alexandre_clark@yopmail.com").id
+      }
+    },
+    priceLowerBound: 10000,
+    priceHigherBound: 30000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Sedan").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Subaru").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Impreza").id } },
+    mileageLowerBound: 0,
+    mileageHigherBound: 20000,
+    features: { connect: [{ id: redColor[0].id }] }
+  });
+
+  const ad5 = await prisma.createAd({
+    creator: {
+      connect: {
+        id: users.find(u => u.email === "bellepro@yopmail.com").id
+      }
+    },
+    priceLowerBound: 10000,
+    priceHigherBound: 30000,
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Sedan").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Subaru").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Impreza").id } },
+    yearLowerBound: 2016,
+    yearHigherBound: 2020,
+    features: { connect: [{ id: redColor[0].id }] }
+  });
+
+  const ad6 = await prisma.createAd({
+    creator: {
+      connect: {
+        id: users.find(u => u.email === "lol@yopmail.com").id
+      }
+    },
+    category: {
+      connect: { id: carCategories.find(c => c.name === "Sedan").id }
+    },
+    manufacturer: {
+      connect: { id: manufacturers.find(m => m.name === "Subaru").id }
+    },
+    model: { connect: { id: carModels.find(c => c.name === "Impreza").id } },
+    mileageLowerBound: 0,
+    mileageHigherBound: 20000,
+    yearLowerBound: 2016,
+    yearHigherBound: 2020,
+    features: { connect: [{ id: redColor[0].id }] }
+  });
 };
