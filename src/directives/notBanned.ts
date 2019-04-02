@@ -15,7 +15,6 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
   }
 
   ensureFieldsWrapped(objectType, fieldName) {
-    console.log("voyons dont kaa");
     // Mark the GraphQLObjectType object to avoid re-wrapping:
     const fields = objectType.getFields();
 
@@ -43,10 +42,12 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
 
       // If theres a token we need to check permissions
       const self = await context.prisma.user({ id });
-      const notBanned = self.status === "NORMAL";
+      if (self) {
+        const notBanned = self.status === "NORMAL";
 
-      if (notBanned) {
-        return user;
+        if (notBanned) {
+          return user;
+        }
       }
 
       return;
