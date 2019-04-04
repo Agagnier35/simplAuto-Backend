@@ -15,6 +15,6 @@ export default {
   ...car,
   ...offers,
   ...prices,
-  ...adminStatistics
+  ...adminStatistics,
   ...users
 };

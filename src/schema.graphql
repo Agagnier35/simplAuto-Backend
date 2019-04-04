@@ -330,7 +330,7 @@ type AdminStatistics {
 type Top10Car {
   model: CarModel!
   make: Manufacturer!
-  number: Int!
+  count: Int!
   averageTime: Float!
   averagePrice: Float!
 }
@@ -343,6 +343,7 @@ type AdminCarResearchStatistics {
   lowestTimeOnMarketAPI: Float!
   highestTimeOnMarketAPI: Float!
 
+  soldOnApp: Float!
   averagePriceApp: Float!
   averageTimeOnMarketApp: Float!
   lowestPriceSoldApp: Float!
@@ -354,10 +355,7 @@ type AdminCarResearchStatistics {
 input AdminCarResarchInput {
   manufacturerID: String
   modelID: String
-  categoryID: String
   year: Int
-  mileage: Int
-  featuresIDs: [String!]
   location: LocationInput
   radius: Int
 }

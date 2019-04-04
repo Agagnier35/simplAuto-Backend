@@ -41,7 +41,7 @@ export interface AdminStatistics {
 export interface Top10Car {
   model: CarModel;
   make: Manufacturer;
-  number: number;
+  count: number;
   averageTime: number;
   averagePrice: number;
 }
@@ -53,6 +53,7 @@ export interface AdminCarResearchStatistics {
   highestPriceSoldAPI: number;
   lowestTimeOnMarketAPI: number;
   highestTimeOnMarketAPI: number;
+  soldOnApp: number;
   averagePriceApp: number;
   averageTimeOnMarketApp: number;
   lowestPriceSoldApp: number;

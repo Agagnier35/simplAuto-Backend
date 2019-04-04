@@ -6,6 +6,8 @@ import {
   Ad,
   Car
 } from "../../src/generated/prisma-client";
+import { createLexer } from "graphql/language";
+import { user } from "../../src/resolvers/Mutations/user";
 
 export const seedOffers = async (prisma: Prisma) => {
   // Get all to make seeding multiple offers easier
@@ -179,5 +181,24 @@ export const seedOffers = async (prisma: Prisma) => {
       status: "PUBLISHED"
     });
     price += 100;
+  }
+
+  // ---- ACCEPTED OFFERS -----
+  const acceptedAds = await prisma.ads({ where: { status: "ACCEPTED" } });
+  const acceptedCar = await prisma.cars({ where: { status: "SOLD" } });
+
+  for (let i = 0; i < acceptedCar.length; i += 1) {
+    const car = acceptedCar[i];
+    const ad = acceptedAds[i];
+
+    await prisma.createOffer({
+      ad: { connect: { id: ad.id } },
+      car: { connect: { id: car.id } },
+      status: "ACCEPTED",
+      price: Math.random() * (100000 - 5000) + 5000,
+      creator: {
+        connect: { id: users.find(u => u.email === "king@yopmail.com").id }
+      }
+    });
   }
 };

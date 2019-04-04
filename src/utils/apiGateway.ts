@@ -80,6 +80,41 @@ export const fetchOfferStatsFromAPI = async (
   }
 };
 
+export const fetchAllStatsFromAPI = async (
+  manufacturer: Manufacturer,
+  model: CarModel,
+  year: number,
+  location: Location,
+  radius: number
+) => {
+  const params: any = createBaseAPIParameters(radius, location);
+  const headers = createBaseAPIHeaders();
+  if (manufacturer) {
+    params.make = manufacturer.name;
+  }
+  if (model) {
+    params.model = model.name;
+  }
+  if (year) {
+    params.year = year;
+  }
+
+  try {
+    const response = await axios.get(baseURLAPI, { params, headers });
+    const { price, dom } = response.data.stats;
+    return {
+      averagePriceAPI: price.mean,
+      averageTimeOnMarketAPI: dom.mean,
+      lowestPriceSoldAPI: price.min,
+      highestPriceSoldAPI: price.max,
+      lowestTimeOnMarketAPI: dom.min,
+      highestTimeOnMarketAPI: dom.max
+    };
+  } catch (error) {
+    throw GatewayError;
+  }
+};
+
 const createBaseAPIParameters = (radius: number, location: Location) => {
   return {
     radius,

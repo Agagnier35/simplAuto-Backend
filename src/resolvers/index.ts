@@ -53,7 +53,7 @@ const resolvers: Resolvers = {
   AdminCarResearchStatistics,
   Location,
   Prices,
-  Top10Car
+  Top10Car,
   UsersPayload
 };
 
