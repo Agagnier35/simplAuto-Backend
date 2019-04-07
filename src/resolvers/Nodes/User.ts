@@ -90,7 +90,22 @@ export const User: UserResolvers.Type = {
   },
 
   conversations: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).conversations();
+    return ctx.prisma.conversations({
+      where: {
+        OR: [
+          {
+            buyer: {
+              id
+            }
+          },
+          {
+            seller: {
+              id
+            }
+          }
+        ]
+      }
+    });
   },
   conversationCount(parent, args, ctx: Context) {
     const id = getUserId(ctx);
