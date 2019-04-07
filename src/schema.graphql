@@ -22,7 +22,15 @@ type Query {
   getPrices: Prices!
   users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
   homePageAds: [Ad]
-  user(id: ID!): User
+  user(
+    id: ID!
+    offerPageNumber: Int
+    offerPageSize: Int
+    adPageNumber: Int
+    adPageSize: Int
+    carPageNumber: Int
+    carPageSize: Int
+  ): User
 }
 
 type Mutation {
@@ -81,7 +89,7 @@ type User {
   carCount: Int!
   clientType: ClientType!
   language: UserLanguage
-  offers: [Offer!]!
+  offers(pageNumber: Int, pageSize: Int): [Offer!]!
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
