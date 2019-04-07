@@ -1,12 +1,12 @@
 import { Car, Offer, Ad } from "../generated/prisma-client";
 
 const weight = {
-  price: 50,
-  manufacturer: 11,
-  model: 11,
-  category: 10,
+  price: 37,
+  manufacturer: 15,
+  model: 10,
+  category: 18,
   mileage: 10,
-  year: 8
+  year: 10
 };
 
 const maxDeviation = 0.3;
