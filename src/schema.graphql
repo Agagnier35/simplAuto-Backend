@@ -2,7 +2,7 @@ directive @private(requires: Permission = ADMIN) on FIELD_DEFINITION
 directive @notBanned(requires: String) on FIELD_DEFINITION
 
 type Query {
-  me: User @notBanned
+  me: User 
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
   suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
