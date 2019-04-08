@@ -28,17 +28,12 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
       let id;
       if (context.request) {
         // (http)
-        console.log("context.request.userId");
         id = context.request.userId;
       } else if (context.userId) {
         // Playground (websocket)
-        console.log("context.userId");
-        console.log(context.userId);
         id = context.userId;
       } else if (context.connection) {
         // App (websocket)
-        console.log("context.connection");
-        console.log(context.connection);
         id = context.connection.context.userId;
       } else {
         // If theres no token
@@ -46,20 +41,18 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
       }
 
       // If theres a token we need to check permissions
-      console.log("Not banned? id:");
-      console.log(id);
       if (id) {
         const userExists = await context.prisma.$exists.user({
           id
         });
         if (userExists) {
           const self = await context.prisma.user({ id });
-          console.log("self:");
-          console.log(self);
           if (self) {
             const notBanned = self.status === "NORMAL";
 
             if (notBanned) {
+              console.log("user");
+              console.log(user);
               return user;
             }
           }
