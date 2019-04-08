@@ -28,12 +28,17 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
       let id;
       if (context.request) {
         // (http)
+        console.log("context.request.userId");
         id = context.request.userId;
       } else if (context.userId) {
         // Playground (websocket)
+        console.log("context.userId");
+        console.log(context.userId);
         id = context.userId;
       } else if (context.connection) {
         // App (websocket)
+        console.log("context.connection");
+        console.log(context.connection);
         id = context.connection.context.userId;
       } else {
         // If theres no token
