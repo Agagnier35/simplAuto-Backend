@@ -83,7 +83,7 @@ export const offers: OffersQueries = {
         position: null,
         totalLength: null
       };
-      if (offer_score.score < 100) {
+      if (offer_score.score < 100 && offer_score.score >= 75) {
         offersScore.push(offer_score);
       }
     }
