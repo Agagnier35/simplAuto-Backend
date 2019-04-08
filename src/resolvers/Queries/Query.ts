@@ -1,11 +1,19 @@
 import { getUserId, Context } from "../../utils";
+import { UserNotFoundError } from "../../errors/userErrors";
 
 export const Query = {
-  me(parent, args, ctx: Context) {
+  async me(parent, args, ctx: Context) {
     const id = ctx.request.userId;
+
     if (id) {
-      return ctx.prisma.user({ id });
+      const userExists = await ctx.prisma.$exists.user({
+        id
+      });
+      if (userExists) {
+        return ctx.prisma.user({ id });
+      }
     }
+
     return null;
   }
 };
