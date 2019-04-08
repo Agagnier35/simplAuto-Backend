@@ -9,10 +9,9 @@ export const Query = {
       const userExists = await ctx.prisma.$exists.user({
         id
       });
-      console.log("userExists");
-      console.log(userExists);
+
       if (userExists) {
-        return ctx.prisma.user({ id });
+        return await ctx.prisma.user({ id });
       }
     }
 
