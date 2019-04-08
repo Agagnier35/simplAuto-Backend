@@ -107,12 +107,16 @@ export const adminStatistics: AdminStatsQueries = {
     const top10FastestSold: Top10Car[] = groupedOffers.makeModel
       .sort((a, b) => (a.averageTime > b.averageTime ? -1 : 1))
       .slice(0, 10);
-    const bestSeller: User = groupedOffers.sellers
+    const bestSeller1 = groupedOffers.sellers
       .sort((a, b) => (a.count > b.count ? -1 : 1))
-      .shift().seller;
-    const bestSellersCars = await ctx.prisma.offers({
-      where: { status: "ACCEPTED", creator: { id: bestSeller.id } }
-    });
+      .shift();
+
+    const bestSeller: User = bestSeller1 ? bestSeller1.seller : undefined;
+    const bestSellersCars = bestSeller
+      ? await ctx.prisma.offers({
+          where: { status: "ACCEPTED", creator: { id: bestSeller.id } }
+        })
+      : [];
 
     const bestSellerTop10CarsPromise = await mapOffers(bestSellersCars, ctx);
     const bestSellerTop10Cars = bestSellerTop10CarsPromise.makeModel
@@ -156,6 +160,9 @@ export const adminStatistics: AdminStatsQueries = {
 
   async adminStatisticsCar(parent, { data }, ctx: Context) {
     const { manufacturerID, modelID, year, location, radius } = data;
+    if (!manufacturerID && !modelID && !year) {
+      return undefined;
+    }
     const manufacturer = await ctx.prisma.manufacturer({ id: manufacturerID });
     const model = await ctx.prisma.carModel({ id: modelID });
 

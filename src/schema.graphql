@@ -326,7 +326,7 @@ type AdminStatistics {
   top10MostSoldMakeModel: [Top10Car]!
   top10FastestSold: [Top10Car]!
 
-  bestSeller: User!
+  bestSeller: User
   bestSellerTop10Cars: [Top10Car]!
 
   allVehiculesCount: Int!
