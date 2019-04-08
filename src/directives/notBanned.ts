@@ -41,6 +41,8 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
       }
 
       // If theres a token we need to check permissions
+      console.log("Not banned? id:");
+      console.log(id);
       if (id) {
         const userExists = await context.prisma.$exists.user({
           id
