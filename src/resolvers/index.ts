@@ -18,9 +18,15 @@ import { OfferAddon } from "./Nodes/OfferAddon";
 import { Notification } from "./Nodes/Notification";
 import { OfferPosition } from "./Nodes/OfferPosition";
 import { AdPosition } from "./Nodes/AdPosition";
-import { Statistics } from "./Nodes/Statistics";
+import {
+  Statistics,
+  AdminCarResearchStatistics,
+  AdminStatistics
+} from "./Nodes/Statistics";
 import { Location } from "./Nodes/Location";
 import { Prices } from "./Nodes/Prices";
+import { UsersPayload } from "./Nodes/UsersPayload";
+import { Top10Car } from "./Nodes/Top10Car";
 
 const resolvers: Resolvers = {
   Query,
@@ -43,8 +49,12 @@ const resolvers: Resolvers = {
   Notification,
   AdPosition,
   Statistics,
+  AdminStatistics,
+  AdminCarResearchStatistics,
   Location,
-  Prices
+  Prices,
+  Top10Car,
+  UsersPayload
 };
 
 export default resolvers;

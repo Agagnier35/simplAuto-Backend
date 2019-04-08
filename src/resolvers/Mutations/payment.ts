@@ -123,7 +123,7 @@ export const payment: PaymentResolvers = {
     return ctx.prisma.updateAd({
       where: { id },
       data: {
-        urgentExpiry: Date.now().toString()
+        urgentExpiry: new Date().toISOString()
       }
     });
   },
@@ -155,7 +155,7 @@ export const payment: PaymentResolvers = {
     return ctx.prisma.updateAd({
       where: { id },
       data: {
-        topExpiry: Date.now().toString()
+        topExpiry: new Date().toISOString()
       }
     });
   }

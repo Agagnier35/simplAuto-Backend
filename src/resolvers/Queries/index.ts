@@ -3,6 +3,8 @@ import { ads } from "./ads";
 import { car } from "./car";
 import { offers } from "./offers";
 import { prices } from "./prices";
+import { users } from "./user";
+import { adminStatistics } from "./adminStats";
 
 // This is weird but temporary
 // Query will be in seperated folders
@@ -12,5 +14,7 @@ export default {
   ...ads,
   ...car,
   ...offers,
-  ...prices
+  ...prices,
+  ...adminStatistics,
+  ...users
 };

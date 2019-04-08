@@ -7,12 +7,16 @@ import {
   OfferUpdateInput,
   User,
   Ad,
-  Offer
+  Offer,
+  CarStatus,
+  Car,
+  AdStatus
 } from "../../generated/prisma-client";
 import { OfferCreateInput } from "../../generated/prisma-client/index";
 import {
   UserNotCreatorError,
-  AdNotOneMarketError
+  AdNotOneMarketError,
+  OfferNotOnMarketError
 } from "../../errors/authErrors";
 import {
   CannotCreateOfferOnOwnAd,
@@ -26,6 +30,8 @@ interface OfferResolver {
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
   sendAcceptaionEmail: Types.SendAcceptaionEmailResolver;
+  refuseOffer: Types.RefuseOfferResolver;
+  sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
 
 export const offer: OfferResolver = {
@@ -85,7 +91,10 @@ export const offer: OfferResolver = {
   async updateOffer(parent, { data }, ctx: Context) {
     const { addons, id, ...rest } = data;
 
-    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const carCreator: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
     const userId = getUserId(ctx);
 
     if (
@@ -128,7 +137,10 @@ export const offer: OfferResolver = {
     });
   },
   async deleteOffer(parent, { id }, ctx: Context) {
-    const carCreator: User = await ctx.prisma.car({ id }).owner();
+    const carCreator: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
     const userId = getUserId(ctx);
 
     if (
@@ -145,6 +157,7 @@ export const offer: OfferResolver = {
   },
   async acceptOffer(parent, { id }, ctx: Context) {
     const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
+    const acceptedCar: Car = await ctx.prisma.offer({ id }).car();
 
     if (acceptedAd.status !== "PUBLISHED") {
       throw AdNotOneMarketError;
@@ -156,18 +169,46 @@ export const offer: OfferResolver = {
       where: { ad: { id } }
     });
 
-    const statusAccepted: OfferStatus = "ACCEPTED";
+    const statusSold: CarStatus = "SOLD";
+    await ctx.prisma.updateCar({
+      data: { status: statusSold },
+      where: { id: acceptedCar.id }
+    });
+
+    const statusOfferAccepted: OfferStatus = "ACCEPTED";
+    const statusAdAccepted: AdStatus = "ACCEPTED";
     await ctx.prisma.updateAd({
-      data: { status: statusAccepted },
+      data: { status: statusAdAccepted },
       where: { id: acceptedAd.id }
     });
 
     return await ctx.prisma.updateOffer({
-      data: { status: statusAccepted },
+      data: { status: statusOfferAccepted },
       where: { id }
     });
   },
-  async sendAcceptaionEmail(parent, { id }, ctx: Context) {
+  async refuseOffer(parent, { id }, ctx: Context) {
+    const offer: Offer = await ctx.prisma.offer({ id });
+    const userId = getUserId(ctx);
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
+
+    if (offer.status !== "PUBLISHED") {
+      throw OfferNotOnMarketError;
+    }
+    if (adCreator.id !== userId) {
+      throw UserNotCreatorError;
+    }
+
+    const statusDeleted: OfferStatus = "REFUSED";
+    return await ctx.prisma.updateOffer({
+      data: { status: statusDeleted },
+      where: { id }
+    });
+  },
+  async sendNotificationEmail(parent, { id }, ctx: Context) {
     const carOwner: User = await ctx.prisma
       .offer({ id })
       .car()
@@ -180,25 +221,54 @@ export const offer: OfferResolver = {
     const emailBuyer = adCreator.email;
     const firstNameBuyer = adCreator.firstName;
     const lastNameBuyer = adCreator.lastName;
+    const companyNameBuyer = carOwner.companyName;
+    let buyerName = "";
+    if (companyNameBuyer !== "") {
+      buyerName = companyNameBuyer;
+    } else {
+      buyerName = firstNameBuyer + " " + lastNameBuyer;
+    }
 
     const emailSeller = carOwner.email;
-    const firstNameSeller = adCreator.firstName;
-    const lastNameSeller = adCreator.lastName;
+    const firstNameSeller = carOwner.firstName;
+    const lastNameSeller = carOwner.lastName;
+    const companyNameSeller = carOwner.companyName;
+    let sellerName = "";
+    if (companyNameSeller !== "") {
+      sellerName = companyNameSeller;
+    } else {
+      sellerName = firstNameSeller + " " + lastNameSeller;
+    }
+    const locationSeller = await ctx.prisma
+      .user({ id: carOwner.id })
+      .location();
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
+    const msgBuyer = {
       to: emailBuyer,
       from: "simplauto@yopmail.com",
-      subject: "Simplauto Reset password",
-      templateId: "d-f7fe2f7bca064724b367e4a6271d7941",
+      subject: "Simplauto accepted offer",
+      templateId: "d-610f2cc8284a4126b47bb4ec21fb0f95",
       dynamic_template_data: {
-        firstName: firstNameBuyer,
-        lastName: lastNameBuyer,
-        email: emailBuyer,
-        link: ""
+        name: buyerName,
+        location: locationSeller.name,
+        link: `${process.env.FRONTEND_URL}/offer?id=${id}`
       }
     };
-    sgMail.send(msg);
+    sgMail.send(msgBuyer);
+
+    const msgSeller = {
+      to: emailSeller,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto accepted offer",
+      templateId: "d-f7b59ea95033476e8d8fe55a185cece7",
+      dynamic_template_data: {
+        name: sellerName,
+        location: locationSeller.name,
+        link: `${process.env.FRONTEND_URL}/offer?id=${id}`
+      }
+    };
+    sgMail.send(msgSeller);
 
     return "emailSent";
   }

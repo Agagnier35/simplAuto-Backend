@@ -1,7 +1,8 @@
 directive @private(requires: Permission = ADMIN) on FIELD_DEFINITION
+directive @notBanned(requires: String) on FIELD_DEFINITION
 
 type Query {
-  me: User
+  me: User @notBanned
   ads(pageNumber: Int, pageSize: Int): [Ad!]
   ad(id: ID!): Ad
   suggestions(id: ID!, pageNumber: Int, pageSize: Int): [OfferPosition]
@@ -16,7 +17,20 @@ type Query {
   allAdsCount: Int!
   statsForAds(id: ID!): Statistics
   statsForOffer(id: ID!): Statistics
+  adminStats: AdminStatistics
+  adminStatisticsCar(data: AdminCarResarchInput): AdminCarResearchStatistics
   getPrices: Prices!
+  users(where: UserWhereInput!, pageNumber: Int, pageSize: Int): UsersPayload
+  homePageAds: [Ad]
+  user(
+    id: ID!
+    offerPageNumber: Int
+    offerPageSize: Int
+    adPageNumber: Int
+    adPageSize: Int
+    carPageNumber: Int
+    carPageSize: Int
+  ): User
 }
 
 type Mutation {
@@ -42,9 +56,12 @@ type Mutation {
   goPremium(stripeToken: String!): User!
   acceptOffer(id: ID!): Offer
   sendAcceptaionEmail(id: ID!): String
+  refuseOffer(id: ID!): Offer
+  sendNotificationEmail(id: ID!): String
   buyCarSpot(stripeToken: String!, amount: Int!): User!
   buyUrgentAd(stripeToken: String!, id: ID!): Ad!
   buyTopAd(stripeToken: String!, id: ID!): Ad!
+  banUser(id: ID!): User
   updateConversation(data: ConversationUpdateInput!): Conversation!
 }
 
@@ -73,7 +90,7 @@ type User {
   carCount: Int!
   clientType: ClientType!
   language: UserLanguage
-  offers: [Offer!]!
+  offers(pageNumber: Int, pageSize: Int): [Offer!]!
   offerCount: Int!
   notifications: [Notification!]!
   notificationCount: Int!
@@ -83,6 +100,12 @@ type User {
   notificationInAppMessage: Boolean!
   carLimit: Int!
   createdAt: String!
+  status: UserStatus!
+}
+
+enum UserStatus {
+  NORMAL
+  BANNED
 }
 
 enum Gender {
@@ -103,6 +126,7 @@ enum Permission {
 }
 
 type Location{
+  id: ID!
   name: String!
   longitude: Float!
   latitude: Float!
@@ -149,6 +173,7 @@ input UserUpdateInput {
   notificationEmailMessage: Boolean
   notificationInAppOffer: Boolean
   notificationInAppMessage: Boolean
+  status: UserStatus
 }
 
 # Cars
@@ -227,7 +252,7 @@ input CarCreateInput {
 
 type Ad {
   id: ID!
-  creator: User @private
+  creator: User
   offers(pageNumber: Int, pageSize: Int): [Offer!]!
   offerCount: Int!
   priceLowerBound: Float
@@ -298,6 +323,52 @@ type Statistics {
   averageTimeOnMarketApp: Float!
 }
 
+type AdminStatistics {
+  top10MostSoldMakeModel: [Top10Car]!
+  top10FastestSold: [Top10Car]!
+
+  bestSeller: User
+  bestSellerTop10Cars: [Top10Car]!
+
+  allVehiculesCount: Int!
+  allAdsCount: Int!
+  activeUsersCount: Int!
+  inactiveUsersCount: Int!
+}
+
+type Top10Car {
+  model: CarModel!
+  make: Manufacturer!
+  count: Int!
+  averageTime: Float!
+  averagePrice: Float!
+}
+
+type AdminCarResearchStatistics {
+  averagePriceAPI: Float!
+  averageTimeOnMarketAPI: Float!
+  lowestPriceSoldAPI: Float!
+  highestPriceSoldAPI: Float!
+  lowestTimeOnMarketAPI: Float!
+  highestTimeOnMarketAPI: Float!
+
+  soldOnApp: Float!
+  averagePriceApp: Float!
+  averageTimeOnMarketApp: Float!
+  lowestPriceSoldApp: Float!
+  highestPriceSoldApp: Float!
+  lowestTimeOnMarketApp: Float!
+  highestTimeOnMarketApp: Float!
+}
+
+input AdminCarResarchInput {
+  manufacturerID: String
+  modelID: String
+  year: Int
+  location: LocationInput
+  radius: Int
+}
+
 # Offer
 # ------------------------------------------------------
 
@@ -316,6 +387,7 @@ type Offer {
 
 enum OfferStatus {
   PUBLISHED
+  REFUSED
   ACCEPTED
   DELETED
 }
@@ -367,8 +439,8 @@ type OfferPosition {
 
 type Conversation {
   id: ID!
-  buyer: User @private
-  seller: User @private
+  buyer: User!
+  seller: User!
   offer: Offer!
   messages: [Message!]!
   messageCount: Int!
@@ -385,9 +457,10 @@ input ConversationUpdateInput {
 
 type Message {
   id: ID!
-  sender: User @private
+  sender: User!
   text: String!
   image: String
+  updatedAt: String!
   conversation: Conversation!
 }
 
@@ -442,4 +515,47 @@ input DateInput {
 
 type Subscription {
   messageSubscription(conversationID: ID!): Message
+}
+
+input UserWhereInput {
+  id: ID
+  email: String
+  firstName: String
+  firstName_contains: String
+  lastName: String
+  lastName_contains: String
+  companyName: String
+  companyName_contains: String
+  location: LocationInput
+  radius: Int
+  radius_lt: Int
+  radius_lte: Int
+  radius_gt: Int
+  radius_gte: Int
+  gender: Gender
+  clientType: ClientType
+  language: UserLanguage
+  carLimit: Int
+  carLimit_lt: Int
+  carLimit_lte: Int
+  carLimit_gt: Int
+  carLimit_gte: Int
+  createdAt: String
+  createdAt_lt: String
+  createdAt_lte: String
+  createdAt_gt: String
+  createdAt_gte: String
+  updatedAt: String
+  updatedAt_lt: String
+  updatedAt_lte: String
+  updatedAt_gt: String
+  updatedAt_gte: String
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+type UsersPayload {
+  users: [User]
+  count: Int
 }

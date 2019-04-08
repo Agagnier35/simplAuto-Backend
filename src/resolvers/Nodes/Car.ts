@@ -31,7 +31,13 @@ export const Car: CarResolvers.Type = {
       resolverArg.skip = pageNumber * pageSize;
       resolverArg.first = pageSize;
     }
-    return ctx.prisma.car({ id }).offers(resolverArg);
+    return ctx.prisma
+      .car({ id })
+      .offers({
+        where: { status: "PUBLISHED" },
+        skip: resolverArg.skip,
+        first: resolverArg.first
+      });
   },
   offerCount({ id }, args, ctx: Context) {
     return ctx.prisma
