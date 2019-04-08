@@ -163,8 +163,12 @@ export const adminStatistics: AdminStatsQueries = {
     if (!manufacturerID && !modelID && !year) {
       return undefined;
     }
-    const manufacturer = await ctx.prisma.manufacturer({ id: manufacturerID });
-    const model = await ctx.prisma.carModel({ id: modelID });
+    const manufacturer = manufacturerID
+      ? await ctx.prisma.manufacturer({ id: manufacturerID })
+      : undefined;
+    const model = modelID
+      ? await ctx.prisma.carModel({ id: modelID })
+      : undefined;
 
     const response: any = await fetchAllStatsFromAPI(
       manufacturer,
