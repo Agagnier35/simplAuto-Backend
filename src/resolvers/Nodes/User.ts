@@ -26,8 +26,7 @@ export const User: UserResolvers.Type = {
 
     return ctx.prisma.user({ id }).cars(resolverArg);
   },
-  carCount(parent, args, ctx: Context) {
-    const id = getUserId(ctx);
+  carCount({ id }, args, ctx: Context) {
     return ctx.prisma
       .carsConnection({
         where: {
@@ -55,8 +54,7 @@ export const User: UserResolvers.Type = {
     return ctx.prisma.user({ id }).ads(resolverArg);
   },
 
-  adCount(parent, args, ctx: Context) {
-    const id = getUserId(ctx);
+  adCount({ id }, args, ctx: Context) {
     return ctx.prisma
       .adsConnection({
         where: {
@@ -70,12 +68,20 @@ export const User: UserResolvers.Type = {
       .count();
   },
 
-  offers: ({ id }, args, ctx: Context) => {
-    return ctx.prisma.user({ id }).offers();
+  offers: ({ id }, { pageSize, pageNumber }, ctx: Context) => {
+    const resolverArg: any = {
+      where: {
+        status: "PUBLISHED"
+      }
+    };
+    if (pageSize && pageNumber >= 0) {
+      resolverArg.skip = pageNumber * pageSize;
+      resolverArg.first = pageSize;
+    }
+    return ctx.prisma.user({ id }).offers(resolverArg);
   },
 
-  offerCount(parent, args, ctx: Context) {
-    const id = getUserId(ctx);
+  offerCount({ id }, args, ctx: Context) {
     return ctx.prisma
       .offersConnection({
         where: {
@@ -107,8 +113,7 @@ export const User: UserResolvers.Type = {
       }
     });
   },
-  conversationCount(parent, args, ctx: Context) {
-    const id = getUserId(ctx);
+  conversationCount({ id }, args, ctx: Context) {
     return ctx.prisma
       .conversationsConnection({
         where: {
