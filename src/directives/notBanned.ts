@@ -54,6 +54,8 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
         });
         if (userExists) {
           const self = await context.prisma.user({ id });
+          console.log("self:");
+          console.log(self);
           if (self) {
             const notBanned = self.status === "NORMAL";
 
