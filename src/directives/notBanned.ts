@@ -51,8 +51,6 @@ export class NotBannedDirective extends SchemaDirectiveVisitor {
             const notBanned = self.status === "NORMAL";
 
             if (notBanned) {
-              console.log("user");
-              console.log(user);
               return user;
             }
           }
