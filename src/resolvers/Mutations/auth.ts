@@ -92,10 +92,8 @@ const createAndInjectToken = (user: User, ctx: Context) => {
   // Set the JWT as a cookie on the response
   ctx.response.cookie("token", token, {
     httpOnly: true,
-    domain: process.env.DOMAIN,
     maxAge: 1000 * 60 * 60 * 24 * 365 // Cookie will last 1 year
   });
-  console.log(ctx.response);
 };
 
 export const auth: AuthResolvers = {
