@@ -142,7 +142,7 @@ export const ads: AdsQueries = {
       );
 
       if (distance <= adOwner.radius && distance <= user.radius) {
-        if (!alreadyOffered && user.id !== adOwner.id) {
+        if (!alreadyOffered && user.id !== adOwner.id && ad_score.score >= 75) {
           adsScore.push(ad_score);
         }
       }
