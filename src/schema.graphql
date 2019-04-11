@@ -267,6 +267,7 @@ type Ad {
   urgentExpiry: String
   topExpiry: String
   status: AdStatus!
+  createdAt: String!
 }
 
 input AdCreateInput {
