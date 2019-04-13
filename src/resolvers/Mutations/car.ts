@@ -28,13 +28,14 @@ export const car: CarResolvers = {
 
     const id = getUserId(ctx);
     const permissions = getUserPermissions(ctx);
+    const user: User = await ctx.prisma.user({ id });
 
     // Only 2 cars by user
     const currentCars = await ctx.prisma.cars({
       where: { owner: { id }, status: "PUBLISHED" }
     });
 
-    const carlimitReached = currentCars.length >= MAX_CARS;
+    const carlimitReached = currentCars.length >= user.carLimit;
     const isPremium = permissions && permissions.includes("PREMIUM");
     if (carlimitReached && !isPremium) {
       throw carLimitReachedError;
