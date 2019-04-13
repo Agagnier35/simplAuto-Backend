@@ -29,7 +29,7 @@ interface OfferResolver {
   updateOffer: Types.UpdateOfferResolver;
   createOffer: Types.CreateOfferResolver;
   acceptOffer: Types.AcceptOfferResolver;
-  sendAcceptaionEmail: Types.SendAcceptaionEmailResolver;
+  sendAcceptationEmail: Types.SendAcceptationEmailResolver;
   refuseOffer: Types.RefuseOfferResolver;
   sendNotificationEmail: Types.SendNotificationEmailResolver;
 }
@@ -186,6 +186,41 @@ export const offer: OfferResolver = {
       data: { status: statusOfferAccepted },
       where: { id }
     });
+  },
+  async sendAcceptationEmail(parent, { id }, ctx: Context) {
+    const carOwner: User = await ctx.prisma
+      .offer({ id })
+      .car()
+      .owner();
+    const adCreator: User = await ctx.prisma
+      .offer({ id })
+      .ad()
+      .creator();
+
+    const emailBuyer = adCreator.email;
+    const firstNameBuyer = adCreator.firstName;
+    const lastNameBuyer = adCreator.lastName;
+
+    const emailSeller = carOwner.email;
+    const firstNameSeller = adCreator.firstName;
+    const lastNameSeller = adCreator.lastName;
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+      to: emailBuyer,
+      from: "simplauto@yopmail.com",
+      subject: "Simplauto Reset password",
+      templateId: "d-f7fe2f7bca064724b367e4a6271d7941",
+      dynamic_template_data: {
+        firstName: firstNameBuyer,
+        lastName: lastNameBuyer,
+        email: emailBuyer,
+        link: ""
+      }
+    };
+    sgMail.send(msg);
+
+    return "emailSent";
   },
   async refuseOffer(parent, { id }, ctx: Context) {
     const offer: Offer = await ctx.prisma.offer({ id });
