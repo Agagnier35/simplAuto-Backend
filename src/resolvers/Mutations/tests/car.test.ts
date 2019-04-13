@@ -36,6 +36,7 @@ describe("Cars mutations tests suite", () => {
 
     test("When creating a car, Then fetch userID and its permissions", async () => {
       prisma.cars = jest.fn().mockReturnValue(() => []);
+      prisma.user = jest.fn().mockReturnValue({ id: "getUserId", carLimit: 2 });
       const userSpy = jest.spyOn(Utils, "getUserId");
       const permissionSpy = jest.spyOn(Utils, "getUserPermissions");
 
@@ -65,6 +66,7 @@ describe("Cars mutations tests suite", () => {
 
     test("With a premium account with 2 cars, When creating a car, Then add the car", async () => {
       prisma.cars = jest.fn().mockReturnValue([{ id: "car1" }, { id: "car2" }]);
+      prisma.user = jest.fn().mockReturnValue({ id: "getUserId", carLimit: 2 });
 
       await CarMutationResolver.createCar(
         undefined,
@@ -78,6 +80,7 @@ describe("Cars mutations tests suite", () => {
 
     test("When creating a car, Then send correct arguments to prisma", async () => {
       prisma.cars = jest.fn().mockReturnValue(() => []);
+      prisma.user = jest.fn().mockReturnValue({ id: "getUserId", carLimit: 2 });
 
       await CarMutationResolver.createCar(
         undefined,
