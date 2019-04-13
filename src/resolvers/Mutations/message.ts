@@ -36,6 +36,7 @@ export const message: MessageResolver = {
 
     const senderIsBuyer = buyer.id === id;
     const offer = await ctx.prisma.conversation({ id: conversationID }).offer();
+    const { status } = await ctx.prisma.conversation({ id: conversationID });
 
     const notificationArray = await ctx.prisma.notifications({
       where: {
@@ -49,30 +50,32 @@ export const message: MessageResolver = {
 
     const notification = notificationArray[0];
 
-    if (notification) {
-      await ctx.prisma.updateManyNotifications({
-        data: {
-          count: notification.count + 1
-        },
-        where: {
-          type: "OFFER_MESSAGE",
-          owner: {
-            id: senderIsBuyer ? seller.id : buyer.id
+    if (status !== "DELETED") {
+      if (notification) {
+        await ctx.prisma.updateManyNotifications({
+          data: {
+            count: notification.count + 1
           },
-          objectID: offer.id
-        }
-      });
-    } else {
-      // create notification to the other member of the conversation
-      await ctx.prisma.createNotification({
-        owner: {
-          connect: {
-            id: senderIsBuyer ? seller.id : buyer.id
+          where: {
+            type: "OFFER_MESSAGE",
+            owner: {
+              id: senderIsBuyer ? seller.id : buyer.id
+            },
+            objectID: offer.id
           }
-        },
-        type: "OFFER_MESSAGE",
-        objectID: offer.id
-      });
+        });
+      } else {
+        // create notification to the other member of the conversation
+        await ctx.prisma.createNotification({
+          owner: {
+            connect: {
+              id: senderIsBuyer ? seller.id : buyer.id
+            }
+          },
+          type: "OFFER_MESSAGE",
+          objectID: offer.id
+        });
+      }
     }
 
     return message;
