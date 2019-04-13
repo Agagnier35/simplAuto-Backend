@@ -51,6 +51,7 @@ describe("Cars mutations tests suite", () => {
 
     test("With a normal account with 2 cars, When creating a car, Then throw error", async () => {
       prisma.cars = jest.fn().mockReturnValue([{ id: "car1" }, { id: "car2" }]);
+      prisma.user = jest.fn().mockReturnValue({ id: "getUserId", carLimit: 2 });
 
       await expect(
         CarMutationResolver.createCar(
