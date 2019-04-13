@@ -219,4 +219,5 @@ enum NotificationType {
   GENERAL
   OFFER_MESSAGE
   NEW_OFFER
+  ACCEPTED_OFFER
 }
