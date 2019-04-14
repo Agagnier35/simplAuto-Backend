@@ -159,6 +159,7 @@ export const offer: OfferResolver = {
   async acceptOffer(parent, { id }, ctx: Context) {
     const acceptedAd: Ad = await ctx.prisma.offer({ id }).ad();
     const acceptedCar: Car = await ctx.prisma.offer({ id }).car();
+    const acceptedOffer: Offer = await ctx.prisma.offer({ id });
     const carCreator: User = await ctx.prisma
       .offer({ id })
       .car()
@@ -166,6 +167,12 @@ export const offer: OfferResolver = {
 
     if (acceptedAd.status !== "PUBLISHED") {
       throw AdNotOneMarketError;
+    }
+    if (
+      acceptedCar.status !== "PUBLISHED" ||
+      acceptedOffer.status !== "PUBLISHED"
+    ) {
+      throw OfferNotOnMarketError;
     }
 
     const statusOffer: OfferStatus = "DELETED";
@@ -187,18 +194,16 @@ export const offer: OfferResolver = {
       where: { id: acceptedAd.id }
     });
 
-    if (carCreator.notificationInAppOffer) {
-      // Send a notification to the car owner
-      await ctx.prisma.createNotification({
-        owner: {
-          connect: {
-            id: carCreator.id
-          }
-        },
-        type: "ACCEPTED_OFFER",
-        objectID: id
-      });
-    }
+    // Send a notification to the car owner
+    await ctx.prisma.createNotification({
+      owner: {
+        connect: {
+          id: carCreator.id
+        }
+      },
+      type: "ACCEPTED_OFFER",
+      objectID: id
+    });
 
     return await ctx.prisma.updateOffer({
       data: { status: statusOfferAccepted },

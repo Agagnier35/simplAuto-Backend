@@ -105,7 +105,7 @@ export const adminStatistics: AdminStatsQueries = {
       .sort((a, b) => (a.count > b.count ? -1 : 1))
       .slice(0, 10);
     const top10FastestSold: Top10Car[] = groupedOffers.makeModel
-      .sort((a, b) => (a.averageTime > b.averageTime ? -1 : 1))
+      .sort((a, b) => (a.averageTime > b.averageTime ? 1 : -1))
       .slice(0, 10);
     const bestSeller1 = groupedOffers.sellers
       .sort((a, b) => (a.count > b.count ? -1 : 1))
