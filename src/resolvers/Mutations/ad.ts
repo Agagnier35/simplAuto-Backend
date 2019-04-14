@@ -137,11 +137,15 @@ export const ad: AdResolvers = {
 
     updatedData.manufacturer = manufacturerID
       ? { connect: { id: manufacturerID } }
-      : null;
+      : { disconnect: true };
 
-    updatedData.model = modelID ? { connect: { id: modelID } } : null;
+    updatedData.model = modelID
+      ? { connect: { id: modelID } }
+      : { disconnect: true };
 
-    updatedData.category = categoryID ? { connect: { id: categoryID } } : null;
+    updatedData.category = categoryID
+      ? { connect: { id: categoryID } }
+      : { disconnect: true };
 
     if (features && features.length > 0) {
       updatedData.features = {
