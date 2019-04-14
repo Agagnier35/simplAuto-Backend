@@ -103,12 +103,12 @@ export const fetchAllStatsFromAPI = async (
     const response = await axios.get(baseURLAPI, { params, headers });
     const { price, dom } = response.data.stats;
     return {
-      averagePriceAPI: price.mean,
-      averageTimeOnMarketAPI: dom.mean,
-      lowestPriceSoldAPI: price.min,
-      highestPriceSoldAPI: price.max,
-      lowestTimeOnMarketAPI: dom.min,
-      highestTimeOnMarketAPI: dom.max
+      averagePriceAPI: price.mean ? price.mean : 0,
+      averageTimeOnMarketAPI: dom.mean ? dom.mean : 0,
+      lowestPriceSoldAPI: price.min ? price.min : 0,
+      highestPriceSoldAPI: price.max ? price.max : 0,
+      lowestTimeOnMarketAPI: dom.min ? dom.min : 0,
+      highestTimeOnMarketAPI: dom.max ? dom.max : 0
     };
   } catch (error) {
     throw GatewayError;
