@@ -49,8 +49,11 @@ export const message: MessageResolver = {
     });
 
     const notification = notificationArray[0];
+    const wantNotfications = senderIsBuyer
+      ? seller.notificationInAppMessage
+      : buyer.notificationInAppMessage;
 
-    if (status !== "DELETED") {
+    if (status !== "DELETED" && wantNotfications) {
       if (notification) {
         await ctx.prisma.updateManyNotifications({
           data: {
