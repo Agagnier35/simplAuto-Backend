@@ -98,6 +98,7 @@ export const User: UserResolvers.Type = {
   conversations: ({ id }, args, ctx: Context) => {
     return ctx.prisma.conversations({
       where: {
+        status: "OPENED",
         OR: [
           {
             buyer: {
