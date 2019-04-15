@@ -150,7 +150,14 @@ export const ads: AdsQueries = {
 
     adsScore.sort((a, b) => (a.score > b.score ? -1 : 1));
 
-    adsScore.sort(a => (moment().isBefore(a.ad.topExpiry) ? -1 : 1));
+    adsScore.sort(a => {
+      const c = moment(Date.now());
+      const b = new Date(a.ad.topExpiry);
+      if (c.diff(b, "days") < 7) {
+        return -1;
+      }
+      return 1;
+    });
 
     adsScore.forEach((adScore, i: number) => {
       adScore.position = i;
